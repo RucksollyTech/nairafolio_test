@@ -1,6 +1,6 @@
 import FormField from "./FormField";
 import CustomButton from "./CustomButton";
-// import InfoBox from "./InfoBox";
+import Collapsible from "./Collapsible";
 import Loader from "./Loader";
 import SearchInput from "./SearchInput";
 import EmptyState from "./EmptyState";
@@ -9,7 +9,7 @@ export {
 //   VideoCard,
   FormField,
   CustomButton,
-//   InfoBox,
+  Collapsible,
   Loader,
 //   Trending,
   SearchInput,

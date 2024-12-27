@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ToggleButtons = ({ active, toggler }) => {
+const ToggleButtons = ({ active, toggler, title1, title2 }) => {
     return (
         <View className="mt-12 relative border-b border-border flex flex-row justify-between w-full">
             <View className="w-full flex-1">
@@ -14,7 +14,7 @@ const ToggleButtons = ({ active, toggler }) => {
                             active ? "font-psans text-secondary-100 border-b-2 border-secondary-100" : "text-muted-100"
                         }`}
                     >
-                        Active
+                        {title1 ? title1 : "Active"}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -28,7 +28,7 @@ const ToggleButtons = ({ active, toggler }) => {
                             !active ? "font-psans text-secondary-100 border-b-2 border-secondary-100" : "text-muted-100"
                         }`}
                     >
-                        Matured
+                        {title2 ? title2 : "Matured"}
                     </Text>
                 </TouchableOpacity>
             </View>

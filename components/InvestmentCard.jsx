@@ -10,7 +10,7 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
     const profit = (percentage * daysGone * invested)/100
     return (
         <TouchableOpacity
-            onPress={()=>router.push(`/investment/${_id}`)}
+            onPress={()=>router.push(`/investment/active/${_id}`)}
             activeOpacity={0.7}
         >
             <View 

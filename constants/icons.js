@@ -43,13 +43,14 @@ import lock_open from "../assets/icons/lock_open.png";
 import logo_name from "../assets/icons/logo_name.png";
 import logo_name_big from "../assets/icons/logo_name_big.png";
 import ngLogo from "../assets/icons/ngLogo.png";
-// import ngLogo from "../assets/icons/ngLogo.png";
+import arrow_collapse from "../assets/icons/arrow_collapse.png";
 import arrow_left from "../assets/icons/arrow_left.png";
 
 
 export default {
     left_arrow,
     arrow_left,
+    arrow_collapse,
     bell_thin,
     bell,
     eye_thin,

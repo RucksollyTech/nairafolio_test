@@ -10,6 +10,7 @@ module.exports = {
         border: {
           DEFAULT: "#D7D7D7",
           100: "#DCDCDC",
+          200: "#0000000A"
         },
         bg:"#F5F5F5",
         secondary: {
@@ -19,6 +20,7 @@ module.exports = {
         black: {
           DEFAULT: "#000",
           100: "#171717",
+          200: "#586576"
         },
         muted: {
           DEFAULT: "#747474",

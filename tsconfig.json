@@ -14,5 +14,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-, "constants/index.js", "constants/icons.js", "constants/images.js", "app/index.jsx", "app/+not-found.jsx", "app/_layout.jsx", "app/(auth)/sign_up.jsx", "app/(auth)/sign_in.jsx", "components/CustomButton.jsx", "app/(tabs)/_layout.jsx"  ]
+, "constants/index.js", "constants/icons.js", "constants/images.js", "app/index.jsx", "app/+not-found.jsx", "app/_layout.jsx", "app/(auth)/sign_up.jsx", "app/(auth)/sign_in.jsx", "components/CustomButton.jsx", "app/(tabs)/_layout.jsx", "components/Collapsible.jsx"  ]
 }
