@@ -6,6 +6,7 @@ import { icons } from "../constants";
 const FormField = ({
     title,
     value,
+    keyboardType,
     placeholder,
     handleChangeText,
     otherStyles,
@@ -32,6 +33,7 @@ const FormField = ({
                     className="flex-1 bg-[#FDFDFD] text-black-100 font-pregular text-base"
                     value={value}
                     placeholder={placeholder}
+                    keyboardType={keyboardType ?? "default"}
                     placeholderTextColor="#BBBBBB"
                     onChangeText={handleChangeText}
                     secureTextEntry={title === "Password" && !showPassword}

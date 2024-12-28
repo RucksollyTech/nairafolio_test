@@ -2,17 +2,19 @@ import { View, Text, ScrollView, Image, ImageBackground, StyleSheet, TouchableOp
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
-import { icons, images } from '../../constants'
-import Money from '../../components/Money'
-import CustomButton from '../../components/CustomButton'
-import {Collapsible} from '../../components/Collapsible'
+import { icons, images } from '../../../constants'
+import Money from '../../../components/Money'
+import CustomButton from '../../../components/CustomButton'
+import {Collapsible} from '../../../components/Collapsible'
 import { useNavigation } from '@react-navigation/native'
 import { router } from 'expo-router'
-import ToggleButtons from '../../components/ToggleButtons'
+import ToggleButtons from '../../../components/ToggleButtons'
+import PaymentDrawer from '../../../components/PaymentDrawer'
 
 const Investment = () => {
     const navigation = useNavigation();
     const [active, setActive] = useState(true)
+    const [isDrawerVisible, setDrawerVisible] = useState(false);
     const toggler = (value)=>{
         setActive(value)
     }
@@ -252,7 +254,7 @@ const Investment = () => {
                                 title="Invest Now" 
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
-                                handlePress={() => router.push(`/pay-investment/${_id}`)}
+                                handlePress={() => setDrawerVisible(true)}
                             />
                         </View>
                     </View>
@@ -397,12 +399,13 @@ const Investment = () => {
                                 title="Invest Now" 
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
-                                handlePress={() => router.push(`/pay-investment/${_id}`)}
+                                handlePress={() => setDrawerVisible(true)}
                             />
                         </View>
                     </View>
                 </View>
             </ScrollView>
+            <PaymentDrawer isVisible={isDrawerVisible} onClose={() => setDrawerVisible(false)} />
         </SafeAreaView>
     )
 }

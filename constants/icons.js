@@ -45,10 +45,14 @@ import logo_name_big from "../assets/icons/logo_name_big.png";
 import ngLogo from "../assets/icons/ngLogo.png";
 import arrow_collapse from "../assets/icons/arrow_collapse.png";
 import arrow_left from "../assets/icons/arrow_left.png";
+import arrow_left_italic from "../assets/icons/arrow_left_italic.png";
+import arrow_right_italic from "../assets/icons/arrow_right_italic.png";
 
 
 export default {
     left_arrow,
+    arrow_left_italic,
+    arrow_right_italic,
     arrow_left,
     arrow_collapse,
     bell_thin,

@@ -35,6 +35,7 @@ const TabLayout = () => {
           tabBarActiveTintColor: "#014148",
           tabBarInactiveTintColor: "#737373",
           tabBarShowLabel: false,
+          tabBarHideOnKeyboard:true,
           tabBarStyle: {
             backgroundColor: "#FFFFFF",
             // borderTopWidth: 1,

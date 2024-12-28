@@ -10,7 +10,7 @@ const InvestmentDisplayCard = () => {
     const _id=2
     return (
         <TouchableOpacity
-            onPress={()=>router.push(`/investment/${_id}`)}
+            onPress={()=>router.push(`/investment/new/${_id}`)}
             activeOpacity={0.7}
         >
             <View className="flex-1 rounded-lg shadow overflow-hidden border border-border">
