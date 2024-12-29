@@ -10,7 +10,8 @@ module.exports = {
         border: {
           DEFAULT: "#D7D7D7",
           100: "#DCDCDC",
-          200: "#0000000A"
+          200: "#0000000A",
+          300: "#EBEBEB"
         },
         bg:"#F5F5F5",
         secondary: {

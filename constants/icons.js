@@ -47,11 +47,15 @@ import arrow_collapse from "../assets/icons/arrow_collapse.png";
 import arrow_left from "../assets/icons/arrow_left.png";
 import arrow_left_italic from "../assets/icons/arrow_left_italic.png";
 import arrow_right_italic from "../assets/icons/arrow_right_italic.png";
+import bank from "../assets/icons/bank.png";
+import camera from "../assets/icons/camera.png";
 
 
 export default {
     left_arrow,
+    camera,
     arrow_left_italic,
+    bank,
     arrow_right_italic,
     arrow_left,
     arrow_collapse,

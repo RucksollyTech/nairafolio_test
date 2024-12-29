@@ -4,6 +4,7 @@ import { icons } from '../constants';
 import FormField from "./FormField"
 import Money from './Money';
 import CustomButton from './CustomButton';
+import { Link, router } from 'expo-router';
 
 const { height: screenHeight } = Dimensions.get('window'); 
 
@@ -24,13 +25,13 @@ const PaymentDrawer = ({ isVisible, onClose }) => {
                 className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
             >
                 <View 
-                    className="
-                        p-5 min-h-24 flex-row justify-between items-center border-b border-border
-                    "
+                    className={`
+                        p-5 min-h-24 flex-row justify-between items-center ${!next  && "border-b border-border" }
+                    `}
                 >
                     {next ? (
                         <View>
-                            <Text className="text-muted-200 font-pmedium">
+                            <Text className="text-muted-200 font-pmedium font-[700]">
                                 Select payment method
                             </Text>
                         </View>
@@ -68,12 +69,172 @@ const PaymentDrawer = ({ isVisible, onClose }) => {
                         />
                     </TouchableOpacity>
                 </View>
-                <ScrollView className="flex-1 p-4 h-full flex">
+                <ScrollView className="flex-1 py-4 h-full flex">
                     <View>
                         {next ? (
-                            <View></View>
-                        ) : (
                             <View>
+                                <Link href={"/pay-with-bank"} className="pb-5 px-5 border-b border-border">
+                                    <View 
+                                        className="
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border
+                                            border-border
+                                            bg-[#F8FAFA]
+                                        "
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
+                                        >
+                                            <Image
+                                                source={icons.wallet}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                            className="flex-1 px-3 "
+                                        >
+                                            <View className="my-auto justify-between flex-row">
+                                                <View>
+                                                    <Text
+                                                        className="text-lg text-header-200 font-psans"
+                                                    >
+                                                        Wallet
+                                                    </Text>
+                                                </View>
+                                                <View className="pr-1">
+                                                    <Money 
+                                                        value={0}
+                                                        textStyle={"text-secondary-100 text-lg font-[700]"}
+                                                    />
+                                                </View>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center flex-row"
+                                        >
+                                            <Image 
+                                                source={icons.arrow_right_italic}
+                                            />
+                                        </View>
+                                    </View>
+                                </Link>
+                                <Link href={"/pay-with-bank"} className="my-5 px-5">
+                                    <View 
+                                        className="
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border
+                                            border-border
+                                            bg-[#F8FAFA]
+                                        "
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
+                                        >
+                                            <Image
+                                                source={icons.bank}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                            className="flex-1 px-3 "
+                                        >
+                                            <View>
+                                                <Text
+                                                    className="text-lg text-header-200 font-psans"
+                                                >
+                                                    Bank transfer
+                                                </Text>
+                                            </View>
+                                            <View>
+                                                <Text className="text-muted text-sm">
+                                                    Direct transfer from your bank account
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center"
+                                        >
+                                            <Image 
+                                                source={icons.arrow_right_italic}
+                                            />
+                                        </View>
+                                    </View>
+                                </Link>
+                                <Link href={"/pay-with-card"} className="px-5">
+                                    <View 
+                                        className="
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border
+                                            border-border
+                                            bg-[#F8FAFA]
+                                        "
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
+                                        >
+                                            <Image
+                                                source={icons.card}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                            className="flex-1 px-2 "
+                                        >
+                                            <View>
+                                                <Text
+                                                    className="text-lg text-header-200 font-psans"
+                                                >
+                                                    Debit card
+                                                </Text>
+                                            </View>
+                                            <View>
+                                                <Text className="text-muted text-sm">
+                                                    Pay using Visa, Mastercard, or others 
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center"
+                                        >
+                                            <Image 
+                                                source={icons.arrow_right_italic}
+                                            />
+                                        </View>
+                                    </View>
+                                </Link>
+                            </View>
+                        ) : (
+                            <View className="pt-3 px-5">
                                 <View>
                                     <Text className="text-muted-200 font-pmedium">
                                         Number of units to purchace
@@ -109,14 +270,16 @@ const PaymentDrawer = ({ isVisible, onClose }) => {
                         
                     </View>
                 </ScrollView>
-                <View className="px-5 pb-7">
-                    <CustomButton 
-                        title="Proceed"
-                        textStyles="text-white"
-                        containerStyles="h-14"
-                        handlePress={()=>next ? router.push("/") : setNext(true)}
-                    />
-                </View>
+                {!next && (
+                    <View className="px-5 pb-7">
+                        <CustomButton 
+                            title="Proceed"
+                            textStyles="text-white"
+                            containerStyles="h-14"
+                            handlePress={()=>setNext(true)}
+                        />
+                    </View>
+                )}
             </View>
         </View>
     )
