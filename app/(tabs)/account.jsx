@@ -87,19 +87,19 @@ const account = () => {
                             title={"Verify account"}
                             subtitle={"Get your account verified."}
                             icon={icons.check}
-                            link={"/"}
+                            link={"/verify-account"}
                             verified
                         />
                         <AccountComponets 
                             title={"Security"}
                             subtitle={"Change password, Biomertrics"}
                             icon={icons.shield}
-                            link={"/"}
+                            link={"/security"}
                         />
                         <AccountComponets 
                             title={"Transaction history"}
                             icon={icons.arrow_up_down}
-                            link={"/"}
+                            link={"/transactions"}
                         />
                         <AccountComponets 
                             title={"Notification settings"}

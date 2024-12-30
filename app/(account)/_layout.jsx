@@ -18,6 +18,36 @@ const AccountLayout = () => {
                     headerShown: false,
                 }}
             />
+            <Stack.Screen
+                name="verify-account"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="verify-with-nin"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="security"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="change-password"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="transactions"
+                options={{
+                    headerShown: false,
+                }}
+            />
         </Stack>
 
         {/* <Loader isLoading={loading} /> */}

@@ -76,7 +76,6 @@ const sign_in = () => {
                                     value={form.name}
                                     placeholder="Enter full name"
                                     handleChangeText={(e)=>setForm({...form, name: e})}
-                                    otherStyles="max-w-[400px] mx-auto"
                                 />
                             </View>
                             <View className='pt-4'>
@@ -85,7 +84,6 @@ const sign_in = () => {
                                     value={form.email}
                                     placeholder="Email address"
                                     handleChangeText={(e)=>setForm({...form, email: e})}
-                                    otherStyles="max-w-[400px] mx-auto"
                                 />
                             </View>
                             <View className='flex flex-row pt-4 gap-3'>
@@ -123,7 +121,6 @@ const sign_in = () => {
                                     value={form.password}
                                     placeholder="Password"
                                     handleChangeText={(e)=>setForm({...form, password: e})}
-                                    otherStyles="max-w-[400px] mx-auto"
                                 />
                             </View>
                             <View className='pt-4'>
@@ -132,7 +129,6 @@ const sign_in = () => {
                                     value={form.password_confirm}
                                     placeholder="Confirm password"
                                     handleChangeText={(e)=>setForm({...form, password_confirm: e})}
-                                    otherStyles="max-w-[400px] mx-auto"
                                 />
                             </View>
                         </View>
@@ -141,7 +137,7 @@ const sign_in = () => {
                         <View className='mb-6'>
                             <CustomButton 
                                 title="Sign up"
-                                containerStyles="h-[50px] max-w-[400px]"
+                                containerStyles="h-[50px]"
                                 textStyles="text-white"
                                 handlePress={()=>router.push("/home")}
                             />

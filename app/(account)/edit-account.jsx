@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '../../constants'
 import AccountCustomForm from '../../components/AccountCustomForm'
 import CustomButton from '../../components/CustomButton'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from 'expo-router'
 
 const EditAccount = () => {
     const navigation = useNavigation();

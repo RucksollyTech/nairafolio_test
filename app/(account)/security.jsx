@@ -1,0 +1,153 @@
+import { View, Text, ScrollView, TouchableOpacity, Image, Switch } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { icons } from '../../constants'
+import { Link, useNavigation } from 'expo-router'
+
+const Security = () => {
+    const navigation = useNavigation();
+    const [nin, setNin] = useState(0)
+    const [isDrawerVisible, setDrawerVisible] = useState(false);
+
+    const [isEnabled, setIsEnabled] = useState(false);
+
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    return (
+        <SafeAreaView className="bg-white flex-1 h-full">
+            <ScrollView
+                showsVerticalScrollIndicator={false} 
+                showsHorizontalScrollIndicator={false}
+            >
+                <View className="bg-white flex-1 h-full px-5 pb-10 pt-7">
+                    <View>
+                        <TouchableOpacity
+                            onPress={()=>navigation.goBack()}
+                        >
+                            <Image
+                                source={icons.arrow_left}
+                                resizeMode="contain"
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View className="pt-4">
+                        <Text className="text-black-100 font-psans text-2xl">
+                            Security
+                        </Text>
+                    </View>
+                    <View className="pt-6 pb-2">
+                        <Text className="text-[#2A3B59] text-lg font-psemibold">
+                            Passwords
+                        </Text>
+                    </View>
+                    <View>
+                        <Link href={"/change-password"} className="my-1">
+                            <View 
+                                className="
+                                    flex-1 
+                                    rounded-lg
+                                    flex 
+                                    py-2 flex-row
+                                    mb-5
+                                    border
+                                    border-border
+                                    bg-[#F8FAFA]
+                                "
+                            >
+                                <View
+                                    className="h-14 w-14 rounded-full items-center justify-center"
+                                >
+                                    <Image
+                                        source={icons.lock}
+                                        resizeMode="cover"
+                                    />
+                                </View>
+                                <View
+                                    style={{
+                                        width: "74.54%",
+                                    }}
+                                    className="flex-1 px-3 my-auto"
+                                >
+                                    <View>
+                                        <Text
+                                            className="text-lg text-[#2A3B59] font-pmedium"
+                                        >
+                                            Change passcode
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        width: "10.08%",
+                                    }}
+                                    className="items-center justify-center"
+                                >
+                                    <Image 
+                                        source={icons.arrow_right_italic}
+                                    />
+                                </View>
+                            </View>
+                        </Link>
+                    </View>
+                    <View className="pt-6 pb-2">
+                        <Text className="text-[#2A3B59] text-lg font-psemibold">
+                            Biometrics
+                        </Text>
+                    </View>
+                    <View className="my-1">
+                        <View 
+                            className="
+                                flex-1 
+                                rounded-lg
+                                flex 
+                                py-2 flex-row
+                                mb-5
+                                border
+                                border-border
+                                bg-[#F8FAFA]
+                            "
+                        >
+                            <View
+                                className="h-14 w-14 rounded-full items-center justify-center"
+                            >
+                                <Image
+                                    source={icons.face_id}
+                                    resizeMode="cover"
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    width: "64.54%",
+                                }}
+                                className="flex-1 px-3 my-auto"
+                            >
+                                <View>
+                                    <Text
+                                        className="text-lg text-[#2A3B59] font-pmedium"
+                                    >
+                                        Log in with Biometrics
+                                    </Text>
+                                </View>
+                            </View>
+                            <View
+                                style={{
+                                    width: "20.08%",
+                                }}
+                                className="items-center justify-center"
+                            >
+                                <Switch
+                                    trackColor={{ false: "#D7D7D7", true: "#81b0ff" }} // Track colors for off/on
+                                    thumbColor={isEnabled ? "#FFFFFF" : "#FFFFFF"}     // Thumb color for on/off
+                                    ios_backgroundColor="#3e3e3e"                      // Background color for iOS
+                                    onValueChange={toggleSwitch}                      // Callback when value changes
+                                    value={isEnabled}                                 // Current state of the switch
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+export default Security

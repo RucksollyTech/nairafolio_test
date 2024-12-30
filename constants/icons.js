@@ -49,11 +49,13 @@ import arrow_left_italic from "../assets/icons/arrow_left_italic.png";
 import arrow_right_italic from "../assets/icons/arrow_right_italic.png";
 import bank from "../assets/icons/bank.png";
 import camera from "../assets/icons/camera.png";
+import transact from "../assets/icons/transact.png";
 
 
 export default {
     left_arrow,
     camera,
+    transact,
     arrow_left_italic,
     bank,
     arrow_right_italic,

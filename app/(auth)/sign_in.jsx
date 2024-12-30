@@ -84,7 +84,6 @@ const sign_in = () => {
                                         value={form.email}
                                         placeholder="Email address"
                                         handleChangeText={(e)=>setForm({...form, email: e})}
-                                        otherStyles="max-w-[400px] mx-auto"
                                     />
                                 </View>
                                 <View className='pt-4'>
@@ -93,7 +92,6 @@ const sign_in = () => {
                                         value={form.password}
                                         placeholder="Password"
                                         handleChangeText={(e)=>setForm({...form, password: e})}
-                                        otherStyles="max-w-[400px] mx-auto"
                                     />
                                 </View>
                                 <View className='mt-1.5'>
@@ -119,7 +117,7 @@ const sign_in = () => {
                             <View className='mb-6'>
                                 <CustomButton 
                                     title="Log in"
-                                    containerStyles="h-[50px] max-w-[400px]"
+                                    containerStyles="h-[50px]"
                                     textStyles="text-white"
                                     handlePress={()=>router.push("/home")}
                                 />

@@ -114,6 +114,24 @@ const Home = () => {
             invested: 30000,
             percentage: 10,
             date: datetime,
+        },
+        {
+            $id:2,
+            logo:images.example,
+            name: "Investment roll",
+            duration: 15,
+            invested: 40000,
+            percentage: 20,
+            date: datetime,
+        },
+        {
+            $id:3,
+            logo:images.example,
+            name: "Investment drills",
+            duration: 45,
+            invested: 60000,
+            percentage: 5,
+            date: datetime,
         }
     ]
     
@@ -201,7 +219,7 @@ const Home = () => {
                                 />
                             </View>
                         ) : (
-                            <View className="mt-16">
+                            <View className="mt-6 min-h-[225px]">
                                 {investmentData && investmentData.map(({logo,name,duration,percentage,invested,date,$id},index)=>(
                                     <View key={index} className="mb-2">
                                         <InvestmentCard 

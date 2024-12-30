@@ -37,7 +37,6 @@ const index = () => {
                                     px-5 font-psans 
                                     font-semibold 
                                     text-[33px] 
-                                    max-w-[400px] 
                                     w-full text-center
                                     leading-[42px]
                                 '>
@@ -48,7 +47,7 @@ const index = () => {
                                 <View>
                                     <CustomButton 
                                         title="Get started"
-                                        containerStyles="h-[50px] mx-8 max-w-[400px]"
+                                        containerStyles="h-[50px] mx-8"
                                         textStyles="text-white"
                                         handlePress={()=>router.push("/sign_up")}
                                     />
@@ -56,7 +55,7 @@ const index = () => {
                                 <View>
                                     <CustomButton 
                                         title="Login"
-                                        containerStyles="h-[50px] border border-border mt-5 bg-white mx-8 max-w-[400px]"
+                                        containerStyles="h-[50px] border border-border mt-5 bg-white mx-8"
                                         textStyles="text-dark-100"
                                         handlePress={()=>router.push("/sign_in")}
                                     />
