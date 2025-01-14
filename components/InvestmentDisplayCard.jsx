@@ -5,9 +5,23 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet } from 'nativewind'
 import Money from './Money'
 import { router } from 'expo-router'
+import { convertDaysToReadableFormat } from './dayConverter'
 
-const InvestmentDisplayCard = () => {
-    const _id=2
+const InvestmentDisplayCard = (
+    {
+        _id,
+        status,
+        cover_image,
+        logo,
+        name,
+        total_investors,
+        rio,
+        min_investment,
+        duration_days,
+        company_name,
+        company_owner
+    }
+) => {
     return (
         <TouchableOpacity
             onPress={()=>router.push(`/investment/new/${_id}`)}
@@ -15,7 +29,7 @@ const InvestmentDisplayCard = () => {
         >
             <View className="flex-1 rounded-lg shadow overflow-hidden border border-border">
                 <ImageBackground
-                    source={images.example2}
+                    source={{uri: cover_image}}
                     resizeMode="cover"
                     className="w-full h-[180px] rounded-[8px_8px_0_0] flex-1 "
                 >
@@ -31,7 +45,7 @@ const InvestmentDisplayCard = () => {
                                 className="font-psans text-3xl text-white"
                                 numberOfLines={2}
                             >
-                                Mono Inc. Transport Services 
+                                {name} 
                             </Text>
                             <View>
                                 <Text className="text-[#FDFDFD99] text-base">
@@ -39,10 +53,13 @@ const InvestmentDisplayCard = () => {
                                 </Text>
                             </View>
                             <View className="flex">
-                                <View className="bg-[#13664B80] flex-row ml-auto w-[80px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]">
-                                    <Text className="h-[5px] my-auto w-[5px] rounded-full bg-secondary-100"></Text>
-                                    <Text className="text-white my-auto pl-2 text-sm">
-                                        Ongoing
+                                <View className={`
+                                    ${status === null ? "bg-[#8080801A]" : "bg-[#13664B80]"} 
+                                    flex-row ml-auto w-[80px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]
+                                `}>
+                                    <Text className={`h-[5px] my-auto w-[5px] rounded-full ${status === null ? "bg-[#808080]" : "bg-secondary-100"}`}></Text>
+                                    <Text className={`${status === null ? "text-[#808080]" : "text-white"} my-auto pl-2 text-sm`}>
+                                        {(status !== null) ? (status ? "Ongoing" : "Closed") : "Coming soon"}
                                     </Text>
                                 </View>
                             </View>
@@ -51,11 +68,11 @@ const InvestmentDisplayCard = () => {
                 </ImageBackground>
                 <View className="bg-white p-3">
                     <Text className="text-lg font-pregular font-[700] text-black-100 ">
-                        Mono Inc. transportation and parcel services Nigeria
+                        {name}
                     </Text>
                     <View className="py-2">
                         <Text className="text-sm font-pregular font-[700] text-secondary-100">
-                            146 investors
+                            {total_investors} investors
                         </Text>
                     </View>
                     <View className="flex flex-row flex-wrap gap-4 mt-2">
@@ -66,7 +83,9 @@ const InvestmentDisplayCard = () => {
                                     resizeMode="contain"
                                     className="my-auto"
                                 />
-                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">30% ROI</Text>
+                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                    {rio}% ROI
+                                </Text>
                             </View>
                         </View>
                         <View className="flex items-center justify-center bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
@@ -78,7 +97,7 @@ const InvestmentDisplayCard = () => {
                                 />
                                 <View className="flex flex-row ">
                                     <Money 
-                                        value={20000}
+                                        value={min_investment}
                                         containerStyle="flex"
                                         textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200"
                                     />
@@ -97,7 +116,9 @@ const InvestmentDisplayCard = () => {
                                     resizeMode="contain"
                                     className="my-auto"
                                 />
-                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">12 months returns</Text>
+                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                    {convertDaysToReadableFormat(duration_days)} returns
+                                </Text>
                             </View>
                         </View>
                         
@@ -119,7 +140,7 @@ const InvestmentDisplayCard = () => {
                                 className="h-full"
                             >
                                 <Image
-                                    source={images.example}
+                                    source={{uri: logo}}
                                     resizeMode="cover"
                                     className="h-14 w-14 rounded-full"
                                 />
@@ -132,12 +153,12 @@ const InvestmentDisplayCard = () => {
                             >
                                 <View>
                                     <Text className="text-sm text-muted-300">
-                                        Company
+                                        {company_name}
                                     </Text>
                                     <Text
                                         className="text-lg font-[700] pt-1 font-pmedium text-muted-300"
                                     >
-                                        Investment Owner
+                                        {company_owner}
                                     </Text>
                                 </View>
                             </View>

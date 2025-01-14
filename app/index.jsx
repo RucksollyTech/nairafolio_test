@@ -1,14 +1,40 @@
-import { View, Text, Image, ImageBackground } from 'react-native'
+import { View, Text, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images,icons } from "../constants";
 import {CustomButton} from "../components"
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
 
 const index = () => {
+    const { loading, isLogged } = useGlobalContext();
+    if (!loading && isLogged) return <Redirect href="/home" />;
+    if(loading){
+        return(
+            <SafeAreaView 
+                className={`bg-[#014148] flex-1 font-bold h-[100vh]`}
+            >
+                <View className='h-full items-center justify-center relative'>
+                    <Image 
+                        source={icons.logo}
+                        resizeMode='cover'
+                    />
+                    <View className='absolute bottom-0 pb-10 items-center justify-center'>
+                        <ActivityIndicator 
+                            animating={loading}
+                            color="#fff"
+                            size="large"
+                        />
+                    </View>
+                </View>
+            </SafeAreaView>
+        )
+    }
     return (
-        <SafeAreaView className='bg-white flex-1 font-bold h-[100vh]'>
+        <SafeAreaView 
+            className={`bg-white flex-1 font-bold h-[100vh] relative z-10`}>
             <View className='relative w-full flex h-full items-center justify-center'>
                 <Image 
                     source={images.onboarding}

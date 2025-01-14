@@ -1,12 +1,27 @@
-import { View, Text, ScrollView, Image } from 'react-native'
-import React from 'react'
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import { icons, images } from '../../constants'
 import AccountComponets from '../../components/AccountComponets'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
+import { useGlobalContext } from '@/context/GlobalProvider'
+import { signOut } from '@/lib/appwrite'
 
 const account = () => {
+    const { setUser, setIsLogged } = useGlobalContext();
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+    const logout = async () => {
+        setIsLoggingOut(true)
+        await signOut();
+        setUser(null);
+        setIsLogged(false);
+        setIsLoggingOut(false)
+
+        router.replace("/sign_in");
+    };
+
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
@@ -118,11 +133,20 @@ const account = () => {
                         />
                     </View>
                     <View className="mb-10 mt-10 justify-center items-center">
-                        <Link href={"/"}>
-                            <Text className="text-lg font-psemibold text-[##D82F2F]">
-                                Log out
-                            </Text>
-                        </Link>
+                        <TouchableOpacity
+                            onPress={logout}
+                            activeOpacity={0.1}
+                        >
+                            {isLoggingOut ? (
+                                <Text className="text-lg font-psemibold text-[##D82F2F]">
+                                    Logging out...
+                                </Text>
+                            ) : (
+                                <Text className="text-lg font-psemibold text-[##D82F2F]">
+                                    Log out
+                                </Text>
+                            )}
+                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>

@@ -287,7 +287,7 @@ const PaymentDrawer = ({ isVisible, onClose }) => {
 
 const styles = StyleSheet.create({
     drawer: {
-        height: screenHeight * 0.92, 
+        height: screenHeight * 0.85, 
     },
 });
 

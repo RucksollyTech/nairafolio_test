@@ -12,8 +12,10 @@ import ToggleButtons from '../../components/ToggleButtons';
 import InvestmentCard from '../../components/InvestmentCard';
 import { router } from 'expo-router';
 import UTCDate from '../../components/UTCDate';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import PaymentDrawer from '../../components/PaymentDrawer';
 
-const CustomCarousel = ({data,width,progressValue}) =>(
+const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
     <Carousel
         loop
         width={width - 48}
@@ -47,14 +49,16 @@ const CustomCarousel = ({data,width,progressValue}) =>(
                                     </Text>
                                 </View>
                             </View>
-                            <View>
-                                <CustomButton 
-                                    title="Top up"
-                                    textStyles="text-white"
-                                    containerStyles="w-[76px] h-9 text-xs item-end"
-                                    handlePress={()=>router.push("/")}
-                                />
-                            </View>
+                            {title !== "Investments" && (
+                                <View>
+                                    <CustomButton 
+                                        title="Top up"
+                                        textStyles="text-white"
+                                        containerStyles="w-[76px] h-9 text-xs item-end"
+                                        handlePress={()=>setIsDrawerVisible(true)}
+                                    />
+                                </View>
+                            )}
                         </View>
                     </View>
                     <Image
@@ -69,41 +73,15 @@ const CustomCarousel = ({data,width,progressValue}) =>(
 )
 const MemoizedCarousel = React.memo(CustomCarousel);
 const Home = () => {
+    const { user,loading, isLogged } = useGlobalContext();
     const width = Dimensions.get('window').width;
     const progressValue = useSharedValue(0); 
-    const [adjWidth, setAdjWidth] = useState(width ? width/2 : 0)
     const [active, setActive] = useState(true)
+    const [isDrawerVisible, setIsDrawerVisible] = useState(false)
     const toggler = (value)=>{
         setActive(value)
     }
-    const data=[
-        {
-            $id: 1,
-            amount: 20000,
-            title:"Wallet balance",
-            body:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quas illo dolorem quisquam facere ea, repudiandae sed saepe necessitatibus dolor delectus ad suscipit impedit blanditiis minus beatae quidem incidunt odit.",
-            thumbnail: images.example,
-        },
-        {
-            $id: 2,
-            amount: 500000,
-            title:"Investments",
-            body:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quas illo dolorem quisquam facere ea, repudiandae sed saepe necessitatibus dolor delectus ad suscipit impedit blanditiis minus beatae quidem incidunt odit.",
-            thumbnail: images.example,
-        },
-        {
-            $id: 3,
-            amount: 500000,
-            title:"Investments",
-            body:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quas illo dolorem quisquam facere ea, repudiandae sed saepe necessitatibus dolor delectus ad suscipit impedit blanditiis minus beatae quidem incidunt odit.",
-            thumbnail: images.example,
-        },
-    ]
-    useEffect(() => {
-        if(width){
-            setAdjWidth(width/2)
-        }
-    }, [width])
+    
     const {datetime} = UTCDate("2024-12-20T12:00:00Z")
     const investmentData = [
         {
@@ -134,7 +112,27 @@ const Home = () => {
             date: datetime,
         }
     ]
+    const data=[
+        {
+            $id: 1,
+            amount: 20000,
+            title:"Wallet balance",
+            body:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quas illo dolorem quisquam facere ea, repudiandae sed saepe necessitatibus dolor delectus ad suscipit impedit blanditiis minus beatae quidem incidunt odit.",
+            thumbnail: images.example,
+        },
+        {
+            $id: 2,
+            amount: 500000,
+            title:"Investments",
+            body:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quas illo dolorem quisquam facere ea, repudiandae sed saepe necessitatibus dolor delectus ad suscipit impedit blanditiis minus beatae quidem incidunt odit.",
+            thumbnail: images.example,
+        }
+    ]
     
+    // const dataz =`
+    //  {"$collectionId": "6782f79900093bb2969a", "$createdAt": "2025-01-12T09:44:31.764+00:00", "$databaseId": "6782f35d0018fef1ae8c", "$id": "67838eff0027fd6c1f9e", "$permissions": ["read(\"user:67838efc002bf1e96bd9\")", "update(\"user:67838efc002bf1e96bd9\")", "delete(\"user:67838efc002bf1e96bd9\")"], "$updatedAt": "2025-01-12T09:44:31.764+00:00", "accountId": "67838efc002bf1e96bd9", "avatar": "https://cloud.appwrite.io/v1/avatars/initials?name=Anthony+somebody&project=6782ee210030356b6a95", "email": "chibuzoranthonyokenwa@gmail.com", "investment_ballance": 0, "is_verified": false, 
+    //  "name": "Anthony somebody", "phone": "9052184171", "userInvestment": [], "wallet_ballance": 0}
+    // `
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
@@ -155,7 +153,7 @@ const Home = () => {
                             </View>
                             <View className="pt-1">
                                 <Text className="text-black-100 font-psans text-xl">
-                                    David Gabriel
+                                    {user?.name || "--"}
                                 </Text>
                             </View>
                         </View>
@@ -168,13 +166,34 @@ const Home = () => {
                         >
                             <MemoizedCarousel 
                                 width={width}
-                                data={data}
+                                data={[
+                                    {
+                                        $id: 1,
+                                        amount: user.investment_ballance,
+                                        title:"Investments",
+                                    },{
+                                        $id: 2,
+                                        amount: user.wallet_ballance,
+                                        title:"Wallet balance",
+                                    }
+                                ]}
                                 progressValue={progressValue}
+                                setIsDrawerVisible={setIsDrawerVisible}
                             />
                         </View>
 
                         <View className="flex-row justify-center items-center mt-3">
-                            {data.map((_, index) => {
+                            {[
+                                {
+                                    $id: 1,
+                                    amount: user.investment_ballance,
+                                    title:"Investments",
+                                },{
+                                    $id: 2,
+                                    amount: user.wallet_ballance,
+                                    title:"Wallet balance",
+                                }
+                            ].map((_, index) => {
                                 const animatedStyle = useAnimatedStyle(() => {
                                 const inputRange = [index - 1, index, index + 1];
                                 const scale = interpolate(
@@ -206,17 +225,21 @@ const Home = () => {
                             })}
                         </View>
                     </View>
-                    <ToggleButtons 
-                        active={active}
-                        toggler={toggler}
-                    />
                     <View className="px-5">
                         {active ? (
-                            <View className="mt-16">
+                            <View className="mt-20">
                                 <EmptyState
                                     title={"You have no Investments"}
                                     subtitle={"You can start by investing in the available opportunities"}
                                 />
+                                <View className="items-center justify-center pt-5">
+                                    <CustomButton 
+                                        title="Explore investments"
+                                        textStyles="text-white"
+                                        containerStyles="w-[180px] h-11 text-xs text-center"
+                                        handlePress={()=>router.push("/explore")}
+                                    />
+                                </View>
                             </View>
                         ) : (
                             <View className="mt-6 min-h-[225px]">
@@ -236,38 +259,10 @@ const Home = () => {
                             </View>
                         )}
                     </View>
-                    <View className="mt-16 mx-6">
-                        <View className="mb-2">
-                            <Text className="font-psans text-lg text-black-100">
-                                Media and stories
-                            </Text>
-                        </View>
-                    </View>
-                    <View 
-                        style={{
-                            flexDirection: "row",
-                            flexWrap: "wrap",
-                            justifyContent: "space-between",
-                            marginBottom: 20,
-                        }}
-                        className="px-4"
-                    >
-                        {data.map(({title,thumbnail,body},index)=>(
-                            <View key={index} className=" px-2 pt-3 pb-4"
-                                style={{
-                                    width: "50%",
-                                }}
-                            >
-                                <Card
-                                    title={title}
-                                    thumbnail={thumbnail}
-                                    body={body}
-                                />
-                            </View>
-                        ))}
-                    </View>
+                    
                 </View>
             </ScrollView>
+            <PaymentDrawer isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)} />
         </SafeAreaView>
     );
 };

@@ -14,7 +14,7 @@ import PaymentDrawer from '../../../components/PaymentDrawer'
 const Investment = () => {
     const navigation = useNavigation();
     const [active, setActive] = useState(true)
-    const [isDrawerVisible, setDrawerVisible] = useState(false);
+    const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const toggler = (value)=>{
         setActive(value)
     }
@@ -254,7 +254,7 @@ const Investment = () => {
                                 title="Invest Now" 
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
-                                handlePress={() => setDrawerVisible(true)}
+                                handlePress={() => setIsDrawerVisible(true)}
                             />
                         </View>
                     </View>
@@ -399,13 +399,13 @@ const Investment = () => {
                                 title="Invest Now" 
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
-                                handlePress={() => setDrawerVisible(true)}
+                                handlePress={() => setIsDrawerVisible(true)}
                             />
                         </View>
                     </View>
                 </View>
             </ScrollView>
-            <PaymentDrawer isVisible={isDrawerVisible} onClose={() => setDrawerVisible(false)} />
+            <PaymentDrawer isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)} />
         </SafeAreaView>
     )
 }

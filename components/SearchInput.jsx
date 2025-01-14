@@ -6,8 +6,10 @@ import { icons } from "../constants";
 
 const SearchInput = ({ initialQuery }) => {
     const pathname = usePathname();
-    const [query, setQuery] = useState(initialQuery || "");
+    const [categorySelected, setCategorySelected] = useState("")
+    const [query, setQuery] = useState(initialQuery?.query || "");
     const [isFocused, setIsFocused] = useState(false);
+    
     return (
         <View className={`
             flex flex-row 
@@ -28,13 +30,19 @@ const SearchInput = ({ initialQuery }) => {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
             />
-
             <TouchableOpacity
                 onPress={() => {
                     if (query === "")
                         return
-                    if (pathname.startsWith("/search")) router.setParams({ query });
-                    else router.push(`/search/${query}`);
+                    // if (pathname.startsWith("/search")) router.setParams({ query });
+                    // else router.push(`/search/${query}`);
+                    if (pathname.startsWith("/search")) {
+                        router.setParams({ query: { query, categorySelected} });
+                    } else {
+                        const queryObj = { query, categorySelected};
+                        const queryString = new URLSearchParams(queryObj).toString();
+                        router.push(`/search/${queryString}`);
+                    }
                 }}
             >
                 <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />

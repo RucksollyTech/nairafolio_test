@@ -1,12 +1,15 @@
-import { View, Text, ImageBackground, Image, ScrollView, Dimensions } from 'react-native'
+import { View, Text, ImageBackground, Image, ScrollView, Dimensions, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '@/constants'
 import { CustomButton, FormField } from '@/components'
 import { Link, router } from 'expo-router'
+import { useGlobalContext } from '@/context/GlobalProvider'
+import { createUser } from '@/lib/appwrite'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const sign_in = () => {
-    // const { setUser, setIsLogged } = useGlobalContext();
+    const { setUser, setIsLogged } = useGlobalContext();
 
     const [isSubmitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({
@@ -18,22 +21,27 @@ const sign_in = () => {
     });
 
     const submit = async () => {
-    //     if (form.username === "" || form.email === "" || form.password === "") {
-    //     Alert.alert("Error", "Please fill in all fields");
-    //     }
+        if (
+            form.name === "" || 
+            form.email === "" || 
+            form.password === "" ||
+            form.phone === ""  
+        ) {
+            Alert.alert("Error", "Please fill in all fields");
+        }
 
-    //     setSubmitting(true);
-    //     try {
-    //     const result = await createUser(form.email, form.password, form.username);
-    //     setUser(result);
-    //     setIsLogged(true);
-
-    //     router.replace("/home");
-    //     } catch (error) {
-    //     Alert.alert("Error", error.message);
-    //     } finally {
-    //     setSubmitting(false);
-    //     }
+        setSubmitting(true);
+        try {
+            const result = await createUser(form.email, form.password, form.name,form.phone);
+            setUser(result);
+            setIsLogged(true);
+            await AsyncStorage.setItem('isSignedUp', JSON.stringify(true));
+            router.replace("/home");
+        } catch (error) {
+            Alert.alert("Error", error.message);
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -139,7 +147,8 @@ const sign_in = () => {
                                 title="Sign up"
                                 containerStyles="h-[50px]"
                                 textStyles="text-white"
-                                handlePress={()=>router.push("/home")}
+                                handlePress={submit}
+                                isLoading={isSubmitting}
                             />
                         </View>
                         <View className='mb-10'>

@@ -1,12 +1,15 @@
-import { View, Text, ImageBackground, Image, ScrollView } from 'react-native'
+import { View, Text, ImageBackground, Image, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '@/constants'
 import { CustomButton, FormField } from '@/components'
 import { Link, router } from 'expo-router'
+import { useGlobalContext } from '@/context/GlobalProvider'
+import { getCurrentUser, signIn } from '@/lib/appwrite'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sign_in = () => {
-    // const { setUser, setIsLogged } = useGlobalContext();
+    const { setUser, setIsLogged } = useGlobalContext();
 
     const [isSubmitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({
@@ -15,23 +18,26 @@ const sign_in = () => {
     });
 
     const submit = async () => {
-    //     if (form.username === "" || form.email === "" || form.password === "") {
-    //     Alert.alert("Error", "Please fill in all fields");
-    //     }
-
-    //     setSubmitting(true);
-    //     try {
-    //     const result = await createUser(form.email, form.password, form.username);
-    //     setUser(result);
-    //     setIsLogged(true);
-
-    //     router.replace("/home");
-    //     } catch (error) {
-    //     Alert.alert("Error", error.message);
-    //     } finally {
-    //     setSubmitting(false);
-    //     }
+        if (form.email === "" || form.password === "") {
+            Alert.alert("Error", "Please fill in all fields");
+        }
+    
+        setSubmitting(true);
+        try {
+            await signIn(form.email, form.password);
+            const result = await getCurrentUser();
+            setUser(result);
+            setIsLogged(true);
+            await AsyncStorage.setItem('isSignedUp', JSON.stringify(true));
+        
+            router.replace("/home");
+        } catch (error) {
+            Alert.alert("Error", "Invalid credentials");
+        } finally {
+            setSubmitting(false);
+        }
     };
+    
 
     return (
         <SafeAreaView className='bg-white flex-1'>
@@ -119,7 +125,8 @@ const sign_in = () => {
                                     title="Log in"
                                     containerStyles="h-[50px]"
                                     textStyles="text-white"
-                                    handlePress={()=>router.push("/home")}
+                                    handlePress={submit}
+                                    isLoading={isSubmitting}
                                 />
                             </View>
                             <View className='mb-10'>
