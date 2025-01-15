@@ -8,7 +8,6 @@ import { images } from "../../constants";
 import { CustomButton, FormField } from '@/components'
 import EmptyState from '../../components/EmptyState';
 import Card from '../../components/Card';
-import ToggleButtons from '../../components/ToggleButtons';
 import InvestmentCard from '../../components/InvestmentCard';
 import { router } from 'expo-router';
 import UTCDate from '../../components/UTCDate';

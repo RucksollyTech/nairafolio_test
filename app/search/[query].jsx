@@ -8,6 +8,7 @@ import useAppwrite from '../../lib/useAppwrite'
 import { searchPosts } from '@/lib/appwrite'
 import { useLocalSearchParams } from 'expo-router'
 import SkeletonLoader from '../../components/SkeletonLoader'
+import EmptyState from '../../components/EmptyState'
 
 
 
@@ -41,7 +42,6 @@ const Search = () => {
         refetch();
     }, [query]);
     const categories = ["All","Agriculture","Forex","Dollar savings","Transportation","Financial investmenty"]
-    console.log(refreshing)
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <FlatList 
@@ -80,40 +80,52 @@ const Search = () => {
                         </View>
                 )}
                 ListHeaderComponent={()=>(
-                    <View>
+                    <View className="flex-1 h-full">
+                        <LinearGradient
+                            colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+                            start={{ x: 0.5, y: 0 }}
+                            end={{ x: 0.5, y: 1 }}
+                        >
+                            <View className="px-5">
+                                <View className="pt-10">
+                                    <Text className="text-black-100 font-psans text-xl">
+                                        Explore Investments
+                                    </Text>
+                                </View>
+                                
+                            </View>
+                        </LinearGradient>
+                        <View className="px-5">
+                            <View className="py-3">
+                                <SearchInput 
+                                    initialQuery={{query:searchQuery,categorySelected:category}}
+                                    categories={categories}
+                                />
+                            </View>
+                            <View className="flex flex-row flex-wrap gap-2 mt-3">
+                                {categories.map((category, index) => (
+                                    <View key={index} className={`flex ${index === 0 && "bg-primary"} items-center justify-center border border-border px-3 py-1.5 rounded-lg`}>
+                                        <Text className={`font-pregular text-base text-muted-100 ${index === 0 && "text-white"}`}>
+                                            {category}
+                                        </Text>
+                                    </View>
+                                ))}
+                            </View>
+                        </View>
+                    </View>
+                )}
+                ListEmptyComponent={()=> (
+                    <View className="h-full flex-1 justify-center items-center">
                         {loading ? (
                             <SkeletonLoader />
-                        ) : (
-                            <>
-                                <LinearGradient
-                                    colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                                    start={{ x: 0.5, y: 0 }}
-                                    end={{ x: 0.5, y: 1 }}
-                                >
-                                    <View className="px-5">
-                                        <View className="pt-10">
-                                            <Text className="text-black-100 font-psans text-xl">
-                                                Explore Investments
-                                            </Text>
-                                        </View>
-                                        
-                                    </View>
-                                </LinearGradient>
-                                <View className="px-5">
-                                    <View className="py-3">
-                                        <SearchInput initialQuery={{query:searchQuery,categorySelected:category}}/>
-                                    </View>
-                                    <View className="flex flex-row flex-wrap gap-2 mt-3">
-                                        {categories.map((category, index) => (
-                                            <View key={index} className={`flex ${index === 0 && "bg-primary"} items-center justify-center border border-border px-3 py-1.5 rounded-lg`}>
-                                                <Text className={`font-pregular text-base text-muted-100 ${index === 0 && "text-white"}`}>
-                                                    {category}
-                                                </Text>
-                                            </View>
-                                        ))}
-                                    </View>
-                                </View>
-                            </>
+                        ): (
+                            <View className="mt-14">
+                                <EmptyState 
+                                    title="No Investment Found"
+                                    subtitle="No investment found for this search query"
+                                    notIncludeImg
+                                />
+                            </View>
                         )}
                     </View>
                 )}

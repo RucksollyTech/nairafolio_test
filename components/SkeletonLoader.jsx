@@ -1,58 +1,40 @@
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Dimensions } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
 
-const SkeletonLoader = ({ style }) => {
-  const shimmerAnimation = useRef(new Animated.Value(-1)).current;
+const { width } = Dimensions.get('window'); // Get device screen width
 
-  useEffect(() => {
-    const startShimmer = () => {
-      Animated.loop(
-        Animated.timing(shimmerAnimation, {
-          toValue: 1,
-          duration: 1500,
-          useNativeDriver: true,
-        })
-      ).start();
-    };
-    startShimmer();
-  }, [shimmerAnimation]);
-
-  const shimmerTranslateX = shimmerAnimation.interpolate({
-    inputRange: [-1, 1],
-    outputRange: [-Dimensions.get('window').width, Dimensions.get('window').width],
-  });
-
+const SkeletonLoader = () => {
   return (
-    <View style={[styles.skeletonContainer, style]}>
-      <Animated.View
-        style={[
-          StyleSheet.absoluteFill,
-          {
-            transform: [{ translateX: shimmerTranslateX }],
-          },
-        ]}
+    <View style={styles.container}>
+      <ContentLoader 
+        speed={2}
+        width={width} 
+        height={400}
+        viewBox={`0 0 ${width} 400`}
+        backgroundColor="#f5f5f5"
+        foregroundColor="#ecebeb"
       >
-        <LinearGradient
-          colors={['#e0e0e0', '#f0f0f0', '#e0e0e0']}
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 1, y: 0.5 }}
-          style={styles.linearGradient}
-        />
-      </Animated.View>
+        <Rect x="20" y="20" rx="5" ry="5" width={width - 40} height="140" />
+        <Rect x="20" y="170" rx="5" ry="5" width={width - 50} height="15" />
+        <Rect x="20" y="195" rx="5" ry="5" width={120} height="50" />
+        <Rect x="155" y="195" rx="5" ry="5" width={120} height="50" />
+        <Rect x="20" y="255" rx="5" ry="5" width={120} height="50" />
+
+        <Circle cx="50" cy="350" r="30" />
+        <Rect x="100" y="330" rx="5" ry="5" width={width - 150} height="13" />
+        <Rect x="100" y="350" rx="5" ry="5" width={width - 150} height="13" />
+      </ContentLoader>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  skeletonContainer: {
-    backgroundColor: '#e0e0e0',
-    overflow: 'hidden',
-  },
-  linearGradient: {
+  container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
 });
 

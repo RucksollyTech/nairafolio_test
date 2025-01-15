@@ -1,16 +1,15 @@
-import { router } from "expo-router";
 import { View, Text, Image } from "react-native";
-
 import { images } from "../constants";
-import CustomButton from "./CustomButton";
 
-const EmptyState = ({ title, subtitle }) => {
+const EmptyState = ({ title, subtitle ,notIncludeImg}) => {
     return (
         <View className="flex justify-center items-center px-4 h-full flex-1">
-            <Image
-                source={images.empty}
-                resizeMode="contain"
-            />
+            {!notIncludeImg && (
+                <Image
+                    source={images.empty}
+                    resizeMode="contain"
+                />
+            )}
 
             <Text 
                 className="text-xl font-psans text-muted mt-5"
