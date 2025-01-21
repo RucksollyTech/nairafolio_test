@@ -85,7 +85,6 @@ const Transactions = () => {
     const navigation = useNavigation();
     const { user,setUser } = useGlobalContext();
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactions(user.$id))
-    const [showOlder, setShowOlder] = useState(false)
 
     const [refreshing, setRefreshing] = useState(false)
     const checkActiveUser = async()=>{
@@ -114,19 +113,15 @@ const Transactions = () => {
                 contentContainerStyle={{
                     paddingBottom: 24,
                 }}
-                renderItem={({ item, index }) => {
-                    if(!UTCDate(item.$createdAt)?.isToday){
-                        return(
-                            <View className="px-5">
-                                <DataContainer 
-                                    data={item}
-                                    transactions={transactions}
-                                    index={index}
-                                />
-                            </View>
-                        )
-                    }
-                }}
+                renderItem={({ item, index }) => (
+                    <View className="px-5">
+                        <DataContainer 
+                            data={item}
+                            transactions={transactions}
+                            index={index}
+                        />
+                    </View>
+                )}
                 ListHeaderComponent={()=>(
                     <>
                         <View className="flex-1">
@@ -145,20 +140,17 @@ const Transactions = () => {
                                     Transaction history
                                 </Text>
                             </View>
-                            <View className="px-5 py-2 mt-7 bg-[#F5F5F5]">
-                                <Text className="text-sm font-pregular text-muted">
-                                    Today
-                                </Text>
+                            <View className="px-5 py-2 mt-7 bg-[#F5F5F5] h-6">
+                                
                             </View>
-                            <View className="px-5">
-                                {(transactions && transactions.length > 0) && transactions.map((transact,index)=>{
+                            {/* <View className="px-5">
+                                {(transactions && transactions.length > 0) && transactions.map(transact=>{
                                     if(UTCDate(transact.$createdAt)?.isToday){
                                         return(
                                             <View key={transact.$id}>
                                                 <DataContainer 
-                                                    data={transact}
-                                                    transactions={transactions}
-                                                    index={index}
+                                                    title={"Deposit into Mono - Investment"}
+                                                    date={"Today, 3:34pm"}
                                                 />
                                             </View>
                                         )
@@ -173,7 +165,7 @@ const Transactions = () => {
                                         Older
                                     </Text>
                                 </View>
-                            )}
+                            )} */}
                         </View>
                     </>
                 )}
@@ -194,7 +186,6 @@ const Transactions = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             />
-            
         </SafeAreaView>
     )
 }

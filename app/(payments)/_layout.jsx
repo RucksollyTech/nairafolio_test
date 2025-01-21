@@ -1,19 +1,38 @@
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-// import { Loader } from "../../components";
-// import { useGlobalContext } from "../../context/GlobalProvider";
 
 const PaymentLayout = () => {
-//   const { loading, isLogged } = useGlobalContext();
-
-//   if (!loading && isLogged) return <Redirect href="/home" />;
 
   return (
     <>
         <Stack>
             <Stack.Screen
                 name="pay-investment/[id]"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="wallet"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="pay-with-bank"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="pay-with-card"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="withdrawal"
                 options={{
                     headerShown: false,
                 }}

@@ -25,7 +25,7 @@ const InvestmentDisplayCard = (
     return (
         <TouchableOpacity
             onPress={()=>router.push(`/investment/new/${_id}`)}
-            activeOpacity={0.7}
+            activeOpacity={0.8}
         >
             <View className="flex-1 rounded-lg shadow overflow-hidden border border-border">
                 <ImageBackground

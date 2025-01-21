@@ -10,7 +10,7 @@ import CustomButton from '../../components/CustomButton'
 const VerifyWithNin = () => {
     const navigation = useNavigation();
     const [nin, setNin] = useState(0)
-    const [isDrawerVisible, setDrawerVisible] = useState(false);
+    const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const handleSubmit = () =>{}
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
@@ -52,7 +52,7 @@ const VerifyWithNin = () => {
                         className="pt-2"
                     >
                         <TouchableOpacity
-                            onPress={()=>setDrawerVisible(true)}
+                            onPress={()=>setIsDrawerVisible(true)}
                         >
                             <Text className="text-secondary-100 font-pmedium text-right">
                                 Forgot NIN number?
@@ -69,7 +69,7 @@ const VerifyWithNin = () => {
                     </View>
                 </View>
             </ScrollView>
-            <GeneralDrawer heights={"50px"} isVisible={isDrawerVisible} onClose={() => setDrawerVisible(false)}>
+            <GeneralDrawer heights={"50px"} isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)}>
                 <View>
                     <Text className="text-black-100 text-center font-psemibold text-2xl">
                         Dial{" "}<Text className="text-secondary-100 font-psemibold text-2xl">*346#</Text>{" "}to retrieve your NIN

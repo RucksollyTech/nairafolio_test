@@ -10,9 +10,13 @@ import EmptyState from '../../components/EmptyState';
 import Card from '../../components/Card';
 import InvestmentCard from '../../components/InvestmentCard';
 import { router } from 'expo-router';
-import UTCDate from '../../components/UTCDate';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import PaymentDrawer from '../../components/PaymentDrawer';
+import useAppwrite from '../../lib/useAppwrite';
+import { getUserInvestments } from '../../lib/appwrite';
+import HomeSkeletonLoader from '../../components/HomeSkeletonLoader';
+import { getCurrentUser } from '@/lib/appwrite'
+import { RefreshControl } from 'react-native';
 
 const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
     <Carousel
@@ -72,71 +76,40 @@ const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
 )
 const MemoizedCarousel = React.memo(CustomCarousel);
 const Home = () => {
-    const { user,loading, isLogged } = useGlobalContext();
+    const { user,setUser } = useGlobalContext();
+    const { data:userInvestments, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
+
     const width = Dimensions.get('window').width;
     const progressValue = useSharedValue(0); 
-    const [active, setActive] = useState(true)
     const [isDrawerVisible, setIsDrawerVisible] = useState(false)
-    const toggler = (value)=>{
-        setActive(value)
+    const [refreshing, setRefreshing] = useState(false)
+    const checkActiveUser = async()=>{
+        try {
+            const res = await getCurrentUser();
+            setUser(res)
+        } catch (error) {
+            console.error(error)
+        }
     }
-    
-    const {datetime} = UTCDate("2024-12-20T12:00:00Z")
-    const investmentData = [
-        {
-            $id:1,
-            logo:images.example,
-            name: "Investment name",
-            duration: 12,
-            invested: 30000,
-            percentage: 10,
-            date: datetime,
-        },
-        {
-            $id:2,
-            logo:images.example,
-            name: "Investment roll",
-            duration: 15,
-            invested: 40000,
-            percentage: 20,
-            date: datetime,
-        },
-        {
-            $id:3,
-            logo:images.example,
-            name: "Investment drills",
-            duration: 45,
-            invested: 60000,
-            percentage: 5,
-            date: datetime,
+    const onRefresh = async()=>{
+        setRefreshing(true)
+        await Promise.all([refetch(),checkActiveUser()])
+        setRefreshing(false)
+    }
+    useEffect(() => {
+        if(!user){
+            checkActiveUser()
         }
-    ]
-    const data=[
-        {
-            $id: 1,
-            amount: 20000,
-            title:"Wallet balance",
-            body:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quas illo dolorem quisquam facere ea, repudiandae sed saepe necessitatibus dolor delectus ad suscipit impedit blanditiis minus beatae quidem incidunt odit.",
-            thumbnail: images.example,
-        },
-        {
-            $id: 2,
-            amount: 500000,
-            title:"Investments",
-            body:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quas illo dolorem quisquam facere ea, repudiandae sed saepe necessitatibus dolor delectus ad suscipit impedit blanditiis minus beatae quidem incidunt odit.",
-            thumbnail: images.example,
-        }
-    ]
-    
-    // const dataz =`
-    //  {"$collectionId": "6782f79900093bb2969a", "$createdAt": "2025-01-12T09:44:31.764+00:00", "$databaseId": "6782f35d0018fef1ae8c", "$id": "67838eff0027fd6c1f9e", "$permissions": ["read(\"user:67838efc002bf1e96bd9\")", "update(\"user:67838efc002bf1e96bd9\")", "delete(\"user:67838efc002bf1e96bd9\")"], "$updatedAt": "2025-01-12T09:44:31.764+00:00", "accountId": "67838efc002bf1e96bd9", "avatar": "https://cloud.appwrite.io/v1/avatars/initials?name=Anthony+somebody&project=6782ee210030356b6a95", "email": "chibuzoranthonyokenwa@gmail.com", "investment_ballance": 0, "is_verified": false, 
-    //  "name": "Anthony somebody", "phone": "9052184171", "userInvestment": [], "wallet_ballance": 0}
-    // `
+    }, [user,loading])
+    // Add another payment drawer for here
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <View className="flex-1 h-full">
                     <LinearGradient
@@ -168,12 +141,12 @@ const Home = () => {
                                 data={[
                                     {
                                         $id: 1,
-                                        amount: user.investment_ballance,
-                                        title:"Investments",
+                                        amount: user?.wallet_balance ?? 0,
+                                        title:"Wallet balance",
                                     },{
                                         $id: 2,
-                                        amount: user.wallet_ballance,
-                                        title:"Wallet balance",
+                                        amount: 0,
+                                        title:"Investments",
                                     }
                                 ]}
                                 progressValue={progressValue}
@@ -185,11 +158,11 @@ const Home = () => {
                             {[
                                 {
                                     $id: 1,
-                                    amount: user.investment_ballance,
+                                    amount: 0,
                                     title:"Investments",
                                 },{
                                     $id: 2,
-                                    amount: user.wallet_ballance,
+                                    amount: user?.wallet_balance ?? 0,
                                     title:"Wallet balance",
                                 }
                             ].map((_, index) => {
@@ -224,44 +197,53 @@ const Home = () => {
                             })}
                         </View>
                     </View>
-                    <View className="px-5">
-                        {active ? (
-                            <View className="mt-20">
-                                <EmptyState
-                                    title={"You have no Investments"}
-                                    subtitle={"You can start by investing in the available opportunities"}
-                                />
-                                <View className="items-center justify-center pt-5">
-                                    <CustomButton 
-                                        title="Explore investments"
-                                        textStyles="text-white"
-                                        containerStyles="w-[180px] h-11 text-xs text-center"
-                                        handlePress={()=>router.push("/explore")}
-                                    />
+                    {loading ? (
+                        <View className="px-5 mt-6">
+                            <HomeSkeletonLoader />
+                        </View>
+                    ) : (
+                        <View className="px-5">
+                            {(userInvestments && userInvestments.length > 0) ? (
+                                <View className="mt-6 min-h-[225px]">
+                                    {userInvestments.map((mapData,index)=>(
+                                        <View key={index} className="mb-2">
+                                            <InvestmentCard 
+                                                logo = {mapData.investment.logo}
+                                                name = {mapData.investment.name}
+                                                duration = {mapData.investment.duration_days}
+                                                invested = {mapData.unit}
+                                                percentage = {mapData.investment.rio}
+                                                date = {mapData.$createdAt}
+                                                _id={mapData.$id}
+                                            />
+                                        </View>
+                                    ))}
                                 </View>
-                            </View>
-                        ) : (
-                            <View className="mt-6 min-h-[225px]">
-                                {investmentData && investmentData.map(({logo,name,duration,percentage,invested,date,$id},index)=>(
-                                    <View key={index} className="mb-2">
-                                        <InvestmentCard 
-                                            logo = {logo}
-                                            name = {name}
-                                            duration = {duration}
-                                            invested = {invested}
-                                            percentage = {percentage}
-                                            date = {date}
-                                            _id={$id}
+                            ) : (
+                                <View className="mt-20">
+                                    <EmptyState
+                                        title={"You have no Investments"}
+                                        subtitle={"You can start by investing in the available opportunities"}
+                                    />
+                                    <View className="items-center justify-center pt-5">
+                                        <CustomButton 
+                                            title="Explore investments"
+                                            textStyles="text-white"
+                                            containerStyles="w-[180px] h-11 text-xs text-center"
+                                            handlePress={()=>router.push("/explore")}
                                         />
                                     </View>
-                                ))}
-                            </View>
-                        )}
-                    </View>
+                                </View>
+                            )}
+                        </View>
+                    )}
                     
                 </View>
             </ScrollView>
-            <PaymentDrawer isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)} />
+            <PaymentDrawer 
+                isVisible={isDrawerVisible} 
+                onClose={() => setIsDrawerVisible(false)}  
+            />
         </SafeAreaView>
     );
 };

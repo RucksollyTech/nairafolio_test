@@ -8,6 +8,7 @@ import { router } from 'expo-router'
 const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
     const {daysGone} = UTCDate(date)
     const profit = (percentage * daysGone * invested)/100
+
     return (
         <View className="mb-3">
             <TouchableOpacity
@@ -32,7 +33,7 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                         className="h-full"
                     >
                         <Image
-                            source={logo}
+                            source={{uri: logo}}
                             resizeMode="cover"
                             className="h-14 w-14 rounded-full"
                         />

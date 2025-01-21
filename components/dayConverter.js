@@ -2,6 +2,9 @@ import dayjs from 'dayjs';
 
 // Function to convert days to a readable format
 export const convertDaysToReadableFormat = (days) => {
+    if(!days){
+        return "--"
+    }
     if (days < 30) {
         return `${days} day${days === 1 ? '' : 's'}`;
     }

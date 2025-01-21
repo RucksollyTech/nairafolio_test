@@ -117,6 +117,11 @@ const account = () => {
                             link={"/transactions"}
                         />
                         <AccountComponets 
+                            title={"Wallet"}
+                            icon={icons.wallet}
+                            link={"/wallet"}
+                        />
+                        <AccountComponets 
                             title={"Notification settings"}
                             icon={icons.notification}
                             link={"/"}

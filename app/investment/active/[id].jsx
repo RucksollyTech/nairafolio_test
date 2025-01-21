@@ -78,7 +78,7 @@ const Active = () => {
                             <TouchableOpacity
                                 onPress={()=>router.push("/")}
                                 activeOpacity={0.7}
-                                className={`bg-primary rounded-xl h-11 flex w-[48%] flex-row justify-center items-center`}
+                                className={`bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                             >
                                 <Text className={`font-pinter font-semibold text-base text-white`}>
                                     Add
@@ -95,7 +95,7 @@ const Active = () => {
                             <TouchableOpacity
                                 onPress={()=>router.push("/")}
                                 activeOpacity={0.7}
-                                className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-11 flex w-[48%] flex-row justify-center items-center`}
+                                className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                             >
                                 <Text className={`font-pinter font-semibold text-base text-muted`}>
                                     Sell shares

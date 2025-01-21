@@ -1,0 +1,12 @@
+Transaction reason
+Deposit:
+into wallet
+into name of investment
+
+Withdrawal:
+To Bank
+To NairaFolio (Sold to us)
+To Market (Sold to others)
+
+
+Call to Set transactions at the right places

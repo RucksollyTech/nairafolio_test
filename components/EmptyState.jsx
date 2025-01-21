@@ -16,17 +16,13 @@ const EmptyState = ({ title, subtitle ,notIncludeImg}) => {
             >
                 {title}
             </Text>
-            <Text 
-                className="text-lg text-center text-muted-100 mt-2"
-            >
-                {subtitle}
-            </Text>
-
-            {/* <CustomButton
-                title="Back to Explore"
-                handlePress={() => router.push("/home")}
-                containerStyles="w-full my-5"
-            /> */}
+            {subtitle && (
+                <Text 
+                    className="text-lg text-center text-muted-100 mt-2"
+                >
+                    {subtitle}
+                </Text>
+            )}
         </View>
     );
 };

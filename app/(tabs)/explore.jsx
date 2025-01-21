@@ -14,7 +14,6 @@ import EmptyState from '../../components/EmptyState'
 const explore = () => {
     const { data:investments, loading, refetch } = useAppwrite(getAllInvestments)
     const [refreshing, setRefreshing] = useState(false)
-    const categories = ["All","Agriculture","Forex","Dollar savings","Transportation","Financial investmenty"]
     
     const onRefresh = async()=>{
         setRefreshing(true)
@@ -23,6 +22,28 @@ const explore = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <View>
+                <LinearGradient
+                    colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+                    start={{ x: 0.5, y: 0 }}
+                    end={{ x: 0.5, y: 1 }}
+                >
+                    <View className="px-5">
+                        <View className="pt-10">
+                            <Text className="text-black-100 font-psans text-xl">
+                                Explore Investments
+                            </Text>
+                        </View>
+                        
+                    </View>
+                </LinearGradient>
+                <View className="px-5">
+                    <View className="pt-3">
+                        <SearchInput refreshing={refreshing} />
+                    </View>
+                    
+                </View>
+            </View>
             <FlatList 
                 data={investments}
                 keyExtractor={(item) => item.$id}
@@ -42,7 +63,7 @@ const explore = () => {
                     company_name,
                     company_owner
                     } }) => (
-                        <View className="mt-6 px-5">
+                        <View className="mb-6 px-5">
                             <InvestmentDisplayCard 
                                 _id={$id}
                                 cover_image={cover_image}
@@ -58,30 +79,30 @@ const explore = () => {
                             />
                         </View>
                 )}
-                ListHeaderComponent={()=>(
-                    <View className="flex-1 h-full">
-                        <LinearGradient
-                            colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                            start={{ x: 0.5, y: 0 }}
-                            end={{ x: 0.5, y: 1 }}
-                        >
-                            <View className="px-5">
-                                <View className="pt-10">
-                                    <Text className="text-black-100 font-psans text-xl">
-                                        Explore Investments
-                                    </Text>
-                                </View>
+                // ListHeaderComponent={()=>(
+                //     <View className="flex-1 h-full">
+                //         <LinearGradient
+                //             colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+                //             start={{ x: 0.5, y: 0 }}
+                //             end={{ x: 0.5, y: 1 }}
+                //         >
+                //             <View className="px-5">
+                //                 <View className="pt-10">
+                //                     <Text className="text-black-100 font-psans text-xl">
+                //                         Explore Investments
+                //                     </Text>
+                //                 </View>
                                 
-                            </View>
-                        </LinearGradient>
-                        <View className="px-5">
-                            <View className="py-3">
-                                <SearchInput categories={categories} />
-                            </View>
+                //             </View>
+                //         </LinearGradient>
+                //         <View className="px-5">
+                //             <View className="py-3">
+                //                 <SearchInput refreshing={refreshing} />
+                //             </View>
                             
-                        </View>
-                    </View>
-                )}
+                //         </View>
+                //     </View>
+                // )}
                 ListEmptyComponent={()=> (<View className="h-full flex-1 justify-center items-center">
                     {loading ? (
                         <SkeletonLoader />

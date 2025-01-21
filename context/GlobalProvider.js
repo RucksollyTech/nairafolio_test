@@ -9,24 +9,24 @@ const GlobalProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-    getCurrentUser()
-        .then((res) => {
-            if (res) {
-                setIsLogged(true);
-                setUser(res);
-            } else {
-                setIsLogged(false);
-                setUser(null);
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-        .finally(() => {
-            setLoading(false);
-        });
-}, []);
+    useEffect(() => {
+        getCurrentUser()
+            .then((res) => {
+                if (res) {
+                    setIsLogged(true);
+                    setUser(res);
+                } else {
+                    setIsLogged(false);
+                    setUser(null);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
 
     return (
         <GlobalContext.Provider

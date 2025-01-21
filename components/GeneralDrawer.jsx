@@ -11,9 +11,6 @@ const GeneralDrawer = ({ isVisible, onClose, children,heights }) => {
         <View className="absolute inset-0 z-50 bg-black/50">
             <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />
             <View
-                // style={{
-                //     height: heights ?? screenHeight * 0.92, 
-                // }}
                 className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
             >
                 <View 
