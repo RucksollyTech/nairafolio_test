@@ -4,7 +4,7 @@ import { icons } from '../constants';
 
 const { height: screenHeight } = Dimensions.get('window'); 
 
-const GeneralDrawer = ({ isVisible, onClose, children,heights }) => {
+const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll }) => {
     if (!isVisible) return null;
 
     return (
@@ -12,6 +12,7 @@ const GeneralDrawer = ({ isVisible, onClose, children,heights }) => {
             <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />
             <View
                 className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
+                style={{ minHeight: minHeights }}
             >
                 <View 
                     className="
@@ -25,7 +26,13 @@ const GeneralDrawer = ({ isVisible, onClose, children,heights }) => {
                         />
                     </TouchableOpacity>
                 </View>
-                <ScrollView className="flex-1 px-4 pb-7">{children}</ScrollView>
+                {noScroll ? (
+                    <View className="flex-1 px-4 pb-7">
+                        {children}
+                    </View>
+                ):(
+                    <ScrollView className="flex-1 px-4 pb-7">{children}</ScrollView>
+                )}
             </View>
         </View>
     );

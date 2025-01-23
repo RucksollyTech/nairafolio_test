@@ -24,15 +24,15 @@ const CustomModal = ({
                         <Text style={styles.title} className="text-lg font-bold text-center">
                             {title}
                         </Text>
-                        <View style={[styles.content, contentStyle]}>
+                        <View className={`${contentStyle}`}>
                             {children}
                         </View>
                     </View>
                     <Pressable
-                        className="border-t border-border px-4 py-2.5 mt-2"
+                        className="border-t border-border px-4 py-3 mt-2"
                         onPress={onClose}
                     >
-                        <Text className="text-header text-center font-psemibold">{buttonText}</Text>
+                        <Text className="text-header text-center font-medium">{buttonText}</Text>
                     </Pressable>
                     
                 </View>

@@ -51,10 +51,15 @@ import bank from "../assets/icons/bank.png";
 import camera from "../assets/icons/camera.png";
 import transact from "../assets/icons/transact.png";
 import good from "../assets/icons/good.png";
-
+import good_sm from "../assets/icons/good_sm.png";
+import plus from "../assets/icons/plus.png";
+import good_bg from "../assets/icons/good_bg.png";
 
 export default {
     left_arrow,
+    plus,
+    good_bg,
+    good_sm,
     good,
     camera,
     transact,

@@ -377,7 +377,7 @@ const PaymentDrawer = ({
                                                     placeholder={"e.g 15 units"}
                                                     handleChangeText={(e)=>setUnit(e)}
                                                     otherStyles={"mt-2"}
-                                                    keyboardType="numeric"
+                                                    keyboardType="number-pad"
                                                 />
                                             </View>
                                             <View className="mt-8">

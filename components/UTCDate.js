@@ -1,12 +1,13 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-
 import isToday from 'dayjs/plugin/isToday';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(utc);
 dayjs.extend(localizedFormat);
 dayjs.extend(isToday);
+dayjs.extend(duration);
 
 const UTCDate = (date) => {
     const now = dayjs().utc();
@@ -18,6 +19,7 @@ const UTCDate = (date) => {
         const dates = dayjs(date).utc();
         const daysGone = now.diff(dates, 'days');
         const datetime= dates.format()
+        const diffInMinutes = now.diff(dates, 'minute');
 
         if (dates.isToday()) {
             isToday=true
@@ -26,7 +28,7 @@ const UTCDate = (date) => {
             myDateFormat = dates.format('ddd MMM Do, h:mma'); 
         }
 
-        return {today, datetime, daysGone,appwriteDatetime,myDateFormat,isToday};
+        return {today, datetime, daysGone,appwriteDatetime,myDateFormat,isToday,diffInMinutes};
     }
     return {today,appwriteDatetime};
 };

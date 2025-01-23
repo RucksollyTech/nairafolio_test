@@ -44,7 +44,7 @@ const VerifyWithNin = () => {
                             title="NIN"
                             placeholder="Enter your NIN"
                             value={nin}
-                            keyboardType={"numeric"}
+                            keyboardType={"number-pad"}
                             handleChangeText={(e)=>setNin(e)}
                         />
                     </View>

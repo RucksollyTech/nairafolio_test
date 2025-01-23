@@ -7,9 +7,11 @@ import EmptyState from "./EmptyState";
 import Dropdown from "./Dropdown";
 import UTCDate from "./UTCDate";
 import CustomModal from "./CustomModal";
+import EmailerVerifyBank from "./EmailerVerifyBank";
 
 export {
   CustomModal,
+  EmailerVerifyBank,
   FormField,
   CustomButton,
   Collapsible,
