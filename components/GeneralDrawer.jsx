@@ -1,8 +1,7 @@
 import React from 'react';
-import { Dimensions, StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
+import {View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
 
-const { height: screenHeight } = Dimensions.get('window'); 
 
 const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll }) => {
     if (!isVisible) return null;

@@ -8,9 +8,11 @@ import Dropdown from "./Dropdown";
 import UTCDate from "./UTCDate";
 import CustomModal from "./CustomModal";
 import EmailerVerifyBank from "./EmailerVerifyBank";
+import PaymentMethods from "./PaymentMethods";
 
 export {
   CustomModal,
+  PaymentMethods,
   EmailerVerifyBank,
   FormField,
   CustomButton,

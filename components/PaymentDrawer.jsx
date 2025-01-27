@@ -9,6 +9,8 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { CheckBalance, WalletCheckOut } from './PerformingTransaction';
 import PaymentLoader from './PaymentLoader';
 import CoverBg from './CoverBg';
+import { createTransactions } from '../lib/appwrite';
+import PaymentMethods from './PaymentMethods';
 
 const { height: screenHeight } = Dimensions.get('window'); 
 
@@ -18,8 +20,11 @@ const PaymentDrawer = ({
     investment
 }) => {
     if (!isVisible) return null;
-    const { user,setUser } = useGlobalContext();
+    const { user } = useGlobalContext();
     const [unit, setUnit] = useState(0)
+    const [active, setActive] = useState(0)
+    const [modeSet, setModeSet] = useState("")
+    const [activeMode, setActiveMode] = useState("")
     const [next, setNext] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loadError, setLoadError] = useState(false)
@@ -28,6 +33,7 @@ const PaymentDrawer = ({
         setNext(false)
         onClose()
     }
+    
     const handleProceed= ()=>{
         if(unit){
             setNext(true)
@@ -49,11 +55,23 @@ const PaymentDrawer = ({
             setIsInsufficientFund(true)
             return
         }
-        setUser(updatedUser)
+        // setUser(updatedUser)
         setTimeout(() => {
             setLoading(false)
             router.push("/home")
         }, 1000);
+    }
+    const majorSubmitHandler= ()=>{
+        if (active === 1){
+            setModeSet(activeMode)
+            handleWalletPay()
+        }else if (active > 1){
+            setModeSet(activeMode)
+        }
+    }
+    const handleOtherScreen = (num) =>{
+        setActive(num)
+        setActiveMode("Wallet")
     }
     const handleInsufficientFundClick= ()=>{
         setLoadError(false)
@@ -200,17 +218,20 @@ const PaymentDrawer = ({
                                     {next ? (
                                         <View>
                                             <View className="px-5 border-b border-border">
-                                                <View 
-                                                    className="
+                                                <TouchableOpacity 
+                                                    activeOpacity={0.9}
+                                                    onPress={()=>handleOtherScreen(1)}
+                                                    // onPress={handleWalletPay}
+                                                    className={`
                                                         flex-1 
                                                         rounded-lg
                                                         flex 
                                                         py-4 flex-row
                                                         mb-5
                                                         border
-                                                        border-border
+                                                        ${(active && active === 1) ? "border-secondary-100" : "border-border"}
                                                         bg-[#F8FAFA]
-                                                    "
+                                                    `}
                                                 >
                                                     <View
                                                         className="h-14 w-14 rounded-full items-center justify-center"
@@ -220,13 +241,11 @@ const PaymentDrawer = ({
                                                             resizeMode="cover"
                                                         />
                                                     </View>
-                                                    <TouchableOpacity 
-                                                        activeOpacity={0.9}
+                                                    <View
                                                         className="w-full flex-1"
                                                         style={{
                                                             width: "74.54%",
                                                         }}
-                                                        onPress={handleWalletPay}
                                                     >
                                                         <View
                                                             className="flex-1 px-3 w-full "
@@ -247,7 +266,7 @@ const PaymentDrawer = ({
                                                                 </View>
                                                             </View>
                                                         </View>
-                                                    </TouchableOpacity>
+                                                    </View>
                                                     <View
                                                         style={{
                                                             width: "10.08%",
@@ -258,112 +277,16 @@ const PaymentDrawer = ({
                                                             source={icons.arrow_right_italic}
                                                         />
                                                     </View>
-                                                </View>
+                                                </TouchableOpacity>
                                             </View>
-                                            <Link href={"/pay-with-bank"} className="my-5 px-5">
-                                                <View 
-                                                    className="
-                                                        flex-1 
-                                                        rounded-lg
-                                                        flex 
-                                                        py-4 flex-row
-                                                        mb-5
-                                                        border
-                                                        border-border
-                                                        bg-[#F8FAFA]
-                                                    "
-                                                >
-                                                    <View
-                                                        className="h-14 w-14 rounded-full items-center justify-center"
-                                                    >
-                                                        <Image
-                                                            source={icons.bank}
-                                                            resizeMode="cover"
-                                                        />
-                                                    </View>
-                                                    <View
-                                                        style={{
-                                                            width: "74.54%",
-                                                        }}
-                                                        className="flex-1 px-3 "
-                                                    >
-                                                        <View>
-                                                            <Text
-                                                                className="text-lg text-header-200 font-psans"
-                                                            >
-                                                                Bank transfer
-                                                            </Text>
-                                                        </View>
-                                                        <View>
-                                                            <Text className="text-muted text-sm">
-                                                                Direct transfer from your bank account
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <View
-                                                        style={{
-                                                            width: "10.08%",
-                                                        }}
-                                                        className="items-center justify-center"
-                                                    >
-                                                        <Image 
-                                                            source={icons.arrow_right_italic}
-                                                        />
-                                                    </View>
-                                                </View>
-                                            </Link>
-                                            <Link href={"/pay-with-card"} className="px-5">
-                                                <View 
-                                                    className="
-                                                        flex-1 
-                                                        rounded-lg
-                                                        flex 
-                                                        py-4 flex-row
-                                                        mb-5
-                                                        border
-                                                        border-border
-                                                        bg-[#F8FAFA]
-                                                    "
-                                                >
-                                                    <View
-                                                        className="h-14 w-14 rounded-full items-center justify-center"
-                                                    >
-                                                        <Image
-                                                            source={icons.card}
-                                                            resizeMode="cover"
-                                                        />
-                                                    </View>
-                                                    <View
-                                                        style={{
-                                                            width: "74.54%",
-                                                        }}
-                                                        className="flex-1 px-2 "
-                                                    >
-                                                        <View>
-                                                            <Text
-                                                                className="text-lg text-header-200 font-psans"
-                                                            >
-                                                                Debit card
-                                                            </Text>
-                                                        </View>
-                                                        <View>
-                                                            <Text className="text-muted text-sm">
-                                                                Pay using Visa, Mastercard, or others 
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <View
-                                                        style={{
-                                                            width: "10.08%",
-                                                        }}
-                                                        className="items-center justify-center"
-                                                    >
-                                                        <Image 
-                                                            source={icons.arrow_right_italic}
-                                                        />
-                                                    </View>
-                                                </View>
-                                            </Link>
+                                            <PaymentMethods 
+                                                amount={unit * investment?.price_per_unit}
+                                                active={active}
+                                                setActive={setActive}
+                                                modeSet={modeSet}
+                                                setActiveMode={setActiveMode}
+                                                investment={investment}
+                                            />
                                         </View>
                                     ) : (
                                         <View className="pt-3 px-5">
@@ -402,13 +325,23 @@ const PaymentDrawer = ({
                                     
                                 </View>
                             </ScrollView>
-                            {!next && (
+                            {(!next) && (
                                 <View className="px-5 pb-7">
                                     <CustomButton 
-                                        title="Proceed"
+                                        title="Continue"
                                         textStyles="text-white"
                                         containerStyles="h-14"
                                         handlePress={handleProceed}
+                                    />
+                                </View>
+                            )}
+                            {active > 0 && (
+                                <View className="px-5 pb-7">
+                                    <CustomButton 
+                                        title="Continue"
+                                        textStyles="text-white"
+                                        containerStyles="h-14"
+                                        handlePress={majorSubmitHandler}
                                     />
                                 </View>
                             )}
@@ -435,6 +368,7 @@ const PaymentDrawer = ({
                 </View>
                 
             </View>
+            
         </>
     )
 }

@@ -1,4 +1,4 @@
-import { getCurrentUser, updateUser, createUserInvestment} from "../lib/appwrite";
+import { getCurrentUser, updateUser, createUserInvestment, createTransactions} from "../lib/appwrite";
 
 export const CheckBalance = async () => {
     try {
@@ -24,8 +24,15 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
     if(investment && value_spent && wallet !== null){
         if(wallet >= (value_spent * investment?.price_per_unit)){
             const [updatedUser, newUserInvestment] = await Promise.all([
-                updateUser(user.$id,{wallet_balance: wallet - (value_spent * investment?.price_per_unit)}),
-                createUserInvestment(investment.$id,value_spent * investment?.price_per_unit,user.$id),
+                await updateUser(user.$id,{wallet_balance: wallet - (value_spent * investment?.price_per_unit)}),
+                await createUserInvestment(investment.$id,value_spent * investment?.price_per_unit,user.$id),
+                await createTransactions({
+                    action: "Deposit",
+                    amount:parseFloat(value_spent * investment.price_per_unit),
+                    type:"Wallet",
+                    user:user.$id,
+                    reason:investment.name,
+                }),
             ]);
             return {
                 updatedUser,

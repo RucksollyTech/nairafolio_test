@@ -3,7 +3,7 @@ const EmailerVerifyBank = async (data) => {
     const {email, code }= data
     const sendEmail = async () => {
         try {
-            const response = await fetch('http://192.168.58.1:3000/api/send-emailjs', {
+            const response = await fetch('http://192.168.80.1:3000/api/send-emailjs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ const EmailerVerifyBank = async (data) => {
             }
 
             if (response.ok) {
-                console.log('Email sent successfully:', data);
+                // console.log('Email sent successfully:', data);
             } else {
                 console.error('Failed to send email:', data.error);
             }

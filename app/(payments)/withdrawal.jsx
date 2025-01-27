@@ -1,31 +1,31 @@
-import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image, Pressable, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { icons } from '../../constants'
 import { Link, useNavigation } from 'expo-router';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { addBank, getCurrentUser, getMyBanks, verifyBankCode } from '../../lib/appwrite';
+import { addBank, deleteMyBanks, getCurrentUser, getMyBanks, updateUser, verifyBankCode } from '../../lib/appwrite';
 import CustomButton from '../../components/CustomButton'
 import FormField from '../../components/FormField';
 import GeneralDrawer from '../../components/GeneralDrawer';
 import EmailerVerifyBank from '../../components/EmailerVerifyBank';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { createRecipient, fetchBanks, initiateTransfer, validateAccount } from '../../lib/payStack';
+import { fetchBanks, validateAccount } from '../../lib/payStack';
 import useAppwrite from '../../lib/useAppwrite';
 import HomeSkeletonLoader from '../../components/HomeSkeletonLoader';
+import { handleFailedTransactions, makeTransfer } from '../../lib/updateAccountTransaction';
 
 const withdrawal = () => {
     const navigation = useNavigation();
     const { user,setUser } = useGlobalContext();
     const { data:myBanks, loading:loadingBanks, refetch } = useAppwrite(()=>getMyBanks(user?.$id))
-    // same as amount
     const [withdrawalAmount, setWithdrawalAmount] = useState();
-    // selectedBank !== bank_name but code
     const [formData, setFormData] = useState({
         bank_name: "",
         account_number: "",
         code: "",
     });
     const [selectedBank, setSelectedBank] = useState()
+    const [selectedItems, setSelectedItems] = useState()
 
     const [loading, setLoading] = useState(user?.is_verified ? false : true);
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -37,7 +37,35 @@ const withdrawal = () => {
     const [bankCode, setBankCode] = useState();
     const [refreshing, setRefreshing] = useState(false)
 
-    const [recipientCode, setRecipientCode] = useState("");
+    const handleDeleteBank= async()=>{
+        if(!selectedItems)return
+        setSubmittingBank(true)
+        await deleteMyBanks(selectedItems.$id)
+        await refetch()
+        setSelectedItems("")
+        setSelectedBank("")
+        setSubmittingBank(false)
+    }
+    const handleSetSelectedItems= (item)=>{
+        setSelectedBank("")
+        if(selectedItems && selectedItems.$id === item.$id){
+            setSelectedItems("")
+        }else{
+            setSelectedItems(item)
+        }
+    }
+    const handleSelectBank= (item)=>{
+        setSelectedItems("")
+        if(!selectedItems){
+            if(selectedBank && selectedBank.$id === item.$id){
+                setSelectedBank("")
+            }else{
+                setSelectedBank(item)
+            }
+        }else{
+            handleSetSelectedItems(item)
+        }
+    }
 
     const handleChangeInBankSelect = (e)=>{
         setFormData({...formData,bank_name:e.name})
@@ -131,35 +159,37 @@ const withdrawal = () => {
             setSubmittingBank(false)
         }
     }
-
-
-
     const handleSendMoney = async () => {
         setVerifyError("")
-        if (!recipientCode) {
+        if (!selectedBank.user_code) {
             setVerifyError("An error has occurred, please try again later.");
             return;
         }
-        const transfer = await initiateTransfer(recipientCode, withdrawalAmount);
-        if (transfer) {
-            // add transaction db here
-            Alert.alert("Transfer Successful", `Reference: ${transfer.transfer_code}`);
+        const transfer = await makeTransfer({
+            user,
+            setUser,
+            recipientCode: selectedBank.user_code,
+            amount: withdrawalAmount,
+            description: "Withdrawal from NairaFolio"
+        })
+        if (transfer && !transfer.error) {
+            Alert.alert("Transfer Successful", `Your transfer has been processed.`);
         } else {
-            Alert.alert("Transfer Failed", "Check your details and try again.");
+            await handleFailedTransactions({
+                amount: withdrawalAmount,
+                type: "Transfer",
+                user: user?.$id,
+                reason:"Failed"
+            })
+            setVerifyError("Transfer Failed. Check your details and try again.")
         }
     };
-    const handleValidateAccount = async () => {
-        const code = await createRecipient(selectedBank.number, selectedBank.bank_code, selectedBank.account_name);
-        setRecipientCode(code);
-        await handleSendMoney()
-    };
-    
-    
-
-
 
     const handleWithdrawal = async()=>{
         setVerifyError("")
+        if(!user){
+            return
+        }
         if(!withdrawalAmount ){
             setVerifyError("Please enter an amount")
             return
@@ -172,9 +202,18 @@ const withdrawal = () => {
             setVerifyError("Please select a bank account")
             return
         }
+        if(user?.wallet_balance < withdrawalAmount){
+            setVerifyError("Insufficient funds")
+            return
+        }
         setSubmittingBank(true)
-        await handleValidateAccount()
-        setSubmittingBank(false)
+        try {
+            await handleSendMoney()
+        } catch (error) {
+            console.error(error)  
+        }finally{
+            setSubmittingBank(false)
+        }
     }
 
 
@@ -254,20 +293,22 @@ const withdrawal = () => {
                                     </View>
                                 )}
                                 {(myBanks && myBanks.length > 0) && myBanks.map((myBanksData,index)=>(
-                                    <TouchableOpacity 
+                                    <Pressable 
                                         key={index}
-                                        className="
+                                        className={`
                                             flex-1 
                                             rounded-lg
                                             flex 
                                             py-4 flex-row
                                             mb-5
                                             border
-                                            border-border
+                                            ${selectedItems?.$id === myBanksData?.$id ? "border-red-500" : "border-border"}
+                                            
                                             bg-[#F8FAFA]
                                             px-2
-                                        "
-                                        onPress={()=>setSelectedBank(myBanksData)}
+                                        `}
+                                        onPress={()=>handleSelectBank(myBanksData)}
+                                        onLongPress={() => handleSetSelectedItems(myBanksData)}
                                     >
                                         <View
                                             className="h-14 w-14 rounded-full items-center justify-center"
@@ -306,7 +347,7 @@ const withdrawal = () => {
                                                 source={myBanksData.$id === selectedBank?.$id ? icons.good_sm : icons.good_bg}
                                             />
                                         </View>
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 ))}
                                 <TouchableOpacity 
                                     activeOpacity={0.9}
@@ -351,14 +392,24 @@ const withdrawal = () => {
                         </Text>
                     </View>
                 )}
-                <CustomButton 
-                    title="Withdraw"
-                    handlePress={handleWithdrawal}
-                    containerStyles="h-14 mb-4 mx-5"
-                    textStyles="text-white font-psemibold"
-                    loading={loading || !withdrawalAmount || !selectedBank}
-                    isLoading={submittingBank}
-                />
+                {selectedItems ? (
+                    <CustomButton 
+                        title="Delete"
+                        handlePress={handleDeleteBank}
+                        containerStyles="h-14 mb-4 mx-5 bg-red-500"
+                        textStyles="text-white font-psemibold"
+                        isLoading={submittingBank}
+                    />
+                ):(
+                    <CustomButton 
+                        title="Withdraw"
+                        handlePress={handleWithdrawal}
+                        containerStyles="h-14 mb-4 mx-5"
+                        textStyles="text-white font-psemibold"
+                        loading={loading || !withdrawalAmount || !selectedBank || !user}
+                        isLoading={submittingBank}
+                    />
+                )}
             </View>
             <GeneralDrawer 
                 isVisible={isDrawerVisible} 

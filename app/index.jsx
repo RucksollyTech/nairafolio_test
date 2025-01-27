@@ -1,3 +1,4 @@
+// Remove <React.StrictMode>
 import { View, Text, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'

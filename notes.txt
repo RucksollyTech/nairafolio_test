@@ -2,11 +2,25 @@ Transaction reason
 Deposit:
 into wallet
 into name of investment
+Reversal
 
-Withdrawal:
+Withdrawal reason:
 To Bank
 To NairaFolio (Sold to us)
 To Market (Sold to others)
 
+Failed transactions:
+Failed
+
+Actions:
+Deposit
+Withdrawal
+Failed
+Reversal
+
+type:
+Wallet  
+Card  
+Transfer 
 
 Call to Set transactions at the right places

@@ -52,7 +52,7 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                                 {name}
                             </Text>
                         </View>
-                        <View className="pt-2">
+                        <View className="pt-2 flex-1">
                             <View className="pb-1">
                                 {(duration-daysGone) >= 0 ? (
                                     <Text className="text-muted-100 text-xs">

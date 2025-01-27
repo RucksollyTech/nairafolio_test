@@ -18,15 +18,37 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.company.myapp"
+      "bundleIdentifier": "com.company.myapp",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": ["nairafolio"]
+          }
+        ]
+      }
     },
-    "android": {
+    "android":  {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#014148"
       },
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.nairafolio.nairafolio"
+      "package": "com.nairafolio.nairafolio",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "nairafolio.com"
+            },
+            {
+              "scheme": "nairafolio"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",

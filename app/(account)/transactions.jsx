@@ -42,7 +42,8 @@ const DataContainer = ({data,transactions,index})=>(
             <View>
                 <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
                     {data?.action} {" "}
-                    {data?.action === "Deposit" ? "into" : "to"} {" "}
+                    {data?.action === "Deposit" ? "into" : data?.action === "Failed" ? "" : data?.action === "Reversal" ? "" : "to"} {" "}
+
                     <Text
                         className="text-lg font-[700] font-pmedium text-muted"
                         
@@ -70,7 +71,7 @@ const DataContainer = ({data,transactions,index})=>(
             </View>
             <View className="mt-2">
                 <Text
-                    className={`font-pmedium ${data?.action === "Deposit" ? "text-secondary-100" : "text-red-500"} text-right text-sm`}
+                    className={`font-pmedium ${data?.action === "Deposit" ? "text-secondary-100" : data?.action === "Reversal" ? "text-secondary-100" : data?.action === "Failed" ? "text-muted-300" : "text-red-500"} text-right text-sm`}
                 >
                     {data?.type}
                     

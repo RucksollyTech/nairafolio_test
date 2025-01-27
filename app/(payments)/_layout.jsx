@@ -20,7 +20,13 @@ const PaymentLayout = () => {
                 }}
             />
             <Stack.Screen
-                name="pay-with-bank"
+                name="pay-with/[mode]"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="payment-success/[action]"
                 options={{
                     headerShown: false,
                 }}

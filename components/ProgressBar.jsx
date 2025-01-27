@@ -10,7 +10,7 @@ const ProgressBar = ({date,duration}) => {
             <View 
                 className={`h-full rounded-[10px] bg-primary`}
                 style={{
-                    width: `${percentage}%`,
+                    width: `${percentage <= 100 ? percentage : 100}%`,
                 }}
             ></View>
         </View>

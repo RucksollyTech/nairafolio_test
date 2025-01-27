@@ -17,6 +17,8 @@ import { getUserInvestments } from '../../lib/appwrite';
 import HomeSkeletonLoader from '../../components/HomeSkeletonLoader';
 import { getCurrentUser } from '@/lib/appwrite'
 import { RefreshControl } from 'react-native';
+import GeneralDrawer from '../../components/GeneralDrawer';
+import PaymentMethods from '../../components/PaymentMethods';
 
 const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
     <Carousel
@@ -98,9 +100,15 @@ const Home = () => {
     }
     useEffect(() => {
         if(!user){
-            checkActiveUser()
+            const activateUser = async ()=>{
+                await checkActiveUser()
+            }
+            activateUser()
         }
     }, [user,loading])
+    useEffect(() => {
+        checkActiveUser()
+    }, [userInvestments])
     // Add another payment drawer for here
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
@@ -240,10 +248,13 @@ const Home = () => {
                     
                 </View>
             </ScrollView>
-            <PaymentDrawer 
+            <GeneralDrawer 
+                heights={"50px"} 
                 isVisible={isDrawerVisible} 
-                onClose={() => setIsDrawerVisible(false)}  
-            />
+                onClose={() => setIsDrawerVisible(false)}
+            >
+                <PaymentMethods />
+            </GeneralDrawer>
         </SafeAreaView>
     );
 };

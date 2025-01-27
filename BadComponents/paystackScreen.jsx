@@ -1,82 +1,115 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Picker, Button, Alert } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Button, ActivityIndicator, StyleSheet, Alert } from "react-native";
+import { WebView } from "react-native-webview";
 
-const PaystackIntegration = () => {
-  const [banks, setBanks] = useState([]);
-  const [selectedBank, setSelectedBank] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [recipientCode, setRecipientCode] = useState("");
-  const [amount, setAmount] = useState("");
+const BankTransferPaymentScreen = ({ userEmail, depositAmount }) => {
+    const [paymentUrl, setPaymentUrl] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const loadBanks = async () => {
-      const bankList = await fetchBanks();
-      setBanks(bankList);
+    // Function to initiate bank transfer
+    const initiateBankTransferPayment = async (email, amount) => {
+        try {
+            setLoading(true);
+            const response = await fetch("https://api.paystack.co/transaction/initialize", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer sk_test_1db522890eaf013fcc1ba58cfc049554095a1443`, // Replace with your Paystack test/live secret key
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email, // Customer's email
+                    amount: amount * 100, // Amount in kobo (Naira * 100)
+                    channels: ["bank"], // Restrict to bank transfer
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.status) {
+                setPaymentUrl(data.data.authorization_url); // Set authorization URL for WebView
+            } else {
+                Alert.alert("Error", data.message || "Failed to initiate payment.");
+            }
+        } catch (error) {
+            console.error("Error initiating bank transfer:", error);
+            Alert.alert("Error", "An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
-    loadBanks();
-  }, []);
 
-  const handleValidateAccount = async () => {
-    // Selected bank is the code 
-    const accountDetails = await validateAccount(accountNumber, selectedBank);
+    // Function to verify payment
+    const verifyPayment = async (reference) => {
+        try {
+            const response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer sk_test_1db522890eaf013fcc1ba58cfc049554095a1443`, // Replace with your Paystack test/live secret key
+                },
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error verifying payment:", error);
+        }
+    };
 
-    if (accountDetails) {
-      Alert.alert("Account Validated", `Account Name: ${accountDetails.account_name}`);
-      const code = await createRecipient(accountNumber, selectedBank, accountDetails.account_name);
-      setRecipientCode(code);
-    } else {
-      Alert.alert("Validation Failed", "Check your account details and try again.");
-    }
-  };
+    const handlePaymentSuccess = () => {
+        Alert.alert("Payment Completed", "Your payment was successful!");
+        setPaymentUrl(null); // Close WebView
+    };
 
-  const handleSendMoney = async () => {
-    if (!recipientCode) {
-      Alert.alert("Error", "Validate account first.");
-      return;
-    }
-    const transfer = await initiateTransfer(recipientCode, amount);
-    if (transfer) {
-      Alert.alert("Transfer Successful", `Reference: ${transfer.transfer_code}`);
-    } else {
-      Alert.alert("Transfer Failed", "Check your details and try again.");
-    }
-  };
+    const handlePaymentFailure = () => {
+        Alert.alert("Payment Failed", "Your payment was unsuccessful. Please try again.");
+        setPaymentUrl(null); // Close WebView
+    };
 
-  return (
-    <View style={{ padding: 20 }}>
-      <Text>Select Bank</Text>
-      <Picker
-        selectedValue={selectedBank}
-        onValueChange={(value) => setSelectedBank(value)}
-        style={{ height: 50, width: "100%" }}
-      >
-        {banks.map((bank) => (
-          <Picker.Item key={bank.code} label={bank.name} value={bank.code} />
-        ))}
-      </Picker>
-
-      <Text>Account Number</Text>
-      <TextInput
-        placeholder="Enter account number"
-        value={accountNumber}
-        onChangeText={setAccountNumber}
-        keyboardType="number-pad"
-        style={{ borderBottomWidth: 1, marginBottom: 20 }}
-      />
-
-      <Text>Amount</Text>
-      <TextInput
-        placeholder="Enter amount"
-        value={amount}
-        onChangeText={setAmount}
-        keyboardType="number-pad"
-        style={{ borderBottomWidth: 1, marginBottom: 20 }}
-      />
-
-      <Button title="Validate Account" onPress={handleValidateAccount} />
-      <Button title="Send Money" onPress={handleSendMoney} />
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            {!paymentUrl ? (
+                <>
+                    <Text style={styles.title}>Bank Transfer Payment</Text>
+                    <Button
+                        title="Pay Now"
+                        onPress={() => initiateBankTransferPayment(userEmail, depositAmount)}
+                        disabled={loading}
+                    />
+                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                </>
+            ) : (
+                <WebView
+                    source={{ uri: paymentUrl }}
+                    onNavigationStateChange={(navState) => {
+                        const { url } = navState;
+                        if (url.includes("status=success")) {
+                            handlePaymentSuccess();
+                        } else if (url.includes("status=failed")) {
+                            handlePaymentFailure();
+                        }
+                    }}
+                    onError={(error) => {
+                        console.error("WebView Error:", error);
+                        handlePaymentFailure();
+                    }}
+                    style={{ flex: 1 }}
+                />
+            )}
+        </View>
+    );
 };
 
-export default PaystackIntegration;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 16,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 20,
+    },
+});
+
+export default BankTransferPaymentScreen;

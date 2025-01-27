@@ -12,6 +12,8 @@ import HomeSkeletonLoader from '../../components/HomeSkeletonLoader'
 import EmptyState from '../../components/EmptyState'
 import UTCDate from '../../components/UTCDate'
 import GeneralDrawer from '../../components/GeneralDrawer'
+import PaymentMethods from '../../components/PaymentMethods'
+import { WebView } from 'react-native-webview';
 
 const Wallet = () => {
     const navigation = useNavigation();
@@ -19,6 +21,8 @@ const Wallet = () => {
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactionsWithLimit(user.$id))
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [refreshing, setRefreshing] = useState(false)
+    const [paymentUrl, setPaymentUrl] = useState(null);
+    
     const checkActiveUser = async()=>{
         try {
             const res = await getCurrentUser();
@@ -32,9 +36,13 @@ const Wallet = () => {
         Promise.all([checkActiveUser(),refetch()])
         setRefreshing(false)
     }
+    
     useEffect(() => {
         if(!user){
-            checkActiveUser()
+            const activateUser = async ()=>{
+                await checkActiveUser()
+            }
+            activateUser()
         }
     }, [user])
     return (
@@ -160,7 +168,7 @@ const Wallet = () => {
                                             <View>
                                                 <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
                                                     {transaction.action} {" "}
-                                                    {transaction.action === "Deposit" ? "into" : "to"} {" "}
+                                                    {transaction.action === "Deposit" ? "into" : transaction.action === "Failed" ? "" : transaction.action === "Reversal" ? "" : "to"} {" "}
                                                     <Text
                                                         className="text-lg font-[700] font-pmedium text-muted"
                                                         
@@ -188,7 +196,7 @@ const Wallet = () => {
                                             </View>
                                             <View className="mt-2">
                                                 <Text
-                                                    className={`font-pmedium ${transaction.action === "Deposit" ? "text-secondary-100" : "text-red-500"} text-right text-sm`}
+                                                    className={`font-pmedium ${transaction.action === "Deposit" ? "text-secondary-100" : transaction.action === "Reversal" ? "text-secondary-100" : transaction.action === "Failed" ? "text-muted-300" : "text-red-500"} text-right text-sm`}
                                                 >
                                                     {transaction.type}
                                                     
@@ -215,113 +223,12 @@ const Wallet = () => {
                     )}
                 </View>
             </ScrollView>
-            <GeneralDrawer heights={"50px"} isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)}>
-                <View>
-                    <Link href={"/pay-with-bank"} className="my-5 px-5">
-                        <View 
-                            className="
-                                flex-1 
-                                rounded-lg
-                                flex 
-                                py-4 flex-row
-                                mb-5
-                                border
-                                border-border
-                                bg-[#F8FAFA]
-                            "
-                        >
-                            <View
-                                className="h-14 w-14 rounded-full items-center justify-center"
-                            >
-                                <Image
-                                    source={icons.bank}
-                                    resizeMode="cover"
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    width: "74.54%",
-                                }}
-                                className="flex-1 px-3 "
-                            >
-                                <View>
-                                    <Text
-                                        className="text-lg text-header-200 font-psans"
-                                    >
-                                        Bank transfer
-                                    </Text>
-                                </View>
-                                <View>
-                                    <Text className="text-muted text-sm">
-                                        Direct transfer from your bank account
-                                    </Text>
-                                </View>
-                            </View>
-                            <View
-                                style={{
-                                    width: "10.08%",
-                                }}
-                                className="items-center justify-center"
-                            >
-                                <Image 
-                                    source={icons.arrow_right_italic}
-                                />
-                            </View>
-                        </View>
-                    </Link>
-                    <Link href={"/pay-with-card"} className="px-5">
-                        <View 
-                            className="
-                                flex-1 
-                                rounded-lg
-                                flex 
-                                py-4 flex-row
-                                mb-5
-                                border
-                                border-border
-                                bg-[#F8FAFA]
-                            "
-                        >
-                            <View
-                                className="h-14 w-14 rounded-full items-center justify-center"
-                            >
-                                <Image
-                                    source={icons.card}
-                                    resizeMode="cover"
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    width: "74.54%",
-                                }}
-                                className="flex-1 px-2 "
-                            >
-                                <View>
-                                    <Text
-                                        className="text-lg text-header-200 font-psans"
-                                    >
-                                        Debit card
-                                    </Text>
-                                </View>
-                                <View>
-                                    <Text className="text-muted text-sm">
-                                        Pay using Visa, Mastercard, or others 
-                                    </Text>
-                                </View>
-                            </View>
-                            <View
-                                style={{
-                                    width: "10.08%",
-                                }}
-                                className="items-center justify-center"
-                            >
-                                <Image 
-                                    source={icons.arrow_right_italic}
-                                />
-                            </View>
-                        </View>
-                    </Link>
-                </View>
+            <GeneralDrawer 
+                heights={"50px"} 
+                isVisible={isDrawerVisible} 
+                onClose={() => setIsDrawerVisible(false)}
+            >
+                <PaymentMethods />
             </GeneralDrawer>
         </SafeAreaView>
     )
