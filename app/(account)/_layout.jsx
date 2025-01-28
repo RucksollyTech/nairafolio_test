@@ -48,6 +48,12 @@ const AccountLayout = () => {
                     headerShown: false,
                 }}
             />
+            <Stack.Screen
+                name="update/[id]"
+                options={{
+                    headerShown: false,
+                }}
+            />
         </Stack>
 
         {/* <Loader isLoading={loading} /> */}

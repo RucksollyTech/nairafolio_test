@@ -1,17 +1,15 @@
-import { View, Text, ScrollView, Dimensions, Image, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, ScrollView, Dimensions, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Carousel from 'react-native-reanimated-carousel';
 import Animated, { useSharedValue, useAnimatedStyle, interpolate, Extrapolate,Extrapolation } from 'react-native-reanimated';
 import { images } from "../../constants";
-import { CustomButton, FormField } from '@/components'
+import { CustomButton } from '@/components'
 import EmptyState from '../../components/EmptyState';
-import Card from '../../components/Card';
-import InvestmentCard from '../../components/InvestmentCard';
+import InvestmentCard, { calculateProfit } from '../../components/InvestmentCard';
 import { router } from 'expo-router';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import PaymentDrawer from '../../components/PaymentDrawer';
 import useAppwrite from '../../lib/useAppwrite';
 import { getUserInvestments } from '../../lib/appwrite';
 import HomeSkeletonLoader from '../../components/HomeSkeletonLoader';
@@ -98,6 +96,22 @@ const Home = () => {
         await Promise.all([refetch(),checkActiveUser()])
         setRefreshing(false)
     }
+    const handleTotalInvestmentBalance = ()=>{
+        let totalInvestment = 0
+        if(userInvestments){
+            userInvestments.forEach(investment=>{
+                const {daysGone} = UTCDate(investment.$createdAt)
+                const dataForProfit = {
+                    percentage:investment.investment.rio,
+                    daysGone,
+                    invested:investment.total,
+                    duration:investment.investment.duration_days
+                }
+                totalInvestment += (investment.amount + calculateProfit(dataForProfit))
+            })
+        }
+        return totalInvestment
+    }
     useEffect(() => {
         if(!user){
             const activateUser = async ()=>{
@@ -109,7 +123,6 @@ const Home = () => {
     useEffect(() => {
         checkActiveUser()
     }, [userInvestments])
-    // Add another payment drawer for here
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
@@ -153,6 +166,7 @@ const Home = () => {
                                         title:"Wallet balance",
                                     },{
                                         $id: 2,
+                                        // amount: handleTotalInvestmentBalance(),
                                         amount: 0,
                                         title:"Investments",
                                     }
@@ -220,6 +234,7 @@ const Home = () => {
                                                 name = {mapData.investment.name}
                                                 duration = {mapData.investment.duration_days}
                                                 invested = {mapData.unit}
+                                                // invested = {mapData.total}
                                                 percentage = {mapData.investment.rio}
                                                 date = {mapData.$createdAt}
                                                 _id={mapData.$id}

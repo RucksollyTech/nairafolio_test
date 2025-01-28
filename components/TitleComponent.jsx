@@ -1,8 +1,11 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { icons } from '../constants'
+import UTCDate from './UTCDate'
+import { Link } from 'expo-router'
 
-const TitleComponent = () => {
+const TitleComponent = ({item}) => {
+    const {title,body,$createdAt,$id} = item
     return (
         <View>
             <View className="border border-border bg-[#F8FAFA] rounded-lg mt-5">
@@ -34,40 +37,46 @@ const TitleComponent = () => {
                     </View>
                     <View
                         style={{
-                            width: "61.54%",
+                            width: "79.54%",
                         }}
-                        className="flex-1 pl-2 "
+                        className="flex-1 pl-2 pr-1"
                     >
-                        <View className="my-auto">
-                            <Text
-                                className="text-xl font-[700] font-pmedium text-muted-300"
-                            >
-                                Title
-                            </Text>
+                        <View className="my-auto w-full">
+                            <Link href={`/update/${$id}`}>
+                                <Text
+                                    numberOfLines={2}
+                                    className="text-xl w-full font-[700] font-pmedium text-muted-300"
+                                >
+                                    {title}
+                                </Text>
+                            </Link>
                         </View>
                     </View>
                     <View
                         style={{
-                            width: "23.08%",
+                            width: "5.08%",
                         }}
-                        className="flex-1 flex"
                     >
                         <View className="ml-auto my-auto">
-                            <Image 
-                                source={icons.arrow_right_italic}
-                                resizeMode="contain"
-                                className="my-auto"
-                            />
+                            <Link href={`/update/${$id}`}>
+                                <Image 
+                                    source={icons.arrow_right_italic}
+                                    resizeMode="contain"
+                                    className="my-auto"
+                                />
+                            </Link>
                         </View>
                     </View>
                 </View>
                 <View className="p-5">
-                    <Text className="text-muted-200 text-lg font-pregular">
-                        Updates and announcements for the month of December
-                    </Text>
+                        <Text numberOfLines={3} className="text-muted-200 text-lg font-pregular">
+                            <Link href={`/update/${$id}`}>
+                                {body}
+                            </Link>
+                        </Text>
                     <View className="pt-2 w-full">
                         <Text className="text-muted-200 text-right text-sm font-pmedium font-[700]">
-                            December 13th, 2023
+                            {UTCDate($createdAt)?.myDateFormat}
                         </Text>
                     </View>
                 </View>

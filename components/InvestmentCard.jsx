@@ -5,9 +5,16 @@ import ProgressBar from './ProgressBar'
 import UTCDate from './UTCDate'
 import { router } from 'expo-router'
 
+export const calculateProfit = (data)=>{
+    const {percentage,daysGone,invested,duration} = data
+    const profit = (percentage * daysGone * invested)/100
+    if(daysGone > duration){
+        return (percentage * duration * invested)/100
+    }
+    return profit
+}
 const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
     const {daysGone} = UTCDate(date)
-    const profit = (percentage * daysGone * invested)/100
 
     return (
         <View className="mb-3">
@@ -80,7 +87,13 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                         </View>
                         <View className="mt-2">
                             <Money 
-                                value={profit}
+                                value={calculateProfit({
+                                    percentage,
+                                    daysGone,
+                                    invested,
+                                    duration,
+     
+                                })}
                                 add
                                 textStyle="font-pmedium text-secondary-100 text-right text-sm"
                             />

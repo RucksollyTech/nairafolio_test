@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
 
 
-const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll }) => {
+const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, header }) => {
     if (!isVisible) return null;
 
     return (
@@ -18,6 +18,13 @@ const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll }) =>
                         p-5 flex-row justify-between items-center
                     "
                 >
+                    {header &&(
+                        <View>
+                            <Text className="text-header-100 font-psemibold">
+                                {header}
+                            </Text>
+                        </View>
+                    )}
                     <TouchableOpacity onPress={onClose} className="ml-auto">
                         <Image 
                             source={icons.cancel}

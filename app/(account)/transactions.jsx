@@ -87,6 +87,7 @@ const Transactions = () => {
     const { user,setUser } = useGlobalContext();
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactions(user.$id))
     const [showOlder, setShowOlder] = useState(false)
+    const [showToday, setShowToday] = useState(false)
 
     const [refreshing, setRefreshing] = useState(false)
     const checkActiveUser = async()=>{
@@ -107,6 +108,17 @@ const Transactions = () => {
             checkActiveUser()
         }
     }, [user])
+    const hasOlder = transactions?.some(transact => !UTCDate(transact.$createdAt)?.isToday) || false;
+    const hasToday = transactions?.some(transact => UTCDate(transact.$createdAt)?.isToday) || false;
+
+    useEffect(() => {
+        const hasOlder = transactions?.some(transact => !UTCDate(transact.$createdAt)?.isToday);
+        const hasToday = transactions?.some(transact => UTCDate(transact.$createdAt)?.isToday);
+
+        setShowOlder(hasOlder);
+        setShowToday(hasToday);
+    }, [transactions]);
+
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <FlatList 
@@ -146,11 +158,13 @@ const Transactions = () => {
                                     Transaction history
                                 </Text>
                             </View>
-                            <View className="px-5 py-2 mt-7 bg-[#F5F5F5]">
-                                <Text className="text-sm font-pregular text-muted">
-                                    Today
-                                </Text>
-                            </View>
+                            {(showToday || hasToday) && (
+                                <View className="px-5 py-2 mt-7 bg-[#F5F5F5]">
+                                    <Text className="text-sm font-pregular text-muted">
+                                        Today
+                                    </Text>
+                                </View>
+                            )}
                             <View className="px-5">
                                 {(transactions && transactions.length > 0) && transactions.map((transact,index)=>{
                                     if(UTCDate(transact.$createdAt)?.isToday){
@@ -163,13 +177,11 @@ const Transactions = () => {
                                                 />
                                             </View>
                                         )
-                                    }else{
-                                        if(!showOlder)setShowOlder(true);
                                     }
                                 })}
                             </View>
-                            {showOlder && (
-                                <View className="px-5 pb-2 bg-[#F5F5F5]">
+                            {(showOlder || hasOlder) && (
+                                <View className="px-5 py-2 -mt-[21px] relative z-10 bg-[#F5F5F5]">
                                     <Text className="text-sm font-pregular text-muted">
                                         Older
                                     </Text>

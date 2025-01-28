@@ -25,7 +25,7 @@ const UTCDate = (date) => {
             isToday=true
             myDateFormat = `Today, ${dates.format('h:mma')}`; 
         } else {
-            myDateFormat = dates.format('ddd MMM Do, h:mma'); 
+            myDateFormat = dates.format('ddd MMM D, h:mma'); 
         }
 
         return {today, datetime, daysGone,appwriteDatetime,myDateFormat,isToday,diffInMinutes};
