@@ -13,6 +13,13 @@ export const calculateProfit = (data)=>{
     }
     return profit
 }
+
+export const checkMatured = data =>{
+    const {duration, createdAt} = data
+    const {daysGone} = UTCDate(createdAt)
+    if ((duration-daysGone) >= 0)return false
+    return true
+}
 const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
     const {daysGone} = UTCDate(date)
 

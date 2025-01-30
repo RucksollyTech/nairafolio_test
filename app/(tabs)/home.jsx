@@ -17,6 +17,8 @@ import { getCurrentUser } from '@/lib/appwrite'
 import { RefreshControl } from 'react-native';
 import GeneralDrawer from '../../components/GeneralDrawer';
 import PaymentMethods from '../../components/PaymentMethods';
+import UTCDate from '../../components/UTCDate';
+import ToggleButtons from '../../components/ToggleButtons';
 
 const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
     <Carousel
@@ -83,6 +85,12 @@ const Home = () => {
     const progressValue = useSharedValue(0); 
     const [isDrawerVisible, setIsDrawerVisible] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
+    const [active, setActive] = useState(true)
+    
+    const [hasoldx, setHasoldx] = useState(false)
+    const toggler = (value)=>{
+        setActive(value)
+    }
     const checkActiveUser = async()=>{
         try {
             const res = await getCurrentUser();
@@ -104,14 +112,22 @@ const Home = () => {
                 const dataForProfit = {
                     percentage:investment.investment.rio,
                     daysGone,
-                    invested:investment.total,
+                    invested:investment.investment.price_per_unit * investment.unit,
                     duration:investment.investment.duration_days
                 }
-                totalInvestment += (investment.amount + calculateProfit(dataForProfit))
+                totalInvestment += ((investment.investment.price_per_unit * investment.unit) + calculateProfit(dataForProfit))
             })
         }
         return totalInvestment
     }
+    const hasSold = !!userInvestments?.some(solds => solds?.is_up_for_sell) || false;
+    useEffect(() => {
+        if(userInvestments){
+            const hasSolds = userInvestments?.some(solds => solds?.is_up_for_sell) || false;
+            setHasoldx(hasSolds);
+        }
+    }, [userInvestments]);
+
     useEffect(() => {
         if(!user){
             const activateUser = async ()=>{
@@ -166,8 +182,7 @@ const Home = () => {
                                         title:"Wallet balance",
                                     },{
                                         $id: 2,
-                                        // amount: handleTotalInvestmentBalance(),
-                                        amount: 0,
+                                        amount: handleTotalInvestmentBalance(),
                                         title:"Investments",
                                     }
                                 ]}
@@ -219,6 +234,14 @@ const Home = () => {
                             })}
                         </View>
                     </View>
+                    {(hasoldx || hasSold) && (
+                        <ToggleButtons
+                            active={active}
+                            toggler={toggler}
+                            title1={"Investments"}
+                            title2={"Up for sale"}
+                        />
+                    )}
                     {loading ? (
                         <View className="px-5 mt-6">
                             <HomeSkeletonLoader />
@@ -227,20 +250,39 @@ const Home = () => {
                         <View className="px-5">
                             {(userInvestments && userInvestments.length > 0) ? (
                                 <View className="mt-6 min-h-[225px]">
-                                    {userInvestments.map((mapData,index)=>(
-                                        <View key={index} className="mb-2">
-                                            <InvestmentCard 
-                                                logo = {mapData.investment.logo}
-                                                name = {mapData.investment.name}
-                                                duration = {mapData.investment.duration_days}
-                                                invested = {mapData.unit}
-                                                // invested = {mapData.total}
-                                                percentage = {mapData.investment.rio}
-                                                date = {mapData.$createdAt}
-                                                _id={mapData.$id}
-                                            />
-                                        </View>
-                                    ))}
+                                    {userInvestments.map((mapData,index)=>{
+                                        if(active && !mapData.is_up_for_sell && !mapData.sold){
+                                            return(
+                                                <View key={index} className="mb-2">
+                                                    <InvestmentCard 
+                                                        logo = {mapData.investment.logo}
+                                                        name = {mapData.investment.name}
+                                                        duration = {mapData.investment.duration_days}
+                                                        invested = {mapData.investment.price_per_unit * mapData.unit}
+                                                        percentage = {mapData.investment.rio}
+                                                        date = {mapData.$createdAt}
+                                                        _id={mapData.$id}
+                                                    />
+                                                </View>
+                                            )
+                                        }
+                                        if(!active && mapData.is_up_for_sell && !mapData.sold){
+                                            return(
+                                                <View key={index} className="mb-2">
+                                                    <InvestmentCard 
+                                                        logo = {mapData.investment.logo}
+                                                        name = {mapData.investment.name}
+                                                        duration = {mapData.investment.duration_days}
+                                                        invested = {mapData.investment.price_per_unit * mapData.unit}
+                                                        percentage = {mapData.investment.rio}
+                                                        date = {mapData.$createdAt}
+                                                        _id={mapData.$id}
+                                                        onSale={true}
+                                                    />
+                                                </View>
+                                            )
+                                        }
+                                    })}
                                 </View>
                             ) : (
                                 <View className="mt-20">

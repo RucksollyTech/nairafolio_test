@@ -137,7 +137,7 @@ const PaymentDrawer = ({
                 </CoverBg>
             )}
             <View className="absolute inset-0 z-40 bg-black/50">
-                <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={handleClose} />
+                {/* <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={handleClose} /> */}
                 <View
                     style={styles.drawer}
                     className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"

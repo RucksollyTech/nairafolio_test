@@ -22,5 +22,6 @@ type:
 Wallet  
 Card  
 Transfer 
+Sales
 
 Call to Set transactions at the right places

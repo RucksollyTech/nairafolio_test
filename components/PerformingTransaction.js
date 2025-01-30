@@ -1,4 +1,7 @@
-import { getCurrentUser, updateUser, createUserInvestment, createTransactions} from "../lib/appwrite";
+import { getCurrentUser, updateUser, createUserInvestment, createTransactions, updateOngoingInvestment} from "../lib/appwrite";
+import { updateCurrentUser } from "../lib/updateAccountTransaction";
+import { calculateProfit } from "./InvestmentCard";
+import UTCDate from "./UTCDate";
 
 export const CheckBalance = async () => {
     try {
@@ -13,7 +16,6 @@ export const CheckBalance = async () => {
         // return { error };
     }
 };
-
 
 export const WalletCheckOut = async(investment,value_spent,user)=>{
     const {wallet,error} = await CheckBalance()
@@ -54,4 +56,102 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
         return {error:"Something went wrong"}
     }
 
+}
+
+export const sellInvestment = async(data)=>{
+    const {
+        unit,
+        putUnit,
+        investment,
+        pricePlaced,
+        type,
+        user,
+        reason,
+        setUser,
+    }=data;
+    try {
+        // check present value before updating
+        await updateOngoingInvestment(investment.$id,{
+            unit: parseFloat(putUnit),
+            is_up_for_sell:true,
+            pricePlaced
+        })
+        if (unit - putUnit > 0) {
+            // Update wallet and update transaction (withdrawal and Sells)
+            //valueSentToWallet= (totalProfit + amountInvested /totalUnitsBought ) * (unit - putUnit)
+            const totalProfitAndInvested = (investment?.investment?.price_per_unit * investment?.unit)  + calculateProfit({
+                percentage:investment?.investment?.rio,
+                daysGone:UTCDate(investment?.$createdAt)?.daysGone,
+                invested:(investment?.investment?.price_per_unit * investment?.unit) ,
+                duration:investment?.investment?.duration_days
+            })
+            const valueSentToWallet = (totalProfitAndInvested/(investment?.unit)) * (unit - putUnit)
+            await Promise.all(
+                updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
+                createTransactions({
+                    action:"Deposit",
+                    amount:parseFloat(valueSentToWallet),
+                    type,
+                    user:user.$id,
+                    reason,
+                })
+            )
+            await updateCurrentUser(setUser)
+        }
+        return {"success":true};
+    } catch (error) {
+        throw new Error("An error occurred while selling your investment. Please try again later.")
+    }
+}
+
+export const sellInvestmentNairaFolio = async(data)=>{
+    const {
+        unit,
+        putUnit,
+        investment,
+        type,
+        user,
+        reason,
+        setUser,
+    }=data;
+    try {
+        await updateOngoingInvestment(investment.$id,{
+            unit: parseFloat(putUnit),
+            is_up_for_sell:true,
+            sold:true
+        })
+
+        if (unit - putUnit > 0) {
+            const totalProfitAndInvested = (investment?.investment?.price_by_nairafolio * investment?.unit)  + calculateProfit({
+                percentage:investment?.investment?.rio,
+                daysGone:UTCDate(investment?.$createdAt)?.daysGone,
+                invested:(investment?.investment?.price_by_nairafolio * investment?.unit) ,
+                duration:investment?.investment?.duration_days
+            })
+            const valueSentToWallet = (totalProfitAndInvested/(investment?.unit)) * (unit - putUnit)
+            await Promise.all(
+                updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
+                createTransactions({
+                    action:"Deposit",
+                    amount:parseFloat(valueSentToWallet),
+                    type,
+                    user:user.$id,
+                    reason,
+                })
+            )
+            await updateCurrentUser(setUser)
+        }
+        return {"success":true};
+    } catch (error) {
+        throw new Error("An error occurred while selling your investment. Please try again later.")
+    }
+}
+
+export const totalProfitsAndInvested = (investment)=>{
+    return (investment?.investment?.price_per_unit * investment?.unit)  + calculateProfit({
+        percentage:investment?.investment?.rio,
+        daysGone:UTCDate(investment?.$createdAt)?.daysGone,
+        invested:(investment?.investment?.price_per_unit * investment?.unit) ,
+        duration:investment?.investment?.duration_days
+    })
 }

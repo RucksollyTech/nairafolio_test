@@ -8,7 +8,7 @@ const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, head
 
     return (
         <View className="absolute inset-0 z-50 bg-black/50">
-            <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />
+            {/* <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} /> */}
             <View
                 className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
                 style={{ minHeight: minHeights }}
@@ -20,7 +20,7 @@ const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, head
                 >
                     {header &&(
                         <View>
-                            <Text className="text-header-100 font-psemibold">
+                            <Text className="text-header-100 pt-2 px-2 font-psemibold text-lg">
                                 {header}
                             </Text>
                         </View>

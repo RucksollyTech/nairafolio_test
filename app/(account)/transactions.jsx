@@ -11,6 +11,7 @@ import HomeSkeletonLoader from '../../components/HomeSkeletonLoader'
 import EmptyState from '../../components/EmptyState'
 import UTCDate from '../../components/UTCDate'
 
+
 const DataContainer = ({data,transactions,index})=>(
     <View 
         className={`

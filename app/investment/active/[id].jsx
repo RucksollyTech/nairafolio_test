@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -9,36 +9,50 @@ import { Link, router } from 'expo-router'
 import Drawer from '../../../components/Drawer'
 import TitleComponent from '../../../components/TitleComponent'
 import useAppwrite from '../../../lib/useAppwrite'
-import { getInvestment, getUserInvestment, searchInvestmentUpdates } from '../../../lib/appwrite'
+import { createTransactions, getInvestment, getUserInvestment, searchInvestmentUpdates, updateOngoingInvestment, updateUser } from '../../../lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import UTCDate from '../../../components/UTCDate'
-import { calculateProfit } from '../../../components/InvestmentCard'
+import { calculateProfit, checkMatured } from '../../../components/InvestmentCard'
 import { convertDaysToReadableFormat } from '../../../components/dayConverter'
 import { FlatList } from 'react-native'
 import { RefreshControl } from 'react-native'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import EmptyState from '../../../components/EmptyState'
 import GeneralDrawer from '../../../components/GeneralDrawer'
+import FormFieldAdjusted from '../../../components/FormFieldAdjusted'
+import CustomButton from '../../../components/CustomButton'
+import { sellInvestment, sellInvestmentNairaFolio, totalProfitsAndInvested } from '../../../components/PerformingTransaction'
+import { duration } from 'dayjs'
+import { updateCurrentUser } from '../../../lib/updateAccountTransaction'
+import SuccessModal from '../../../components/SuccessModal'
 
 const Active = () => {
     const {id} = useLocalSearchParams();
-    const { user } = useGlobalContext();
+    const { user, setUser } = useGlobalContext();
     const [investment, setInvestment] = useState({});
     const [updates, setUpdates] = useState({});
      
     const { data:investmentData, loading, refetch } = useAppwrite(()=>getUserInvestment(id,user?.$id))
     const navigation = useNavigation();
-    const [active, setActive] = useState(true)
+    const [activeMethod, setActiveMethod] = useState(true)
 
     const [dateValue, setDateValue] = useState(null)
     const [dateValue2, setDateValue2] = useState(null)
     const [showDateSelect, setShowDateSelect] = useState(false);
     const [isDrawerVisible2, setIsDrawerVisible2] = useState(false);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
     
+    const [activeIndex, setActiveIndex] = useState(0);
     const [isDrawerVisible, setDrawerVisible] = useState(false);
+    const [next, setNext] = useState(false);
     const [refreshing, setRefreshing] = useState(false)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [successModal, setSuccessModal] = useState(false);
+
+    const [unitToSell, setUnitToSell] = useState(0);
+    const [pricePlaced, setPricePlaced] = useState(0);
 
     const handleClear =()=>{
         setDateValue(null)
@@ -77,11 +91,100 @@ const Active = () => {
         await refetch()
         setRefreshing(false)
     }
-    const handleMoveToWallet = ()=>{
-        // make sure to check for matured investment
+    const handleMoveToWallet = async()=>{
+        if(!checkMatured({
+            duration:investment?.investment?.duration_days,
+            createdAt:investment?.$createdAt
+        })){
+            Alert.alert("Invalid request", "Investment is not matured.");
+            return
+        }
+        setLoadingSubmit(true)
+        await updateOngoingInvestment(investment?.$id,{
+            is_matured:true
+        })
+        const valueSentToWallet = totalProfitsAndInvested(investment)
+        await Promise.all(
+            updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
+            createTransactions({
+                action:"Deposit",
+                amount:parseFloat(valueSentToWallet),
+                type:"Wallet",
+                user:user.$id,
+                reason:investment?.investment?.name,
+            })
+        )
+        await updateCurrentUser(setUser)
+        setLoadingSubmit(false)
+        // Show success message and say continue
+        setSuccessModal(true)
+    }
+
+    const handleSellShare = async()=>{
+        // make sure to check for matured investment 
+        if(checkMatured({
+            duration:investment?.investment?.duration_days,
+            createdAt:investment?.$createdAt
+        })){
+            Alert.alert("Invalid request", "Investment is matured, you cannot sell now.");
+            return
+        }
+        setLoadingSubmit(true)
+        try {
+            await sellInvestment({
+                unit:investment?.unit,
+                putUnit:unitToSell,
+                pricePlaced: parseFloat(pricePlaced),
+                investment,
+                type: "Sales",
+                user,
+                setUser,
+                reason: investment?.investment?.name
+            })
+            await refetch()
+            setSuccess(true)
+        } catch (error) {
+            console.log(error)
+        }finally{
+            setLoadingSubmit(false)
+        }
+    }
+    const handleSellShareNairaFolio = async()=>{
+        if(checkMatured({
+            duration:investment?.investment?.duration_days,
+            createdAt:investment?.$createdAt
+        })){
+            Alert.alert("Invalid request", "Investment is matured, you cannot sell now.");
+            return
+        }
+        setLoadingSubmit(true)
+        try {
+            await sellInvestmentNairaFolio({
+                unit:investment?.unit,
+                putUnit:unitToSell,
+                investment,
+                type: "Sales",
+                user,
+                setUser,
+                reason: investment?.investment?.name
+            })
+            await refetch()
+            setSuccess(true)
+        } catch (error) {
+            console.log(error)
+        }finally{
+            setLoadingSubmit(false)
+        }
     }
     
-    const [activeIndex, setActiveIndex] = useState(0);
+    const handleSuccess= ()=>{
+        setSuccess(false)
+        setIsDrawerVisible2(false)
+        setNext(false)
+        setUnitToSell(0)
+        setPricePlaced(0)
+        setActiveMethod(0)
+    }
 
     const handleNext = () => {
         if (activeIndex < investment?.investment.updates.length - 1) {
@@ -94,8 +197,20 @@ const Active = () => {
             setActiveIndex(activeIndex - 1);
         }
     };
-    
+    const handleSellMethodSelect = (methodSelected) => {
+        setNext(true);
+        setActiveMethod(methodSelected)
+    }
+    const handleDismissSuccessModal = ()=>{
+        setSuccessModal(false)
+        router.replace("/home")
+    }
     useEffect(()=>{
+        if(investmentData){
+            if((investmentData[0] && investmentData[0].sold) || (investmentData[0] && investmentData[0].is_matured)){
+                router.replace("/home")
+            }
+        }
         if((!dateValue || !dateValue2) && investmentData){
             setInvestment(investmentData[0])
         }
@@ -117,6 +232,8 @@ const Active = () => {
             searchFunc()
         }
     },[dateValue,dateValue2])
+    
+    
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
@@ -152,10 +269,10 @@ const Active = () => {
                     <View className="px-5">
                         <View className="pt-10">
                             <Money
-                                value={investment?.total + calculateProfit({
+                                value={(investment?.investment?.price_per_unit * investment?.unit) + calculateProfit({
                                     percentage:investment?.investment?.rio,
                                     daysGone:UTCDate(investment?.$createdAt)?.daysGone,
-                                    invested:investment?.total,
+                                    invested:investment?.investment?.price_per_unit * investment?.unit,
                                     duration:investment?.investment?.duration_days
                                 })}
                                 textStyle="text-black-100 font-psans text-4xl"
@@ -167,7 +284,7 @@ const Active = () => {
                                     Invested 
                                 </Text>
                                 <Money
-                                    value={investment?.total}
+                                    value={(investment?.investment?.price_per_unit * investment?.unit) }
                                     textStyle="text-muted font-pregular font-[700] text-base"
                                     containerStyle="pl-2"
                                 />
@@ -177,7 +294,7 @@ const Active = () => {
                                     value={calculateProfit({
                                         percentage:investment?.investment?.rio,
                                         daysGone:UTCDate(investment?.$createdAt)?.daysGone,
-                                        invested:investment?.total,
+                                        invested:(investment?.investment?.price_per_unit * investment?.unit) ,
                                         duration:investment?.investment?.duration_days
                                     })}
                                     textStyle="text-secondary-100 font-pregular text-base font-[700]"
@@ -199,8 +316,8 @@ const Active = () => {
                             <TouchableOpacity
                                 onPress={handleMoveToWallet}
                                 activeOpacity={0.7}
-                                disabled={(investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 ?? true}
-                                className={`${(investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                disabled={((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) ? true : false}
+                                className={`${((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                             >
                                 <Text className={`font-pinter font-semibold text-base text-white`}>
                                     Move to wallet
@@ -214,23 +331,28 @@ const Active = () => {
                                 </View>
                                 
                             </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={()=>router.push("/")}
-                                activeOpacity={0.7}
-                                className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
-                            >
-                                <Text className={`font-pinter font-semibold text-base text-muted`}>
-                                    Sell shares
-                                </Text>
-                                <View className="ml-2">
-                                    <Image
-                                        source={icons.upload}
-                                        resizeMode="contain"
-                                        tintColor={"#747474"}
-                                    />
-                                </View>
-                                
-                            </TouchableOpacity>
+                            {!investment?.is_up_for_sell && !investment?.sold && !checkMatured({
+                                duration:investment?.investment?.duration_days,
+                                createdAt:investment?.$createdAt
+                            }) && (
+                                <TouchableOpacity
+                                    onPress={()=>setIsDrawerVisible2(true)}
+                                    activeOpacity={0.7}
+                                    className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                >
+                                    <Text className={`font-pinter font-semibold text-base text-muted`}>
+                                        Sell shares
+                                    </Text>
+                                    <View className="ml-2">
+                                        <Image
+                                            source={icons.upload}
+                                            resizeMode="contain"
+                                            tintColor={"#747474"}
+                                        />
+                                    </View>
+                                    
+                                </TouchableOpacity>
+                            )}
                         </View>
 
                         <View className="flex-1 rounded-lg border border-border">
@@ -620,14 +742,271 @@ const Active = () => {
                 onCancel={hideDatePicker2}
             />
             <GeneralDrawer
-                header={"Sell shares"}
+                header={success ? "success!" : activeMethod === 2 ? "Sell shares now" : "Sell shares"}
                 isVisible={isDrawerVisible2} 
-                onClose={() => setIsDrawerVisible2(false)}
+                onClose={handleSuccess}
             >
-                <Text>
-                    Hello
-                </Text>
+                {!next ? (
+                    <>
+                        <TouchableOpacity 
+                            className="my-5"
+                            onPress={()=>handleSellMethodSelect(1)}
+                        >
+                            <View 
+                                className={`
+                                    flex-1 
+                                    rounded-lg
+                                    flex 
+                                    py-4 flex-row
+                                    px-2
+                                    border
+                                    border-border
+                                    bg-[#F8FAFA]
+                                `}
+                            >
+                                <View
+                                    style={{
+                                        width: "74.54%",
+                                    }}
+                                    className="flex-1 px-3 "
+                                >
+                                    <View>
+                                        <Text
+                                            className="text-lg text-header-200 font-psans"
+                                        >
+                                            Put up your shares for sale
+                                        </Text>
+                                    </View>
+                                    <View className="mt-1">
+                                        <Text className="text-muted text-sm">
+                                            Set your price and wait for a buyer
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        width: "30.08%",
+                                    }}
+                                    
+                                    className="items-right justify-center pr-2"
+                                >
+                                    <View className="w-full items-end">
+                                        <Image 
+                                            source={icons.arrow_right_italic}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            onPress={()=>handleSellMethodSelect(2)}
+                        >
+                            <View 
+                                className={`
+                                    flex-1 
+                                    rounded-lg
+                                    flex 
+                                    py-4 flex-row
+                                    px-2
+                                    border
+                                    border-border
+                                    bg-[#F8FAFA]
+                                `}
+                            >
+                                <View
+                                    style={{
+                                        width: "70%",
+                                    }}
+                                    className="flex-1 px-3 "
+                                >
+                                    <View>
+                                        <Text
+                                            className="text-lg text-header-200 font-psans"
+                                        >
+                                            Sell now
+                                        </Text>
+                                    </View>
+                                    <View className="mt-1">
+                                        <Text className="text-muted text-sm">
+                                            Instantly sell your shares at our price.
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        width: "30%",
+                                    }}
+                                    className="items-right justify-center pr-2"
+                                >
+                                    <View className="w-full items-end">
+                                        <Text className="text-secondary-100 font-psans text-sm">
+                                            ₦{investment?.investment?.price_by_nairafolio} / unit
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    </>
+                ):success ? (
+                    <View className="px-2">
+                        <View className="flex-1 justify-center items-center">
+                            <Image 
+                                source={icons.good}
+                            />
+                        </View>
+                        <View className="mt-5">
+                            {activeMethod === 2 ? (
+                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                    You have just sold {unitToSell} units of your shares to NairaFolio.
+                                </Text>
+                            ) : (
+                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                    You have just put up {unitToSell} units of your shares up for sale.
+                                </Text>
+                            )}
+                        </View>
+                        {activeMethod !== 2 && (
+                            <View className="mt-2">
+                                <Text className="text-black-100 font-pmedium text-base text-center">
+                                    Your wallet will be credited once someone else buys your shares
+                                </Text>
+                            </View>
+                        )}
+                        <CustomButton
+                            handlePress={handleSuccess}
+                            title={"Continue"}
+                            textStyles={"font-psans text-white"}
+                            containerStyles={"mt-5 h-14"}
+                        />
+                    </View>
+                ):(
+                    <>
+                        <View className="px-2">
+                            <FormFieldAdjusted 
+                                title="How many units do you want to sell?"
+                                value={unitToSell}
+                                keyboardType={"number-pad"}
+                                placeholder={"Enter unit"}
+                                handleDataAction={()=>setUnitToSell(investment?.unit)}
+                                handleChangeText={(e)=>setUnitToSell(e)}
+                                dataStyle={"text-muted-200 font-psemibold"}
+                            />
+                            {unitToSell > investment?.unit && (
+                                <Text className="mt-2 text-red-500 font-psemibold text-sm ">
+                                    You cannot sell more units than you have.
+                                </Text>
+                            )}
+                            {activeMethod !== 2 && (
+                                <View>
+                                    <Text className="font-pregular px-2 text-base my-7 text-black-100">
+                                        Note that your shares will be sold only when someone else buys them.
+                                    </Text>
+                                </View>
+                            )}
+                            {activeMethod !== 2 ? (
+                                <FormFieldAdjusted 
+                                    title="Set a price per unit"
+                                    value={pricePlaced}
+                                    keyboardType={"number-pad"}
+                                    placeholder={"Enter price per unit"}
+                                    data={"/Unit"}
+                                    handleChangeText={(e)=>setPricePlaced(e)}
+                                    dataStyle={"text-muted-200 font-psemibold"}
+                                />
+                            ):(
+                                <View>
+                                    <View className="mt-5 mb-7">
+                                        <Text className="text-muted-200 font-pmedium">
+                                            Price of units
+                                        </Text>
+                                        <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] h-14">
+                                            <Money 
+                                                value={unitToSell * investment?.investment?.price_by_nairafolio}
+                                                textStyle={"font-xl"}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View className={"justify-center items-center flex-row"}>
+                                        <View className="">
+                                            <Text className="text-secondary-100 text-base font-pmedium">
+                                                One unit costs {" "}
+                                            </Text>
+                                        </View>
+                                        <View className="">
+                                            <Money 
+                                                value={investment?.investment?.price_by_nairafolio}
+                                                containerStyle={"flex"}
+                                                textStyle={"font-psans text-base text-secondary-100"}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            )}
+                            {unitToSell >0 && pricePlaced > 0 && (
+                                <View className="mt-5 justify-center items-center flex-row">
+                                    <Text className="font-pregular text-base my-7 text-secondary-100">
+                                        For {unitToSell} units you’ll get{" "}
+                                    </Text>
+                                    <Money 
+                                        value={unitToSell * pricePlaced}
+                                        containerStyle={""}
+                                        textStyle={"text-secondary-100 my-auto font-psemibold"}
+                                    />
+                                </View>
+                            )}
+                            {activeMethod !== 2 ? (
+                                <CustomButton 
+                                    title={"Sell shares"}
+                                    containerStyles={"h-14 mt-16"}
+                                    textStyles={"text-white font-psemibold"}
+                                    loading={!unitToSell || !pricePlaced || unitToSell > investment?.unit }
+                                    isLoading={loadingSubmit}
+                                    handlePress={handleSellShare}
+                                />
+                            ):(
+                                <CustomButton 
+                                    title={"Sell shares"}
+                                    containerStyles={"h-14 mt-16"}
+                                    textStyles={"text-white font-psemibold"}
+                                    loading={!unitToSell || unitToSell > investment?.unit }
+                                    isLoading={loadingSubmit}
+                                    handlePress={handleSellShareNairaFolio}
+                                />
+                            )}
+                        </View>
+                    </>
+                )}
             </GeneralDrawer>
+            <SuccessModal
+                header={"success!"}
+                isVisible={successModal} 
+                onClose={handleDismissSuccessModal}
+            >
+                <View className="px-2 flex-1 mt-14">
+                    <View className="flex-1 justify-center items-center">
+                        <Image 
+                            source={icons.good}
+                        />
+                    </View>
+                    <View className="mt-5">
+                        <Text className="text-black-100 font-psans text-2xl text-center">
+                            Congratulations! 
+                        </Text>
+                    </View>
+                    <View className="mt-2">
+                        <Text className="text-black-100 font-pmedium text-base text-center">
+                            Your investment funds have been successfully transferred to your wallet. 
+                        </Text>
+                    </View>
+                    
+                    <CustomButton
+                        handlePress={handleDismissSuccessModal}
+                        title={"Continue"}
+                        textStyles={"font-psans text-white"}
+                        containerStyles={"mt-5 h-14"}
+                    />
+                </View>
+            </SuccessModal>
         </SafeAreaView>
     )
 }

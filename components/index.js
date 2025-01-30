@@ -9,11 +9,13 @@ import UTCDate from "./UTCDate";
 import CustomModal from "./CustomModal";
 import EmailerVerifyBank from "./EmailerVerifyBank";
 import PaymentMethods from "./PaymentMethods";
+import SuccessModal from "./SuccessModal";
 
 export {
   CustomModal,
   PaymentMethods,
   EmailerVerifyBank,
+  SuccessModal,
   FormField,
   CustomButton,
   Collapsible,
