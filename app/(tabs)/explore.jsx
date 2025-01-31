@@ -79,30 +79,6 @@ const explore = () => {
                             />
                         </View>
                 )}
-                // ListHeaderComponent={()=>(
-                //     <View className="flex-1 h-full">
-                //         <LinearGradient
-                //             colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                //             start={{ x: 0.5, y: 0 }}
-                //             end={{ x: 0.5, y: 1 }}
-                //         >
-                //             <View className="px-5">
-                //                 <View className="pt-10">
-                //                     <Text className="text-black-100 font-psans text-xl">
-                //                         Explore Investments
-                //                     </Text>
-                //                 </View>
-                                
-                //             </View>
-                //         </LinearGradient>
-                //         <View className="px-5">
-                //             <View className="py-3">
-                //                 <SearchInput refreshing={refreshing} />
-                //             </View>
-                            
-                //         </View>
-                //     </View>
-                // )}
                 ListEmptyComponent={()=> (<View className="h-full flex-1 justify-center items-center">
                     {loading ? (
                         <SkeletonLoader />

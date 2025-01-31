@@ -33,7 +33,7 @@ const Wallet = () => {
     }
     const onRefresh = async()=>{
         setRefreshing(true)
-        Promise.all([checkActiveUser(),refetch()])
+        await Promise.all([checkActiveUser(),refetch()])
         setRefreshing(false)
     }
     
@@ -228,7 +228,7 @@ const Wallet = () => {
                 isVisible={isDrawerVisible} 
                 onClose={() => setIsDrawerVisible(false)}
             >
-                <PaymentMethods />
+                <PaymentMethods user={user} />
             </GeneralDrawer>
         </SafeAreaView>
     )

@@ -12,7 +12,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 const PayWithBank = () => {
     const { mode:access_cod } = useLocalSearchParams();
     // const [access_code,reference] = access_cod.split("NAIRAfoLIO")
-    const [email,amount,mode,investmentId] = access_cod.split("NAIRAfoLIO")
+    const [email,amount,mode,investmentId,sale] = access_cod.split("NAIRAfoLIO")
     const { setUser } = useGlobalContext();
     // console.log({access_code,reference})
     const navigation = useNavigation();
@@ -64,7 +64,7 @@ const PayWithBank = () => {
                     
                     // Send this function to the success page
                     // await handlePaymentSuccess(res.data.transactionRef.reference,null,"Wallet");
-                    router.replace(`/payment-success/${mode === "card" ? "Card" : mode === "bank_transfer" ? "Transfer" : "Wallet"}NAIRAfoLIO${res.data.transactionRef.reference}NAIRAfoLIO${investmentId ? investmentId : "Unavailable"}`)
+                    router.replace(`/payment-success/${mode === "card" ? "Card" : mode === "bank_transfer" ? "Transfer" : "Wallet"}NAIRAfoLIO${res.data.transactionRef.reference}NAIRAfoLIO${investmentId ? investmentId : "Unavailable"}NAIRAfoLIO${sale ? sale : false}`)
                 }}
                 channels={[mode]}
                 autoStart={true}

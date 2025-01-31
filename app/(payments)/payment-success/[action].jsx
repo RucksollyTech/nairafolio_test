@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons } from '../../../constants'
 import { router, useLocalSearchParams } from 'expo-router'
-import { handlePaymentSuccess } from '../../../lib/updateAccountTransaction'
+import { handlePaymentSuccess, handlePaymentSuccessFromSales } from '../../../lib/updateAccountTransaction'
 import { useGlobalContext } from '@/context/GlobalProvider';
 
 const PaymentSuccess = () => {
     const { action } = useLocalSearchParams();
-    const [type,reference,investmentId] = action.split("NAIRAfoLIO")
+    const [type,reference,investmentId,sale] = action.split("NAIRAfoLIO")
     const { setUser } = useGlobalContext();
 
     const [loadFinished, setLoadFinished] = useState(false)
@@ -17,7 +17,11 @@ const PaymentSuccess = () => {
     if(!loadFinished && !hasRan) {
         setHasRan(true)
         const performHandleSuccess = async () =>{
-            await handlePaymentSuccess(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser);
+            if(!sale){
+                await handlePaymentSuccess(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser);
+            }else{
+                await handlePaymentSuccessFromSales(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser);
+            }
             setLoadFinished(true)
         }
         performHandleSuccess()

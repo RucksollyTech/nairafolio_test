@@ -310,7 +310,7 @@ const Home = () => {
                 isVisible={isDrawerVisible} 
                 onClose={() => setIsDrawerVisible(false)}
             >
-                <PaymentMethods />
+                <PaymentMethods user={user} />
             </GeneralDrawer>
         </SafeAreaView>
     );

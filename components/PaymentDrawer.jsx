@@ -17,10 +17,11 @@ const { height: screenHeight } = Dimensions.get('window');
 const PaymentDrawer = ({ 
     isVisible, 
     onClose, 
-    investment
+    investment,
+    user
 }) => {
     if (!isVisible) return null;
-    const { user } = useGlobalContext();
+    // const { user } = useGlobalContext();
     const [unit, setUnit] = useState(0)
     const [active, setActive] = useState(0)
     const [modeSet, setModeSet] = useState("")
@@ -286,6 +287,7 @@ const PaymentDrawer = ({
                                                 modeSet={modeSet}
                                                 setActiveMode={setActiveMode}
                                                 investment={investment}
+                                                user={user}
                                             />
                                         </View>
                                     ) : (

@@ -1,4 +1,4 @@
-import { getCurrentUser, updateUser, createUserInvestment, createTransactions, updateOngoingInvestment} from "../lib/appwrite";
+import { getCurrentUser, updateUser, createUserInvestment, createTransactions, updateOngoingInvestment, getUser} from "../lib/appwrite";
 import { updateCurrentUser } from "../lib/updateAccountTransaction";
 import { calculateProfit } from "./InvestmentCard";
 import UTCDate from "./UTCDate";
@@ -30,9 +30,9 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
             try {
                 
                 const [updatedUser, newUserInvestment,trans] = await Promise.all([
-                    await updateUser(user.$id,{wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit))}),
-                    await createUserInvestment(investment.$id,parseFloat(value_spent * investment?.price_per_unit),user.$id,parseFloat(value_spent),parseFloat(investment?.price_per_unit)),
-                    await createTransactions({
+                    updateUser(user.$id,{wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit))}),
+                    createUserInvestment(investment.$id,parseFloat(value_spent * investment?.price_per_unit),user.$id,parseFloat(value_spent),parseFloat(investment?.price_per_unit)),
+                    createTransactions({
                         action: "Deposit",
                         amount:parseFloat(value_spent * investment.price_per_unit),
                         type:"Wallet",
@@ -57,6 +57,56 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
     }
 
 }
+
+export const WalletCheckOutSales = async(investment,value_spent,user)=>{
+    const {wallet,error} = await CheckBalance()
+
+    if(error){
+        return {error};
+    }
+
+    if(investment && value_spent && wallet !== null){
+        const sellerUserId = investment?.user?.$id
+        const sellingUser = await getUser(sellerUserId)
+        if((wallet >= (value_spent * investment?.price_per_unit)) && sellingUser){
+            try {
+                const [updatedUser, newUserInvestment,trans] = await Promise.all([
+                    updateUser(user.$id,{wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit))}),
+                    updateUser(sellerUserId,{wallet_balance: parseFloat(sellingUser?.wallet_balance + (value_spent * investment?.price_per_unit))}),
+                    updateOngoingInvestment(
+                        investment?.$id,{
+                            is_up_for_sell:false,
+                            sold:false,
+                            pricePlaced:0,
+                            user:user.$id
+                        }
+                    ),
+                    createTransactions({
+                        action: "Deposit",
+                        amount:parseFloat(value_spent * investment.price_per_unit),
+                        type:"Wallet",
+                        user:user.$id,
+                        reason:investment.name,
+                    })
+                ]);
+                return {
+                    updatedUser,
+                    newUserInvestment,
+                    wallet
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }else{
+            console.log("Insufficient fund")
+            return {insufficient_fund:true}
+        }
+    }else{
+        return {error:"Something went wrong"}
+    }
+
+}
+
 
 export const sellInvestment = async(data)=>{
     const {
@@ -87,14 +137,14 @@ export const sellInvestment = async(data)=>{
             })
             const valueSentToWallet = (totalProfitAndInvested/(investment?.unit)) * (unit - putUnit)
             await Promise.all(
-                updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
+                [updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
                 createTransactions({
                     action:"Deposit",
                     amount:parseFloat(valueSentToWallet),
                     type,
                     user:user.$id,
                     reason,
-                })
+                })]
             )
             await updateCurrentUser(setUser)
         }
@@ -130,14 +180,14 @@ export const sellInvestmentNairaFolio = async(data)=>{
             })
             const valueSentToWallet = (totalProfitAndInvested/(investment?.unit)) * (unit - putUnit)
             await Promise.all(
-                updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
+                [updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
                 createTransactions({
                     action:"Deposit",
                     amount:parseFloat(valueSentToWallet),
                     type,
                     user:user.$id,
                     reason,
-                })
+                })]
             )
             await updateCurrentUser(setUser)
         }

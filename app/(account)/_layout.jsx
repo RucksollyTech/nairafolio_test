@@ -54,6 +54,12 @@ const AccountLayout = () => {
                     headerShown: false,
                 }}
             />
+            <Stack.Screen
+                name="sales/[id]"
+                options={{
+                    headerShown: false,
+                }}
+            />
         </Stack>
 
         {/* <Loader isLoading={loading} /> */}

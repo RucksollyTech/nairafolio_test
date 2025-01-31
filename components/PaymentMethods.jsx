@@ -9,8 +9,7 @@ import CustomButton from './CustomButton'
 import { useGlobalContext } from '@/context/GlobalProvider';
 
 
-const PaymentMethods = ({amount,active,setActive,modeSet,setActiveMode,investment}) => {
-    const { user } = useGlobalContext();
+const PaymentMethods = ({amount,active,setActive,modeSet,setActiveMode,investment,user}) => {
     const [loading, setLoading] = useState(false)
     const [depositAmount, setDepositAmount] = useState(0)
     const [next, setNext] = useState(false)
@@ -22,23 +21,6 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setActiveMode,investmen
     }
     
     
-
-    // const handleDeposit = async()=>{
-    //     setLoading(true)
-    //     if(user){
-    //         const res = await payWithBankTransfer(user.email, amount ?? depositAmount)
-    //         if (res) {
-    //             setLoading(false)
-    //             router.push({
-    //                 pathname: "/pay-with/[mode]",
-    //                 params: { url: `${res.access_code}NAIRAfoLIO${res.reference}` }
-    //             });
-    //         }
-    //         // Paystack response: {"access_code": "2fipn8i6wyb9wyg", "authorization_url": "https://checkout.paystack.com/2fipn8i6wyb9wyg", "reference": "av2saacotk"}
-    //     }
-    //     setLoading(false)
-    // }
-
     const handleOtherScreen = (num,mode) =>{
         if(setActive && setActiveMode){
             setActive(num)

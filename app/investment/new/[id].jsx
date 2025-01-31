@@ -2,22 +2,23 @@ import { View, Text, ScrollView, Image, ImageBackground, StyleSheet, TouchableOp
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
-import { icons, images } from '../../../constants'
+import { icons } from '../../../constants'
 import Money from '../../../components/Money'
 import CustomButton from '../../../components/CustomButton'
 import {Collapsible} from '../../../components/Collapsible'
-import { useLocalSearchParams, useNavigation } from 'expo-router'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams, useNavigation } from 'expo-router'
 import ToggleButtons from '../../../components/ToggleButtons'
 import PaymentDrawer from '../../../components/PaymentDrawer'
 import useAppwrite from '../../../lib/useAppwrite'
 import { getInvestment } from '@/lib/appwrite'
 import { convertDaysToReadableFormat } from '../../../components/dayConverter'
 import { RefreshControl } from 'react-native'
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 
 const Investment = () => {
     const {id} = useLocalSearchParams();
+    const { user } = useGlobalContext();
     const { data:listData, loading, refetch } = useAppwrite(()=>getInvestment(id))
     let data = listData && listData[0]
     const navigation = useNavigation();
@@ -32,6 +33,9 @@ const Investment = () => {
         setRefreshing(true)
         await refetch()
         setRefreshing(false)
+    }
+    const pushToPage = ()=>{
+        router.push(`/sales/${data.$id}`)
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
@@ -149,11 +153,11 @@ const Investment = () => {
                                     <View className="my-auto">
                                         <View className="flex">
                                             <View className={`
-                                                ${data?.status === null ? "bg-[#8080801A]" : "bg-[#00A6511A]"} 
+                                                ${(data?.status === null || data?.status === false) ? "bg-[#8080801A]" : "bg-[#00A6511A]"} 
                                                 flex-row ml-auto w-[80px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]
                                             `}>
-                                                <Text className={`h-[5px] my-auto w-[5px] rounded-full ${data?.status === null ? "bg-[#808080]" : "bg-secondary-100"}`}></Text>
-                                                <Text className={`${data?.status === null ? "text-[#808080]" : "text-secondary-100"} my-auto pl-2 text-sm`}>
+                                                <Text className={`h-[5px] my-auto w-[5px] rounded-full ${(data?.status === null || data?.status === false) ? "bg-[#808080]" : "bg-secondary-100"}`}></Text>
+                                                <Text className={`${(data?.status === null || data?.status === false) ? "text-[#808080]" : "text-secondary-100"} my-auto pl-2 text-sm`}>
                                                     {(data?.status !== null) ? (data?.status ? "Ongoing" : "Closed") : "Coming soon"}
                                                 </Text>
                                             </View>
@@ -227,10 +231,10 @@ const Investment = () => {
                                 </Text>
                             )}
                             <CustomButton 
-                                title="Invest Now" 
+                                title={(data && data?.status === false) ? "View offers" : "Invest Now"}
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
-                                handlePress={() => setIsDrawerVisible(true)}
+                                handlePress={() => (data && data?.status === false) ? pushToPage() : setIsDrawerVisible(true)}
                             />
                         </View>
                     </View>
@@ -371,10 +375,10 @@ const Investment = () => {
                                 </Text>
                             )}
                             <CustomButton 
-                                title="Invest Now" 
+                                title={(data && data?.status === false) ? "View offers" : "Invest Now"}
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
-                                handlePress={() => setIsDrawerVisible(true)}
+                                handlePress={() => (data && data?.status === false) ? pushToPage() : setIsDrawerVisible(true)}
                             />
                         </View>
                     </View>
@@ -385,6 +389,7 @@ const Investment = () => {
                     isVisible={isDrawerVisible} 
                     onClose={() => setIsDrawerVisible(false)} 
                     investment={data}
+                    user={user}
                 />
             )}
         </SafeAreaView>

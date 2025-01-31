@@ -9,7 +9,7 @@ import { Link, router } from 'expo-router'
 import Drawer from '../../../components/Drawer'
 import TitleComponent from '../../../components/TitleComponent'
 import useAppwrite from '../../../lib/useAppwrite'
-import { createTransactions, getInvestment, getUserInvestment, searchInvestmentUpdates, updateOngoingInvestment, updateUser } from '../../../lib/appwrite'
+import { createTransactions, getInvestment, getUserInvestment, getUserInvestmentData, searchInvestmentUpdates, updateOngoingInvestment, updateUser } from '../../../lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import UTCDate from '../../../components/UTCDate'
 import { calculateProfit, checkMatured } from '../../../components/InvestmentCard'
@@ -21,10 +21,28 @@ import EmptyState from '../../../components/EmptyState'
 import GeneralDrawer from '../../../components/GeneralDrawer'
 import FormFieldAdjusted from '../../../components/FormFieldAdjusted'
 import CustomButton from '../../../components/CustomButton'
-import { sellInvestment, sellInvestmentNairaFolio, totalProfitsAndInvested } from '../../../components/PerformingTransaction'
+import { WalletCheckOut, WalletCheckOutSales, sellInvestment, sellInvestmentNairaFolio, totalProfitsAndInvested } from '../../../components/PerformingTransaction'
 import { duration } from 'dayjs'
 import { updateCurrentUser } from '../../../lib/updateAccountTransaction'
 import SuccessModal from '../../../components/SuccessModal'
+import PaymentDrawer from '../../../components/PaymentDrawer'
+import CoverBg from '../../../components/CoverBg'
+import PaymentLoader from '../../../components/PaymentLoader'
+import PaymentMethods from '../../../components/PaymentMethods'
+
+
+
+
+export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
+    router.push({
+        pathname: "/pay-with/[mode]",
+        params: { mode: `${email}NAIRAfoLIO${amount}NAIRAfoLIO${mode}NAIRAfoLIO${investmentId ? investmentId : "Unavailable"}NAIRAfoLIO${sale}` }
+    });
+}
+
+
+
+
 
 const Active = () => {
     const {id} = useLocalSearchParams();
@@ -32,7 +50,7 @@ const Active = () => {
     const [investment, setInvestment] = useState({});
     const [updates, setUpdates] = useState({});
      
-    const { data:investmentData, loading, refetch } = useAppwrite(()=>getUserInvestment(id,user?.$id))
+    const { data:investmentData, loading, refetch } = useAppwrite(()=>getUserInvestmentData(id,user?.$id))
     const navigation = useNavigation();
     const [activeMethod, setActiveMethod] = useState(true)
 
@@ -40,6 +58,7 @@ const Active = () => {
     const [dateValue2, setDateValue2] = useState(null)
     const [showDateSelect, setShowDateSelect] = useState(false);
     const [isDrawerVisible2, setIsDrawerVisible2] = useState(false);
+    const [isDrawerVisible3, setIsDrawerVisible3] = useState(false);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     
     const [activeIndex, setActiveIndex] = useState(0);
@@ -105,14 +124,14 @@ const Active = () => {
         })
         const valueSentToWallet = totalProfitsAndInvested(investment)
         await Promise.all(
-            updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
+            [updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + valueSentToWallet)}),
             createTransactions({
                 action:"Deposit",
                 amount:parseFloat(valueSentToWallet),
                 type:"Wallet",
                 user:user.$id,
                 reason:investment?.investment?.name,
-            })
+            })]
         )
         await updateCurrentUser(setUser)
         setLoadingSubmit(false)
@@ -233,7 +252,87 @@ const Active = () => {
         }
     },[dateValue,dateValue2])
     
+
+
+    const [active, setActive] = useState(0)
+    const [loadings, setLoadings] = useState(false)
+    const [loadError, setLoadError] = useState(false)
+    const [isInsufficientFund, setIsInsufficientFund] = useState(false)
     
+    const handleWalletPay = async()=>{
+        setLoadings(true)
+        setLoadError(false)
+        setIsInsufficientFund(false)
+
+        // {price_per_unit,name,$id}
+
+        const {error,insufficient_fund} = await WalletCheckOutSales({
+            price_per_unit:investment?.pricePlaced,
+            name:investment?.investment?.name,
+            $id:investment?.$id,
+            user:investment?.user,
+        },investment?.unit,user)
+        if(error){
+            setLoadError(true)
+            return
+        }
+        if(insufficient_fund){
+            setIsInsufficientFund(true)
+            return
+        }
+        setLoadings(false)
+        setSuccess(true)
+    }
+    const majorSubmitHandler= async()=>{
+        if (active === 1){
+            await handleWalletPay()
+            setNext(true)
+        }else if (active === 2){
+            goToPayNow({
+                email:user.email,
+                amount:investment?.pricePlaced * investment?.unit,
+                mode: "bank_transfer",
+                investmentId:investment?.$id,
+                sale:true
+            })
+            setNext(true)
+        }else if (active === 3){
+            goToPayNow({
+                email:user.email,
+                amount:investment?.pricePlaced * investment?.unit,
+                mode: "card",
+                investmentId:investment?.$id,
+                sale:true
+            })
+            setNext(true)
+        }
+    }
+    const handleOtherScreen = (num) =>{
+        setActive(num)
+    }
+    
+
+
+    const handleSuccessSales= ()=>{
+        setSuccess(false)
+        setIsDrawerVisible3(false)
+        setNext(false)
+        setLoadings(false)
+        setLoadError(false)
+        router.replace("/home")
+    }
+    const handleFailSales= ()=>{
+        setSuccess(false)
+        setIsDrawerVisible3(false)
+        setLoadings(false)
+        setNext(false)
+        setLoadError(false)
+    }
+    const handleInsufficientFundClick= ()=>{
+        handleFailSales()
+        setIsInsufficientFund(false)
+        router.push("/wallet")
+    }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
@@ -312,50 +411,70 @@ const Active = () => {
                                 )}
                             </View>
                         </View>
-                        <View className="flex-1 flex flex-row gap-4 my-7">
-                            <TouchableOpacity
-                                onPress={handleMoveToWallet}
-                                activeOpacity={0.7}
-                                disabled={((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) ? true : false}
-                                className={`${((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
-                            >
-                                <Text className={`font-pinter font-semibold text-base text-white`}>
-                                    Move to wallet
-                                </Text>
-                                <View className="ml-2">
-                                    <Image
-                                        source={icons.download}
-                                        resizeMode="contain"
-                                        tintColor={"#FFFFFF"}
-                                    />
+                        {/* here ............ */}
+                                {/* {false ? ( */}
+                        <View className="pt-6 min-h-24">
+                            {user?.$id === investment?.user?.$id ? (
+                                <View className="flex-1 flex flex-row gap-4">
+                                    <TouchableOpacity
+                                        onPress={handleMoveToWallet}
+                                        activeOpacity={0.7}
+                                        disabled={((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) ? true : false}
+                                        className={`${((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                    >
+                                        <Text className={`font-pinter font-semibold text-base text-white`}>
+                                            Move to wallet
+                                        </Text>
+                                        <View className="ml-2">
+                                            <Image
+                                                source={icons.download}
+                                                resizeMode="contain"
+                                                tintColor={"#FFFFFF"}
+                                            />
+                                        </View>
+                                        
+                                    </TouchableOpacity>
+                                    {!investment?.is_up_for_sell && !investment?.sold && !checkMatured({
+                                        duration:investment?.investment?.duration_days,
+                                        createdAt:investment?.$createdAt
+                                    }) && (
+                                        <TouchableOpacity
+                                            onPress={()=>setIsDrawerVisible2(true)}
+                                            activeOpacity={0.7}
+                                            className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                        >
+                                            <Text className={`font-pinter font-semibold text-base text-muted`}>
+                                                Sell shares
+                                            </Text>
+                                            <View className="ml-2">
+                                                <Image
+                                                    source={icons.upload}
+                                                    resizeMode="contain"
+                                                    tintColor={"#747474"}
+                                                />
+                                            </View>
+                                            
+                                        </TouchableOpacity>
+                                    )}
                                 </View>
-                                
-                            </TouchableOpacity>
-                            {!investment?.is_up_for_sell && !investment?.sold && !checkMatured({
-                                duration:investment?.investment?.duration_days,
-                                createdAt:investment?.$createdAt
-                            }) && (
-                                <TouchableOpacity
-                                    onPress={()=>setIsDrawerVisible2(true)}
-                                    activeOpacity={0.7}
-                                    className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
-                                >
-                                    <Text className={`font-pinter font-semibold text-base text-muted`}>
-                                        Sell shares
-                                    </Text>
-                                    <View className="ml-2">
-                                        <Image
-                                            source={icons.upload}
-                                            resizeMode="contain"
-                                            tintColor={"#747474"}
-                                        />
-                                    </View>
-                                    
-                                </TouchableOpacity>
+                            ):(
+                                <>
+                                    {user && investment?.user && (
+                                        <View className="flex-1">
+                                            <CustomButton 
+                                                title={"Buy now"}
+                                                handlePress={()=> setIsDrawerVisible3(true)}
+                                                containerStyles={"h-14 font-psemibold"}
+                                                textStyles={"text-white "}
+                                                isLoading={loadings}
+                                            />
+                                        </View>
+                                    )}
+                                </>
                             )}
                         </View>
 
-                        <View className="flex-1 rounded-lg border border-border">
+                        <View className="flex-1 mt-1 rounded-lg border border-border">
                             <View className="p-4 border-b border-border flex-1">
                                 <Text className="text-muted">
                                     Returns
@@ -1007,6 +1126,289 @@ const Active = () => {
                     />
                 </View>
             </SuccessModal>
+            <GeneralDrawer
+                header={"Select payment method"}
+                isVisible={isDrawerVisible3} 
+                onClose={()=>setIsDrawerVisible3(false)}
+            >
+                <View>
+                    {!next ? (
+                        <>
+                            <View>
+                                <View className="px-5 border-b border-border">
+                                    <TouchableOpacity 
+                                        activeOpacity={0.9}
+                                        onPress={()=>handleOtherScreen(1)}
+                                        className={`
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border
+                                            ${(active && active === 1) ? "border-secondary-100" : "border-border"}
+                                            bg-[#F8FAFA]
+                                        `}
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
+                                        >
+                                            <Image
+                                                source={icons.wallet}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            className="w-full flex-1"
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                        >
+                                            <View
+                                                className="flex-1 px-3 w-full "
+                                            >
+                                                <View className="my-auto justify-between flex-row">
+                                                    <View>
+                                                        <Text
+                                                            className="text-lg text-header-200 font-psans"
+                                                        >
+                                                            Wallet
+                                                        </Text>
+                                                    </View>
+                                                    <View className="pr-1">
+                                                        <Money 
+                                                            value={user?.wallet_balance || 0}
+                                                            textStyle={"text-secondary-100 text-lg font-[700]"}
+                                                        />
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center flex-row"
+                                        >
+                                            <Image 
+                                                source={icons.arrow_right_italic}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                <TouchableOpacity 
+                                    className="my-5 px-5"
+                                    onPress={()=>handleOtherScreen(2)}
+                                >
+                                    <View 
+                                        className={`
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            border
+                                            ${(active && active === 2) ? "border-secondary-100" : "border-border"}
+                                            bg-[#F8FAFA]
+                                        `}
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
+                                        >
+                                            <Image
+                                                source={icons.bank}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                            className="flex-1 px-3 "
+                                        >
+                                            <View>
+                                                <Text
+                                                    className="text-lg text-header-200 font-psans"
+                                                >
+                                                    Bank transfer
+                                                </Text>
+                                            </View>
+                                            <View>
+                                                <Text className="text-muted text-sm">
+                                                    Direct transfer from your bank account
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center"
+                                        >
+                                            <Image 
+                                                source={icons.arrow_right_italic}
+                                            />
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity 
+                                    className="px-5"
+                                    onPress={()=>handleOtherScreen(3)}
+                                >
+                                    <View 
+                                        className={`
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border
+                                            ${(active && active === 3) ? "border-secondary-100" : "border-border"}
+                                            bg-[#F8FAFA]
+                                        `}
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
+                                        >
+                                            <Image
+                                                source={icons.card}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                            className="flex-1 px-2 "
+                                        >
+                                            <View>
+                                                <Text
+                                                    className="text-lg text-header-200 font-psans"
+                                                >
+                                                    Debit card
+                                                </Text>
+                                            </View>
+                                            <View>
+                                                <Text className="text-muted text-sm">
+                                                    Pay using Visa, Mastercard, or others 
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center"
+                                        >
+                                            <Image 
+                                                source={icons.arrow_right_italic}
+                                            />
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            {active > 0 && (
+                                <View className="px-5 pb-7">
+                                    <CustomButton 
+                                        title="Continue"
+                                        textStyles="text-white"
+                                        containerStyles="h-14"
+                                        handlePress={majorSubmitHandler}
+                                        isLoading={loadings}
+                                    />
+                                </View>
+                            )}
+                        </>
+                    ):(
+                        <View>
+                            {success ? (
+                                <View>
+                                    <View className="px-2">
+                                        <View className="flex-1 justify-center items-center">
+                                            <Image 
+                                                source={icons.good}
+                                            />
+                                        </View>
+                                        <View className="mt-5">
+                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                                You have just bought {investment?.unit} units of shares from {investment?.investment?.name}.
+                                            </Text>
+                                        </View>
+                                        <CustomButton
+                                            handlePress={handleSuccessSales}
+                                            title={"Continue"}
+                                            textStyles={"font-psans text-white"}
+                                            containerStyles={"mt-5 h-14"}
+                                        />
+                                    </View>
+                                </View>
+                            ):loadError ? (
+                                <View className="">
+                                    <View className="px-2">
+                                        <View className="flex-1 justify-center items-center">
+                                            <Image 
+                                                source={icons.error}
+                                            />
+                                        </View>
+                                        <View className="mt-5">
+                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                                An error occurred while trying to buy shares. Please try again later.
+                                            </Text>
+                                        </View>
+                                        <CustomButton
+                                            handlePress={handleFailSales}
+                                            title={"Continue"}
+                                            textStyles={"font-psans text-white"}
+                                            containerStyles={"mt-5 h-14"}
+                                        />
+                                    </View>
+                                </View>
+                            ) :(
+                                <View>
+                                    {isInsufficientFund ? (
+                                        <View className="px-2">
+                                            <View className="flex-1 justify-center items-center">
+                                                <Image 
+                                                    source={icons.error}
+                                                />
+                                            </View>
+                                            <View className="mt-5">
+                                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                                    Insufficient funds
+                                                </Text>
+                                            </View>
+                                            <CustomButton
+                                                handlePress={handleInsufficientFundClick}
+                                                title={"Add funds to wallet"}
+                                                textStyles={"font-psans text-white"}
+                                                containerStyles={"mt-5 h-14"}
+                                            />
+                                        </View>
+                                    ):(
+                                        <View className="px-2">
+                                            <View className="flex-1 justify-center items-center">
+                                                <Image 
+                                                    source={icons.error}
+                                                />
+                                            </View>
+                                            <View className="mt-5">
+                                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                                    An error occurred while trying to buy shares. Please try again later.
+                                                </Text>
+                                            </View>
+                                            <CustomButton
+                                                handlePress={handleFailSales}
+                                                title={"Add funds to wallet"}
+                                                textStyles={"font-psans text-white"}
+                                                containerStyles={"mt-5 h-14"}
+                                            />
+                                        </View>
+                                    )}
+                                </View>
+                            )}
+                        </View>
+                    )}
+                </View>
+            </GeneralDrawer>
         </SafeAreaView>
     )
 }

@@ -54,10 +54,12 @@ import good from "../assets/icons/good.png";
 import good_sm from "../assets/icons/good_sm.png";
 import plus from "../assets/icons/plus.png";
 import good_bg from "../assets/icons/good_bg.png";
+import error from "../assets/icons/error.png";
 
 export default {
     left_arrow,
     plus,
+    error,
     good_bg,
     good_sm,
     good,

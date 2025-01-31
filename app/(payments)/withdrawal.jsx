@@ -82,7 +82,7 @@ const withdrawal = () => {
     }
     const onRefresh = async()=>{
         setRefreshing(true)
-        Promise.all([checkActiveUser(),refetch()])
+        await Promise.all([checkActiveUser(),refetch()])
         setRefreshing(false)
     }
 

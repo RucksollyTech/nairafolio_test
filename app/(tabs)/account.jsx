@@ -9,7 +9,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { signOut } from '@/lib/appwrite'
 
 const account = () => {
-    const { setUser, setIsLogged } = useGlobalContext();
+    const { setUser, setIsLogged,user } = useGlobalContext();
     const [isLoggingOut, setIsLoggingOut] = useState(false)
 
     const logout = async () => {
@@ -58,7 +58,7 @@ const account = () => {
                             className="items-center justify-center "
                         >
                             <Image
-                                source={images.example2}
+                                source={{uri: user.avatar}}
                                 resizeMode="cover"
                                 className="h-16 w-16 rounded-full"
                             />
@@ -73,12 +73,12 @@ const account = () => {
                                 <Text
                                     className="text-xl text-header-200 font-psans"
                                 >
-                                    David Gabriel
+                                    {user.name}
                                 </Text>
                             </View>
                             <View className="pt-2">
                                 <Text className="text-muted text-sm">
-                                    DavidGabriel@gmail.com
+                                    {user.email}
                                 </Text>
                             </View>
                         </View>
