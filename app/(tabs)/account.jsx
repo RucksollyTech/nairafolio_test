@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -12,7 +12,13 @@ import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 const account = () => {
     const { setUser, setIsLogged,user } = useGlobalContext();
     const [isLoggingOut, setIsLoggingOut] = useState(false)
+    const [refreshing, setRefreshing] = useState(false);
 
+    const onRefresh = async()=>{
+        setRefreshing(true)
+        await updateCurrentUser(setUser)
+        setRefreshing(false)
+    }
     const logout = async () => {
         setIsLoggingOut(true)
         await signOut();
@@ -101,6 +107,9 @@ const account = () => {
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 
                 <View className="pb-24">
@@ -112,6 +121,7 @@ const account = () => {
                             icon={icons.check}
                             link={"/verify-account"}
                             verified
+                            verificationData={user.is_verified}
                         />
                         <AccountComponets 
                             title={"Security"}

@@ -216,7 +216,13 @@ const withdrawal = () => {
             setSubmittingBank(false)
         }
     }
-
+    const handleCloseDrawer = ()=>{
+        setIsDrawerVisible(false)
+        setSubmittingBank(false)
+        setVerifyError("")
+        setSubmitError(false)
+        setNext(false)
+    }
 
     useEffect(() => {
         if(!user){
@@ -406,7 +412,7 @@ const withdrawal = () => {
             </View>
             <GeneralDrawer 
                 isVisible={isDrawerVisible} 
-                onClose={() => setIsDrawerVisible(false)} 
+                onClose={handleCloseDrawer} 
                 noScroll={true} 
                 minHeights={400}
             >

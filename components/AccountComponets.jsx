@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'expo-router'
 import { icons } from '../constants'
 
-const AccountComponets = ({icon,link,title,subtitle,verified}) => {
+const AccountComponets = ({icon,link,title,subtitle,verified,verificationData}) => {
     return (
         <View className="py-4 border-b border-border-300">
             <Link href={link}>
@@ -46,11 +46,19 @@ const AccountComponets = ({icon,link,title,subtitle,verified}) => {
                                     </View>
                                 </View>
                                 <View className="flex-1 w-[30%] justify-center items-end">
-                                    <Text
-                                        className="text-sm text-red-500 font-pmedium text-right font-[700]" 
-                                    >
-                                        Unverified
-                                    </Text>
+                                    {verificationData ? (
+                                        <Text
+                                            className="text-sm text-green-500 font-pmedium text-right font-[700]" 
+                                        >
+                                            Verified
+                                        </Text>
+                                    ):(
+                                        <Text
+                                            className="text-sm text-red-500 font-pmedium text-right font-[700]" 
+                                        >
+                                            Unverified
+                                        </Text>
+                                    )}
                                 </View>
                             </View>
                         ) : (
