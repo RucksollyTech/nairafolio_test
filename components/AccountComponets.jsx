@@ -1,12 +1,19 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { icons } from '../constants'
 
 const AccountComponets = ({icon,link,title,subtitle,verified,verificationData}) => {
+    const moveToPage=()=>{
+        if(verificationData)return
+        router.push(link)
+    }
     return (
         <View className="py-4 border-b border-border-300">
-            <Link href={link}>
+            <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={moveToPage}
+            >
                 <View 
                     className="
                         flex-1 
@@ -91,7 +98,7 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData}) 
                         />
                     </View>
                 </View>
-            </Link>
+            </TouchableOpacity>
         </View>
     )
 }
