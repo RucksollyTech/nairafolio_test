@@ -1,12 +1,13 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
-import { icons, images } from '../../constants'
+import { icons } from '../../constants'
 import AccountComponets from '../../components/AccountComponets'
 import { Link, router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { signOut } from '@/lib/appwrite'
+import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 
 const account = () => {
     const { setUser, setIsLogged,user } = useGlobalContext();
@@ -21,82 +22,89 @@ const account = () => {
 
         router.replace("/sign_in");
     };
-
+    useEffect(() => {
+        const gettingUser = async()=>{
+            await updateCurrentUser(setUser)
+        }
+        gettingUser()
+    }, [])
+    
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <LinearGradient
+                colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+                start={{ x: 0.5, y: 0 }}
+                end={{ x: 0.5, y: 1 }}
+            >
+                <View className="px-5">
+                    <View className="pt-8">
+                        <Text className="text-black-100 font-psans text-2xl">
+                            My Account
+                        </Text>
+                    </View>
+                </View>
+            </LinearGradient>
+            
+            <View 
+                className="
+                    rounded-lg
+                    flex 
+                    py-7 flex-row
+                    border-b
+                    border-border
+                    px-5
+                "
+            >
+                <View
+                    className="items-center justify-center "
+                >
+                    <Image
+                        source={{uri: user.avatar}}
+                        resizeMode="cover"
+                        className="h-16 w-16 rounded-full"
+                    />
+                </View>
+                <View
+                    style={{
+                        width: "74.54%",
+                    }}
+                    className="flex-1 px-3 "
+                >
+                    <View>
+                        <Text
+                            className="text-xl text-header-200 font-psans"
+                        >
+                            {user.name}
+                        </Text>
+                    </View>
+                    <View className="pt-2">
+                        <Text className="text-muted text-sm">
+                            {user.email}
+                        </Text>
+                    </View>
+                </View>
+                <View
+                    style={{
+                        width: "10.08%",
+                    }}
+                    className="items-center justify-center"
+                >
+                    <Link href={"/edit-account"}>
+                        <View className="h-11 w-11 rounded-full bg-[#F5F5F5] items-center justify-center">
+                            <Image 
+                                source={icons.edit}
+                            />
+                        </View>
+                    </Link>
+                </View>
+            </View>
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >
-                <LinearGradient
-                    colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
-                >
-                    <View className="px-5">
-                        <View className="pt-8">
-                            <Text className="text-black-100 font-psans text-2xl">
-                                My Account
-                            </Text>
-                        </View>
-                    </View>
-                </LinearGradient>
+                
                 <View className="pb-24">
-                    <View 
-                        className="
-                            flex-1 
-                            rounded-lg
-                            flex 
-                            py-9 flex-row
-                            mb-5
-                            border-b
-                            border-border
-                            px-5
-                        "
-                    >
-                        <View
-                            className="items-center justify-center "
-                        >
-                            <Image
-                                source={{uri: user.avatar}}
-                                resizeMode="cover"
-                                className="h-16 w-16 rounded-full"
-                            />
-                        </View>
-                        <View
-                            style={{
-                                width: "74.54%",
-                            }}
-                            className="flex-1 px-3 "
-                        >
-                            <View>
-                                <Text
-                                    className="text-xl text-header-200 font-psans"
-                                >
-                                    {user.name}
-                                </Text>
-                            </View>
-                            <View className="pt-2">
-                                <Text className="text-muted text-sm">
-                                    {user.email}
-                                </Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                width: "10.08%",
-                            }}
-                            className="items-center justify-center"
-                        >
-                            <Link href={"/edit-account"}>
-                                <View className="h-11 w-11 rounded-full bg-[#F5F5F5] items-center justify-center">
-                                    <Image 
-                                        source={icons.edit}
-                                    />
-                                </View>
-                            </Link>
-                        </View>
-                    </View>
+                    
                     <View className="px-5">
                         <AccountComponets 
                             title={"Verify account"}
@@ -122,13 +130,13 @@ const account = () => {
                             link={"/wallet"}
                         />
                         <AccountComponets 
-                            title={"Notification settings"}
-                            icon={icons.notification}
+                            title={"Terms & conditions"}
+                            icon={icons.docs}
                             link={"/"}
                         />
                         <AccountComponets 
-                            title={"Terms & conditions"}
-                            icon={icons.docs}
+                            title={"Media and contents"}
+                            icon={icons.media}
                             link={"/"}
                         />
                         <AccountComponets 

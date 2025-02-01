@@ -7,6 +7,7 @@ import { RefreshControl } from 'react-native';
 import { getUpdate } from '../../../lib/appwrite';
 import useAppwrite from '../../../lib/useAppwrite';
 import UTCDate from '../../../components/UTCDate';
+import CustomNavigator from '../../../components/CustomNavigator';
 
 const Update = () => {
     const {id} = useLocalSearchParams();
@@ -22,6 +23,7 @@ const Update = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
@@ -29,19 +31,7 @@ const Update = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View className="px-5">
-                    <TouchableOpacity
-                        className="pt-5"
-                        onPress={()=>navigation.goBack()}
-                    >
-                        <Image
-                            source={icons.arrow_left}
-                            resizeMode="contain"
-                        />
-                    </TouchableOpacity>
-                </View>
-                
-                <View className="pt-8 px-5 border-b border-border pb-6">
+                <View className="pt-2 px-5 border-b border-border pb-6">
                     <View className="flex-row flex-1 items-center">
                         <View
                             className="

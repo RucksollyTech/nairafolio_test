@@ -125,17 +125,7 @@ const Transactions = () => {
                 ListHeaderComponent={()=>(
                     <>
                         <View className="flex-1">
-                            <View className="px-5">
-                                <TouchableOpacity
-                                    onPress={()=>navigation.goBack()}
-                                >
-                                    <Image
-                                        source={icons.arrow_left}
-                                        resizeMode="contain"
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View className="pt-4 px-5">
+                            <View className="pt-2 px-5">
                                 <Text className="text-black-100 font-psans text-2xl">
                                     Transaction history
                                 </Text>

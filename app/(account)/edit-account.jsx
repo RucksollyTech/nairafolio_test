@@ -1,63 +1,189 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ScrollView, Image, TouchableOpacity, RefreshControl } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '../../constants'
 import AccountCustomForm from '../../components/AccountCustomForm'
 import CustomButton from '../../components/CustomButton'
+import { useGlobalContext } from '@/context/GlobalProvider'
 import { useNavigation } from 'expo-router'
 
+// import * as ImagePicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
+import GeneralDrawer from '../../components/GeneralDrawer'
+import { updateUserProfile } from '../../lib/appwrite'
+import { updateCurrentUser } from '../../lib/updateAccountTransaction'
+import CustomNavigator from '../../components/CustomNavigator'
+
 const EditAccount = () => {
+    const { user, setUser } = useGlobalContext();
+    const [uploading, setUploading] = useState(false);
+    const [saved, setSaved] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = async()=>{
+        setRefreshing(true)
+        await updateCurrentUser(setUser)
+        setRefreshing(false)
+    }
     const navigation = useNavigation();
+    const username = user?.name?.split(" ")
+
     const [accountForm, setAccountForm] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
+        firstName: username?.[0] || "",
+        lastName: username?.slice(1).join(" ") || "",
+        phoneNumber: user.phone || "",
         image: null,
     })
-    const handleImageChange = () => {};
+
+    const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+
+    
+    const openPicker = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [4, 4],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setAccountForm({
+                ...accountForm,
+                image: result.assets[0],
+            });
+            setIsDrawerVisible(false)
+        }
+    };
+
+    const takePhoto = async () => {
+        // Request camera permissions
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      
+        if (status !== "granted") {
+          Alert.alert("Permission Denied", "You need to grant camera access to take a photo.");
+          return;
+        }
+      
+        let result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ["images"],
+          allowsEditing: true,
+          aspect: [4, 4],
+          quality: 1,
+        });
+      
+        if (!result.canceled) {
+            setAccountForm({
+                ...accountForm,
+                image: result.assets[0],
+            });
+            setIsDrawerVisible(false)
+        }
+    };
+
+    const submit = async () => {
+        if (
+            (accountForm.firstName === "") |
+            (accountForm.lastName === "") |
+            (accountForm.phoneNumber === "")
+        ) {
+            return Alert.alert("Please provide all fields");
+        }
+        setUploading(true);
+        try {
+            await updateUserProfile({
+                ...accountForm,
+                userId: user.$id,
+                user
+            });
+            await updateCurrentUser(setUser)
+            setSaved(true);
+            setTimeout(() => {
+                setSaved(false);
+            }, 1500);
+        } catch (error) {
+            Alert.alert("Error", error.message);
+        } finally {
+            await updateCurrentUser(setUser)
+            setUploading(false);
+        }
+    };
+    useEffect(() => {
+        updateCurrentUser(setUser)
+    }, [uploading])
+    
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            {/* <View className="bg-white px-5 pt-7">
+                <View>
+                    <TouchableOpacity
+                        onPress={()=>navigation.goBack()}
+                    >
+                        <Image
+                            source={icons.arrow_left}
+                            resizeMode="contain"
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View> */}
+            <CustomNavigator navigator={navigation} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
-                <View className="bg-white flex-1 h-full px-5 pb-10 pt-7">
-                    <View>
-                        <TouchableOpacity
-                            onPress={()=>navigation.goBack()}
-                        >
-                            <Image
-                                source={icons.arrow_left}
-                                resizeMode="contain"
-                            />
-                        </TouchableOpacity>
-                    </View>
+                <View className="bg-white flex-1 px-5 pb-10 relative">
+                    
                     <View className="pt-4">
                         <Text className="text-black-100 font-psans text-2xl">
                             Edit profile
                         </Text>
                     </View>
                     <View className="py-14 justify-center items-center flex-1">
-                        <View className="relative flex-1">
-                            <Image 
-                                source={images.example2}
-                                resizeMode='cover'
-                                className="w-28 h-28 rounded-full"
-                            />
+                        <TouchableOpacity 
+                            activeOpacity={0.9}
+                            onPress={()=>setIsDrawerVisible(true)}
+                            className="relative flex-1"
+                        >
+                            {accountForm?.image ? (
+                                <Image 
+                                    source={{uri : accountForm.image.uri}}
+                                    resizeMode='cover'
+                                    className="w-28 h-28 rounded-full"
+                                />
+                            ):(
+                                <Image 
+                                    source={{uri : user.avatar}}
+                                    resizeMode='cover'
+                                    className="w-28 h-28 rounded-full"
+                                />
+                            )}
+                            
                             <View className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-[#F5F5F5] items-center justify-center">
-                                <TouchableOpacity 
-                                    onPress={handleImageChange}
-                                >
-                                    <Image 
-                                        source={icons.camera}
-                                        resizeMode='cover'
-                                        className="rounded-full"
-                                    />
-                                </TouchableOpacity>
+                                <Image 
+                                    source={icons.edit}
+                                    resizeMode='cover'
+                                    className="rounded-full"
+                                />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    {saved && (
+                        <View className="relative">
+                            <View className="absolute -top-10 z-10 justify-center items-center">
+                                
+                                <View className={`
+                                    bg-[#00A6511A]
+                                    flex-row w-[140px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]
+                                `}>
+                                    <Text className={`text-secondary-100 text-center font-psemibold my-auto pl-2 text-xs`}>
+                                        Edit was successful
+                                    </Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
+                    )}
                     <View>
                         <AccountCustomForm 
                             title="First name"
@@ -76,10 +202,9 @@ const EditAccount = () => {
                         <AccountCustomForm 
                             title="Email"
                             otherStyles="mb-4"
-                            value={accountForm.email}
+                            value={user.email}
                             keyboardType={"email-address"}
                             placeholder={"Enter your email address"}
-                            handleChangeText={(e)=>setAccountForm({...accountForm,email:e})}
                         />
                         <AccountCustomForm 
                             title="Phone"
@@ -95,11 +220,58 @@ const EditAccount = () => {
                             title="Save changes"
                             containerStyles="h-16"
                             textStyles="text-white font-psemibold"
-                            handlePress={()=>console.log("Save button pressed")}
+                            handlePress={submit}
+                            isLoading={uploading}
                         />
                     </View>
+                    
                 </View>
             </ScrollView>
+            <GeneralDrawer 
+                header={"Profile photo"}
+                isVisible={isDrawerVisible} 
+                onClose={() => setIsDrawerVisible(false)}
+                dismissOnClickOutside={true}
+            >
+                <View className="flex-1 flex-row gap-10 mb-10 mt-5">
+                    <TouchableOpacity 
+                        onPress={takePhoto}
+                        className="items-center justify-center"
+                    >
+                        <View className="mb-2">
+                            <Image 
+                                source={icons.cam}
+                                resizeMode='contain'
+                                className="w-10 h-10"
+                            />
+                        </View>
+                        <View>
+                            <Text className="font-psans text-header-100 text-sm">
+                                Camera
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View>
+                        <TouchableOpacity 
+                            onPress={openPicker}
+                            className="items-center justify-center"
+                        >
+                            <View className="mb-2">
+                                <Image 
+                                    source={icons.gallery}
+                                    resizeMode='contain'
+                                    className="w-10 h-10"
+                                />
+                            </View>
+                            <View>
+                                <Text className="font-psans text-header-100 text-sm">
+                                    Gallery
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </GeneralDrawer>
         </SafeAreaView>
     )
 }

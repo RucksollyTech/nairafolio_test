@@ -13,6 +13,7 @@ import { fetchBanks, validateAccount } from '../../lib/payStack';
 import useAppwrite from '../../lib/useAppwrite';
 import HomeSkeletonLoader from '../../components/HomeSkeletonLoader';
 import { handleFailedTransactions, makeTransfer } from '../../lib/updateAccountTransaction';
+import CustomNavigator from '../../components/CustomNavigator';
 
 const withdrawal = () => {
     const navigation = useNavigation();
@@ -233,6 +234,7 @@ const withdrawal = () => {
     // {"active": true, "code": "120001", "country": "Nigeria", "createdAt": "2022-05-31T06:50:27.000Z", "currency": "NGN", "gateway": "", "id": 302, "is_deleted": false, "longcode": "120001", "name": "9mobile 9Payment Service Bank", "pay_with_bank": false, "slug": "9mobile-9payment-service-bank-ng", "supports_transfer": true, "type": "nuban", "updatedAt": "2022-06-23T09:33:55.000Z"}
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
@@ -240,18 +242,9 @@ const withdrawal = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View className="bg-white flex-1 h-full px-5 pb-10 pt-7">
-                    <View>
-                        <TouchableOpacity
-                            onPress={()=>navigation.goBack()}
-                        >
-                            <Image
-                                source={icons.arrow_left}
-                                resizeMode="contain"
-                            />
-                        </TouchableOpacity>
-                    </View>
-                    <View className="pt-4">
+                <View className="bg-white flex-1 h-full px-5 pb-10">
+                    
+                    <View className="pt-2">
                         <Text className="text-black-100 font-psans text-2xl">
                             Withdrawal
                         </Text>

@@ -3,12 +3,12 @@ import {View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
 
 
-const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, header }) => {
+const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, header, dismissOnClickOutside }) => {
     if (!isVisible) return null;
 
     return (
         <View className="absolute inset-0 z-50 bg-black/50">
-            {/* <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} /> */}
+            {dismissOnClickOutside && <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />}
             <View
                 className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
                 style={{ minHeight: minHeights }}

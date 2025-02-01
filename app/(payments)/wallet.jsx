@@ -14,6 +14,7 @@ import UTCDate from '../../components/UTCDate'
 import GeneralDrawer from '../../components/GeneralDrawer'
 import PaymentMethods from '../../components/PaymentMethods'
 import { WebView } from 'react-native-webview';
+import CustomNavigator from '../../components/CustomNavigator'
 
 const Wallet = () => {
     const navigation = useNavigation();
@@ -47,6 +48,7 @@ const Wallet = () => {
     }, [user])
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
@@ -54,18 +56,9 @@ const Wallet = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View className="bg-white flex-1 h-full px-5 pb-10 pt-7">
-                    <View>
-                        <TouchableOpacity
-                            onPress={()=>navigation.goBack()}
-                        >
-                            <Image
-                                source={icons.arrow_left}
-                                resizeMode="contain"
-                            />
-                        </TouchableOpacity>
-                    </View>
-                    <View className="pt-4">
+                <View className="bg-white flex-1 h-full px-5 pb-10">
+                    
+                    <View className="pt-2">
                         <Text className="text-black-100 font-psans text-2xl">
                             Wallet
                         </Text>

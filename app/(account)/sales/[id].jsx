@@ -8,6 +8,7 @@ import { getUserInvestmentsOffers } from '../../../lib/appwrite';
 import useAppwrite from '../../../lib/useAppwrite';
 import EmptyState from '../../../components/EmptyState';
 import HomeSkeletonLoader from '../../../components/HomeSkeletonLoader';
+import CustomNavigator from '../../../components/CustomNavigator';
 
 const Sales = () => {
     const {id} = useLocalSearchParams();
@@ -27,6 +28,7 @@ const Sales = () => {
     
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
@@ -35,18 +37,9 @@ const Sales = () => {
                 }
             >
                 <View className="px-5">
-                    <TouchableOpacity
-                        className="pt-5"
-                        onPress={()=>navigation.goBack()}
-                    >
-                        <Image
-                            source={icons.arrow_left}
-                            resizeMode="contain"
-                        />
-                    </TouchableOpacity>
                     <View 
                         className={`
-                            p-5 mb-4 flex-row justify-between items-center border-b border-border
+                            px-5 pb-5 pt-2 mb-4 flex-row justify-between items-center border-b border-border
                         `}
                     >
                         <View className="flex-row items-center">

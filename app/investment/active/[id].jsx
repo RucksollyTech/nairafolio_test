@@ -29,6 +29,7 @@ import PaymentDrawer from '../../../components/PaymentDrawer'
 import CoverBg from '../../../components/CoverBg'
 import PaymentLoader from '../../../components/PaymentLoader'
 import PaymentMethods from '../../../components/PaymentMethods'
+import CustomNavigator from '../../../components/CustomNavigator'
 
 
 
@@ -335,6 +336,16 @@ const Active = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
+            <View className="px-5">
+                <View>
+                    <Text 
+                        className="text-black-100 text-xl font-pregular font-[700]"
+                    >
+                        {investment?.investment?.name}
+                    </Text>
+                </View>
+            </View>
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
@@ -343,30 +354,9 @@ const Active = () => {
                 }
             >
                 <View className="flex-1 h-full">
-                    <LinearGradient
-                        colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                        start={{ x: 0.5, y: 0 }}
-                        end={{ x: 0.5, y: 1 }}
-                    >
-                        <View className="px-5">
-                            <TouchableOpacity
-                                className="pt-5 flex flex-row"
-                                onPress={()=>navigation.goBack()}
-                            >
-                                <Image
-                                    source={icons.arrow_left}
-                                    resizeMode="contain"
-                                />
-                                <View className="pl-3">
-                                    <Text className="text-black-100 text-xl font-pregular font-[700]">
-                                        {investment?.investment?.name}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </LinearGradient>
+                    
                     <View className="px-5">
-                        <View className="pt-10">
+                        <View className="pt-7">
                             <Money
                                 value={(investment?.investment?.price_per_unit * investment?.unit) + calculateProfit({
                                     percentage:investment?.investment?.rio,

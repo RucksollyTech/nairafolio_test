@@ -14,6 +14,7 @@ import { getInvestment } from '@/lib/appwrite'
 import { convertDaysToReadableFormat } from '../../../components/dayConverter'
 import { RefreshControl } from 'react-native'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import CustomNavigator from '../../../components/CustomNavigator'
 
 
 const Investment = () => {
@@ -39,6 +40,7 @@ const Investment = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
@@ -47,24 +49,8 @@ const Investment = () => {
                 }
             >
                 <View className="flex-1 h-full">
-                    <LinearGradient
-                        colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                        start={{ x: 0.5, y: 0 }}
-                        end={{ x: 0.5, y: 1 }}
-                    >
-                        <View className="px-5">
-                            <TouchableOpacity
-                                className="pt-5"
-                                onPress={()=>navigation.goBack()}
-                            >
-                                <Image
-                                    source={icons.arrow_left}
-                                    resizeMode="contain"
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </LinearGradient>
-                    <View className="pt-5 px-5">
+                    
+                    <View className="px-5">
                         <View 
                             className="
                                 flex-1 

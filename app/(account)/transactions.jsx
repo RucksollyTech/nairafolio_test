@@ -10,6 +10,7 @@ import useAppwrite from '../../lib/useAppwrite'
 import HomeSkeletonLoader from '../../components/HomeSkeletonLoader'
 import EmptyState from '../../components/EmptyState'
 import UTCDate from '../../components/UTCDate'
+import CustomNavigator from '../../components/CustomNavigator'
 
 
 const DataContainer = ({data,transactions,index})=>(
@@ -122,6 +123,12 @@ const Transactions = () => {
 
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
+            <View className="pt-2 px-5 pb-3">
+                <Text className="text-black-100 font-psans text-2xl">
+                    Transaction history
+                </Text>
+            </View>
             <FlatList 
                 data={transactions}
                 keyExtractor={(item) => item.$id}
@@ -144,23 +151,9 @@ const Transactions = () => {
                 ListHeaderComponent={()=>(
                     <>
                         <View className="flex-1">
-                            <View className="px-5">
-                                <TouchableOpacity
-                                    onPress={()=>navigation.goBack()}
-                                >
-                                    <Image
-                                        source={icons.arrow_left}
-                                        resizeMode="contain"
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View className="pt-4 px-5">
-                                <Text className="text-black-100 font-psans text-2xl">
-                                    Transaction history
-                                </Text>
-                            </View>
+                            
                             {(showToday || hasToday) && (
-                                <View className="px-5 py-2 mt-7 bg-[#F5F5F5]">
+                                <View className="px-5 py-2 bg-[#F5F5F5]">
                                     <Text className="text-sm font-pregular text-muted">
                                         Today
                                     </Text>
@@ -182,7 +175,7 @@ const Transactions = () => {
                                 })}
                             </View>
                             {(showOlder || hasOlder) && (
-                                <View className="px-5 py-2 -mt-[21px] relative z-10 bg-[#F5F5F5]">
+                                <View className={`px-5 py-2 ${(showToday || hasToday) && "-mt-[21px]"} relative z-10 bg-[#F5F5F5]`}>
                                     <Text className="text-sm font-pregular text-muted">
                                         Older
                                     </Text>

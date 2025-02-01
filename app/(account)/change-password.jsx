@@ -5,6 +5,7 @@ import { icons } from '../../constants'
 import { Link, useNavigation } from 'expo-router'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
+import CustomNavigator from '../../components/CustomNavigator'
 
 const ChangePassword = () => {
     const navigation = useNavigation();
@@ -16,21 +17,13 @@ const ChangePassword = () => {
     const handleSubmit = () =>{}
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
+            <CustomNavigator navigator={navigation} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >
-                <View className="bg-white flex-1 h-full px-5 pb-10 pt-7">
-                    <View>
-                        <TouchableOpacity
-                            onPress={()=>navigation.goBack()}
-                        >
-                            <Image
-                                source={icons.arrow_left}
-                                resizeMode="contain"
-                            />
-                        </TouchableOpacity>
-                    </View>
+                <View className="bg-white flex-1 h-full px-5 pb-10">
+                    
                     <View className="pt-4">
                         <Text className="text-black-100 font-psans text-2xl">
                             Change password

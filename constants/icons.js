@@ -55,10 +55,16 @@ import good_sm from "../assets/icons/good_sm.png";
 import plus from "../assets/icons/plus.png";
 import good_bg from "../assets/icons/good_bg.png";
 import error from "../assets/icons/error.png";
+import cam from "../assets/icons/cam.png";
+import gallery from "../assets/icons/gallery.png";
+import media from "../assets/icons/media.png";
 
 export default {
     left_arrow,
     plus,
+    media,
+    cam,
+    gallery,
     error,
     good_bg,
     good_sm,
