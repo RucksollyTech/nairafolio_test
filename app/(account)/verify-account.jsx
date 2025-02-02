@@ -15,7 +15,7 @@ import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 import { RefreshControl } from 'react-native'
 
 const VerifyAccount = () => {
-    const { user, setUser } = useGlobalContext();
+    const { user, setUser, setLastActive } = useGlobalContext();
 
     const navigation = useNavigation();
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -79,6 +79,9 @@ const VerifyAccount = () => {
                 </Text>
             </View>
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={

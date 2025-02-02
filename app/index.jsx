@@ -1,17 +1,22 @@
 // Remove <React.StrictMode>
-import { View, Text, Image, ActivityIndicator } from 'react-native'
+import { View, Text, Image, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images,icons } from "../constants";
-import {CustomButton} from "../components"
-import { Redirect, router } from 'expo-router';
+import {CustomButton, PinScreenComponent} from "../components"
+import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGlobalContext } from '@/context/GlobalProvider';
 
 
 const index = () => {
-    const { loading, isLogged } = useGlobalContext();
-    if (!loading && isLogged) return <Redirect href="/home" />;
+    const { loading, isLogged, setLocked, locked, authenticateUser, user, setLastActive } = useGlobalContext();
+    const { returnUrl } = useLocalSearchParams();
+    const parms = useLocalSearchParams();
+    console.log({returnUrl})
+    console.log({parms})
+
+    if (!loading && isLogged && !locked) return <Redirect href={returnUrl ? returnUrl : "/home"} />;
     if(loading){
         return(
             <SafeAreaView 
@@ -33,6 +38,43 @@ const index = () => {
             </SafeAreaView>
         )
     }
+    if(locked && user){
+        return(
+            <SafeAreaView className='bg-white flex-1'>
+                <ScrollView
+                    onTouchStart={() => setLastActive(Date.now())}
+                    onScroll={() => setLastActive(Date.now())}
+                    scrollEventThrottle={16}
+                    showsVerticalScrollIndicator={false} 
+                    showsHorizontalScrollIndicator={false}
+                >
+                    <PinScreenComponent 
+                        setLocked={setLocked} 
+                        authenticateUser={authenticateUser} 
+                        user={user}
+                        loading={loading}
+                        returnUrl={returnUrl}
+                    />
+                </ScrollView>
+                <View className='py-7 items-center justify-center flex-row gap-5'>
+                    <Link href={"/"}>
+                        <Text className='text-secondary-100 '>
+                            Forgot password
+                        </Text>
+                    </Link>
+                    <Text className='text-secondary-100 '>
+                        |
+                    </Text>
+                    <TouchableOpacity>
+                        <Text className='text-secondary-100 '>
+                            Switch account
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
+        )
+    }
+
     return (
         <SafeAreaView 
             className={`bg-white flex-1 font-bold h-[100vh] relative z-10`}>

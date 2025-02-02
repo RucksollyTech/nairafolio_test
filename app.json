@@ -22,12 +22,14 @@
       "infoPlist": {
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["nairafolio"]
+            "CFBundleURLSchemes": [
+              "nairafolio"
+            ]
           }
         ]
       }
     },
-    "android":  {
+    "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#014148"
@@ -46,7 +48,10 @@
               "scheme": "nairafolio"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -65,7 +70,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#014148"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

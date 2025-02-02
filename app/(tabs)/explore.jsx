@@ -8,10 +8,13 @@ import useAppwrite from '../../lib/useAppwrite'
 import { getAllInvestments } from '@/lib/appwrite'
 import SkeletonLoader from '../../components/SkeletonLoader'
 import EmptyState from '../../components/EmptyState'
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 
 
 const explore = () => {
+    const { setLastActive } = useGlobalContext();
+
     const { data:investments, loading, refetch } = useAppwrite(getAllInvestments)
     const [refreshing, setRefreshing] = useState(false)
     
@@ -45,6 +48,9 @@ const explore = () => {
                 </View>
             </View>
             <FlatList 
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 data={investments}
                 keyExtractor={(item) => item.$id}
                 contentContainerStyle={{

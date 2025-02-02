@@ -1,19 +1,19 @@
 import React from 'react';
 import { Alert } from 'react-native';
 
-const showAlert = () => {
+const showAlert = ({title,body,closeText,handleCancel,handleContinue}) => {
   Alert.alert(
-    "Custom Alert Title", // Title
-    "This is a customizable alert message.", // Message
+    title, // Title
+    body, // Message
     [
       {
-        text: "Close",
-        onPress: () => console.log("Close Pressed"),
+        text: closeText,
+        onPress: () => handleCancel(),
         style: "cancel", // Makes the button stand out as a "Cancel"
       },
       {
         text: "Proceed",
-        onPress: () => console.log("Proceed Pressed"),
+        onPress: () => handleContinue(),
       },
     ],
     { cancelable: true } // Allows dismissing the alert by tapping outside

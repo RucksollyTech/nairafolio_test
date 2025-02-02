@@ -86,7 +86,7 @@ const DataContainer = ({data,transactions,index})=>(
 
 const Transactions = () => {
     const navigation = useNavigation();
-    const { user,setUser } = useGlobalContext();
+    const { user,setUser,setLastActive } = useGlobalContext();
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactions(user.$id))
     const [showOlder, setShowOlder] = useState(false)
     const [showToday, setShowToday] = useState(false)
@@ -130,6 +130,9 @@ const Transactions = () => {
                 </Text>
             </View>
             <FlatList 
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 data={transactions}
                 keyExtractor={(item) => item.$id}
                 contentContainerStyle={{

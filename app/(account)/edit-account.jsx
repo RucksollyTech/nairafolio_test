@@ -15,7 +15,7 @@ import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 import CustomNavigator from '../../components/CustomNavigator'
 
 const EditAccount = () => {
-    const { user, setUser } = useGlobalContext();
+    const { user, setUser, setLastActive } = useGlobalContext();
     const [uploading, setUploading] = useState(false);
     const [saved, setSaved] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -127,6 +127,9 @@ const EditAccount = () => {
             </View> */}
             <CustomNavigator navigator={navigation} />
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={

@@ -11,7 +11,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { handleVerificationEmailAndNIN } from '../../lib/performActions'
 
 const VerifyWithNin = () => {
-    const { user, setUser } = useGlobalContext();
+    const { user, setUser,setLastActive } = useGlobalContext();
 
     const navigation = useNavigation();
     const [nin, setNin] = useState(0)
@@ -61,6 +61,9 @@ const VerifyWithNin = () => {
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >

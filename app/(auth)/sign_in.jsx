@@ -9,7 +9,8 @@ import { getCurrentUser, signIn } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sign_in = () => {
-    const { setUser, setIsLogged } = useGlobalContext();
+    const { setUser, setIsLogged, setLastActive } = useGlobalContext();
+    const [errorMessage, setErrorMessage] = useState("");
 
     const [isSubmitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({
@@ -18,8 +19,9 @@ const sign_in = () => {
     });
 
     const submit = async () => {
+        setErrorMessage("")
         if (form.email === "" || form.password === "") {
-            Alert.alert("Error", "Please fill in all fields");
+            return
         }
     
         setSubmitting(true);
@@ -32,7 +34,7 @@ const sign_in = () => {
         
             router.replace("/home");
         } catch (error) {
-            Alert.alert("Error", "Invalid credentials");
+            setErrorMessage("Invalid credentials");
         } finally {
             setSubmitting(false);
         }
@@ -42,6 +44,9 @@ const sign_in = () => {
     return (
         <SafeAreaView className='bg-white flex-1'>
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >
@@ -120,13 +125,19 @@ const sign_in = () => {
                         </View>
                     
                         <View className='mt-[100px] w-full'>
+                            <View className="items-center justify-center mt-3 mb-2">
+                                <Text className="text-red-500 font-pmedium">
+                                    {errorMessage}
+                                </Text>
+                            </View>
                             <View className='mb-6'>
                                 <CustomButton 
-                                    title="Log in"
+                                    title="Login"
                                     containerStyles="h-[50px]"
                                     textStyles="text-white"
                                     handlePress={submit}
                                     isLoading={isSubmitting}
+                                    loading={form.email === "" || form.password === ""}
                                 />
                             </View>
                             <View className='mb-10'>

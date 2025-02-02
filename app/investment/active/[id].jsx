@@ -47,7 +47,7 @@ export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
 
 const Active = () => {
     const {id} = useLocalSearchParams();
-    const { user, setUser } = useGlobalContext();
+    const { user, setUser, setLastActive } = useGlobalContext();
     const [investment, setInvestment] = useState({});
     const [updates, setUpdates] = useState({});
      
@@ -347,6 +347,9 @@ const Active = () => {
                 </View>
             </View>
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={
@@ -612,6 +615,9 @@ const Active = () => {
                                         </View>
                                         <View className="mt-2 flex-1">
                                             <FlatList
+                                                onTouchStart={() => setLastActive(Date.now())}
+                                                onScroll={() => setLastActive(Date.now())}
+                                                scrollEventThrottle={16}
                                                 data={[updates[activeIndex]]}
                                                 horizontal
                                                 contentContainerStyle={{flex: 1}}

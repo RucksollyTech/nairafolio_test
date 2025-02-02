@@ -18,7 +18,7 @@ import CustomNavigator from '../../components/CustomNavigator'
 
 const Wallet = () => {
     const navigation = useNavigation();
-    const { user,setUser } = useGlobalContext();
+    const { user, setUser, setLastActive } = useGlobalContext();
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactionsWithLimit(user.$id))
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [refreshing, setRefreshing] = useState(false)
@@ -50,6 +50,9 @@ const Wallet = () => {
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={

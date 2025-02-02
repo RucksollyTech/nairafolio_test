@@ -8,8 +8,11 @@ import { getUpdate } from '../../../lib/appwrite';
 import useAppwrite from '../../../lib/useAppwrite';
 import UTCDate from '../../../components/UTCDate';
 import CustomNavigator from '../../../components/CustomNavigator';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const Update = () => {
+    const { setLastActive } = useGlobalContext();
+
     const {id} = useLocalSearchParams();
     const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
@@ -25,6 +28,9 @@ const Update = () => {
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={

@@ -19,7 +19,7 @@ import CustomNavigator from '../../../components/CustomNavigator'
 
 const Investment = () => {
     const {id} = useLocalSearchParams();
-    const { user } = useGlobalContext();
+    const { user, setLastActive } = useGlobalContext();
     const { data:listData, loading, refetch } = useAppwrite(()=>getInvestment(id))
     let data = listData && listData[0]
     const navigation = useNavigation();
@@ -42,6 +42,9 @@ const Investment = () => {
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={
@@ -285,6 +288,9 @@ const Investment = () => {
                                 <View>
                                     <ScrollView 
                                         horizontal 
+                                        onTouchStart={() => setLastActive(Date.now())}
+                                        onScroll={() => setLastActive(Date.now())}
+                                        scrollEventThrottle={16}
                                         showsHorizontalScrollIndicator={false}
                                         className="pt-3"
                                     >

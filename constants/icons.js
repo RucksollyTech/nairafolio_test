@@ -58,11 +58,13 @@ import error from "../assets/icons/error.png";
 import cam from "../assets/icons/cam.png";
 import gallery from "../assets/icons/gallery.png";
 import media from "../assets/icons/media.png";
+import bio from "../assets/icons/bio.png";
 
 export default {
     left_arrow,
     plus,
     media,
+    bio,
     cam,
     gallery,
     error,

@@ -78,7 +78,7 @@ const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
 )
 const MemoizedCarousel = React.memo(CustomCarousel);
 const Home = () => {
-    const { user,setUser,setLastActive } = useGlobalContext();
+    const { user,setUser } = useGlobalContext();
     const { data:userInvestments, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
 
     const width = Dimensions.get('window').width;
@@ -142,9 +142,6 @@ const Home = () => {
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
-                onTouchStart={() => setLastActive(Date.now())}
-                onScroll={() => setLastActive(Date.now())}
-                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={

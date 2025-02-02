@@ -9,10 +9,13 @@ import { searchInvestments } from '@/lib/appwrite'
 import { useLocalSearchParams } from 'expo-router'
 import SkeletonLoader from '../../components/SkeletonLoader'
 import EmptyState from '../../components/EmptyState'
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 
 
 const Search = () => {
+    const { setLastActive } = useGlobalContext();
+
     const { query } = useLocalSearchParams();
     const params = useLocalSearchParams();
     const [refreshing, setRefreshing] = useState(false)
@@ -65,6 +68,9 @@ const Search = () => {
                 </View>
             </View>
             <FlatList 
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 data={investments}
                 keyExtractor={(item) => item.$id}
                 contentContainerStyle={{

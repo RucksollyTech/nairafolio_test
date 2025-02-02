@@ -3,11 +3,17 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import { icons } from '../../constants'
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const notification = () => {
+    const { setLastActive } = useGlobalContext();
+
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >

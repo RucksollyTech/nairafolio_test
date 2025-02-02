@@ -17,7 +17,7 @@ import CustomNavigator from '../../components/CustomNavigator';
 
 const withdrawal = () => {
     const navigation = useNavigation();
-    const { user,setUser } = useGlobalContext();
+    const { user,setUser,setLastActive } = useGlobalContext();
     const { data:myBanks, loading:loadingBanks, refetch } = useAppwrite(()=>getMyBanks(user?.$id))
     const [withdrawalAmount, setWithdrawalAmount] = useState();
     const [formData, setFormData] = useState({
@@ -242,6 +242,9 @@ const withdrawal = () => {
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={

@@ -6,9 +6,11 @@ import { Link, useNavigation } from 'expo-router'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import CustomNavigator from '../../components/CustomNavigator'
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const ChangePassword = () => {
     const navigation = useNavigation();
+    const { setLastActive } = useGlobalContext();
     const [formData, setFormData] = useState({
         password: "",
         confirmPassword: "",
@@ -21,6 +23,9 @@ const ChangePassword = () => {
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
             >
                 <View className="bg-white flex-1 h-full px-5 pb-10">
                     

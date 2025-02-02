@@ -10,7 +10,7 @@ import { signOut } from '@/lib/appwrite'
 import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 
 const account = () => {
-    const { setUser, setIsLogged,user } = useGlobalContext();
+    const { setUser, setIsLogged,user,setLastActive } = useGlobalContext();
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [refreshing, setRefreshing] = useState(false);
 
@@ -105,6 +105,9 @@ const account = () => {
                 </View>
             </View>
             <ScrollView
+                onTouchStart={() => setLastActive(Date.now())}
+                onScroll={() => setLastActive(Date.now())}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 refreshControl={

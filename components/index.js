@@ -10,9 +10,11 @@ import CustomModal from "./CustomModal";
 import EmailerVerifyBank from "./EmailerVerifyBank";
 import PaymentMethods from "./PaymentMethods";
 import SuccessModal from "./SuccessModal";
+import PinScreenComponent from "./PinScreenComponent";
 
 export {
   CustomModal,
+  PinScreenComponent,
   PaymentMethods,
   EmailerVerifyBank,
   SuccessModal,
