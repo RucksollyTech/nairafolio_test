@@ -7,16 +7,47 @@ import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import CustomNavigator from '../../components/CustomNavigator'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { updatePassword } from '@/lib/appwrite'
 
 const ChangePassword = () => {
     const navigation = useNavigation();
     const { setLastActive } = useGlobalContext();
+    const [error, setError] = useState({
+        message: "",
+        color: "",
+    })
     const [formData, setFormData] = useState({
         password: "",
         confirmPassword: "",
         oldPassword: ""
     })
-    const handleSubmit = () =>{}
+    const [loading, setLoading] = useState(false)
+    const handleMessages = (message,color) => {
+        setError({message,color})
+    }
+    const handleSubmit = async() =>{
+        setLoading(true)
+        setError({
+            message: "",
+            color: "",
+        })
+        if(formData.password !== formData.confirmPassword){
+            handleMessages("Passwords do not match.","text-red-500")
+            return
+        }
+        if(formData.password || formData.oldPassword){
+            try {
+                const updateRes = await updatePassword(formData.password,formData.oldPassword)
+                handleMessages("Passwords reset was successful","text-green-500")
+                return
+            } catch (error) {
+                handleMessages("Error updating password","text-red-500")
+            }finally {
+                setLoading(false)
+
+            }
+        }
+    }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
@@ -57,6 +88,13 @@ const ChangePassword = () => {
                             handleChangeText={(e)=>setFormData({...formData,confirmPassword:e})}
                         />
                     </View>
+                    {error?.message && (
+                        <View className='mt-3'>
+                            <Text className={`font-psans ${error?.color}`}>
+                                {error?.message}
+                            </Text>
+                        </View>
+                    )}
                     <View>
                         <CustomButton 
                             title={"Save changes"}

@@ -15,7 +15,6 @@ const GlobalProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [locked, setLocked] = useState(true);
     const [lastActive, setLastActive] = useState(Date.now());
-    console.log(locked)
     useEffect(() => {
         getCurrentUser()
             .then((res) => {

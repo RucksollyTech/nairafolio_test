@@ -13,8 +13,6 @@ const index = () => {
     const { loading, isLogged, setLocked, locked, authenticateUser, user, setLastActive } = useGlobalContext();
     const { returnUrl } = useLocalSearchParams();
     const parms = useLocalSearchParams();
-    console.log({returnUrl})
-    console.log({parms})
 
     if (!loading && isLogged && !locked) return <Redirect href={returnUrl ? returnUrl : "/home"} />;
     if(loading){
