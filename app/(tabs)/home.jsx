@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Carousel from 'react-native-reanimated-carousel';
-import Animated, { useSharedValue, useAnimatedStyle, interpolate, Extrapolate,Extrapolation } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, interpolate,Extrapolation, runOnJS, useDerivedValue } from 'react-native-reanimated';
 import { images } from "../../constants";
 import { CustomButton } from '@/components'
 import EmptyState from '../../components/EmptyState';
@@ -19,70 +19,71 @@ import GeneralDrawer from '../../components/GeneralDrawer';
 import PaymentMethods from '../../components/PaymentMethods';
 import UTCDate from '../../components/UTCDate';
 import ToggleButtons from '../../components/ToggleButtons';
+import { CustomFlatListCarousel } from '@/components/CustomCarousel';
 
-const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
-    <Carousel
-        loop
-        width={width - 48}
-        height={130}
-        autoPlay={true}
-        autoPlayInterval={10000}
-        data={data}
-        scrollAnimationDuration={1000}
-        onProgressChange={(_, absoluteProgress) => (progressValue.value = absoluteProgress)}
-        renderItem={({ item:{amount,title} }) => (
-            <View
-                className="
-                    bg-secondary flex-1 
-                    justify-center 
-                    border-[#00000014] 
-                    rounded-lg
-                "
-            >
-                <View className="relative flex">
-                    <View className="absolute inset-0 z-10 p-5">
-                        <View className="flex flex-row justify-between">
-                            <View>
-                                <View>
-                                    <Text className="text-muted text-base">
-                                        {title}
-                                    </Text>
-                                </View>
-                                <View className="mt-2">
-                                    <Text className={`text-black-100 ${amount.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
-                                        ₦{amount.toLocaleString()}
-                                    </Text>
-                                </View>
-                            </View>
-                            {title !== "Investments" && (
-                                <View>
-                                    <CustomButton 
-                                        title="Top up"
-                                        textStyles="text-white"
-                                        containerStyles="w-[76px] h-9 text-xs item-end"
-                                        handlePress={()=>setIsDrawerVisible(true)}
-                                    />
-                                </View>
-                            )}
-                        </View>
-                    </View>
-                    <Image
-                        source={images.home_bg_img}
-                        className={`h-full ml-auto `}
-                        resizeMode='cover'
-                    />
-                </View>
-            </View>
-        )}
-    />
-)
-const MemoizedCarousel = React.memo(CustomCarousel);
+// const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
+//     <Carousel
+//         loop
+//         width={width - 48}
+//         height={130}
+//         autoPlay={true}
+//         autoPlayInterval={10000}
+//         data={data}
+//         scrollAnimationDuration={1000}
+//         onProgressChange={useDerivedValue((_, absoluteProgress) => progressValue.value =absoluteProgress)}
+//         renderItem={({ item:{amount,title} }) => (
+//             <View
+//                 className="
+//                     bg-secondary flex-1 
+//                     justify-center 
+//                     border-[#00000014] 
+//                     rounded-lg
+//                 "
+//             >
+//                 <View className="relative flex">
+//                     <View className="absolute inset-0 z-10 p-5">
+//                         <View className="flex flex-row justify-between">
+//                             <View>
+//                                 <View>
+//                                     <Text className="text-muted text-base">
+//                                         {title}
+//                                     </Text>
+//                                 </View>
+//                                 <View className="mt-2">
+//                                     <Text className={`text-black-100 ${amount.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
+//                                         ₦{amount.toLocaleString()}
+//                                     </Text>
+//                                 </View>
+//                             </View>
+//                             {title !== "Investments" && (
+//                                 <View>
+//                                     <CustomButton 
+//                                         title="Top up"
+//                                         textStyles="text-white"
+//                                         containerStyles="w-[76px] h-9 text-xs item-end"
+//                                         handlePress={()=>setIsDrawerVisible(true)}
+//                                     />
+//                                 </View>
+//                             )}
+//                         </View>
+//                     </View>
+//                     <Image
+//                         source={images.home_bg_img}
+//                         className={`h-full ml-auto `}
+//                         resizeMode='cover'
+//                     />
+//                 </View>
+//             </View>
+//         )}
+//     />
+// )
+// const MemoizedCarousel = React.memo(CustomCarousel);
 const Home = () => {
     const { user,setUser,setLastActive } = useGlobalContext();
     const { data:userInvestments, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
 
     const width = Dimensions.get('window').width;
-    const progressValue = useSharedValue(0); 
+    // const progressValue = useSharedValue(0); 
     const [isDrawerVisible, setIsDrawerVisible] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
     const [active, setActive] = useState(true)
@@ -171,8 +172,8 @@ const Home = () => {
                         </View>
                     </LinearGradient>
 
-                    <View className="px-5 mt-5 flex-1">
-                        <View
+                    <View className="mt-5 flex-1">
+                        {/* <View
                             // className="rounded-lg mb-5 drop-shadow-card"
                             className="rounded-lg mb-5 shadow-card"
                         >
@@ -235,7 +236,21 @@ const Home = () => {
                                     />
                                 );
                             })}
-                        </View>
+                        </View> */}
+                        <CustomFlatListCarousel 
+                            data={[
+                                {
+                                    $id: 1,
+                                    amount: user?.wallet_balance ?? 0,
+                                    title:"Wallet balance",
+                                },{
+                                    $id: 2,
+                                    amount: handleTotalInvestmentBalance(),
+                                    title:"Investments",
+                                }
+                            ]}
+                            setIsDrawerVisible={setIsDrawerVisible}
+                        />
                     </View>
                     {(hasoldx || hasSold) && (
                         <ToggleButtons

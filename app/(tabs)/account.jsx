@@ -65,7 +65,7 @@ const account = () => {
                     className="items-center justify-center "
                 >
                     <Image
-                        source={{uri: user.avatar}}
+                        source={{uri: user?.avatar}}
                         resizeMode="cover"
                         className="h-16 w-16 rounded-full"
                     />

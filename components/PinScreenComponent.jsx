@@ -18,6 +18,9 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
 
     const verifyPin = async () => {
         setErrorMessage("")
+        if(!pin){
+            return
+        }
         setIsSubmitting(true)
         const {success,unAuth} = await confirmPassword(pin);
         if (success) {
@@ -135,6 +138,7 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
                                     containerStyles="h-[50px]"
                                     textStyles="text-white"
                                     handlePress={verifyPin}
+                                    loading={!pin}
                                     isLoading={isSubmitting}
                                 />
                             </View>

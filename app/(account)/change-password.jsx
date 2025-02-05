@@ -39,12 +39,17 @@ const ChangePassword = () => {
             try {
                 const updateRes = await updatePassword(formData.password,formData.oldPassword)
                 handleMessages("Passwords reset was successful","text-green-500")
+                console.log({updateRes})
                 return
             } catch (error) {
                 handleMessages("Error updating password","text-red-500")
             }finally {
                 setLoading(false)
-
+                setFormData({
+                    password: "",
+                    confirmPassword: "",
+                    oldPassword: ""
+                })
             }
         }
     }
@@ -101,6 +106,7 @@ const ChangePassword = () => {
                             handlePress={handleSubmit}
                             containerStyles="mt-10 h-14"
                             textStyles="text-white font-psemibold"
+                            isLoading={loading}
                         />
                     </View>
                 </View>

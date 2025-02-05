@@ -82,7 +82,6 @@ const GlobalProvider = ({ children }) => {
         } else {
             Alert.alert("Authentication Failed", "Please try again.");
         }
-        console.log({result})
     };
     const handleGlobalTouch = () => {
         setLastActive(Date.now());

@@ -157,7 +157,7 @@ const EditAccount = () => {
                                 />
                             ):(
                                 <Image 
-                                    source={{uri : user.avatar}}
+                                    source={{uri : user?.avatar}}
                                     resizeMode='cover'
                                     className="w-28 h-28 rounded-full"
                                 />
