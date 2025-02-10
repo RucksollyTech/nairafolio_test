@@ -76,7 +76,7 @@ const Security = () => {
                     </View>
                     <View className="pt-6 pb-2">
                         <Text className="text-[#2A3B59] text-lg font-psemibold">
-                            Passwords
+                            Password
                         </Text>
                     </View>
                     <View>
@@ -111,7 +111,7 @@ const Security = () => {
                                         <Text
                                             className="text-lg text-[#2A3B59] font-pmedium"
                                         >
-                                            Change passcode
+                                            Change password
                                         </Text>
                                     </View>
                                 </View>

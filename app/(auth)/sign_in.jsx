@@ -107,7 +107,7 @@ const sign_in = () => {
                                 </View>
                                 <View className='mt-1.5'>
                                     <Link
-                                        href={"/forgot"}
+                                        href={"/forgot-password"}
                                     >
                                         <Text 
                                             className='

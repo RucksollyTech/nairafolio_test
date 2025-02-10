@@ -8,13 +8,13 @@ import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { LogBox } from 'react-native';
+import { signOut } from '@/lib/appwrite';
 LogBox.ignoreLogs(["[Reanimated] Reading from `value` during component render"]);
 
 
 const index = () => {
-    const { loading, isLogged, setLocked, locked, authenticateUser, user, setLastActive } = useGlobalContext();
+    const { loading, isLogged, setLocked,setIsLogged, locked, authenticateUser, user, setLastActive } = useGlobalContext();
     const { returnUrl } = useLocalSearchParams();
-    const parms = useLocalSearchParams();
 
     if (!loading && isLogged && !locked) return <Redirect href={returnUrl ? returnUrl : "/home"} />;
     if(loading){
@@ -38,6 +38,14 @@ const index = () => {
             </SafeAreaView>
         )
     }
+    const switchClick = async() => {
+        await signOut()
+        setUser(null);
+        setIsLogged(false);
+        
+        setLocked(false);
+        router.push('/sign_up');
+    }
     if(locked && user){
         return(
             <SafeAreaView className='bg-white flex-1'>
@@ -57,7 +65,7 @@ const index = () => {
                     />
                 </ScrollView>
                 <View className='py-7 items-center justify-center flex-row gap-5'>
-                    <Link href={"/"}>
+                    <Link href={"/forgot-password"}>
                         <Text className='text-secondary-100 '>
                             Forgot password
                         </Text>
@@ -65,7 +73,9 @@ const index = () => {
                     <Text className='text-secondary-100 '>
                         |
                     </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={switchClick}
+                    >
                         <Text className='text-secondary-100 '>
                             Switch account
                         </Text>
