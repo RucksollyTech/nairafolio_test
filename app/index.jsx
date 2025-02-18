@@ -7,9 +7,7 @@ import {CustomButton, PinScreenComponent} from "../components"
 import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { LogBox } from 'react-native';
 import { signOut } from '@/lib/appwrite';
-LogBox.ignoreLogs(["[Reanimated] Reading from `value` during component render"]);
 
 
 const index = () => {

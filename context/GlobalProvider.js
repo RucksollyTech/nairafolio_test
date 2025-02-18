@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalAuthentication from "expo-local-authentication";
 import GlobalTouchListener from "./GlobalTouchListener";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { checkBiometricSupport } from "@/app/(account)/security";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -41,7 +42,7 @@ const GlobalProvider = ({ children }) => {
             setLastActive(Date.now());
         } else if (nextAppState === "active") {
             const inactiveTime = Date.now() - lastActive;
-            if (inactiveTime > 60000) {
+            if (inactiveTime > 120000) {
                 lockApp();
             }
             setLastActive(Date.now());
@@ -52,10 +53,10 @@ const GlobalProvider = ({ children }) => {
         const interval = setInterval(() => {
           const inactiveTime = Date.now() - lastActive;
           // Only lock if the app is not already locked and the user is logged in.
-          if (inactiveTime > 60000 && !locked && isLogged) {
+          if (inactiveTime > 120000 && !locked && isLogged) {
             lockApp();
           }
-        }, 60000);
+        }, 120000);
     
         return () => clearInterval(interval);
     }, [lastActive, locked, isLogged]);
@@ -71,10 +72,16 @@ const GlobalProvider = ({ children }) => {
     };
 
     const authenticateUser = async () => {
+        const isSupported = await checkBiometricSupport();
+        if (!isSupported) return;
+        console.log("was here")
         const result = await LocalAuthentication.authenticateAsync({
             promptMessage: "Authenticate to unlock",
             fallbackLabel: "Enter PIN",
+            disableDeviceFallback: true, // Prevents password fallback
+            requireConfirmation: false, // Avoids extra confirmation for Face ID
         });
+        console.log({result})
 
         if (result.success) {
             setLocked(false);

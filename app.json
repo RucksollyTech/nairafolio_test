@@ -25,8 +25,15 @@
             "CFBundleURLSchemes": [
               "nairafolio"
             ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "nairafolio"
+            ]
           }
-        ]
+        ],
+        "NSFaceIDUsageDescription": "We use Face ID for authentication.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -75,6 +82,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b037add0-cf83-4dc3-b2e6-532c1ee7d90d"
+      }
+    },
+    "owner": "rucksolly"
   }
 }

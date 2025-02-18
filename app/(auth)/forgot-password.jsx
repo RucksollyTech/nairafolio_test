@@ -23,7 +23,7 @@ const ForgotPassword = () => {
             Alert.alert(response.message);
         }
         // Alert.alert(response.message);
-        // You can add a success modal here to show a success message to the user.
+        setSuccessModal(true);
         setLoading(false);
 
     };
@@ -63,12 +63,13 @@ const ForgotPassword = () => {
                     </View>
                     <View className="mt-5">
                         <Text className="text-black-100 font-psans text-2xl text-center">
-                            Congratulations! 
+                            Password reset mail sent! 
                         </Text>
                     </View>
                     <View className="mt-2">
                         <Text className="text-black-100 font-pmedium text-base text-center">
-                            Your investment funds have been successfully transferred to your wallet. 
+                            Password reset mail has been sent to the email address provided. Follow 
+                            the instructions to reset your password.
                         </Text>
                     </View>
                     

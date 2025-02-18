@@ -1,4 +1,5 @@
-import { getCurrentUser, updateUser, createUserInvestment, createTransactions, updateOngoingInvestment, getUser} from "../lib/appwrite";
+import { sendPushNotification } from "@/lib/performActions";
+import { getCurrentUser, updateUser, createUserInvestment, createTransactions, updateOngoingInvestment, getUser, createNotification} from "../lib/appwrite";
 import { updateCurrentUser } from "../lib/updateAccountTransaction";
 import { calculateProfit } from "./InvestmentCard";
 import UTCDate from "./UTCDate";
@@ -67,12 +68,13 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
 
     if(investment && value_spent && wallet !== null){
         const sellerUserId = investment?.user?.$id
-        const sellingUser = await getUser(sellerUserId)
-        if((wallet >= (value_spent * investment?.price_per_unit)) && sellingUser){
+        const buyingUser = await getUser(sellerUserId)
+        if((wallet >= (value_spent * investment?.price_per_unit)) && buyingUser){
             try {
+                
                 const [updatedUser, newUserInvestment,trans] = await Promise.all([
                     updateUser(user.$id,{wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit))}),
-                    updateUser(sellerUserId,{wallet_balance: parseFloat(sellingUser?.wallet_balance + (value_spent * investment?.price_per_unit))}),
+                    updateUser(sellerUserId,{wallet_balance: parseFloat(buyingUser?.wallet_balance + (value_spent * investment?.price_per_unit))}),
                     updateOngoingInvestment(
                         investment?.$id,{
                             is_up_for_sell:false,
@@ -89,6 +91,13 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                         reason:investment.name,
                     })
                 ]);
+                if(buyingUser?.expoPushToken){
+                    await sendPushNotification(buyingUser?.expoPushToken,`Sales of shares", "Your shares for ${investment?.name} has been sold`)
+                    // Add text as message here
+
+                    await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"sales",sellerUserId)
+                    await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",buyingUser?.$id)
+                }
                 return {
                     updatedUser,
                     newUserInvestment,
@@ -98,7 +107,6 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                 console.log(error)
             }
         }else{
-            console.log("Insufficient fund")
             return {insufficient_fund:true}
         }
     }else{
@@ -119,6 +127,7 @@ export const sellInvestment = async(data)=>{
         reason,
         setUser,
     }=data;
+    // sendPushNotification Use this to send the notifications here 
     try {
         // check present value before updating
         await updateOngoingInvestment(investment.$id,{
@@ -147,6 +156,9 @@ export const sellInvestment = async(data)=>{
                 })]
             )
             await updateCurrentUser(setUser)
+            // sendPushNotification()
+            // await createNotification(investmentData?.$id,parseFloat(((verify?.data?.amount)/100)),"sales",sellerUserId)
+            // await createNotification(investmentData?.$id,parseFloat(((verify?.data?.amount)/100)),"purchase",buyingUser?.$id)
         }
         return {"success":true};
     } catch (error) {

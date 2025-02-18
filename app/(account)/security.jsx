@@ -9,6 +9,24 @@ import * as LocalAuthentication from "expo-local-authentication";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useGlobalContext } from '@/context/GlobalProvider';
 
+export const checkBiometricSupport = async () => {
+    const hasHardware = await LocalAuthentication.hasHardwareAsync();
+    const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+    if (!hasHardware) {
+        Alert.alert("Error", "Biometric authentication is not supported on this device.");
+        return false;
+    }
+
+    if (!isEnrolled) {
+        Alert.alert("Error", "No biometrics enrolled. Set up Face ID in device settings.");
+        return false;
+    }
+
+    return true;
+};
+
+
 const Security = () => {
     const { setLastActive } = useGlobalContext();
     const navigation = useNavigation();
@@ -24,6 +42,7 @@ const Security = () => {
     }, []);
 
     const toggleBiometrics = useCallback(async (value) => {
+        console.log("Was here")
         try {
             const hasHardware = await LocalAuthentication.hasHardwareAsync();
             const isEnrolled = await LocalAuthentication.isEnrolledAsync();
