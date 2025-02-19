@@ -127,6 +127,7 @@ const Active = () => {
                 type:"Wallet",
                 user:user.$id,
                 reason:investment?.investment?.name,
+                reference:"Wallet"
             })]
         )
         await updateCurrentUser(setUser)

@@ -80,6 +80,10 @@ const PaymentDrawer = ({
         setIsInsufficientFund(false)
         router.push("/wallet")
     }
+    const handleMyForward = ()=>{
+        setNext(false)
+        setActive(0)
+    }
     return (
         <>
             {(loading && !loadError) && (
@@ -162,7 +166,7 @@ const PaymentDrawer = ({
                                         >
                                             <TouchableOpacity 
                                                 activeOpacity={0.9}
-                                                onPress={()=>setNext(false)}
+                                                onPress={handleMyForward}
                                             >
                                                 <Image
                                                     source={icons.arrow_left}
@@ -294,7 +298,7 @@ const PaymentDrawer = ({
                                         <View className="pt-3 px-5">
                                             <View>
                                                 <Text className="text-muted-200 font-pmedium">
-                                                    Number of units to purchace
+                                                    Number of units to purchase
                                                 </Text>
                                                 <FormField 
                                                     title={"e.g 15 units"}

@@ -1,11 +1,11 @@
 import { View, Text, ImageBackground, Image, ScrollView, Dimensions, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '@/constants'
 import { CustomButton, FormField } from '@/components'
 import { Link, router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import { createUser } from '@/lib/appwrite'
+import { createUser, signOut } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const sign_in = () => {
@@ -45,7 +45,9 @@ const sign_in = () => {
             setSubmitting(false);
         }
     };
-
+    useEffect(()=>{
+        signOut()
+    },[])
     return (
         <SafeAreaView className='bg-white flex-1'>
             <ScrollView

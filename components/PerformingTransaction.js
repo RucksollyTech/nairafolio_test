@@ -39,6 +39,7 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
                         type:"Wallet",
                         user:user.$id,
                         reason:investment.name,
+                        reference:"Wallet"
                     })
                 ]);
                 return {
@@ -89,6 +90,7 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                         type:"Wallet",
                         user:user.$id,
                         reason:investment.name,
+                        reference:"Wallet"
                     })
                 ]);
                 if(buyingUser?.expoPushToken){
@@ -153,6 +155,7 @@ export const sellInvestment = async(data)=>{
                     type,
                     user:user.$id,
                     reason,
+                    reference:"Sold investment to the market"
                 })]
             )
             await updateCurrentUser(setUser)
@@ -199,6 +202,7 @@ export const sellInvestmentNairaFolio = async(data)=>{
                     type,
                     user:user.$id,
                     reason,
+                    reference:"Sold Investment to Nairafolio"
                 })]
             )
             await updateCurrentUser(setUser)
