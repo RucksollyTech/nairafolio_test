@@ -4,13 +4,14 @@ import * as Device from 'expo-device';
 import { Alert, Platform } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import 'react-native-reanimated';
 import GlobalProvider from "../context/GlobalProvider";
 
 import "../global.css";
 import AppLayout from '@/components/AppLayout';
 import { saveExpoPushToken } from '@/lib/appwrite';
+import { router } from 'expo-router';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -41,6 +42,8 @@ export  async function registerForPushNotificationsAsync() {
     Notifications.setNotificationChannelAsync('default', {
       name: 'default',
       importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
     });
   }
 
@@ -59,17 +62,37 @@ export default function RootLayout() {
     "Inter": require('../assets/fonts/Inter.ttf'),
   });
 
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
   
+  // useEffect(() => {
+  //   const notificationSetter = async()=>{
+  //     await registerForPushNotificationsAsync();
+  //   }
+  //   notificationSetter()
+  // }, []);
   useEffect(() => {
-    const notificationSetter = async()=>{
-      await registerForPushNotificationsAsync();
-    }
-    notificationSetter()
+      registerForPushNotificationsAsync()
+
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+          console.log('Notification Received:', notification);
+      });
+
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          // console.log('Notification Clicked:', response);
+          router.push("/notification")
+      });
+
+      return () => {
+          Notifications.removeNotificationSubscription(notificationListener.current);
+          Notifications.removeNotificationSubscription(responseListener.current);
+      };
   }, []);
 
   if (!loaded) {
