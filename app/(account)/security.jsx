@@ -42,7 +42,6 @@ const Security = () => {
     }, []);
 
     const toggleBiometrics = useCallback(async (value) => {
-        console.log("Was here")
         try {
             const hasHardware = await LocalAuthentication.hasHardwareAsync();
             const isEnrolled = await LocalAuthentication.isEnrolledAsync();

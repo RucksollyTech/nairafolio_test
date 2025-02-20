@@ -14,7 +14,6 @@ const PayWithBank = () => {
     // const [access_code,reference] = access_cod.split("NAIRAfoLIO")
     const [email,amount,mode,investmentId,sale] = access_cod.split("NAIRAfoLIO")
     const { setUser } = useGlobalContext();
-    // console.log({access_code,reference})
     const navigation = useNavigation();
 
     // const authorization_url =  `https://checkout.paystack.com/${access_code}`;
@@ -41,7 +40,6 @@ const PayWithBank = () => {
     //     }
     // };
 
-    
     return (
         <SafeAreaView className="bg-white">
         <View style={{ flex: 1 }} className="max-w-[200px] max-h-[200px]">

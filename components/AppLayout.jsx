@@ -9,7 +9,7 @@ const AppLayout = () => {
     const { locked } = useGlobalContext(); // Now this works inside the provider
     const colorScheme = useColorScheme();
     const goToPageA = () => {
-        router.push({
+        router.replace({
             pathname: '/', 
             params: { returnUrl: pathname }, // Pass Page B's URL
         });

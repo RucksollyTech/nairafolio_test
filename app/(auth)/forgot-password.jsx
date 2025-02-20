@@ -16,7 +16,6 @@ const ForgotPassword = () => {
     const handlePasswordReset = async () => {
         setLoading(true);
         const response = await sendPasswordResetEmail(email);
-        console.log({response})
         if (response.success) {
             setSuccessModal(true);
         } else {

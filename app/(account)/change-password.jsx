@@ -39,7 +39,6 @@ const ChangePassword = () => {
             try {
                 const updateRes = await updatePassword(formData.password,formData.oldPassword)
                 handleMessages("Passwords reset was successful","text-green-500")
-                console.log({updateRes})
                 return
             } catch (error) {
                 handleMessages("Error updating password","text-red-500")
@@ -64,7 +63,6 @@ const ChangePassword = () => {
                 scrollEventThrottle={16}
             >
                 <View className="bg-white flex-1 h-full px-5 pb-10">
-                    
                     <View className="pt-4">
                         <Text className="text-black-100 font-psans text-2xl">
                             Change password

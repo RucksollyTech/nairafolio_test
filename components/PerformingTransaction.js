@@ -51,7 +51,6 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
                 console.log(error)
             }
         }else{
-            console.log("Insufficient fund")
             return {insufficient_fund:true}
         }
     }else{

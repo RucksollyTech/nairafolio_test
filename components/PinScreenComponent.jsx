@@ -32,7 +32,7 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
             }
         } else if (!success){
             setPin("")
-            setErrorMessage("Incorrect PIN");
+            setErrorMessage("Incorrect password");
         }else if (unAuth){
             return router.replace("/sign_in")
         }

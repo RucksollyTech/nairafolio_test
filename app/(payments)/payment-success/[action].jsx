@@ -17,7 +17,7 @@ const PaymentSuccess = () => {
     if(!loadFinished && !hasRan) {
         setHasRan(true)
         const performHandleSuccess = async () =>{
-            if(!sale){
+            if(!JSON.parse(sale)){
                 await handlePaymentSuccess(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser);
             }else{
                 await handlePaymentSuccessFromSales(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser);

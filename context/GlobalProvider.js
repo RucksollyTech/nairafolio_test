@@ -22,7 +22,7 @@ const GlobalProvider = ({ children }) => {
                 if (res) {
                     setIsLogged(true);
                     setUser(res);
-                    setLocked(false);
+                    // setLocked(false);
                 } else {
                     setIsLogged(false);
                     setUser(null);
@@ -74,15 +74,12 @@ const GlobalProvider = ({ children }) => {
     const authenticateUser = async () => {
         const isSupported = await checkBiometricSupport();
         if (!isSupported) return;
-        console.log("was here")
         const result = await LocalAuthentication.authenticateAsync({
             promptMessage: "Authenticate to unlock",
             fallbackLabel: "Enter PIN",
             disableDeviceFallback: true, // Prevents password fallback
             requireConfirmation: false, // Avoids extra confirmation for Face ID
         });
-        console.log({result})
-
         if (result.success) {
             setLocked(false);
             setLastActive(Date.now());

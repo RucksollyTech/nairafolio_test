@@ -41,7 +41,6 @@ const PaymentMethods = (destination) => {
                 if (customer) {
                     // Create a dedicated virtual account for the customer
                     const account = await createDedicatedVirtualAccount(customer.id);
-                    console.log({account});
                     if (account) {
                         setVirtualAccount(account); // Set virtual account details
                     } else {
