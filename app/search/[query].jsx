@@ -22,12 +22,18 @@ const Search = () => {
     const rawQuery = params.query;
 
     let parsedQuery = {};
+    const makeChecksForQuery =(value)=>{
+        if(value.includes("=&")){
+            return ""
+        }
+        return value
+    }
     
     if (rawQuery) {
         const searchParams = new URLSearchParams(rawQuery);
         parsedQuery = Object.fromEntries(searchParams.entries());
     }
-    const searchQuery = parsedQuery.query || params.query || ""; 
+    const searchQuery = parsedQuery.query || makeChecksForQuery(params.query) || ""; 
     const category = parsedQuery.categorySelected || params.categorySelected || "";
     const { data: investments, refetch,loading } = useAppwrite(
         () => searchInvestments({query:searchQuery,categorySelected:category})
