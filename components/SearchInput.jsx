@@ -14,14 +14,29 @@ const SearchInput = ({ initialQuery, refreshing }) => {
     const [categorySelected, setCategorySelected] = useState("")
     const [query, setQuery] = useState(initialQuery?.query || "");
     const [isFocused, setIsFocused] = useState(false);
-
     const handleSelection = (value) => {
-        if(value === "All"){
-            setCategorySelected("")
-        }else{
+        // if(value === "All"){
+        //     setCategorySelected("")
+        // }else{
             setCategorySelected(value)
-        }
+        // }
     };
+    useEffect(()=>{
+        if (!query && !categorySelected) {
+            return
+        };
+        const handler = setTimeout(() => {
+            if (pathname.startsWith("/search")) {
+                router.setParams({ query, categorySelected });
+            } else {
+                const queryObj = { query, categorySelected };
+                const queryString = new URLSearchParams(queryObj).toString();
+                router.push(`/search/${queryString}`);
+            }
+        }, 500);
+    
+        return () => clearTimeout(handler);
+    },[categorySelected])
     useEffect(() => {
         if (refreshing)refetch()
     }, [refreshing])
@@ -29,21 +44,6 @@ const SearchInput = ({ initialQuery, refreshing }) => {
         refetch()
     },[])
 
-    useEffect(()=>{
-        if (query === "" && categorySelected === "") return;
-
-        const handler = setTimeout(() => {
-            if (pathname.startsWith("/search")) {
-                router.setParams({ query: { query, categorySelected } });
-            } else {
-                const queryObj = { query, categorySelected };
-                const queryString = new URLSearchParams(queryObj).toString();
-                router.push(`/search/${queryString}`);
-            }
-        }, 500);
-
-        return () => clearTimeout(handler);
-    },[categorySelected])
     return (
         <View>
             <View className={`
@@ -70,7 +70,7 @@ const SearchInput = ({ initialQuery, refreshing }) => {
                         if (query === "" && categorySelected=== "")
                             return
                         if (pathname.startsWith("/search")) {
-                            router.setParams({ query: { query, categorySelected} });
+                            router.setParams({ query, categorySelected});
                         } else {
                             const queryObj = { query, categorySelected};
                             const queryString = new URLSearchParams(queryObj).toString();

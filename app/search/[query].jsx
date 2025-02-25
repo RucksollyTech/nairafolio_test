@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, FlatList, RefreshControl } from 'react-native'
+import { View, Text, ScrollView, FlatList, RefreshControl, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -19,18 +19,16 @@ const Search = () => {
     const { query } = useLocalSearchParams();
     const params = useLocalSearchParams();
     const [refreshing, setRefreshing] = useState(false)
-
     const rawQuery = params.query;
 
     let parsedQuery = {};
+    
     if (rawQuery) {
         const searchParams = new URLSearchParams(rawQuery);
         parsedQuery = Object.fromEntries(searchParams.entries());
     }
-
-    const searchQuery = parsedQuery.query || ""; 
-    const category = parsedQuery.categorySelected || "";
-    
+    const searchQuery = parsedQuery.query || params.query || ""; 
+    const category = parsedQuery.categorySelected || params.categorySelected || "";
     const { data: investments, refetch,loading } = useAppwrite(
         () => searchInvestments({query:searchQuery,categorySelected:category})
     );
@@ -67,6 +65,15 @@ const Search = () => {
                     
                 </View>
             </View>
+            {loading && (
+                <View className="px-5">
+                    <ActivityIndicator 
+                        animating={loading}
+                        color="#00A651"
+                        size={"small"}
+                    />
+                </View>
+            )}
             <FlatList 
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -105,40 +112,6 @@ const Search = () => {
                             />
                         </View>
                 )}
-                // ListHeaderComponent={()=>(
-                //     <View className="flex-1 h-full">
-                //         <LinearGradient
-                //             colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                //             start={{ x: 0.5, y: 0 }}
-                //             end={{ x: 0.5, y: 1 }}
-                //         >
-                //             <View className="px-5">
-                //                 <View className="pt-10">
-                //                     <Text className="text-black-100 font-psans text-xl">
-                //                         Explore Investments
-                //                     </Text>
-                //                 </View>
-                                
-                //             </View>
-                //         </LinearGradient>
-                //         <View className="px-5">
-                //             <View className="py-3">
-                //                 <SearchInput 
-                //                     initialQuery={{query:searchQuery,categorySelected:category}}
-                //                 />
-                //             </View>
-                //             <View className="flex flex-row flex-wrap gap-2 mt-3">
-                //                 {categories.map((category, index) => (
-                //                     <View key={index} className={`flex ${index === 0 && "bg-primary"} items-center justify-center border border-border px-3 py-1.5 rounded-lg`}>
-                //                         <Text className={`font-pregular text-base text-muted-100 ${index === 0 && "text-white"}`}>
-                //                             {category}
-                //                         </Text>
-                //                     </View>
-                //                 ))}
-                //             </View>
-                //         </View>
-                //     </View>
-                // )}
                 ListEmptyComponent={()=> (
                     <View className="h-full flex-1 justify-center items-center">
                         {loading ? (

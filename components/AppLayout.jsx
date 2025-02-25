@@ -19,7 +19,7 @@ const AppLayout = () => {
         ){
             router.replace({
                 pathname: '/', 
-                params: { returnUrl: pathname }, // Pass Page B's URL
+                params: { returnUrl: pathname },
             });
         }
     };
