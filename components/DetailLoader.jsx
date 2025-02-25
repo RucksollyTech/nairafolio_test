@@ -33,6 +33,35 @@ const DetailSkeletonLoader = () => {
     );
 };
 
+export const OngoingDetailSkeletonLoader = () => {
+    return (
+        <View style={styles.container} className={Platform.OS !== 'android' ? "mt-10" : "mt-7"}>
+            <ContentLoader 
+                speed={2}
+                width={width} 
+                height={900}
+                viewBox={`0 0 ${width} 900`}
+                backgroundColor="#f5f5f5"
+                foregroundColor="#ecebeb"
+            >
+                <Rect x="20" y="40" rx="5" ry="5" width={width - 40} height="16" />
+                <Rect x="20" y="70" rx="5" ry="5" width={width - 40} height="18" />
+                
+                <Rect x="20" y="100" rx="5" ry="5" width={width - 180} height="13" />
+                <Rect x="20" y="123" rx="5" ry="5" width={width - 180} height="13" />
+                <Rect x="20" y="153" rx="5" ry="5" width={width - 40} height="25" />
+
+                <Rect x="20" y="195" rx="5" ry="5" width={width - 80} height="30" />
+                <Rect x="20" y="265" rx="5" ry="5" width={120} height="50" />
+                <Rect x="155" y="265" rx="5" ry="5" width={120} height="50" />
+                <Rect x="20" y="325" rx="5" ry="5" width={120} height="50" />
+
+                <Rect x="20" y="400" rx="5" ry="5" width={width - 40} height="13" />
+                <Rect x="20" y="420" rx="5" ry="5" width={width - 40} height="13" />
+            </ContentLoader>
+        </View>
+    );
+};
 const styles = StyleSheet.create({
     container: {
         flex: 1,

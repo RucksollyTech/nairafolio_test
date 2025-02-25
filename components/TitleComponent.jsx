@@ -8,7 +8,7 @@ const TitleComponent = ({item}) => {
     const {title,body,$createdAt,$id} = item
     return (
         <View>
-            <View className="border border-border bg-[#F8FAFA] rounded-lg mt-5">
+            <View className="border flex-1 border-border bg-[#F8FAFA] rounded-lg mt-5">
                 <View 
                     className="
                         flex-1 
