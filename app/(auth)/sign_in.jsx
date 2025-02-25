@@ -9,7 +9,7 @@ import { getCurrentUser, signIn, signOut } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sign_in = () => {
-    const { setUser, setIsLogged, setLastActive } = useGlobalContext();
+    const { setUser, setIsLogged, setLastActive,setLocked } = useGlobalContext();
     const [errorMessage, setErrorMessage] = useState("");
 
     const [isSubmitting, setSubmitting] = useState(false);
@@ -31,7 +31,7 @@ const sign_in = () => {
             setUser(result);
             setIsLogged(true);
             await AsyncStorage.setItem('isSignedUp', JSON.stringify(true));
-        
+            setLocked(false);
             router.replace("/home");
         } catch (error) {
             setErrorMessage("Invalid credentials");
@@ -41,7 +41,13 @@ const sign_in = () => {
     };
     
     useEffect(()=>{
-        signOut()
+        const logOutUserControl = async()=>{
+            setUser(null)
+            setIsLogged(false);
+            await signOut()
+        }
+        logOutUserControl()
+        setLocked(false);
     },[])
     return (
         <SafeAreaView className='bg-white flex-1'>

@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { icons } from '../../constants'
 import { Link, useNavigation } from 'expo-router'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'

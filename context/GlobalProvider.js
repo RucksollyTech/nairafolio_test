@@ -6,6 +6,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import GlobalTouchListener from "./GlobalTouchListener";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { checkBiometricSupport } from "@/app/(account)/security";
+import { useNavigation } from "@react-navigation/native";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -16,6 +17,12 @@ const GlobalProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [locked, setLocked] = useState(true);
     const [lastActive, setLastActive] = useState(Date.now());
+
+    const navigation = useNavigation();
+    const currentState = navigation.getState();
+    const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
+    const otherScreen = currentState.routes[currentState.index]?.params?.screen;
+    
     useEffect(() => {
         getCurrentUser()
             .then((res) => {
@@ -63,11 +70,18 @@ const GlobalProvider = ({ children }) => {
 
     const lockApp = async () => {
         const useBiometrics = await AsyncStorage.getItem("nairaFolioUseBiometrics");
-        if (useBiometrics === "true") {
-            setLocked(true);
-            // authenticateUser();
-        } else {
-            setLocked(true);
+        if (
+            currentRouteName !== "index"
+            && otherScreen !== "sign_in"
+            && otherScreen !== "sign_up"
+            && currentRouteName !== "/"
+        ){
+            if (useBiometrics === "true") {
+                setLocked(true);
+                // authenticateUser();
+            } else {
+                setLocked(true);
+            }
         }
     };
 
@@ -89,26 +103,26 @@ const GlobalProvider = ({ children }) => {
     };
     const handleGlobalTouch = () => {
         setLastActive(Date.now());
-      };
+    };
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-        <GlobalContext.Provider
-            value={{
-                isLogged,
-                setIsLogged,
-                user,
-                setUser,
-                loading,
-                locked,
-                setLocked,
-                authenticateUser,
-                setLastActive,
-            }}
-        >
-        <GlobalTouchListener onTouch={handleGlobalTouch}>
-        {children}
-        </GlobalTouchListener>
-        </GlobalContext.Provider>
+            <GlobalContext.Provider
+                value={{
+                    isLogged,
+                    setIsLogged,
+                    user,
+                    setUser,
+                    loading,
+                    locked,
+                    setLocked,
+                    authenticateUser,
+                    setLastActive,
+                }}
+            >
+                <GlobalTouchListener onTouch={handleGlobalTouch}>
+                    {children}
+                </GlobalTouchListener>
+            </GlobalContext.Provider>
         </GestureHandlerRootView>
     );
 };

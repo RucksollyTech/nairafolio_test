@@ -44,7 +44,6 @@ const explore = () => {
                     <View className="pt-3">
                         <SearchInput refreshing={refreshing} />
                     </View>
-                    
                 </View>
             </View>
             <FlatList 

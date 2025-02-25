@@ -8,14 +8,11 @@ import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { signOut } from '@/lib/appwrite';
-import { useRoute } from '@react-navigation/native';
 
 
 const index = () => {
     const { loading, isLogged, setLocked,setIsLogged, locked, authenticateUser, user, setLastActive } = useGlobalContext();
     const { returnUrl } = useLocalSearchParams();
-    const route = useRoute()
-    const currentPage = route.name
 
     if (!loading && isLogged && !locked) return <Redirect href={returnUrl ? returnUrl : "/home"} />;
     if(loading){
@@ -40,11 +37,16 @@ const index = () => {
         )
     }
     const switchClick = async() => {
-        await signOut()
-        setUser(null);
-        setIsLogged(false);
-        
+        // try {
+        //     await signOut();
+        // } catch (error) {
+        // }
+        // if(user){
+        //     setUser(null);
+        //     setIsLogged(false);
+        // }
         setLocked(false);
+
         router.replace('/sign_up');
     }
     if(locked && user){
@@ -85,11 +87,7 @@ const index = () => {
             </SafeAreaView>
         )
     }
-    useEffect(()=>{
-        if(locked && currentPage !== "/"){
-            router.replace("/")
-        }
-    },[returnUrl])
+    
     return (
         <SafeAreaView 
             className={`bg-white flex-1 font-bold h-[100vh] relative z-10`}>

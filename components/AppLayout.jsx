@@ -1,6 +1,6 @@
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { ThemeProvider, DefaultTheme, DarkTheme, useNavigation } from '@react-navigation/native';
 import { Stack, router, usePathname } from 'expo-router';
 import { useEffect } from 'react';
 
@@ -9,16 +9,42 @@ const AppLayout = () => {
     const { locked } = useGlobalContext(); // Now this works inside the provider
     const colorScheme = useColorScheme();
     const goToPageA = () => {
-        router.replace({
-            pathname: '/', 
-            params: { returnUrl: pathname }, // Pass Page B's URL
-        });
+      
+        if(
+            router && locked 
+            && currentRouteName !== "index"
+            && otherScreen !== "sign_in"
+            && otherScreen !== "sign_up"
+            && currentRouteName !== "/"
+        ){
+            router.replace({
+                pathname: '/', 
+                params: { returnUrl: pathname }, // Pass Page B's URL
+            });
+        }
     };
+    const navigation = useNavigation();
+    const currentState = navigation.getState();
+    const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
+    const otherScreen = currentState.routes[currentState.index]?.params?.screen;
+    
     useEffect(() => {
         if (locked) {
             goToPageA()
         }
     }, [locked]);
+
+    useEffect(()=>{
+        if(
+            router && locked 
+            && currentRouteName !== "index"
+            && otherScreen !== "sign_in"
+            && otherScreen !== "sign_up"
+            && currentRouteName !== "/"
+        ){
+            router.replace("/")
+        }
+    },[currentRouteName,otherScreen,locked, router])
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

@@ -28,6 +28,22 @@ const SearchInput = ({ initialQuery, refreshing }) => {
     useEffect(()=>{
         refetch()
     },[])
+
+    useEffect(()=>{
+        if (query === "" && categorySelected === "") return;
+
+        const handler = setTimeout(() => {
+            if (pathname.startsWith("/search")) {
+                router.setParams({ query: { query, categorySelected } });
+            } else {
+                const queryObj = { query, categorySelected };
+                const queryString = new URLSearchParams(queryObj).toString();
+                router.push(`/search/${queryString}`);
+            }
+        }, 500);
+
+        return () => clearTimeout(handler);
+    },[categorySelected])
     return (
         <View>
             <View className={`
