@@ -1,7 +1,6 @@
-import { View, Text, ScrollView, Image, FlatList, RefreshControl } from 'react-native'
+import { View, Text, Image, FlatList, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { LinearGradient } from 'expo-linear-gradient'
 import { icons } from '../../constants'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getNotifications } from '@/lib/appwrite'
@@ -10,6 +9,7 @@ import CustomNavigator from '@/components/CustomNavigator'
 import { useNavigation } from 'expo-router'
 import HomeSkeletonLoader from '@/components/HomeSkeletonLoader'
 import { EmptyState, UTCDate } from '@/components'
+
 
 const notification = () => {
     const navigation = useNavigation();

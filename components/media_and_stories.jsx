@@ -2,7 +2,8 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Card from './Card'
 
-const media_and_stories = () => {
+const Media_and_stories = () => {
+    
     return (
         <View>
             <View className="mt-16 mx-6">
@@ -12,7 +13,7 @@ const media_and_stories = () => {
                     </Text>
                 </View>
             </View>
-            <View 
+            {/* <View 
                 style={{
                     flexDirection: "row",
                     flexWrap: "wrap",
@@ -34,9 +35,9 @@ const media_and_stories = () => {
                         />
                     </View>
                 ))}
-            </View>
+            </View> */}
         </View>
     )
 }
 
-export default media_and_stories
+export default Media_and_stories

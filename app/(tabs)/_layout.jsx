@@ -75,17 +75,16 @@ const TabLayout = () => {
             ),
           }}
         />
-
         <Tabs.Screen
-          name="notification"
+          name="portfolio"
           options={{
-            title: "Notification",
+            title: "Portfolio",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={focused ? icons.bell : icons.bell_thin}
+                icon={focused ? icons.portfolio : icons.portfolio_thin}
                 color={color}
-                name="Notification"
+                name="Portfolio"
                 focused={focused}
               />
             ),

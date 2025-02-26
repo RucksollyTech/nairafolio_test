@@ -55,6 +55,7 @@ const AppLayout = () => {
       >
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(notifications)" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="(account)" options={{ headerShown: false }} />
             <Stack.Screen name="(investment)" options={{ headerShown: false }} />

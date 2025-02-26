@@ -1,17 +1,17 @@
-import { View, Text, ScrollView, Dimensions, Image } from 'react-native';
+import { View, Text, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Carousel from 'react-native-reanimated-carousel';
 import Animated, { useSharedValue, useAnimatedStyle, interpolate,Extrapolation, runOnJS, useDerivedValue } from 'react-native-reanimated';
-import { images } from "../../constants";
+import { icons, images } from "../../constants";
 import { CustomButton } from '@/components'
 import EmptyState from '../../components/EmptyState';
 import InvestmentCard, { calculateProfit } from '../../components/InvestmentCard';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import useAppwrite from '../../lib/useAppwrite';
-import { getUserInvestments } from '../../lib/appwrite';
+import { getUserInvestments, getUserInvestmentsForHome } from '../../lib/appwrite';
 import HomeSkeletonLoader from '../../components/HomeSkeletonLoader';
 import { getCurrentUser } from '@/lib/appwrite'
 import { RefreshControl } from 'react-native';
@@ -20,6 +20,7 @@ import PaymentMethods from '../../components/PaymentMethods';
 import UTCDate from '../../components/UTCDate';
 import ToggleButtons from '../../components/ToggleButtons';
 import { CustomFlatListCarousel } from '@/components/CustomCarousel';
+import Media_and_stories from '@/components/media_and_stories';
 
 // const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
 //     <Carousel
@@ -81,8 +82,8 @@ import { CustomFlatListCarousel } from '@/components/CustomCarousel';
 const Home = () => {
     const { user,setUser,setLastActive } = useGlobalContext();
     const { data:userInvestments, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
+    const { data:{notForSellData,forSellData}, loading:load, refetch:refetchInfo } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
 
-    const width = Dimensions.get('window').width;
     // const progressValue = useSharedValue(0); 
     const [isDrawerVisible, setIsDrawerVisible] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
@@ -102,12 +103,12 @@ const Home = () => {
     }
     const onRefresh = async()=>{
         setRefreshing(true)
-        await Promise.all([refetch(),checkActiveUser()])
+        await Promise.all([refetch(),refetchInfo(),checkActiveUser()])
         setRefreshing(false)
     }
     const handleTotalInvestmentBalance = ()=>{
         let totalInvestment = 0
-        if(userInvestments){
+        if(userInvestments && userInvestments.length > 0){
             userInvestments.forEach(investment=>{
                 const {daysGone} = UTCDate(investment.$createdAt)
                 const dataForProfit = {
@@ -121,13 +122,13 @@ const Home = () => {
         }
         return totalInvestment
     }
-    const hasSold = !!userInvestments?.some(solds => solds?.is_up_for_sell) || false;
+    const hasSold = !!forSellData?.length || false;
     useEffect(() => {
-        if(userInvestments){
-            const hasSolds = userInvestments?.some(solds => solds?.is_up_for_sell) || false;
+        if(forSellData){
+            const hasSolds = forSellData?.length || false;
             setHasoldx(hasSolds);
         }
-    }, [userInvestments]);
+    }, [forSellData]);
 
     useEffect(() => {
         if(!user){
@@ -137,6 +138,7 @@ const Home = () => {
             activateUser()
         }
     }, [user,loading])
+    
     useEffect(() => {
         checkActiveUser()
     }, [userInvestments])
@@ -158,85 +160,34 @@ const Home = () => {
                         start={{ x: 0.5, y: 0 }}
                         end={{ x: 0.5, y: 1 }}
                     >
-                        <View className="px-5">
-                            <View className="pt-10">
-                                <Text className="text-muted font-psemibold font-semibold text-sm">
-                                    Welcome,
-                                </Text>
+                        <View className="px-5 pt-10 flex-row justify-between">
+                            <View>
+                                <View>
+                                    <Text className="text-muted font-psemibold font-semibold text-sm">
+                                        Welcome,
+                                    </Text>
+                                </View>
+                                <View className="pt-1">
+                                    <Text className="text-black-100 font-psans text-xl">
+                                        {user?.name || "--"}
+                                    </Text>
+                                </View>
                             </View>
-                            <View className="pt-1">
-                                <Text className="text-black-100 font-psans text-xl">
-                                    {user?.name || "--"}
-                                </Text>
+                            <View className='pt-2'>
+                                <Link
+                                    href={"/notification"}
+                                >
+                                    <Image 
+                                        source={icons.bell_thin}
+                                        resizeMode='cover'
+                                        // style={{ marginBottom: 10 }}
+                                    />
+                                </Link>
                             </View>
                         </View>
                     </LinearGradient>
 
                     <View className="mt-5 flex-1">
-                        {/* <View
-                            // className="rounded-lg mb-5 drop-shadow-card"
-                            className="rounded-lg mb-5 shadow-card"
-                        >
-                            <MemoizedCarousel 
-                                width={width}
-                                data={[
-                                    {
-                                        $id: 1,
-                                        amount: user?.wallet_balance ?? 0,
-                                        title:"Wallet balance",
-                                    },{
-                                        $id: 2,
-                                        amount: handleTotalInvestmentBalance(),
-                                        title:"Investments",
-                                    }
-                                ]}
-                                progressValue={progressValue}
-                                setIsDrawerVisible={setIsDrawerVisible}
-                            />
-                        </View>
-
-                        <View className="flex-row justify-center items-center mt-3">
-                            {[
-                                {
-                                    $id: 1,
-                                    amount: 0,
-                                    title:"Investments",
-                                },{
-                                    $id: 2,
-                                    amount: user?.wallet_balance ?? 0,
-                                    title:"Wallet balance",
-                                }
-                            ].map((_, index) => {
-                                const animatedStyle = useAnimatedStyle(() => {
-                                const inputRange = [index - 1, index, index + 1];
-                                const scale = interpolate(
-                                    progressValue.value,
-                                    inputRange,
-                                    [1, 1.5, 1],
-                                    Extrapolation.CLAMP
-                                );
-                                const opacity = interpolate(
-                                    progressValue.value,
-                                    inputRange,
-                                    [0.5, 1, 0.5],
-                                    Extrapolation.CLAMP
-                                );
-
-                                    return {
-                                        transform: [{ scale }],
-                                        opacity,
-                                    };
-                                });
-
-                                return (
-                                    <Animated.View
-                                        key={index}
-                                        className="w-2 h-2 rounded-full bg-primary mx-1"
-                                        style={animatedStyle}
-                                    />
-                                );
-                            })}
-                        </View> */}
                         <CustomFlatListCarousel 
                             data={[
                                 {
@@ -260,7 +211,7 @@ const Home = () => {
                             title2={"Up for sale"}
                         />
                     )}
-                    {loading ? (
+                    {(loading || load) ? (
                         <View className="px-5 mt-6">
                             <HomeSkeletonLoader />
                         </View>
@@ -268,7 +219,42 @@ const Home = () => {
                         <View className="px-5">
                             {(userInvestments && userInvestments.length > 0) ? (
                                 <View className="mt-6 min-h-[225px]">
-                                    {userInvestments.map((mapData,index)=>{
+                                    {active && notForSellData.length > 0 && notForSellData.map((mapData,index)=>(
+                                        <View key={index} className="mb-2">
+                                            <InvestmentCard 
+                                                logo = {mapData.investment.logo}
+                                                name = {mapData.investment.name}
+                                                duration = {mapData.investment.duration_days}
+                                                invested = {mapData.investment.price_per_unit * mapData.unit}
+                                                percentage = {mapData.investment.rio}
+                                                date = {mapData.$createdAt}
+                                                _id={mapData.$id}
+                                            />
+                                        </View>
+                                    ))}
+                                    {!active && forSellData.length > 0 && forSellData.map((mapData,index)=>(
+                                        <View key={index} className="mb-2">
+                                            <InvestmentCard 
+                                                logo = {mapData.investment.logo}
+                                                name = {mapData.investment.name}
+                                                duration = {mapData.investment.duration_days}
+                                                invested = {mapData.investment.price_per_unit * mapData.unit}
+                                                percentage = {mapData.investment.rio}
+                                                date = {mapData.$createdAt}
+                                                _id={mapData.$id}
+                                                onSale={true}
+                                            />
+                                        </View>
+                                    ))}
+                                    <View className='mt-2'>
+                                        <Link
+                                            href={"/portfolio"}
+                                            className='border text-muted-300 text-center p-3 border-border rounded-lg font-psemibold'
+                                        >
+                                            See all
+                                        </Link>
+                                    </View>
+                                    {/* {userInvestments.map((mapData,index)=>{
                                         if(active && !mapData.is_up_for_sell && !mapData.sold){
                                             return(
                                                 <View key={index} className="mb-2">
@@ -300,7 +286,7 @@ const Home = () => {
                                                 </View>
                                             )
                                         }
-                                    })}
+                                    })} */}
                                 </View>
                             ) : (
                                 <View className="mt-20">
@@ -320,7 +306,9 @@ const Home = () => {
                             )}
                         </View>
                     )}
-                    
+                    <View>
+                        <Media_and_stories />
+                    </View>
                 </View>
             </ScrollView>
             <GeneralDrawer 
