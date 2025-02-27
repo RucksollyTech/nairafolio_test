@@ -1,5 +1,6 @@
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { Platform } from "react-native";
 
 // import { Loader } from "../../components";
 // import { useGlobalContext } from "../../context/GlobalProvider";
@@ -63,7 +64,7 @@ const AccountLayout = () => {
         </Stack>
 
         {/* <Loader isLoading={loading} /> */}
-        <StatusBar backgroundColor="#FFFFFF" style="light" />
+        <StatusBar backgroundColor="#FFFFFF" style={Platform.OS === 'ios' ? "dark" : "light" }/>
     </>
   );
 };

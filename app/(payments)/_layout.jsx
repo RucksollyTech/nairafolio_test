@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { Platform } from "react-native";
 
 
 const PaymentLayout = () => {
@@ -46,7 +47,7 @@ const PaymentLayout = () => {
         </Stack>
 
         {/* <Loader isLoading={loading} /> */}
-        <StatusBar style="auto" />
+        <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/>
     </>
   );
 };

@@ -12,7 +12,7 @@ import InvestmentCard from '@/components/InvestmentCard';
 
 const Portfolio = () => {
     const { user,setUser,setLastActive } = useGlobalContext();
-    const { data:{notForSellData,forSellData}, loading, refetch:refetchInfo } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
+    const { data:{notForSellData,forSellData}, loading, refetch } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
     const [hasoldx, setHasoldx] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
     const [active, setActive] = useState(true)
@@ -31,7 +31,7 @@ const Portfolio = () => {
     }
     const onRefresh = async()=>{
         setRefreshing(true)
-        await Promise.all([refetch(),refetchInfo(),checkActiveUser()])
+        await Promise.all([refetch(),checkActiveUser()])
         setRefreshing(false)
     }
 
@@ -100,7 +100,7 @@ const Portfolio = () => {
                             duration = {mapData.investment.duration_days}
                             invested = {mapData.investment.price_per_unit * mapData.unit}
                             percentage = {mapData.investment.rio}
-                            date = {mapData.$createdAt}
+                            date = {mapData.date_created}
                             _id={mapData.$id}
                         />
                     </View>

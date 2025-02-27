@@ -110,7 +110,7 @@ const Home = () => {
         let totalInvestment = 0
         if(userInvestments && userInvestments.length > 0){
             userInvestments.forEach(investment=>{
-                const {daysGone} = UTCDate(investment.$createdAt)
+                const {daysGone} = UTCDate(investment.date_created)
                 const dataForProfit = {
                     percentage:investment.investment.rio,
                     daysGone,
@@ -227,7 +227,7 @@ const Home = () => {
                                                 duration = {mapData.investment.duration_days}
                                                 invested = {mapData.investment.price_per_unit * mapData.unit}
                                                 percentage = {mapData.investment.rio}
-                                                date = {mapData.$createdAt}
+                                                date = {mapData.date_created}
                                                 _id={mapData.$id}
                                             />
                                         </View>
@@ -240,7 +240,7 @@ const Home = () => {
                                                 duration = {mapData.investment.duration_days}
                                                 invested = {mapData.investment.price_per_unit * mapData.unit}
                                                 percentage = {mapData.investment.rio}
-                                                date = {mapData.$createdAt}
+                                                date = {mapData.date_created}
                                                 _id={mapData.$id}
                                                 onSale={true}
                                             />
@@ -264,7 +264,7 @@ const Home = () => {
                                                         duration = {mapData.investment.duration_days}
                                                         invested = {mapData.investment.price_per_unit * mapData.unit}
                                                         percentage = {mapData.investment.rio}
-                                                        date = {mapData.$createdAt}
+                                                        date = {mapData.date_created}
                                                         _id={mapData.$id}
                                                     />
                                                 </View>
@@ -279,7 +279,7 @@ const Home = () => {
                                                         duration = {mapData.investment.duration_days}
                                                         invested = {mapData.investment.price_per_unit * mapData.unit}
                                                         percentage = {mapData.investment.rio}
-                                                        date = {mapData.$createdAt}
+                                                        date = {mapData.date_created}
                                                         _id={mapData.$id}
                                                         onSale={true}
                                                     />

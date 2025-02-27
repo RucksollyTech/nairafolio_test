@@ -110,7 +110,7 @@ const Active = () => {
     const handleMoveToWallet = async()=>{
         if(!checkMatured({
             duration:investment?.investment?.duration_days,
-            createdAt:investment?.$createdAt
+            createdAt:investment?.date_created
         })){
             Alert.alert("Invalid request", "Investment is not matured.");
             return
@@ -141,7 +141,7 @@ const Active = () => {
         // make sure to check for matured investment 
         if(checkMatured({
             duration:investment?.investment?.duration_days,
-            createdAt:investment?.$createdAt
+            createdAt:investment?.date_created
         })){
             Alert.alert("Invalid request", "Investment is matured, you cannot sell now.");
             return
@@ -169,7 +169,7 @@ const Active = () => {
     const handleSellShareNairaFolio = async()=>{
         if(checkMatured({
             duration:investment?.investment?.duration_days,
-            createdAt:investment?.$createdAt
+            createdAt:investment?.date_created
         })){
             Alert.alert("Invalid request", "Investment is matured, you cannot sell now.");
             return
@@ -363,7 +363,7 @@ const Active = () => {
                                 <Money
                                     value={(investment?.investment?.price_per_unit * investment?.unit) + calculateProfit({
                                         percentage:investment?.investment?.rio,
-                                        daysGone:UTCDate(investment?.$createdAt)?.daysGone,
+                                        daysGone:UTCDate(investment?.date_created)?.daysGone,
                                         invested:investment?.investment?.price_per_unit * investment?.unit,
                                         duration:investment?.investment?.duration_days
                                     })}
@@ -385,7 +385,7 @@ const Active = () => {
                                     <Money
                                         value={calculateProfit({
                                             percentage:investment?.investment?.rio,
-                                            daysGone:UTCDate(investment?.$createdAt)?.daysGone,
+                                            daysGone:UTCDate(investment?.date_created)?.daysGone,
                                             invested:(investment?.investment?.price_per_unit * investment?.unit) ,
                                             duration:investment?.investment?.duration_days
                                         })}
@@ -393,9 +393,9 @@ const Active = () => {
                                     />
                                 </View>
                                 <View className={`flex mt-2 items-center justify-center w-[100px] bg-[#F5F5F5] border border-border px-3 py-1.5 rounded-lg`}>
-                                    {(investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 ? (
+                                    {(investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 ? (
                                         <Text className="font-pregular text-base text-muted-100">
-                                            {investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone} days left
+                                            {investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone} days left
                                         </Text>
                                     ) : (
                                         <Text className="font-pregular text-base text-secondary-100">
@@ -412,8 +412,8 @@ const Active = () => {
                                         <TouchableOpacity
                                             onPress={handleMoveToWallet}
                                             activeOpacity={0.7}
-                                            disabled={((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) ? true : false}
-                                            className={`${((investment?.investment?.duration_days-UTCDate(investment?.$createdAt)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                            disabled={((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) ? true : false}
+                                            className={`${((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                         >
                                             <Text className={`font-pinter font-semibold text-base text-white`}>
                                                 Move to wallet
@@ -429,7 +429,7 @@ const Active = () => {
                                         </TouchableOpacity>
                                         {!investment?.is_up_for_sell && !investment?.sold && !checkMatured({
                                             duration:investment?.investment?.duration_days,
-                                            createdAt:investment?.$createdAt
+                                            createdAt:investment?.date_created
                                         }) && (
                                             <TouchableOpacity
                                                 onPress={()=>setIsDrawerVisible2(true)}
