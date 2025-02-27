@@ -12,6 +12,7 @@ import "../global.css";
 import AppLayout from '@/components/AppLayout';
 import { saveExpoPushToken } from '@/lib/appwrite';
 import { router } from 'expo-router';
+import { View } from 'react-native';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -101,6 +102,11 @@ export default function RootLayout() {
 
   return (
     <GlobalProvider>
+        {Platform.OS === 'ios' && (
+            <View className='relative'>
+                <View className='absolute top-0 z-10 left-0 right-0' style={{ height: 44, backgroundColor: '#EAF6E4' }} />
+            </View>
+        )}
         <AppLayout />
         <StatusBar style="auto" />
     </GlobalProvider>
