@@ -49,7 +49,7 @@ const GlobalProvider = ({ children }) => {
             setLastActive(Date.now());
         } else if (nextAppState === "active") {
             const inactiveTime = Date.now() - lastActive;
-            if (inactiveTime > 120000) {
+            if (inactiveTime > 400000) {
                 lockApp();
             }
             setLastActive(Date.now());
@@ -60,10 +60,10 @@ const GlobalProvider = ({ children }) => {
         const interval = setInterval(() => {
           const inactiveTime = Date.now() - lastActive;
           // Only lock if the app is not already locked and the user is logged in.
-          if (inactiveTime > 120000 && !locked && isLogged) {
+          if (inactiveTime > 400000 && !locked && isLogged) {
             lockApp();
           }
-        }, 120000);
+        }, 400000);
     
         return () => clearInterval(interval);
     }, [lastActive, locked, isLogged]);
