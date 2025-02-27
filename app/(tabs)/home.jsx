@@ -307,7 +307,7 @@ const Home = () => {
                         </View>
                     )}
                     <View>
-                        <Media_and_stories />
+                        <Media_and_stories setLastActive={setLastActive} />
                     </View>
                 </View>
             </ScrollView>

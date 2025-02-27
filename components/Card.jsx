@@ -7,13 +7,14 @@ const Card = ({title,body,thumbnail}) => {
             <View className="rounded-lg bg-muted">
                 <Image
                     className="max-w-[100%] rounded-lg h-[131px]"
-                    source={thumbnail}
+                    source={{uri: thumbnail}}
                     resizeMode='cover'
                 />
             </View>
             <Text 
                 className="
-                    my-4 
+                    mt-4 
+                    mb-1
                     font-semibold
                     text-base
                     text-black-100
