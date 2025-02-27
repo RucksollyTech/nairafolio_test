@@ -108,7 +108,7 @@ export default function RootLayout() {
             </View>
         )}
         <AppLayout />
-        <StatusBar style="auto" />
+        <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/>
     </GlobalProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, Image, ImageBackground, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -38,6 +38,12 @@ const Investment = () => {
     }
     const pushToPage = ()=>{
         router.push(`/sales/${data.$id}`)
+    }
+    const iOSStyleSetter = ()=>{
+        if(Platform.OS === 'ios'){
+            return {height:180, padding: 18}
+        }
+        return {position:"relative"}
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
@@ -105,7 +111,7 @@ const Investment = () => {
                                         colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.8)']} // Ensure transparency at the top
                                         start={{ x: 0.5, y: 0.405 }}
                                         end={{ x: 0.5, y: 1 }}
-                                        style={StyleSheet.absoluteFillObject}
+                                        style={iOSStyleSetter()}
                                         className="h-full p-6 items-center justify-center"
                                     >
                                         <View className="w-full mt-auto">

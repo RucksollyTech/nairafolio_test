@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native'
+import { View, Text, ImageBackground, Image, TouchableOpacity, Platform } from 'react-native'
 import React from 'react'
 import { icons, images } from '../constants'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -22,6 +22,12 @@ const InvestmentDisplayCard = (
         company_owner
     }
 ) => {
+    const iOSStyleSetter = ()=>{
+        if(Platform.OS === 'ios'){
+            return {height:180, padding: 18}
+        }
+        return {position:"relative"}
+    }
     return (
         <TouchableOpacity
             onPress={()=>router.push(`/investment/new/${_id}`)}
@@ -31,14 +37,14 @@ const InvestmentDisplayCard = (
                 <ImageBackground
                     source={{uri: cover_image}}
                     resizeMode="cover"
-                    className="w-full h-[180px] rounded-[8px_8px_0_0] flex-1 "
+                    className="w-full h-[180px] rounded-[8px_8px_0_0] flex-1 relative"
                 >
                     <LinearGradient
                         colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.8)']} // Ensure transparency at the top
                         start={{ x: 0.5, y: 0.405 }}
                         end={{ x: 0.5, y: 1 }}
-                        style={StyleSheet.absoluteFillObject}
-                        className="h-full p-6 items-center justify-center"
+                        style={iOSStyleSetter()}
+                        className="h-full p-6 items-center justify-center absolute top-0 left-0 right-0 bottom-0"
                     >
                         <View className="w-full mt-auto">
                             <Text 
