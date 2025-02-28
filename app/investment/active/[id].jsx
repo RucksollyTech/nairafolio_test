@@ -249,8 +249,6 @@ const Active = () => {
             searchFunc()
         }
     },[dateValue,dateValue2])
-    
-
 
     const [active, setActive] = useState(0)
     const [loadings, setLoadings] = useState(false)
@@ -309,8 +307,6 @@ const Active = () => {
         setActive(num)
     }
     
-
-
     const handleSuccessSales= ()=>{
         setSuccess(false)
         setIsDrawerVisible3(false)
@@ -335,13 +331,15 @@ const Active = () => {
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
             <View className="px-5">
-                <View>
-                    <Text 
-                        className="text-black-100 text-xl font-pregular font-[700]"
-                    >
-                        {investment?.investment?.name}
-                    </Text>
-                </View>
+                {!loading && (
+                    <View>
+                        <Text 
+                            className="text-black-100 text-xl font-pregular font-[700]"
+                        >
+                            {investment?.investment?.name}
+                        </Text>
+                    </View>
+                )}
             </View>
             {loading ? (
                 <OngoingDetailSkeletonLoader />

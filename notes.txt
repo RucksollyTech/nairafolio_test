@@ -30,7 +30,8 @@ Call to Set transactions at the right places
 #This gives same as app write datetime
 #new Date(dateValue2).toISOString()
 
-
+Important Info
+initial_rate and total are not used anywhere
 
 
 

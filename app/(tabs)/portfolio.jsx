@@ -69,7 +69,7 @@ const Portfolio = () => {
                         </View>
                     </View>
                 </LinearGradient>
-                <View className="px-5 pb-5">
+                <View className="px-5 pb-4">
                     {(hasoldx || hasSold) && (
                         <ToggleButtons
                             active={active}

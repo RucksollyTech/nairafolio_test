@@ -24,7 +24,7 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
     const {daysGone} = UTCDate(date)
 
     return (
-        <View className="mb-3">
+        <View className="mb-2">
             <TouchableOpacity
                 onPress={()=>router.push(`/investment/active/${_id}`)}
                 activeOpacity={0.7}
@@ -34,7 +34,7 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                         flex-1 
                         rounded-lg
                         flex 
-                        p-4 flex-row
+                        p-2.5 flex-row
                         border
                         border-border
                         bg-[#F8F8F8]
@@ -42,31 +42,31 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                 >
                     <View
                         style={{
-                            width: "15.38%",
+                            width: "13.38%",
                         }}
-                        className="h-full"
+                        className="h-full items-center justify-center"
                     >
                         <Image
                             source={{uri: logo}}
                             resizeMode="cover"
-                            className="h-14 w-14 rounded-full"
+                            className="h-12 w-12 rounded-full"
                         />
                     </View>
                     <View
                         style={{
-                            width: "61.54%",
+                            width: "63.54%",
                         }}
-                        className="flex-1 px-3 "
+                        className="flex-1 px-2 "
                     >
                         <View>
                             <Text
-                                className="text-lg font-[700] font-pmedium text-muted"
+                                className="text-base font-[700] font-pmedium text-muted"
                                 numberOfLines={1}
                             >
                                 {name}
                             </Text>
                         </View>
-                        <View className="pt-2 flex-1">
+                        <View className="flex-1 pt-1">
                             <View className="pb-1">
                                 {(duration-daysGone) >= 0 ? (
                                     <Text className="text-muted-100 text-xs">
@@ -92,7 +92,7 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                                 textStyle="font-pmedium text-muted text-right text-base"
                             />
                         </View>
-                        <View className="mt-2">
+                        <View className="mt-1">
                             <Money 
                                 value={calculateProfit({
                                     percentage,
