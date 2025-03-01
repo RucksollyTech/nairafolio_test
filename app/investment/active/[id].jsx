@@ -398,7 +398,7 @@ const Active = () => {
                             <View className="pt-7">
                                 <Money
                                     value={(investment?.investment?.price_per_unit * investment?.unit) + calculateProfit({
-                                        percentage:investment?.investment?.rio,
+                                        percentage:investment?.rio,
                                         daysGone:UTCDate(investment?.date_created)?.daysGone,
                                         invested:investment?.investment?.price_per_unit * investment?.unit,
                                         duration:investment?.investment?.duration_days
@@ -420,7 +420,7 @@ const Active = () => {
                                 <View className="mt-2">
                                     <Money
                                         value={calculateProfit({
-                                            percentage:investment?.investment?.rio,
+                                            percentage:investment?.rio,
                                             daysGone:UTCDate(investment?.date_created)?.daysGone,
                                             invested:(investment?.investment?.price_per_unit * investment?.unit) ,
                                             duration:investment?.investment?.duration_days
@@ -549,7 +549,7 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-2">
-                                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">{investment?.investment?.rio ?? 1}% ROI</Text>
+                                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">{investment?.rio ?? 1}% ROI</Text>
                                             </View>
                                         </View>
                                         <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">

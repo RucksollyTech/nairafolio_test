@@ -112,7 +112,7 @@ const Home = () => {
             userInvestments.forEach(investment=>{
                 const {daysGone} = UTCDate(investment.date_created)
                 const dataForProfit = {
-                    percentage:investment.investment.rio,
+                    percentage:investment.rio,
                     daysGone,
                     invested:investment.investment.price_per_unit * investment.unit,
                     duration:investment.investment.duration_days
@@ -226,7 +226,7 @@ const Home = () => {
                                                 name = {mapData.investment.name}
                                                 duration = {mapData.investment.duration_days}
                                                 invested = {mapData.investment.price_per_unit * mapData.unit}
-                                                percentage = {mapData.investment.rio}
+                                                percentage = {mapData.rio}
                                                 date = {mapData.date_created}
                                                 _id={mapData.$id}
                                             />
@@ -239,21 +239,48 @@ const Home = () => {
                                                 name = {mapData.investment.name}
                                                 duration = {mapData.investment.duration_days}
                                                 invested = {mapData.investment.price_per_unit * mapData.unit}
-                                                percentage = {mapData.investment.rio}
+                                                percentage = {mapData.rio}
                                                 date = {mapData.date_created}
                                                 _id={mapData.$id}
                                                 onSale={true}
                                             />
                                         </View>
                                     ))}
-                                    <View className='mt-2'>
-                                        <Link
-                                            href={"/portfolio"}
-                                            className='border text-muted-300 text-center p-3 border-border rounded-lg font-psemibold'
-                                        >
-                                            See all
-                                        </Link>
-                                    </View>
+                                    {active && notForSellData.length > 0 ? (
+                                        <View className='mt-2'>
+                                            <Link
+                                                href={"/portfolio"}
+                                                className='border text-muted-300 text-center p-3 border-border rounded-lg font-psemibold'
+                                            >
+                                                See all
+                                            </Link>
+                                        </View>
+                                    ):(
+                                        <View className="mt-10">
+                                            <EmptyState
+                                                title={"You have no Investments"}
+                                                subtitle={"You can start by investing in the available opportunities"}
+                                            />
+                                            <View className="items-center justify-center pt-5">
+                                                <CustomButton 
+                                                    title="Explore investments"
+                                                    textStyles="text-white"
+                                                    containerStyles="w-[180px] h-11 text-xs text-center"
+                                                    handlePress={()=>router.push("/explore")}
+                                                />
+                                            </View>
+                                        </View>
+                                    )}
+                                    {!active && forSellData.length > 0 && (
+                                        <View className='mt-2'>
+                                            <Link
+                                                href={"/portfolio"}
+                                                className='border text-muted-300 text-center p-3 border-border rounded-lg font-psemibold'
+                                            >
+                                                See all
+                                            </Link>
+                                        </View>
+                                    )}
                                     {/* {userInvestments.map((mapData,index)=>{
                                         if(active && !mapData.is_up_for_sell && !mapData.sold){
                                             return(
@@ -263,7 +290,7 @@ const Home = () => {
                                                         name = {mapData.investment.name}
                                                         duration = {mapData.investment.duration_days}
                                                         invested = {mapData.investment.price_per_unit * mapData.unit}
-                                                        percentage = {mapData.investment.rio}
+                                                        percentage = {mapData.rio}
                                                         date = {mapData.date_created}
                                                         _id={mapData.$id}
                                                     />
@@ -278,7 +305,7 @@ const Home = () => {
                                                         name = {mapData.investment.name}
                                                         duration = {mapData.investment.duration_days}
                                                         invested = {mapData.investment.price_per_unit * mapData.unit}
-                                                        percentage = {mapData.investment.rio}
+                                                        percentage = {mapData.rio}
                                                         date = {mapData.date_created}
                                                         _id={mapData.$id}
                                                         onSale={true}

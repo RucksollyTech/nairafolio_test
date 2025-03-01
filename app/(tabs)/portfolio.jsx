@@ -9,6 +9,7 @@ import { CustomButton, EmptyState } from '@/components';
 import useAppwrite from '@/lib/useAppwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import InvestmentCard from '@/components/InvestmentCard';
+import { router } from 'expo-router';
 
 const Portfolio = () => {
     const { user,setUser,setLastActive } = useGlobalContext();
@@ -99,7 +100,7 @@ const Portfolio = () => {
                             name = {mapData.investment.name}
                             duration = {mapData.investment.duration_days}
                             invested = {mapData.investment.price_per_unit * mapData.unit}
-                            percentage = {mapData.investment.rio}
+                            percentage = {mapData.rio}
                             date = {mapData.date_created}
                             _id={mapData.$id}
                         />
@@ -115,14 +116,6 @@ const Portfolio = () => {
                                     title={"You have no Investments"}
                                     subtitle={"You can start by investing in the available opportunities"}
                                 />
-                                <View className="items-center justify-center pt-5">
-                                    <CustomButton 
-                                        title="Explore investments"
-                                        textStyles="text-white"
-                                        containerStyles="w-[180px] h-11 text-xs text-center"
-                                        handlePress={()=>router.push("/explore")}
-                                    />
-                                </View>
                             </View>
                         )}
                     </View>

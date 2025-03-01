@@ -147,7 +147,7 @@ export const sellInvestment = async(data)=>{
                         pricePlaced:parseFloat(pricePlaced),
                         investment: investment?.investment?.$id,
                         parentInvestmentId:investment?.$id,
-                        rio:investment?.investment?.rio
+                        rio:investment?.rio
                     }
                 )
             ])
@@ -288,7 +288,7 @@ export const undoSellInvestment = async(data)=>{
 
 export const totalProfitsAndInvested = (investment)=>{
     return (investment?.investment?.price_per_unit * investment?.unit)  + calculateProfit({
-        percentage:investment?.investment?.rio,
+        percentage:investment?.rio,
         daysGone:UTCDate(investment?.date_created)?.daysGone,
         invested:(investment?.investment?.price_per_unit * investment?.unit) ,
         duration:investment?.investment?.duration_days
@@ -336,7 +336,7 @@ export const old_sellInvestment = async(data)=>{
             // Update wallet and update transaction (withdrawal and Sells)
             //valueSentToWallet= (totalProfit + amountInvested /totalUnitsBought ) * (unit - putUnit)
             const totalProfitAndInvested = (investment?.investment?.price_per_unit * investment?.unit)  + calculateProfit({
-                percentage:investment?.investment?.rio,
+                percentage:investment?.rio,
                 daysGone:UTCDate(investment?.date_created)?.daysGone,
                 invested:(investment?.investment?.price_per_unit * investment?.unit) ,
                 duration:investment?.investment?.duration_days
@@ -382,7 +382,7 @@ export const old_sellInvestmentNairaFolio = async(data)=>{
 
         if (unit - putUnit > 0) {
             const totalProfitAndInvested = (investment?.investment?.price_by_nairafolio * investment?.unit)  + calculateProfit({
-                percentage:investment?.investment?.rio,
+                percentage:investment?.rio,
                 daysGone:UTCDate(investment?.date_created)?.daysGone,
                 invested:(investment?.investment?.price_by_nairafolio * investment?.unit) ,
                 duration:investment?.investment?.duration_days
