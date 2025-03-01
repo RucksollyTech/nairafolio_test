@@ -77,7 +77,7 @@ const sign_in = () => {
                     }}
                 >
                     <View>
-                        <View className='mt-5'>
+                        <View>
                             <Text className='font-psans text-3xl'>Sign up</Text>
                         </View>
                         <View className='mt-2'>
@@ -159,7 +159,7 @@ const sign_in = () => {
                             {errorMessage}
                         </Text>
                     </View>
-                    <View className='w-full mt-[100px]'>
+                    <View className='w-full mt-[50px]'>
                         <View className='mb-6'>
                             <CustomButton 
                                 title="Sign up"

@@ -288,7 +288,9 @@ const Active = () => {
             searchFunc()
         }
     },[dateValue,dateValue2])
-
+    const handleAdd = ()=>{
+        router.push(`/sales/${investment?.investment?.$id}`)
+    }
     const [active, setActive] = useState(0)
     
     const [isInsufficientFund, setIsInsufficientFund] = useState(false)
@@ -445,24 +447,49 @@ const Active = () => {
                             <View className="pt-6 min-h-24">
                                 {user?.$id === investment?.user?.$id ? (
                                     <View className="flex-1 flex flex-row gap-4">
-                                        <TouchableOpacity
-                                            onPress={handleMoveToWallet}
-                                            activeOpacity={0.7}
-                                            disabled={((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) ? true : false}
-                                            className={`${((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
-                                        >
-                                            <Text className={`font-pinter font-semibold text-base text-white`}>
-                                                Move to wallet
-                                            </Text>
-                                            <View className="ml-2">
-                                                <Image
-                                                    source={icons.download}
-                                                    resizeMode="contain"
-                                                    tintColor={"#FFFFFF"}
-                                                />
-                                            </View>
-                                            
-                                        </TouchableOpacity>
+                                        {!investment?.is_up_for_sell ? (
+                                            <TouchableOpacity
+                                                // Call on drawer to confirm action
+                                                // Then move to sell page that list this 
+                                                // This investment for sell
+
+                                                onPress={handleAdd}
+                                                activeOpacity={0.7}
+                                                disabled={loadingSubmit ? true : false}
+                                                className={`${ loadingSubmit && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                            >
+                                                <Text className={`font-pinter font-semibold text-base text-white`}>
+                                                    Add
+                                                </Text>
+                                                <View className="ml-2">
+                                                    <Image
+                                                        source={icons.download}
+                                                        resizeMode="contain"
+                                                        tintColor={"#FFFFFF"}
+                                                    />
+                                                </View>
+                                                
+                                            </TouchableOpacity>
+                                        ):(
+                                            <TouchableOpacity
+                                                onPress={handleMoveToWallet}
+                                                activeOpacity={0.7}
+                                                disabled={((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) ? true : false}
+                                                className={`${((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                            >
+                                                <Text className={`font-pinter font-semibold text-base text-white`}>
+                                                    Move to wallet
+                                                </Text>
+                                                <View className="ml-2">
+                                                    <Image
+                                                        source={icons.download}
+                                                        resizeMode="contain"
+                                                        tintColor={"#FFFFFF"}
+                                                    />
+                                                </View>
+                                                
+                                            </TouchableOpacity>
+                                        )}
                                         {(!investment?.is_up_for_sell && !investment?.sold && !checkMatured({
                                             duration:investment?.investment?.duration_days,
                                             createdAt:investment?.date_created
@@ -489,7 +516,7 @@ const Active = () => {
                                                 {!checkMatured({
                                                     duration:investment?.investment?.duration_days,
                                                     createdAt:investment?.date_created
-                                                }) && (
+                                                }) && (user?.$id === investment?.user?.$id) && (
                                                     <TouchableOpacity
                                                         onPress={()=>setIsDrawerVisible4(true)}
                                                         activeOpacity={0.7}

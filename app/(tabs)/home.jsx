@@ -256,20 +256,24 @@ const Home = () => {
                                             </Link>
                                         </View>
                                     ):(
-                                        <View className="mt-10">
-                                            <EmptyState
-                                                title={"You have no Investments"}
-                                                subtitle={"You can start by investing in the available opportunities"}
-                                            />
-                                            <View className="items-center justify-center pt-5">
-                                                <CustomButton 
-                                                    title="Explore investments"
-                                                    textStyles="text-white"
-                                                    containerStyles="w-[180px] h-11 text-xs text-center"
-                                                    handlePress={()=>router.push("/explore")}
-                                                />
-                                            </View>
-                                        </View>
+                                        <>
+                                            {active && (
+                                                <View className="mt-10">
+                                                    <EmptyState
+                                                        title={"You have no Investments"}
+                                                        subtitle={"You can start by investing in the available opportunities"}
+                                                    />
+                                                    <View className="items-center justify-center pt-5">
+                                                        <CustomButton 
+                                                            title="Explore investments"
+                                                            textStyles="text-white"
+                                                            containerStyles="w-[180px] h-11 text-xs text-center"
+                                                            handlePress={()=>router.push("/explore")}
+                                                        />
+                                                    </View>
+                                                </View>
+                                            )}
+                                        </>
                                     )}
                                     {!active && forSellData.length > 0 && (
                                         <View className='mt-2'>
