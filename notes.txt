@@ -17,6 +17,7 @@ Deposit
 Withdrawal
 Failed
 Reversal
+Sell Offer
 
 type:
 Wallet  

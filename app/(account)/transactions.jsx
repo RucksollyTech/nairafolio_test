@@ -12,7 +12,51 @@ import EmptyState from '../../components/EmptyState'
 import UTCDate from '../../components/UTCDate'
 import CustomNavigator from '../../components/CustomNavigator'
 
-
+export const TransactionDisplayText=(action)=>{
+    if(action === "Deposit"){
+        return `${action} into `
+    }else if(action === "Failed"){
+        return `${action} `
+    }else if(action === "Reversal"){
+        return `${action} `
+    }else if(action === "Retract" || action === "Sell Offer"){
+        return `${action} | `
+    }else{
+        return `${action} to `
+    }
+}
+export const classNameColorsForTransactions = (action)=>{
+    if(
+        action === "Deposit" || 
+        action === "Reversal"
+    ){
+        return "text-secondary-100"
+    } else if(
+        action === "Retract" || 
+        action === "Failed" || 
+        action === "Sell Offer"
+    ){
+        return "text-muted-300"
+    } else{
+        return "text-red-500"
+    }
+}
+export const transactionIconChange = (action)=>{
+    if(
+        action === "Deposit" || 
+        action === "Reversal"
+    ){
+        return true
+    } else if(
+        action === "Retract" || 
+        action === "Failed" || 
+        action === "Sell Offer"
+    ){
+        return true
+    } else{
+        return false
+    }
+}
 const DataContainer = ({data,transactions,index})=>(
     <View 
         className={`
@@ -31,8 +75,8 @@ const DataContainer = ({data,transactions,index})=>(
             <Image
                 source={icons.download}
                 resizeMode="cover"
-                tintColor={data?.action === "Deposit" ?  "#40BF6A" : "#E33629"}
-                className={data?.action !== "Deposit" && "rotate-180"}
+                tintColor={transactionIconChange(data?.action) ?  "#40BF6A" : "#E33629"}
+                className={!transactionIconChange(data?.action) && "rotate-180"}
             />
         </View>
         <View
@@ -43,9 +87,7 @@ const DataContainer = ({data,transactions,index})=>(
         >
             <View>
                 <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
-                    {data?.action} {" "}
-                    {data?.action === "Deposit" ? "into" : data?.action === "Failed" ? "" : data?.action === "Reversal" ? "" : "to"} {" "}
-
+                    {TransactionDisplayText(data?.action)}
                     <Text
                         className="text-lg font-[700] font-pmedium text-muted"
                         
@@ -73,7 +115,7 @@ const DataContainer = ({data,transactions,index})=>(
             </View>
             <View className="mt-2">
                 <Text
-                    className={`font-pmedium ${data?.action === "Deposit" ? "text-secondary-100" : data?.action === "Reversal" ? "text-secondary-100" : data?.action === "Failed" ? "text-muted-300" : "text-red-500"} text-right text-sm`}
+                    className={`font-pmedium ${classNameColorsForTransactions(data?.action)} text-right text-sm`}
                 >
                     {data?.type}
                     

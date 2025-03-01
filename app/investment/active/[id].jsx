@@ -21,13 +21,11 @@ import EmptyState from '../../../components/EmptyState'
 import GeneralDrawer from '../../../components/GeneralDrawer'
 import FormFieldAdjusted from '../../../components/FormFieldAdjusted'
 import CustomButton from '../../../components/CustomButton'
-import { WalletCheckOutSales, sellInvestment, sellInvestmentNairaFolio, totalProfitsAndInvested } from '../../../components/PerformingTransaction'
+import { WalletCheckOutSales, sellInvestment, sellInvestmentNairaFolio, totalProfitsAndInvested, undoSellInvestment } from '../../../components/PerformingTransaction'
 import { updateCurrentUser } from '../../../lib/updateAccountTransaction'
 import SuccessModal from '../../../components/SuccessModal'
 import CustomNavigator from '../../../components/CustomNavigator'
 import { OngoingDetailSkeletonLoader } from '@/components/DetailLoader'
-
-
 
 
 export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
@@ -36,9 +34,6 @@ export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
         params: { mode: `${email}NAIRAfoLIO${amount}NAIRAfoLIO${mode}NAIRAfoLIO${investmentId ? investmentId : "Unavailable"}NAIRAfoLIO${sale}` }
     });
 }
-
-
-
 
 
 const Active = () => {
@@ -56,8 +51,11 @@ const Active = () => {
     const [showDateSelect, setShowDateSelect] = useState(false);
     const [isDrawerVisible2, setIsDrawerVisible2] = useState(false);
     const [isDrawerVisible3, setIsDrawerVisible3] = useState(false);
+    const [isDrawerVisible4, setIsDrawerVisible4] = useState(false);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
-    
+    const [loadings, setLoadings] = useState(false)
+    const [loadError, setLoadError] = useState(false)
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [isDrawerVisible, setDrawerVisible] = useState(false);
     const [next, setNext] = useState(false);
@@ -209,6 +207,47 @@ const Active = () => {
         }
     };
 
+    const handleUndoSell = async() =>{
+        
+        setLoadError(false)
+        try {
+            setLoadings(true)
+
+            await undoSellInvestment({
+                unit:investment?.unit,
+                investment,
+                type: "Sales",
+                user,
+                reason: investment?.investment?.name
+            })
+
+            setNext(true)
+            setSuccess(true)
+        } catch (error) {
+            setLoadError(true)
+            setSuccess(false)
+            setNext(true)
+        }finally{
+            setLoadings(false)
+        }
+    }
+    const handleSuccessUndoSales= ()=>{
+        setSuccess(false)
+        setIsDrawerVisible4(false)
+        setNext(false)
+        setLoadings(false)
+        setLoadError(false)
+        router.replace("/portfolio")
+    }
+
+    const handleFailSalesUndoSales= ()=>{
+        setSuccess(false)
+        setIsDrawerVisible4(false)
+        setNext(false)
+        setLoadings(false)
+        setLoadError(false)
+    }
+
     const handlePrev = () => {
         if (activeIndex > 0) {
             setActiveIndex(activeIndex - 1);
@@ -251,8 +290,7 @@ const Active = () => {
     },[dateValue,dateValue2])
 
     const [active, setActive] = useState(0)
-    const [loadings, setLoadings] = useState(false)
-    const [loadError, setLoadError] = useState(false)
+    
     const [isInsufficientFund, setIsInsufficientFund] = useState(false)
     
     const handleWalletPay = async()=>{
@@ -425,10 +463,10 @@ const Active = () => {
                                             </View>
                                             
                                         </TouchableOpacity>
-                                        {!investment?.is_up_for_sell && !investment?.sold && !checkMatured({
+                                        {(!investment?.is_up_for_sell && !investment?.sold && !checkMatured({
                                             duration:investment?.investment?.duration_days,
                                             createdAt:investment?.date_created
-                                        }) && (
+                                        }) ) ? (
                                             <TouchableOpacity
                                                 onPress={()=>setIsDrawerVisible2(true)}
                                                 activeOpacity={0.7}
@@ -446,6 +484,31 @@ const Active = () => {
                                                 </View>
                                                 
                                             </TouchableOpacity>
+                                        ):(
+                                            <> 
+                                                {!checkMatured({
+                                                    duration:investment?.investment?.duration_days,
+                                                    createdAt:investment?.date_created
+                                                }) && (
+                                                    <TouchableOpacity
+                                                        onPress={()=>setIsDrawerVisible4(true)}
+                                                        activeOpacity={0.7}
+                                                        className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                                    >
+                                                        <Text className={`font-pinter font-semibold text-base text-muted`}>
+                                                            Undo Sell
+                                                        </Text>
+                                                        <View className="ml-2">
+                                                            <Image
+                                                                source={icons.upload}
+                                                                resizeMode="contain"
+                                                                tintColor={"#747474"}
+                                                            />
+                                                        </View>
+                                                        
+                                                    </TouchableOpacity>
+                                                )}
+                                            </>
                                         )}
                                     </View>
                                 ):(
@@ -1373,7 +1436,7 @@ const Active = () => {
                                             </View>
                                             <CustomButton
                                                 handlePress={handleInsufficientFundClick}
-                                                title={"Add funds to wallet"}
+                                                title={"Continue"}
                                                 textStyles={"font-psans text-white"}
                                                 containerStyles={"mt-5 h-14"}
                                             />
@@ -1392,12 +1455,100 @@ const Active = () => {
                                             </View>
                                             <CustomButton
                                                 handlePress={handleFailSales}
-                                                title={"Add funds to wallet"}
+                                                title={"Continue"}
                                                 textStyles={"font-psans text-white"}
                                                 containerStyles={"mt-5 h-14"}
                                             />
                                         </View>
                                     )}
+                                </View>
+                            )}
+                        </View>
+                    )}
+                </View>
+            </GeneralDrawer>
+            <GeneralDrawer
+                header={success ? "Success!" : loadError ? "Error occurred " :"Are you sure you want to undo this sell"}
+                isVisible={isDrawerVisible4} 
+                onClose={()=>setIsDrawerVisible4(false)}
+            >
+                <View>
+                    {!next ? (
+                        <>
+                            <View className="px-5 pb-7">
+                                <CustomButton 
+                                    title="Continue"
+                                    textStyles="text-white"
+                                    containerStyles="h-14"
+                                    handlePress={handleUndoSell}
+                                    isLoading={loadings}
+                                />
+                            </View>
+                        </>
+                    ):(
+                        <View>
+                            {success ? (
+                                <View>
+                                    <View className="px-2">
+                                        <View className="flex-1 justify-center items-center">
+                                            <Image 
+                                                source={icons.good}
+                                            />
+                                        </View>
+                                        <View className="mt-5">
+                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                                Success!
+                                            </Text>
+                                        </View>
+                                        <CustomButton
+                                            handlePress={handleSuccessUndoSales}
+                                            title={"Continue"}
+                                            textStyles={"font-psans text-white"}
+                                            containerStyles={"mt-5 h-14"}
+                                        />
+                                    </View>
+                                </View>
+                            ):loadError ? (
+                                <View className="">
+                                    <View className="px-2">
+                                        <View className="flex-1 justify-center items-center">
+                                            <Image 
+                                                source={icons.error}
+                                            />
+                                        </View>
+                                        <View className="mt-5">
+                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                                An error occurred. Please try again later.
+                                            </Text>
+                                        </View>
+                                        <CustomButton
+                                            handlePress={handleFailSalesUndoSales}
+                                            title={"Continue"}
+                                            textStyles={"font-psans text-white"}
+                                            containerStyles={"mt-5 h-14"}
+                                        />
+                                    </View>
+                                </View>
+                            ) :(
+                                <View>
+                                    <View className="px-2">
+                                        <View className="flex-1 justify-center items-center">
+                                            <Image 
+                                                source={icons.error}
+                                            />
+                                        </View>
+                                        <View className="mt-5">
+                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                                An error occurred. Please try again later.
+                                            </Text>
+                                        </View>
+                                        <CustomButton
+                                            handlePress={handleFailSalesUndoSales}
+                                            title={"Continue"}
+                                            textStyles={"font-psans text-white"}
+                                            containerStyles={"mt-5 h-14"}
+                                        />
+                                    </View>
                                 </View>
                             )}
                         </View>

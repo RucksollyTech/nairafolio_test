@@ -13,8 +13,8 @@ import EmptyState from '../../components/EmptyState'
 import UTCDate from '../../components/UTCDate'
 import GeneralDrawer from '../../components/GeneralDrawer'
 import PaymentMethods from '../../components/PaymentMethods'
-import { WebView } from 'react-native-webview';
 import CustomNavigator from '../../components/CustomNavigator'
+import { TransactionDisplayText, classNameColorsForTransactions, transactionIconChange } from '../(account)/transactions'
 
 const Wallet = () => {
     const navigation = useNavigation();
@@ -151,8 +151,8 @@ const Wallet = () => {
                                             <Image
                                                 source={icons.download}
                                                 resizeMode="cover"
-                                                tintColor={transaction.action === "Deposit" ?  "#40BF6A" : "#E33629"}
-                                                className={transaction.action !== "Deposit" && "rotate-180"}
+                                                tintColor={transactionIconChange(transaction.action) ?  "#40BF6A" : "#E33629"}
+                                                className={!transactionIconChange(transaction.action) && "rotate-180"}
                                             />
                                         </View>
                                         <View
@@ -163,8 +163,7 @@ const Wallet = () => {
                                         >
                                             <View>
                                                 <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
-                                                    {transaction.action} {" "}
-                                                    {transaction.action === "Deposit" ? "into" : transaction.action === "Failed" ? "" : transaction.action === "Reversal" ? "" : "to"} {" "}
+                                                    {TransactionDisplayText(transaction.action)}
                                                     <Text
                                                         className="text-lg font-[700] font-pmedium text-muted"
                                                         
@@ -192,7 +191,7 @@ const Wallet = () => {
                                             </View>
                                             <View className="mt-2">
                                                 <Text
-                                                    className={`font-pmedium ${transaction.action === "Deposit" ? "text-secondary-100" : transaction.action === "Reversal" ? "text-secondary-100" : transaction.action === "Failed" ? "text-muted-300" : "text-red-500"} text-right text-sm`}
+                                                    className={`font-pmedium ${classNameColorsForTransactions(transaction.action)} text-right text-sm`}
                                                 >
                                                     {transaction.type}
                                                     
