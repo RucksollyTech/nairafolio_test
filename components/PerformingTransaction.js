@@ -32,7 +32,15 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
                 
                 const [updatedUser, newUserInvestment,trans] = await Promise.all([
                     updateUser(user.$id,{wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit))}),
-                    createUserInvestment(investment?.$id,parseFloat(value_spent * investment?.price_per_unit),user.$id,parseFloat(value_spent),parseFloat(investment?.price_per_unit),investment?.rio),
+                    createUserInvestment(
+                        investment?.$id,
+                        parseFloat(value_spent * investment?.price_per_unit),
+                        user.$id,
+                        parseFloat(value_spent),
+                        parseFloat(investment?.price_per_unit),
+                        investment?.rio,
+                        investment?.immediate_start
+                    ),
                     createTransactions({
                         action: "Deposit",
                         amount:parseFloat(value_spent * investment.price_per_unit),
@@ -147,7 +155,8 @@ export const sellInvestment = async(data)=>{
                         pricePlaced:parseFloat(pricePlaced),
                         investment: investment?.investment?.$id,
                         parentInvestmentId:investment?.$id,
-                        rio:investment?.rio
+                        rio:investment?.rio,
+                        immediate_start:investment?.immediate_start
                     }
                 )
             ])
