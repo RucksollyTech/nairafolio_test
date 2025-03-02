@@ -307,6 +307,7 @@ const Active = () => {
             name:investment?.investment?.name,
             $id:investment?.$id,
             user:investment?.user,
+            investment,
         },investment?.unit,user)
         if(error){
             setLoadError(true)
