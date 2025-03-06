@@ -91,6 +91,21 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                                 user:user.$id
                             }
                         ),
+                        createUserInvestmentOnSell(
+                            {
+                                date_created: investment?.investment?.date_created,
+                                user: sellerUserId,
+                                unit:parseFloat(investment?.investment?.unit),
+                                initial_rate:parseFloat(investment?.investment?.investment?.price_per_unit),
+                                total:parseFloat(investment?.investment?.total),
+                                sold:true,
+                                pricePlaced:parseFloat(investment.price_per_unit),
+                                investment: investment?.investment?.investment?.$id,
+                                parentInvestmentId:investment?.investment?.$id,
+                                rio:investment?.investment?.rio,
+                                immediate_start:investment?.investment?.immediate_start
+                            }
+                        ),
                         createTransactions({
                             action: "Deposit",
                             amount:parseFloat(value_spent * investment.price_per_unit),
@@ -104,8 +119,8 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                         await sendPushNotification(buyingUser?.expoPushToken,`Sales of shares", "Your shares for ${investment?.name} has been sold`)
                         // Add text as message here
 
-                        await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"sales",sellerUserId)
-                        await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",buyingUser?.$id)
+                        await createNotification(investment?.investment?.$id,investment?.name,parseFloat(value_spent * investment?.price_per_unit),"sales",sellerUserId)
+                        await createNotification(investment?.investment?.$id,investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",buyingUser?.$id)
                     }
                     return {
                         updatedUser,
@@ -271,31 +286,48 @@ export const sellInvestment = async(data)=>{
                 )
             ])
             
-            await createTransactions({
-                action:"Sell Offer",
-                amount:parseFloat(putUnit * pricePlaced),
-                type,
-                user:user.$id,
-                reason,
-                reference:"Sold investment to the market"
-            })
+            // await createTransactions({
+            //     action:"Sell Offer",
+            //     amount:parseFloat(putUnit * pricePlaced),
+            //     type,
+            //     user:user.$id,
+            //     reason,
+            //     reference:"Sold investment to the market"
+            // })
             return {"success":true};
         }else if(unit - putUnit === 0){
-            await updateOngoingInvestment(investment.$id,{
-                unit: parseFloat(putUnit),
-                is_up_for_sell:true,
-                pricePlaced:parseFloat(pricePlaced),
-                parentInvestmentId:investment?.$id,
-            })
+            await Promise.all([
+                updateOngoingInvestment(investment.$id,{
+                    unit: parseFloat(0),
+                    inactive:true,
+                    pricePlaced:parseFloat(pricePlaced),
+                    parentInvestmentId:investment?.$id,
+                }),
+                createUserInvestmentOnSell(
+                    {
+                        date_created: investment?.date_created,
+                        user: user?.$id,
+                        unit:parseFloat(putUnit),
+                        initial_rate:parseFloat(investment?.investment?.price_per_unit),
+                        total:parseFloat(investment?.total),
+                        is_up_for_sell:true,
+                        pricePlaced:parseFloat(pricePlaced),
+                        investment: investment?.investment?.$id,
+                        parentInvestmentId:investment?.$id,
+                        rio:investment?.rio,
+                        immediate_start:investment?.immediate_start
+                    }
+                )
+            ])
             
-            await createTransactions({
-                action:"Sell Offer",
-                amount:parseFloat(putUnit * pricePlaced),
-                type,
-                user:user.$id,
-                reason,
-                reference:"Sold investment to the market"
-            })
+            // await createTransactions({
+            //     action:"Sell Offer",
+            //     amount:parseFloat(putUnit * pricePlaced),
+            //     type,
+            //     user:user.$id,
+            //     reason,
+            //     reference:"Sold investment to the market"
+            // })
             return {"success":true};
         }
         throw new Error("An error occurred while selling your investment. Please try again later.")
@@ -316,7 +348,7 @@ export const sellInvestmentNairaFolio = async(data)=>{
     }=data;
     try {
         if (unit - putUnit > 0) {
-            
+            // Create a new one to keep track of the sold investment
             await Promise.all(
                 [
                     updateOngoingInvestment(investment.$id,{
@@ -330,17 +362,35 @@ export const sellInvestmentNairaFolio = async(data)=>{
                         user:user.$id,
                         reason,
                         reference:"Sold Investment to Nairafolio"
-                    })
+                    }),
+                    createUserInvestmentOnSell(
+                        {
+                            date_created: investment?.date_created,
+                            user: user?.$id,
+                            unit:parseFloat(putUnit),
+                            initial_rate:parseFloat(investment?.investment?.price_by_nairafolio),
+                            total:parseFloat(investment?.total),
+                            sold:true,
+                            pricePlaced:parseFloat(investment?.investment?.price_by_nairafolio),
+                            investment: investment?.investment?.$id,
+                            parentInvestmentId:investment?.$id,
+                            rio:investment?.rio,
+                            immediate_start:investment?.immediate_start
+                        }
+                    )
                 ]
             )
             await updateCurrentUser(setUser)
         }else if(unit - putUnit === 0){
+            // Create a new one to keep track of the sold investment
+            // Then put the original one to in active
             await Promise.all(
                 [
                     updateOngoingInvestment(investment.$id,{
                         unit: parseFloat(0),
                         is_up_for_sell:true,
-                        sold:true
+                        sold:true,
+                        inactive:true
                     }),
                     updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + (putUnit * investment?.investment?.price_by_nairafolio))}),
                     createTransactions({
@@ -350,7 +400,22 @@ export const sellInvestmentNairaFolio = async(data)=>{
                         user:user.$id,
                         reason,
                         reference:"Sold Investment to Nairafolio"
-                    })
+                    }),
+                    createUserInvestmentOnSell(
+                        {
+                            date_created: investment?.date_created,
+                            user: user?.$id,
+                            unit:parseFloat(putUnit),
+                            initial_rate:parseFloat(investment?.investment?.price_by_nairafolio),
+                            total:parseFloat(investment?.total),
+                            sold:true,
+                            pricePlaced:parseFloat(investment?.investment?.price_by_nairafolio),
+                            investment: investment?.investment?.$id,
+                            parentInvestmentId:investment?.$id,
+                            rio:investment?.rio,
+                            immediate_start:investment?.immediate_start
+                        }
+                    )
                 ]
             )
         }
@@ -381,6 +446,7 @@ export const undoSellInvestment = async(data)=>{
                     }),
                     updateOngoingInvestment(investment?.$id,{
                         sold:true,
+                        inactive:true,
                         unit:0.0
                     })
                 ])
@@ -393,7 +459,25 @@ export const undoSellInvestment = async(data)=>{
             // sold: edit it with everything new
             // else increase the unit
             if(parentInvestment.sold){
-                await performUndoAction(unit)
+                await Promise.all([
+                    performUndoAction(unit),
+                    createUserInvestmentOnSell(
+                        {
+                            date_created: investment.date_created,
+                            user: user?.$id,
+                            unit:parseFloat(investment.unit),
+                            initial_rate:parseFloat(investment?.investment?.price_per_unit),
+                            total:parseFloat(investment?.total),
+                            is_up_for_sell:false,
+                            pricePlaced:parseFloat(investment.pricePlaced),
+                            investment: investment?.investment?.$id,
+                            parentInvestmentId:investment?.$id,
+                            rio:investment?.rio,
+                            is_cancelled:true,
+                            immediate_start:investment?.immediate_start
+                        }
+                    )
+                ])
             }else if (parentInvestment.is_up_for_sell){
                 await Promise.all([
                     createUserInvestmentOnSell(
@@ -414,7 +498,25 @@ export const undoSellInvestment = async(data)=>{
                     performUndoAction(unit)
                 ])
             }else{
-                await performUndoAction(parentInvestment.unit + unit)
+                await Promise.all([
+                    performUndoAction(parentInvestment.unit + unit),
+                    createUserInvestmentOnSell(
+                        {
+                            date_created: investment.date_created,
+                            user: user?.$id,
+                            unit:parseFloat(investment.unit),
+                            initial_rate:parseFloat(investment?.investment?.price_per_unit),
+                            total:parseFloat(investment?.total),
+                            is_up_for_sell:false,
+                            pricePlaced:parseFloat(investment.pricePlaced),
+                            investment: investment?.investment?.$id,
+                            parentInvestmentId:investment?.$id,
+                            rio:investment?.rio,
+                            is_cancelled:true,
+                            immediate_start:investment?.immediate_start
+                        }
+                    )
+                ])
             }
             
             await createTransactions({
