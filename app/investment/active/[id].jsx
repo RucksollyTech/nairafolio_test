@@ -26,6 +26,7 @@ import { updateCurrentUser } from '../../../lib/updateAccountTransaction'
 import SuccessModal from '../../../components/SuccessModal'
 import CustomNavigator from '../../../components/CustomNavigator'
 import { OngoingDetailSkeletonLoader } from '@/components/DetailLoader'
+import CustomModalAlert from '@/components/CustomModalAlert'
 
 
 export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
@@ -64,6 +65,7 @@ const Active = () => {
     const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
     const [success, setSuccess] = useState(false);
     const [successModal, setSuccessModal] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const [unitToSell, setUnitToSell] = useState(0);
     const [pricePlaced, setPricePlaced] = useState(0);
@@ -289,7 +291,7 @@ const Active = () => {
         }
     },[dateValue,dateValue2])
     const handleAdd = ()=>{
-        router.push(`/sales/${investment?.investment?.$id}`)
+        setModalVisible(true)
     }
     const [active, setActive] = useState(0)
     
@@ -367,6 +369,10 @@ const Active = () => {
         handleFailSales()
         setIsInsufficientFund(false)
         router.push("/wallet")
+    }
+    const handleModalClick= (url)=>{
+        setModalVisible(false)
+        router.push(url)
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
@@ -1583,6 +1589,27 @@ const Active = () => {
                     )}
                 </View>
             </GeneralDrawer>
+            <CustomModalAlert
+                isVisible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                body={"This investment is sold out, but you can buy from other investors that are willing to sell. Please proceed to view offers if you are still interested"}
+                title={"Please note"}
+            >  
+                {!investment?.immediate_start && 
+                    <TouchableOpacity 
+                        className='border-t border-[#4e4e4e] w-full py-2.5'
+                        onPress={() => handleModalClick(`/investment/new/${investment?.investment?.$id}`)}
+                    >
+                        <Text className="font-psemibold text-lg text-blue-500 text-center">Go to Explore</Text>
+                    </TouchableOpacity>
+                }
+                <TouchableOpacity 
+                    className='border-t border-[#4e4e4e] w-full py-2.5'
+                    onPress={() => handleModalClick(`/sales/${investment?.investment?.$id}`)}
+                >
+                    <Text className="font-psemibold text-lg text-blue-500 text-center">See Offers</Text>
+                </TouchableOpacity>
+            </CustomModalAlert>
         </SafeAreaView>
     )
 }

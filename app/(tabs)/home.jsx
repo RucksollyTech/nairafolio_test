@@ -79,6 +79,8 @@ import Media_and_stories from '@/components/media_and_stories';
 //     />
 // )
 // const MemoizedCarousel = React.memo(CustomCarousel);
+
+
 const Home = () => {
     const { user,setUser,setLastActive } = useGlobalContext();
     const { data:userInvestments, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
