@@ -59,6 +59,7 @@ import cam from "../assets/icons/cam.png";
 import gallery from "../assets/icons/gallery.png";
 import media from "../assets/icons/media.png";
 import bio from "../assets/icons/bio.png";
+import start_date from "../assets/icons/start_date.png";
 
 import portfolio from "../assets/icons/portfolio.png";
 import portfolio_thin from "../assets/icons/portfolio_thin.png";
@@ -67,6 +68,7 @@ export default {
     portfolio,
     portfolio_thin,
     left_arrow,
+    start_date,
     plus,
     media,
     bio,

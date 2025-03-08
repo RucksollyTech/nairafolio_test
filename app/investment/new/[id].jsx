@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, ImageBackground, StyleSheet, TouchableOpacity, Platform } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import { icons } from '../../../constants'
@@ -10,12 +10,13 @@ import { router, useLocalSearchParams, useNavigation } from 'expo-router'
 import ToggleButtons from '../../../components/ToggleButtons'
 import PaymentDrawer from '../../../components/PaymentDrawer'
 import useAppwrite from '../../../lib/useAppwrite'
-import { getInvestment } from '@/lib/appwrite'
+import { getInvestment, getInvestmentOfferTotal, getInvestors } from '@/lib/appwrite'
 import { convertDaysToReadableFormat } from '../../../components/dayConverter'
 import { RefreshControl } from 'react-native'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import CustomNavigator from '../../../components/CustomNavigator'
 import DetailSkeletonLoader from '@/components/DetailLoader'
+import { UTCDate } from '@/components'
 
 
 const Investment = () => {
@@ -25,6 +26,8 @@ const Investment = () => {
     let data = listData && listData[0]
     const navigation = useNavigation();
     const [active, setActive] = useState(true)
+    const [investors, setInvestors] = useState(0)
+    const [offerTotal, setOfferTotal] = useState(0)
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const toggler = (value)=>{
         setActive(value)
@@ -45,6 +48,24 @@ const Investment = () => {
         }
         return {position:"relative"}
     }
+    useEffect(() => {
+
+        if (data?.$id){
+            const getInvestorsCount = async () => {
+                const [investors,offers] = await Promise.all([
+                    getInvestors(data?.$id),
+                    getInvestmentOfferTotal(data?.$id)
+                ])
+                if (investors){
+                    setInvestors(investors)
+                }
+                if(offers){
+                    setOfferTotal(offers)
+                }
+            }
+            getInvestorsCount()
+        }
+    }, [data])
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
@@ -209,24 +230,54 @@ const Investment = () => {
                                     </View>
                                 </View>
                             </View>
-                            <View className="flex mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
-                                <View>
-                                    <Image
-                                        source={icons.calender}
-                                        resizeMode="contain"
-                                        className="my-auto"
-                                    />
-                                </View>
-                                <View className="mt-2">
-                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
-                                        {convertDaysToReadableFormat(data?.duration_days ?? 0)} returns
-                                    </Text>
-                                </View>
+                            <View className="flex flex-row gap-4 flex-1">
+                                {!!data?.duration_days && (
+                                    <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                        <View>
+                                            <Image
+                                                source={icons.calender}
+                                                resizeMode="contain"
+                                                className="my-auto"
+                                            />
+                                        </View>
+                                        <View className="mt-2">
+                                            <Text className="font-pmedium text-center ml-2 my-auto font-[600] text-base text-muted-200">
+                                                {convertDaysToReadableFormat(data?.duration_days ?? 0)} returns
+                                            </Text>
+                                        </View>
+                                    </View>
+                                )}
+                                {!!data?.date_to_introduction && (
+                                    <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                        <View>
+                                            <Image
+                                                source={icons.start_date}
+                                                resizeMode="contain"
+                                                className="my-auto"
+                                            />
+                                        </View>
+                                        <View className="mt-2">
+                                            <View className="flex flex-row ">
+                                                <View className="flex flex-row ">
+                                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                                        Starts {UTCDate(data?.date_to_introduction)?.simpleDateFormat}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
+                                )}
                             </View>
                             <View className="mt-4 items-center justify-center flex-1">
-                                {data && data?.total_investors > 0 && (
+                                {data && data?.status === true && investors > 0 && (
                                     <Text className="text-muted-200">
-                                        Join{" "}<Text className="text-secondary-100">{data?.total_investors ?? 0} Investors</Text>
+                                        Join{" "}<Text className="text-secondary-100">{investors ?? 0} Investors</Text>
+                                    </Text>
+                                )}
+                                {data && data?.status === false && (
+                                    <Text className="text-muted-200">
+                                        <Text className="text-secondary-100">{offerTotal ?? 0} Investors</Text>
+                                        {" "}are willing to sell their shares
                                     </Text>
                                 )}
                                 <CustomButton 
@@ -371,9 +422,15 @@ const Investment = () => {
                         </View>
                         <View className="my-10 p-5 border-t border-border-100">
                             <View className="items-center justify-center flex-1">
-                                {data && data?.total_investors > 0 && (
+                                {data && data?.status === true && investors > 0 && (
                                     <Text className="text-muted-200">
-                                        Join{" "}<Text className="text-secondary-100">{data?.total_investors ?? 0} Investors</Text>
+                                        Join{" "}<Text className="text-secondary-100">{investors ?? 0} Investors</Text>
+                                    </Text>
+                                )}
+                                {data && data?.status === false && (
+                                    <Text className="text-muted-200">
+                                        <Text className="text-secondary-100">{offerTotal ?? 0} Investors</Text>
+                                        {" "}are willing to sell their shares
                                     </Text>
                                 )}
                                 <CustomButton 

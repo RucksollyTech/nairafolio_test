@@ -115,18 +115,20 @@ const InvestmentDisplayCard = (
                                 </View>
                             </View>
                         </View>
-                        <View className="flex items-center justify-center bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
-                            <View className="flex flex-row ">
-                                <Image
-                                    source={icons.calender}
-                                    resizeMode="contain"
-                                    className="my-auto"
-                                />
-                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
-                                    {convertDaysToReadableFormat(duration_days)} returns
-                                </Text>
+                        {duration_days && (
+                            <View className="flex items-center justify-center bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
+                                <View className="flex flex-row ">
+                                    <Image
+                                        source={icons.calender}
+                                        resizeMode="contain"
+                                        className="my-auto"
+                                    />
+                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                        {convertDaysToReadableFormat(duration_days)} returns
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
+                        )}
                         
                     </View>
                     <View className="mt-4">

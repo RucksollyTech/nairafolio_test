@@ -20,6 +20,7 @@ const UTCDate = (date) => {
         const daysGone = now.diff(dates, 'days');
         const datetime= dates.format()
         const diffInMinutes = now.diff(dates, 'minute');
+        const simpleDateFormat = dates.format('MMM D, YYYY')
 
         if (dates.isToday()) {
             isToday=true
@@ -28,7 +29,7 @@ const UTCDate = (date) => {
             myDateFormat = dates.format('ddd MMM D, h:mma'); 
         }
 
-        return {today, datetime, daysGone,appwriteDatetime,myDateFormat,isToday,diffInMinutes};
+        return {today, datetime, daysGone,appwriteDatetime,simpleDateFormat,myDateFormat,isToday,diffInMinutes};
     }
     return {today,appwriteDatetime};
 };
