@@ -6,14 +6,14 @@ const Card = ({title,body,thumbnail}) => {
         <View className="flex-1">
             <View className="rounded-lg bg-muted">
                 <Image
-                    className="max-w-[100%] rounded-lg h-[131px]"
+                    className="max-w-[100%] rounded-lg h-[100px]"
                     source={{uri: thumbnail}}
                     resizeMode='cover'
                 />
             </View>
             <Text 
                 className="
-                    mt-4 
+                    mt-3 
                     mb-1
                     font-semibold
                     text-base

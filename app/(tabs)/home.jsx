@@ -205,14 +205,14 @@ const Home = () => {
                             setIsDrawerVisible={setIsDrawerVisible}
                         />
                     </View>
-                    {(hasoldx || hasSold) && (
+                    {/* {(hasoldx || hasSold) && (
                         <ToggleButtons
                             active={active}
                             toggler={toggler}
                             title1={"Investments"}
                             title2={"Up for sale"}
                         />
-                    )}
+                    )} */}
                     {(loading || load) ? (
                         <View className="px-5 mt-6">
                             <HomeSkeletonLoader />
@@ -340,7 +340,7 @@ const Home = () => {
                         </View>
                     )}
                     <View>
-                        <Media_and_stories setLastActive={setLastActive} />
+                        <Media_and_stories setLastActive={setLastActive} refreshing={refreshing} />
                     </View>
                 </View>
             </ScrollView>

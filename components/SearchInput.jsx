@@ -47,7 +47,7 @@ const SearchInput = ({ initialQuery, refreshing }) => {
     return (
         <View>
             <View className={`
-                flex flex-row 
+                flex-row 
                 items-center space-x-4 
                 w-full h-16 px-4 
                 bg-[#FBFBFB] rounded-2xl 
@@ -56,6 +56,21 @@ const SearchInput = ({ initialQuery, refreshing }) => {
                     isFocused ? "border-primary" : "border-border"
                 }
             `}>
+                <TouchableOpacity
+                    onPress={() => {
+                        if (query === "" && categorySelected=== "")
+                            return
+                        if (pathname.startsWith("/search")) {
+                            router.setParams({ query, categorySelected});
+                        } else {
+                            const queryObj = { query, categorySelected};
+                            const queryString = new URLSearchParams(queryObj).toString();
+                            router.push(`/search/${queryString}`);
+                        }
+                    }}
+                >
+                    <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
+                </TouchableOpacity>
                 <TextInput
                     className="text-base mt-0.5 text-black-100 flex-1 font-pregular"
                     value={query}

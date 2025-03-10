@@ -1,21 +1,28 @@
-import { View, Text, RefreshControl } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, RefreshControl, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Card from './Card'
 import useAppwrite from '@/lib/useAppwrite'
 import { getBlogs } from '@/lib/appwrite'
 import { FlatList } from 'react-native'
 import { Dimensions } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = screenWidth / 2.15 - 20; 
-const Media_and_stories = ({setLastActive}) => {
+
+export const openLink = async (link) => {
+    await WebBrowser.openBrowserAsync(link);
+};
+const Media_and_stories = ({setLastActive,refreshing}) => {
     const { data, loading, refetch } = useAppwrite(getBlogs)
-    const [refreshing, setRefreshing] = useState(false)
     const onRefresh = async()=>{
-        setRefreshing(true)
         await refetch()
-        setRefreshing(false)
     }
+    useEffect(()=>{
+        if(refreshing) {
+            refetch()
+        }
+    },[refreshing])
     return (
         <View>
             {data && data.length >0 && (
@@ -40,25 +47,27 @@ const Media_and_stories = ({setLastActive}) => {
                     paddingRight: 20,
                     paddingLeft: 20,
                 }}
-                renderItem={({ item:{title,image,body} }) =>(
-                    <View 
-                        style={{
-                            width: cardWidth,
-                            marginRight: 10, // Optional: space between cards
-                        }}
+                renderItem={({ item:{title,image,body,link} }) =>(
+                    <TouchableOpacity
+                       onPress={()=>openLink(link)}
                     >
-                        <Card
-                            title={title}
-                            thumbnail={image}
-                            body={body}
-                        />
-                    </View>
+                        <View 
+                            style={{
+                                width: cardWidth,
+                                marginRight: 10,
+                            }}
+                        >
+                            <Card
+                                title={title}
+                                thumbnail={image}
+                                body={body}
+                            />
+                        </View>
+                    </TouchableOpacity>
                 )}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
+                
             />
             
         </View>

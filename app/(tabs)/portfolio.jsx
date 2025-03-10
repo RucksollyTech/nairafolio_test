@@ -56,7 +56,7 @@ const Portfolio = () => {
     }, [notForSellData,forSellData])
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <View>
+            <View className='pb-5'>
                 <LinearGradient
                     colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
                     start={{ x: 0.5, y: 0 }}
@@ -70,7 +70,7 @@ const Portfolio = () => {
                         </View>
                     </View>
                 </LinearGradient>
-                <View className="px-5 pb-4">
+                {/* <View className="px-5 pb-4">
                     {(hasoldx || hasSold) && (
                         <ToggleButtons
                             active={active}
@@ -80,7 +80,7 @@ const Portfolio = () => {
                             marginTop={"mt-7"}
                         />
                     )}
-                </View>
+                </View> */}
             </View>
             <FlatList 
                 onTouchStart={() => setLastActive(Date.now())}
