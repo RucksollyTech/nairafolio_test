@@ -2,22 +2,28 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 
-const CustomModalAlert = ({children, isVisible, onClose, title, body }) => {
+const CustomModalAlert = ({children, isVisible, onClose, title, body,showDefault=true, defaultText }) => {
     return (
-        <Modal isVisible={isVisible} onBackdropPress={onClose} style={styles.modal}>
+        <Modal isVisible={isVisible} onBackdropPress={showDefault ? onClose : ()=>console.log("")} style={styles.modal}>
             <View style={styles.container}>
                 <View className="px-5 pt-5 pb-2">
-                    <Text style={styles.title} className="text-white text-center">
-                        {title}
-                    </Text>
-                    <Text style={styles.message} className="text-white">
-                        {body}
-                    </Text>
+                    {title && (
+                        <Text style={styles.title} className="text-white text-center">
+                            {title}
+                        </Text>
+                    )}
+                    {body && (
+                        <Text style={styles.message} className="text-white">
+                            {body}
+                        </Text>
+                    )}
                 </View>
                 {children}
-                <TouchableOpacity className="border-t border-[#4e4e4e]" style={styles.buttonSecondary} onPress={onClose}>
-                    <Text className="font-psemibold text-lg text-blue-500">Cancel</Text>
-                </TouchableOpacity>
+                {showDefault && (
+                    <TouchableOpacity className="border-t border-[#4e4e4e]" style={styles.buttonSecondary} onPress={onClose}>
+                        <Text className="font-psemibold text-lg text-blue-500">{defaultText ?? "Cancel"}</Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </Modal>
     );

@@ -115,7 +115,7 @@ const InvestmentDisplayCard = (
                                 </View>
                             </View>
                         </View>
-                        {duration_days && (
+                        {!!duration_days && (
                             <View className="flex items-center justify-center bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
                                 <View className="flex flex-row ">
                                     <Image

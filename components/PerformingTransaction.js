@@ -87,7 +87,7 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                             investment?.$id,{
                                 is_up_for_sell:false,
                                 sold:false,
-                                pricePlaced:0.0,
+                                pricePlaced:investment?.pricePlaced,
                                 user:user.$id
                             }
                         ),
@@ -99,7 +99,7 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                                 initial_rate:parseFloat(investment?.investment?.investment?.price_per_unit),
                                 total:parseFloat(investment?.investment?.total),
                                 sold:true,
-                                pricePlaced:parseFloat(investment.price_per_unit),
+                                pricePlaced:parseFloat(investment?.investment?.pricePlaced),
                                 investment: investment?.investment?.investment?.$id,
                                 parentInvestmentId:investment?.investment?.$id,
                                 rio:investment?.investment?.rio,
@@ -158,7 +158,8 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                                     total:parseFloat(investment?.investment?.total),
                                     is_up_for_sell:false,
                                     sold:false,
-                                    pricePlaced:parseFloat(0),
+                                    inactive:false,
+                                    pricePlaced:parseFloat(investment?.investment?.pricePlaced),
                                     rio:investment?.investment?.rio,
                                 }
                             )
@@ -187,7 +188,8 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                                         total:parseFloat(investment?.investment?.total),
                                         is_up_for_sell:false,
                                         sold:false,
-                                        pricePlaced:parseFloat(0),
+                                        inactive:false,
+                                        pricePlaced:parseFloat(investment?.investment?.pricePlaced ?? 0),
                                         rio:investment?.investment?.rio,
                                     }
                                 )
@@ -298,7 +300,7 @@ export const sellInvestment = async(data)=>{
         }else if(unit - putUnit === 0){
             await Promise.all([
                 updateOngoingInvestment(investment.$id,{
-                    unit: parseFloat(0),
+                    unit: parseFloat(putUnit),
                     inactive:true,
                     pricePlaced:parseFloat(pricePlaced),
                     parentInvestmentId:investment?.$id,
@@ -387,9 +389,9 @@ export const sellInvestmentNairaFolio = async(data)=>{
             await Promise.all(
                 [
                     updateOngoingInvestment(investment.$id,{
-                        unit: parseFloat(0),
-                        is_up_for_sell:true,
-                        sold:true,
+                        unit: parseFloat(putUnit),
+                        is_up_for_sell:false,
+                        sold:false,
                         inactive:true
                     }),
                     updateUser(user.$id,{wallet_balance: parseFloat(user.wallet_balance + (putUnit * investment?.investment?.price_by_nairafolio))}),
@@ -442,12 +444,15 @@ export const undoSellInvestment = async(data)=>{
                     updateOngoingInvestment(investment?.parentInvestmentId,{
                         unit: parseFloat(unit),
                         is_up_for_sell:false,
-                        sold:false
+                        sold:false,
+                        inactive:false,
+                        is_cancelled:false
                     }),
                     updateOngoingInvestment(investment?.$id,{
-                        sold:true,
+                        sold:false,
                         inactive:true,
-                        unit:0.0
+                        is_up_for_sell:false,
+                        unit:unit
                     })
                 ])
             }
@@ -492,6 +497,22 @@ export const undoSellInvestment = async(data)=>{
                             investment: parentInvestment?.investment?.$id,
                             parentInvestmentId:parentInvestment?.$id,
                             rio:parentInvestment?.rio,
+                            immediate_start:parentInvestment?.immediate_start
+                        }
+                    ),
+                    createUserInvestmentOnSell(
+                        {
+                            date_created: parentInvestment.date_created,
+                            user: user?.$id,
+                            unit:parseFloat(parentInvestment.unit),
+                            initial_rate:parseFloat(parentInvestment?.investment?.price_per_unit),
+                            total:parseFloat(parentInvestment?.total),
+                            is_up_for_sell:false,
+                            pricePlaced:parseFloat(parentInvestment.pricePlaced),
+                            investment: parentInvestment?.investment?.$id,
+                            parentInvestmentId:parentInvestment?.$id,
+                            rio:parentInvestment?.rio,
+                            is_cancelled:true,
                             immediate_start:parentInvestment?.immediate_start
                         }
                     ),

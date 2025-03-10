@@ -63,6 +63,7 @@ const AppLayout = () => {
             <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
             <Stack.Screen name="investment/new/[id]" options={{ headerShown: false }} />
             <Stack.Screen name="investment/active/[id]" options={{ headerShown: false }} />
+            <Stack.Screen name="investment/user_offer/[id]" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>

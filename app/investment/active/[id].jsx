@@ -117,7 +117,8 @@ const Active = () => {
         }
         setLoadingSubmit(true)
         await updateOngoingInvestment(investment?.$id,{
-            is_matured:true
+            is_matured:true,
+            inactive:true
         })
         const valueSentToWallet = totalProfitsAndInvested(investment)
         await Promise.all(
@@ -562,6 +563,76 @@ const Active = () => {
                                 )}
                             </View>
 
+                            <View>
+                                <TouchableOpacity 
+                                    activeOpacity={0.9}
+                                    className="mb-5"
+                                    onPress={()=>router.push(`/investment/user_offer/${investment?.investment?.$id}`)}
+                                >
+                                    <View 
+                                        className={`
+                                            flex-1 
+                                            py-2.5 flex-row
+                                            px-3
+                                            rounded-lg
+                                            bg-[#CBF5B84D]
+                                        `}
+                                    >
+                                        <View
+                                            className="
+                                                h-12 w-12 
+                                                rounded-full 
+                                                bg-[#0141481A]
+                                                items-center 
+                                                justify-center
+                                            "
+                                        >
+                                            <Image
+                                                source={icons.tag}
+                                                resizeMode="contain"
+                                                className="
+                                                    w-6
+                                                    rounded-full
+                                                "
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "60%",
+                                            }}
+                                            className="flex-1 px-3 justify-center "
+                                        >
+                                            <View>
+                                                <Text
+                                                    className="text-lg text-muted-200"
+                                                >
+                                                    View sales ads
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "30%",
+                                            }}
+                                            className="items-right justify-center pr-2"
+                                        >
+                                            <View className="w-full items-end">
+                                                <View>
+                                                    <Image
+                                                        source={icons.arrow_right}
+                                                        resizeMode="contain"
+                                                        className="
+                                                            w-6
+                                                            rounded-full
+                                                        "
+                                                    />
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+
                             <View className="flex-1 mt-1 rounded-lg border border-border">
                                 <View className="p-4 border-b border-border flex-1">
                                     <Text className="text-muted">
@@ -610,7 +681,7 @@ const Active = () => {
                                             </View>
                                         </View>
                                     </View>
-                                    <View className="flex mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                    {/* <View className="flex mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
                                         <View>
                                             <Image
                                                 source={icons.calender}
@@ -623,7 +694,47 @@ const Active = () => {
                                                 {convertDaysToReadableFormat(investment?.investment?.duration_days ?? 0)} returns
                                             </Text>
                                         </View>
+                                    </View> */}
+                                    <View className="flex flex-row gap-4 flex-1">
+                                        {!!investment?.investment?.duration_days && (
+                                            <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                                <View>
+                                                    <Image
+                                                        source={icons.calender}
+                                                        resizeMode="contain"
+                                                        className="my-auto"
+                                                    />
+                                                </View>
+                                                <View className="mt-2">
+                                                    <Text className="font-pmedium text-center ml-2 my-auto font-[600] text-base text-muted-200">
+                                                        {convertDaysToReadableFormat(investment?.investment?.duration_days ?? 0)} returns
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        )}
+                                        {!!investment?.investment?.date_to_introduction && (
+                                            <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                                <View>
+                                                    <Image
+                                                        source={icons.start_date}
+                                                        resizeMode="contain"
+                                                        className="my-auto"
+                                                    />
+                                                </View>
+                                                <View className="mt-2">
+                                                    <View className="flex flex-row ">
+                                                        <View className="flex flex-row ">
+                                                            <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                                                Starts {UTCDate(investment?.investment?.date_to_introduction)?.simpleDateFormat}
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        )}
                                     </View>
+
+
                                 </View>
                                 <View className="p-4">
                                     <Text className="text-muted text-base">
