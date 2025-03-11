@@ -35,8 +35,10 @@ const Search = () => {
     }
     const searchQuery = parsedQuery.query || makeChecksForQuery(params.query) || ""; 
     const category = parsedQuery.categorySelected || params.categorySelected || "";
+    const selected = parsedQuery.selected || params.selected || "";
+
     const { data: investments, refetch,loading } = useAppwrite(
-        () => searchInvestments({query:searchQuery,categorySelected:category})
+        () => searchInvestments({query:searchQuery,categorySelected:category,selected})
     );
     const onRefresh = async()=>{
         setRefreshing(true)
@@ -46,7 +48,7 @@ const Search = () => {
 
     useEffect(() => {
         refetch();
-    }, [query]);
+    }, [query,selected]);
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <View>

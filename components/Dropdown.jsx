@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 
-const Dropdown = ({ options, onSelect, initialQuery }) => {
+const Dropdown = ({ options, onSelect, initialQuery,setIsOpen }) => {
   const [selectedValue, setSelectedValue] = useState(initialQuery || null);
   const [showOptions, setShowOptions] = useState(false);
 
@@ -11,12 +11,15 @@ const Dropdown = ({ options, onSelect, initialQuery }) => {
     onSelect(value);
     setShowOptions(false);
   };
-
+    const setShowDoewnd = ()=>{
+        setShowOptions(!showOptions)
+        setIsOpen(false)
+    }
     return (
         <View className="mb-4 mt-2 rounded-2xl w-full relative border border-border bg-white">
             <TouchableOpacity
                 className="p-4 flex flex-row justify-between"
-                onPress={() => setShowOptions(!showOptions)}
+                onPress={setShowDoewnd}
                 activeOpacity={0.9}
             >
                 <View className='pl-4'>
