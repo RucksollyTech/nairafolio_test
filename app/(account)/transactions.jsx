@@ -57,7 +57,7 @@ export const transactionIconChange = (action)=>{
         return false
     }
 }
-const DataContainer = ({data,transactions,index})=>(
+export const DataContainer = ({data,transactions,index})=>(
     <View 
         className={`
             flex-1 

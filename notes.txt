@@ -24,6 +24,7 @@ Wallet
 Card  
 Transfer 
 Sales
+Dollar
 
 Call to Set transactions at the right places
 

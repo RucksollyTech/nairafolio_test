@@ -20,13 +20,13 @@ export const checkMatured = data =>{
     if ((duration-daysGone) >= 0)return false
     return true
 }
-const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
+const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date,investType,user,investment}) => {
     const {daysGone} = UTCDate(date)
 
     return (
         <View className="mb-2">
             <TouchableOpacity
-                onPress={()=>router.push(`/investment/active/${_id}`)}
+                onPress={()=>router.push(!investType ? `/investment/active/${_id}` : `/dollar/${investment?.$id}`)}
                 activeOpacity={0.7}
             >
                 <View 
@@ -58,7 +58,7 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                         }}
                         className="flex-1 px-2 "
                     >
-                        <View>
+                        <View className={investType ? "my-auto" : ""}>
                             <Text
                                 className="text-base font-[700] font-pmedium text-muted"
                                 numberOfLines={1}
@@ -66,20 +66,22 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                                 {name}
                             </Text>
                         </View>
-                        <View className="flex-1 pt-1">
-                            <View className="pb-1">
-                                {(duration-daysGone) >= 0 ? (
-                                    <Text className="text-muted-100 text-xs">
-                                        {duration-daysGone} days left
-                                    </Text>
-                                ) : (
-                                    <Text className="text-muted-100 text-xs">
-                                        Matured
-                                    </Text>
-                                )}
+                        {!investType && (
+                            <View className="flex-1 pt-1">
+                                <View className="pb-1">
+                                    {(duration-daysGone) >= 0 ? (
+                                        <Text className="text-muted-100 text-xs">
+                                            {duration-daysGone} days left
+                                        </Text>
+                                    ) : (
+                                        <Text className="text-muted-100 text-xs">
+                                            Matured
+                                        </Text>
+                                    )}
+                                </View>
+                                <ProgressBar date={date} duration={duration} />
                             </View>
-                            <ProgressBar date={date} duration={duration} />
-                        </View>
+                        )}
                     </View>
                     <View
                         style={{
@@ -88,19 +90,22 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date}) => {
                     >
                         <View>
                             <Money 
-                                value={invested}
+                                dollar={investType}
+                                value={investType ? user.dollar_ballance : invested}
                                 textStyle="font-pmedium text-muted text-right text-base"
                             />
                         </View>
                         <View className="mt-1">
                             <Money 
-                                value={calculateProfit({
+                                value={investType ? investment.investment.price_per_unit : calculateProfit({
                                     percentage,
                                     daysGone,
                                     invested,
                                     duration,
-     
+    
                                 })}
+                                containerStyle={investType && "flex-row ml-auto"}
+                                addedText={investType && "/$"}
                                 add
                                 textStyle="font-pmedium text-secondary-100 text-right text-sm"
                             />

@@ -10,22 +10,26 @@ import { router, useLocalSearchParams, useNavigation } from 'expo-router'
 import ToggleButtons from '../../../components/ToggleButtons'
 import PaymentDrawer from '../../../components/PaymentDrawer'
 import useAppwrite from '../../../lib/useAppwrite'
-import { getInvestment, getInvestmentOfferTotal, getInvestors } from '@/lib/appwrite'
+import { createUserInvestmentOnSell, getInvestment, getInvestmentOfferTotal, getInvestors, updateInvestment, updateUser } from '@/lib/appwrite'
 import { convertDaysToReadableFormat } from '../../../components/dayConverter'
 import { RefreshControl } from 'react-native'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import CustomNavigator from '../../../components/CustomNavigator'
 import DetailSkeletonLoader from '@/components/DetailLoader'
 import { UTCDate } from '@/components'
+import CustomModalAlert from '@/components/CustomModalAlert'
+import { updateCurrentUser } from '@/lib/updateAccountTransaction'
 
 
 const Investment = () => {
     const {id} = useLocalSearchParams();
-    const { user, setLastActive } = useGlobalContext();
+    const { user, setLastActive,setUser } = useGlobalContext();
     const { data:listData, loading, refetch } = useAppwrite(()=>getInvestment(id))
     let data = listData && listData[0]
     const navigation = useNavigation();
+    const [modalVisible, setModalVisible] = useState(false);
     const [active, setActive] = useState(true)
+    const [alternativeLoader, setAlternativeLoader] = useState(false)
     const [investors, setInvestors] = useState(0)
     const [offerTotal, setOfferTotal] = useState(0)
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -47,6 +51,60 @@ const Investment = () => {
             return {height:180, padding: 18}
         }
         return {position:"relative"}
+    }
+
+    const handleBuyInvestButtonClick= async()=>{
+        setAlternativeLoader(false)
+        if(data && data?.isDollar){
+            if (user.has_dollar_investment){
+                router.push(`/dollar/${user.dollarInvestmentId}`)
+            }else{
+                setAlternativeLoader(true)
+                try {
+                    const investorsUpdate = async() =>{
+                        if(data.total_investors){
+                            await updateInvestment(data?.$id,{
+                                total_investors: parseFloat(data.total_investors + 1)
+                            })
+                        }else{
+                            await updateInvestment(data?.$id,{
+                                total_investors: parseFloat(1)
+                            })
+                        }
+                    }
+                    const {appwriteDatetime}=UTCDate()
+                    const [dollarInvestment,investorsUpdatedData] = await Promise.all([
+                        createUserInvestmentOnSell(
+                            {
+                                date_created: appwriteDatetime,
+                                user: user?.$id,
+                                unit:0.0,
+                                initial_rate:parseFloat(data?.price_per_unit),
+                                total:parseFloat(0),
+                                pricePlaced:parseFloat(0),
+                                investment: data?.$id,
+                                rio:data?.rio,
+                                immediate_start:data?.immediate_start
+                            }
+                        ),
+                        investorsUpdate()
+                    ])
+                    await updateUser(user.$id,{has_dollar_investment:true,dollarInvestmentId:dollarInvestment?.$id})
+                    await updateCurrentUser(setUser)
+                    setAlternativeLoader(false)
+                    router.push(`/dollar/${dollarInvestment?.$id}`)
+                } catch (error) {
+                    setModalVisible(true)
+                    setAlternativeLoader(false)
+                }finally{
+                    setAlternativeLoader(false)
+                }
+            }
+        }else if(data && data?.status === false){
+            pushToPage()
+        }else{
+            setIsDrawerVisible(true)
+        }
     }
     useEffect(() => {
 
@@ -458,10 +516,11 @@ const Investment = () => {
                                 </Text>
                             )}
                             <CustomButton 
-                                title={(data && data?.status === false) ? "View offers" : "Invest Now"}
+                                title={(data && data?.isDollar) ? "Save Now" : (data && data?.status === false) ? "View offers" : "Invest Now"}
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
-                                handlePress={() => (data && data?.status === false) ? pushToPage() : setIsDrawerVisible(true)}
+                                isLoading={loading || alternativeLoader}
+                                handlePress={handleBuyInvestButtonClick}
                             />
                         </View>
                     </View>
@@ -475,6 +534,13 @@ const Investment = () => {
                     user={user}
                 />
             )}
+            <CustomModalAlert
+                isVisible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                body={"An error has occurred, please try again later."}
+                defaultText={"Ok"}
+                showDefault={true}
+            ><></></CustomModalAlert>
         </SafeAreaView>
     )
 }

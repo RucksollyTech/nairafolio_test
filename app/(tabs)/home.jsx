@@ -112,14 +112,16 @@ const Home = () => {
         let totalInvestment = 0
         if(userInvestments && userInvestments.length > 0){
             userInvestments.forEach(investment=>{
-                const {daysGone} = UTCDate(investment.date_created)
-                const dataForProfit = {
-                    percentage:investment.rio,
-                    daysGone,
-                    invested:investment.investment.price_per_unit * investment.unit,
-                    duration:investment.investment.duration_days
+                if(!investment.investment.isDollar){
+                    const {daysGone} = UTCDate(investment.date_created)
+                    const dataForProfit = {
+                        percentage:investment.rio,
+                        daysGone,
+                        invested:investment.investment.price_per_unit * investment.unit,
+                        duration:investment.investment.duration_days
+                    }
+                    totalInvestment += ((investment.investment.price_per_unit * investment.unit) + calculateProfit(dataForProfit))
                 }
-                totalInvestment += ((investment.investment.price_per_unit * investment.unit) + calculateProfit(dataForProfit))
             })
         }
         return totalInvestment
@@ -229,6 +231,9 @@ const Home = () => {
                                                 duration = {mapData.investment.duration_days}
                                                 invested = {mapData.investment.price_per_unit * mapData.unit}
                                                 percentage = {mapData.rio}
+                                                investType={mapData.investment.isDollar}
+                                                user={user}
+                                                investment={mapData}
                                                 date = {mapData.date_created}
                                                 _id={mapData.$id}
                                             />

@@ -18,7 +18,8 @@ const PaymentDrawer = ({
     isVisible, 
     onClose, 
     investment,
-    user
+    user,
+    title
 }) => {
     if (!isVisible) return null;
     // const { user } = useGlobalContext();
@@ -206,7 +207,7 @@ const PaymentDrawer = ({
                                         </View>
                                         <View className="pl-3">
                                             <Text className="text-lg font-psemibold font-semibold text-header-200">
-                                                Secure an Investment
+                                                {title ?? "Secure an Investment"} 
                                             </Text>
                                         </View>
                                     </View>
@@ -298,12 +299,12 @@ const PaymentDrawer = ({
                                         <View className="pt-3 px-5">
                                             <View>
                                                 <Text className="text-muted-200 font-pmedium">
-                                                    Number of units to purchase
+                                                    {investment.isDollar ? "Enter the dollar amount" : "Number of units to purchase"}
                                                 </Text>
                                                 <FormField 
                                                     title={"e.g 15 units"}
                                                     value={unit}
-                                                    placeholder={"e.g 15 units"}
+                                                    placeholder={investment.isDollar ? "$ 300" : "e.g 15 units"}
                                                     handleChangeText={(e)=>setUnit(e)}
                                                     otherStyles={"mt-2"}
                                                     keyboardType="number-pad"
@@ -311,7 +312,7 @@ const PaymentDrawer = ({
                                             </View>
                                             <View className="mt-8">
                                                 <Text className="text-muted-200 font-pmedium">
-                                                    Price of units
+                                                    {investment.isDollar ? "Total price" : "Price of units"}
                                                 </Text>
                                                 <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] h-14">
                                                     <Money 
@@ -322,7 +323,7 @@ const PaymentDrawer = ({
                                             </View>
                                             <View className="mt-2 items-center justify-center">
                                                 <Text className="text-secondary-100 font-pmedium text-sm">
-                                                    One unit costs{" "}
+                                                    {investment.isDollar ? "One dollar costs" :"One unit costs"}{" "}
                                                     <Text className="font-psans">₦{investment?.price_per_unit?.toLocaleString()}</Text>
                                                 </Text>
                                             </View>

@@ -10,6 +10,7 @@ export const CheckBalance = async () => {
         return {
             wallet: res?.wallet_balance ?? null,
             user: res ?? null,
+            dollar_ballance: res?.dollar_ballance ?? null
         };
     } catch (error) {
         console.error(error);
@@ -19,7 +20,7 @@ export const CheckBalance = async () => {
 };
 
 export const WalletCheckOut = async(investment,value_spent,user)=>{
-    const {wallet,error} = await CheckBalance()
+    const {wallet,dollar_ballance, error} = await CheckBalance()
 
     if(error){
         return {error};
@@ -29,7 +30,30 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
         
         if(wallet >= (value_spent * investment?.price_per_unit)){
             try {
-                
+                if (investment?.isDollar){
+                    const [updatedUser, newUserInvestment,trans] = await Promise.all([
+                        updateUser(
+                            user.$id,
+                            {
+                                wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit)),
+                                dollar_ballance:parseFloat(dollar_ballance + value_spent)
+                            }
+                        ),
+                        createTransactions({
+                            action: "Deposit",
+                            amount:parseFloat(value_spent * investment.price_per_unit),
+                            type:"Dollar",
+                            user:user.$id,
+                            reason:investment.name,
+                            reference:`${value_spent}`
+                        })
+                    ]);
+                    return {
+                        updatedUser,
+                        newUserInvestment,
+                        wallet
+                    }
+                }
                 const [updatedUser, newUserInvestment,trans] = await Promise.all([
                     updateUser(user.$id,{wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit))}),
                     createUserInvestment(

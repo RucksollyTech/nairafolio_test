@@ -64,10 +64,12 @@ import start_date from "../assets/icons/start_date.png";
 import portfolio from "../assets/icons/portfolio.png";
 import portfolio_thin from "../assets/icons/portfolio_thin.png";
 import filter from "../assets/icons/filter.png";
+import convert from "../assets/icons/convert.png";
 
 export default {
     portfolio,
     filter,
+    convert,
     portfolio_thin,
     left_arrow,
     start_date,
