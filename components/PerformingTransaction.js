@@ -31,7 +31,7 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
         if(wallet >= (value_spent * investment?.price_per_unit)){
             try {
                 if (investment?.isDollar){
-                    const [updatedUser, newUserInvestment,trans] = await Promise.all([
+                    const [updatedUser,trans, newUserInvestment] = await Promise.all([
                         updateUser(
                             user.$id,
                             {
@@ -45,7 +45,8 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
                             type:"Dollar",
                             user:user.$id,
                             reason:investment.name,
-                            reference:`${value_spent}`
+                            reference:`${value_spent}`,
+                            for_dollar:true
                         })
                     ]);
                     return {

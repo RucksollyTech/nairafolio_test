@@ -7,14 +7,15 @@ import { router } from 'expo-router'
 import FormField from './FormField'
 import CustomButton from './CustomButton'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { useNavigation } from 'expo-router'
 
 
-const PaymentMethods = ({amount,active,setActive,modeSet,setActiveMode,investment,user}) => {
+const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMode,investment,user}) => {
     const [loading, setLoading] = useState(false)
     const [depositAmount, setDepositAmount] = useState(0)
     const [next, setNext] = useState(false)
     const [modeChosen, setModeChosen] = useState(false)
-
+    const navigation = useNavigation();
     const handleSetNext = (mode) =>{
         setNext(true)
         setModeChosen(mode)
@@ -39,8 +40,21 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setActiveMode,investmen
     useEffect(()=>{
         if(amount && (modeSet === "bank_transfer" || modeSet === "card")){
             goToPayNow()
+            if(setModeSet){
+                setModeSet(null);
+            }
         }
     },[modeSet])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", () => {
+            if(setModeSet){
+                setModeSet(null);
+            }
+        });
+    
+        return unsubscribe;
+    }, [navigation]);
 
     return (
         <View style={{ flex: 1 }}>

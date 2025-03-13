@@ -6,11 +6,11 @@ import { TransactionDisplayText, classNameColorsForTransactions, transactionIcon
 import UTCDate from './UTCDate'
 import Money from './Money'
 
-const TransactionCard = (transactions,transaction) => {
+const TransactionCard = ({transactions,transaction,index}) => {
     return (
         
         <View 
-            key={transaction.$id}
+            key={transaction?.$id}
             className={`
                 flex-1 
                 flex
@@ -27,8 +27,8 @@ const TransactionCard = (transactions,transaction) => {
                 <Image
                     source={icons.download}
                     resizeMode="cover"
-                    tintColor={transactionIconChange(transaction.action) ?  "#40BF6A" : "#E33629"}
-                    className={!transactionIconChange(transaction.action) && "rotate-180"}
+                    tintColor={transactionIconChange(transaction?.action) ?  "#40BF6A" : "#E33629"}
+                    className={!transactionIconChange(transaction?.action) && "rotate-180"}
                 />
             </View>
             <View
@@ -39,18 +39,18 @@ const TransactionCard = (transactions,transaction) => {
             >
                 <View>
                     <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
-                        {TransactionDisplayText(transaction.action)}
+                        {TransactionDisplayText(transaction?.action)}
                         <Text
                             className="text-lg font-[700] font-pmedium text-muted"
                             
                         >
-                            {transaction.reason}
+                            {transaction?.reason}
                         </Text>
                     </Text>
                 </View>
                 <View className="pt-2">
                     <Text className="text-muted-100 text-sm">
-                        {UTCDate(transaction.$createdAt)?.myDateFormat || "--"}
+                        {UTCDate(transaction?.$createdAt)?.myDateFormat || "--"}
                     </Text>
                 </View>
             </View>
@@ -61,15 +61,15 @@ const TransactionCard = (transactions,transaction) => {
             >
                 <View>
                     <Money 
-                        value={transaction.amount}
+                        value={transaction?.amount}
                         textStyle="font-psemibold text-muted text-right text-base"
                     />
                 </View>
                 <View className="mt-2">
                     <Text
-                        className={`font-pmedium ${classNameColorsForTransactions(transaction.action)} text-right text-sm`}
+                        className={`font-pmedium ${classNameColorsForTransactions(transaction?.action)} text-right text-sm`}
                     >
-                        {transaction.type}
+                        {transaction?.type}
                         
                         {/* Wallet || Card || Transfer */}
                     </Text>

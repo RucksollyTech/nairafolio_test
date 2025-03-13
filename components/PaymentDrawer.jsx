@@ -19,7 +19,9 @@ const PaymentDrawer = ({
     onClose, 
     investment,
     user,
-    title
+    title,
+    user_investment,
+    setShowMessage
 }) => {
     if (!isVisible) return null;
     // const { user } = useGlobalContext();
@@ -46,7 +48,7 @@ const PaymentDrawer = ({
         setLoadError(false)
         setIsInsufficientFund(false)
 
-        const {error,insufficient_fund} = await WalletCheckOut(investment,unit,user)
+        const {error,insufficient_fund} = await WalletCheckOut(investment,parseFloat(unit),user)
         if(error){
             setLoading(false)
             setLoadError(true)
@@ -60,8 +62,12 @@ const PaymentDrawer = ({
         // setUser(updatedUser)
         setTimeout(() => {
             setLoading(false)
-            router.push("/home")
+            router.push(investment.isDollar ? `/dollar/${user_investment?.$id}` : "/home")
         }, 1000);
+        if(investment.isDollar){
+            onClose()
+            setShowMessage(true);
+        }
     }
     const majorSubmitHandler= ()=>{
         if (active === 1){
@@ -70,6 +76,10 @@ const PaymentDrawer = ({
         }else if (active > 1){
             setModeSet(activeMode)
         }
+        // if(investment.isDollar){
+        //     onClose()
+        //     setShowMessage(true);
+        // }
     }
     const handleOtherScreen = (num) =>{
         setActive(num)
@@ -286,13 +296,14 @@ const PaymentDrawer = ({
                                                 </TouchableOpacity>
                                             </View>
                                             <PaymentMethods 
-                                                amount={unit * investment?.price_per_unit}
+                                                amount={parseFloat(unit) * investment?.price_per_unit}
                                                 active={active}
                                                 setActive={setActive}
                                                 modeSet={modeSet}
                                                 setActiveMode={setActiveMode}
                                                 investment={investment}
                                                 user={user}
+                                                setModeSet={setModeSet}
                                             />
                                         </View>
                                     ) : (
@@ -309,6 +320,13 @@ const PaymentDrawer = ({
                                                     otherStyles={"mt-2"}
                                                     keyboardType="number-pad"
                                                 />
+                                                <View className='min-h-5'>
+                                                    {!!unit && parseFloat(unit) < investment.min_investment && (
+                                                        <Text className="text-yellow-700 pt-1 text-xs font-psemibold">
+                                                            You cannot purchase less than {investment.min_investment} {investment.isDollar ? "dollar" : "units"}.
+                                                        </Text>
+                                                    )}
+                                                </View>
                                             </View>
                                             <View className="mt-8">
                                                 <Text className="text-muted-200 font-pmedium">
@@ -316,7 +334,7 @@ const PaymentDrawer = ({
                                                 </Text>
                                                 <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] h-14">
                                                     <Money 
-                                                        value={unit * investment?.price_per_unit}
+                                                        value={parseFloat(unit) * investment?.price_per_unit}
                                                         textStyle={"font-xl"}
                                                     />
                                                 </View>
@@ -338,6 +356,7 @@ const PaymentDrawer = ({
                                         title="Continue"
                                         textStyles="text-white"
                                         containerStyles="h-14"
+                                        loading={parseFloat(unit) < investment.min_investment}
                                         handlePress={handleProceed}
                                     />
                                 </View>

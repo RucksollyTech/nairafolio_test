@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { RefreshControl } from 'react-native';
@@ -8,32 +8,107 @@ import { OngoingDetailSkeletonLoader } from '@/components/DetailLoader';
 import useAppwrite from '@/lib/useAppwrite';
 import CustomNavigator from '@/components/CustomNavigator';
 import { icons } from '@/constants';
-import { getUserDataDollarCaller, getUserInvestment } from '@/lib/appwrite';
+import { createTransactions, getUserDataDollarCaller, getUserInvestment, updateUser } from '@/lib/appwrite';
 import Money from '@/components/Money';
 import TransactionCard from '@/components/TransactionCard';
 import GeneralDrawer from '@/components/GeneralDrawer';
 import PaymentDrawer from '@/components/PaymentDrawer';
+import { updateCurrentUser } from '@/lib/updateAccountTransaction';
+import CustomModalAlert from '@/components/CustomModalAlert';
+import { CustomButton, FormField } from '@/components';
+import { CheckBalance } from '@/components/PerformingTransaction';
 
 const Dollar = () => {
-    const { setLastActive, user } = useGlobalContext();
+    const { setLastActive, user,setUser,setShowMessage,showMessage } = useGlobalContext();
 
     const {id} = useLocalSearchParams();
     const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+    const [isDrawerVisible2, setIsDrawerVisible2] = useState(false);
+    const [dollarToSell, setDollarToSell] = useState(false);
+    const [load, setLoad] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const { data:{transactions,dollarInvestment}, loading, refetch } = useAppwrite(()=>getUserDataDollarCaller(id,user.$id))
     const onRefresh = async()=>{
         setRefreshing(true)
-        await refetch()
+        await Promise.all([
+            refetch(),
+            updateCurrentUser(setUser)
+        ])
         setRefreshing(false)
+    }
+    const handleMessageClose=async()=>{
+        setShowMessage(false)
+        await updateCurrentUser(setUser)
+        // await onRefresh()
     }
     const handleAdd=()=>{
         setIsDrawerVisible(true)
+        return
     }
     const handleConvert=()=>{
-        
+        setIsDrawerVisible2(true)
     }
+
+    const handleCloseModal=async()=>{
+        setLoad(false)
+        setSuccess(false)
+        setHasError("")
+        setIsDrawerVisible2(false)
+        await updateCurrentUser(setUser)
+    }
+    const moveToWallet = async()=>{
+        setLoad(true)
+        setSuccess(false)
+        setHasError("")
+        try {
+            const {wallet,dollar_ballance, error} = await CheckBalance()
+            if(dollar_ballance < dollarToSell){
+                setHasError("Insufficient funds")
+                return
+            }
+            await Promise.all([
+                updateUser(
+                    user.$id,
+                    {
+                        wallet_balance: parseFloat(wallet + parseFloat(dollarToSell * dollarInvestment?.investment?.dollar_withdrawal_rate)),
+                        dollar_ballance:parseFloat(dollar_ballance - parseFloat(dollarToSell))
+                    }
+                ),
+                createTransactions({
+                    action: "Withdrawal",
+                    amount:parseFloat(dollarToSell * dollarInvestment?.investment?.dollar_withdrawal_rate),
+                    type:"Dollar",
+                    user:user.$id,
+                    reason:dollarInvestment?.investment?.name,
+                    reference:`${dollarToSell}`,
+                    for_dollar:true
+                })
+            ]);
+            setSuccess(true);
+        } catch (error) {
+            setSuccess(false)
+            setIsDrawerVisible2(false)
+            setHasError("An error occurred. Please try again.");
+        }finally {
+            setLoad(false)
+        }
+    }
+    const getLastTransaction = (data)=>{
+        const response =data.find(x => x.action === "Deposit")
+        if (response)return response.amount
+        // console.log({response})
+        return 0
+    }
+    useEffect(()=>{
+        const handles=async()=>{
+            await updateCurrentUser(setUser)
+        }
+        handles()
+    },[])
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <CustomNavigator navigator={navigation} />
@@ -77,7 +152,7 @@ const Dollar = () => {
                                         Invested 
                                     </Text>
                                     <Money
-                                        value={(transactions && transactions.length > 0) ? transactions[0].amount : 0}
+                                        value={(transactions && transactions.length > 0) ? getLastTransaction(transactions) : 0}
                                         textStyle="text-muted font-pregular font-[700] text-base"
                                         containerStyle="pl-2"
                                     />
@@ -131,17 +206,18 @@ const Dollar = () => {
                         </View>
                         {/* Transactions */}
                         {transactions && transactions.length > 0 && (
-                            <View className='mt-5'>
+                            <View className='mt-5 px-5'>
                                 <View className='mb-3'>
                                     <Text className="font-psans text-lg text-black-100">
                                         Activities
                                     </Text>
                                 </View>
                                 <>
-                                    {transactions.map((transaction,index) =>(
+                                    {transactions.map((trans,index) =>(
                                         <TransactionCard 
                                             key={index} 
-                                            transaction={transaction} 
+                                            index={index}
+                                            transaction={trans} 
                                             transactions={transactions} 
                                         />
                                     ))}
@@ -160,9 +236,90 @@ const Dollar = () => {
                     user={user}
                     user_investment={dollarInvestment}
                     title="Buy Dollars"
+                    setShowMessage={setShowMessage}
                 />
             )}
-        
+            <CustomModalAlert
+                isVisible={showMessage}
+                title={"Success!"}
+                onClose={handleMessageClose}
+                body={`Your dollar purchase was successful!`}
+                defaultText={"Ok"}
+                showDefault={true}
+            ><></></CustomModalAlert>
+            <CustomModalAlert
+                isVisible={!!hasError}
+                title={"Error!"}
+                onClose={()=>setHasError("")}
+                body={hasError}
+                defaultText={"Continue"}
+                showDefault={true}
+            ><></></CustomModalAlert>
+            <GeneralDrawer 
+                heights={"50px"} 
+                header={"Convert Dollars"}
+                isVisible={isDrawerVisible2} 
+                onClose={() => setIsDrawerVisible2(false)}
+            >
+                <View className="pt-3 px-5">
+                    {!success ? (
+                        <>
+                            <View>
+                                <Text className="text-muted-200 font-pmedium">
+                                    Enter the dollar amount to convert
+                                </Text>
+                                <FormField 
+                                    title={"Enter the dollar amount to convert"}
+                                    value={dollarToSell}
+                                    placeholder={"$ 300"}
+                                    handleChangeText={(e)=>setDollarToSell(e)}
+                                    otherStyles={"mt-2"}
+                                    keyboardType="number-pad"
+                                />
+                                <View className='min-h-5'>
+                                    {user.dollar_ballance < dollarToSell && (
+                                        <Text className="text-red-600 pt-1 text-xs font-psemibold">
+                                            You cannot convert more than ${`${user.dollar_ballance}`.toLocaleString()}
+                                        </Text>
+                                    )}
+                                    {dollarToSell && user.dollar_ballance >= dollarToSell && (
+                                        <Text className="text-green-600 pt-1 text-xs font-psemibold">
+                                            You will receive approximately ₦{`${dollarToSell * dollarInvestment?.investment?.dollar_withdrawal_rate}`.toLocaleString()}
+                                        </Text>
+                                    )}
+                                </View>
+                            </View>
+                            <View className="mt-20">
+                                <Text className="text-muted-200 text-center font-pmedium text-sm">
+                                    By proceeding, you confirm  that you want to convert at the rate of ₦{dollarInvestment?.investment?.dollar_withdrawal_rate}. 
+                                    Funds converted will be sent to your Nairafolio wallet
+                                </Text>
+                            </View>
+                        </>
+                    ):(
+                        <View className="px-2">
+                            <View className="flex-1 justify-center items-center">
+                                <Image 
+                                    source={icons.good}
+                                />
+                            </View>
+                            <View className="mt-5">
+                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                    You have successfully converted {dollarToSell}.
+                                </Text>
+                            </View>
+                        </View>
+                    )}
+                    <CustomButton 
+                        title={success ? "Continue" : "Proceed"}
+                        textStyles="text-white font-psans"
+                        containerStyles="h-14 mt-8"
+                        loading={!dollarToSell || user?.dollar_ballance < dollarToSell}
+                        handlePress={success ? handleCloseModal : moveToWallet}
+                        isLoading={loading || load}
+                    />
+                </View>
+            </GeneralDrawer>
         </SafeAreaView>
     )
 }

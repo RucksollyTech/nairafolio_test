@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { LinearGradient } from 'expo-linear-gradient';
 import ToggleButtons from '@/components/ToggleButtons';
-import { getCurrentUser, getUserInvestmentsForHome } from '@/lib/appwrite';
+import { getCurrentUser, getUserInvestments, getUserInvestmentsForHome } from '@/lib/appwrite';
 import HomeSkeletonLoader from '@/components/HomeSkeletonLoader';
 import { CustomButton, EmptyState } from '@/components';
 import useAppwrite from '@/lib/useAppwrite';
@@ -13,7 +13,9 @@ import { router } from 'expo-router';
 
 const Portfolio = () => {
     const { user,setUser,setLastActive } = useGlobalContext();
-    const { data:{notForSellData,forSellData}, loading, refetch } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
+    // const { data:{notForSellData,forSellData}, loading, refetch } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
+    const { data:notForSellData, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
+    const forSellData=[]
     const [hasoldx, setHasoldx] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
     const [active, setActive] = useState(true)
@@ -101,6 +103,9 @@ const Portfolio = () => {
                             duration = {mapData.investment.duration_days}
                             invested = {mapData.investment.price_per_unit * mapData.unit}
                             percentage = {mapData.rio}
+                            investType={mapData.investment.isDollar}
+                            user={user}
+                            investment={mapData}
                             date = {mapData.date_created}
                             _id={mapData.$id}
                         />

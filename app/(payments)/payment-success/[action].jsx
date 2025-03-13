@@ -5,20 +5,27 @@ import { icons } from '../../../constants'
 import { router, useLocalSearchParams } from 'expo-router'
 import { handlePaymentSuccess, handlePaymentSuccessFromSales } from '../../../lib/updateAccountTransaction'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { getInvestment, getUserInvestmentRequest } from '@/lib/appwrite'
 
 const PaymentSuccess = () => {
     const { action } = useLocalSearchParams();
     const [type,reference,investmentId,sale] = action.split("NAIRAfoLIO")
-    const { setUser } = useGlobalContext();
+    const { setUser,user,setShowMessage } = useGlobalContext();
 
     const [loadFinished, setLoadFinished] = useState(false)
     const [hasRan, setHasRan] = useState(false)
+    const [stopRedirect, setStopRedirect] = useState(false)
+    const [investmentExtracted, setInvestmentExtracted] = useState(null)
     
     if(!loadFinished && !hasRan) {
         setHasRan(true)
         const performHandleSuccess = async () =>{
             if(!JSON.parse(sale)){
-                await handlePaymentSuccess(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser);
+                const [paymentResult, investmentData] = await Promise.all([
+                    handlePaymentSuccess(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser),
+                    getInvestment(investmentId)
+                ])
+                setInvestmentExtracted(investmentData[0])
             }else{
                 await handlePaymentSuccessFromSales(reference,investmentId === "Unavailable" ? null :investmentId,type,setUser);
             }
@@ -34,15 +41,23 @@ const PaymentSuccess = () => {
             </SafeAreaView>
         )
     }
-    if (loadFinished && hasRan){
+    if (loadFinished && hasRan && !stopRedirect){
+        // console.log({investmentExtracted})
+        // if(investmentExtracted && investmentExtracted?.isDollar){
+        //     console.log("Continue loading")
+        //     setShowMessage(true)
+        // }
+        setStopRedirect(true)
         if(action ==="Investment"){
             setTimeout(() => {
-                router.push(`/home`)
+                router.push((investmentExtracted && investmentExtracted?.isDollar) ? `/dollar/${investmentExtracted?.$id}` : `/home`)
             }, 1000);
+            return
         }else{
             setTimeout(() => {
-                router.push(`/wallet`)
+                router.push((investmentExtracted && investmentExtracted?.isDollar) ? `/dollar/${investmentExtracted?.$id}` : `/wallet`)
             }, 1000);
+            return
         }
     }
     return (

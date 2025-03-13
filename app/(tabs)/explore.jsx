@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import SearchInput from '../../components/SearchInput'
 import InvestmentDisplayCard from '../../components/InvestmentDisplayCard'
 import useAppwrite from '../../lib/useAppwrite'
-import { getAllInvestments } from '@/lib/appwrite'
+import { getAllInvestments, getAllInvestmentsDollarToArranged } from '@/lib/appwrite'
 import SkeletonLoader from '../../components/SkeletonLoader'
 import EmptyState from '../../components/EmptyState'
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -15,7 +15,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 const explore = () => {
     const { setLastActive } = useGlobalContext();
 
-    const { data:investments, loading, refetch } = useAppwrite(getAllInvestments)
+    const { data:investments, loading, refetch } = useAppwrite(getAllInvestmentsDollarToArranged)
     const [refreshing, setRefreshing] = useState(false)
     
     const onRefresh = async()=>{

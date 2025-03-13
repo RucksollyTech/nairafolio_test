@@ -16,6 +16,7 @@ const GlobalProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [locked, setLocked] = useState(true);
+    const [showMessage, setShowMessage] = useState(false);
     const [lastActive, setLastActive] = useState(Date.now());
 
     const navigation = useNavigation();
@@ -117,6 +118,8 @@ const GlobalProvider = ({ children }) => {
                     setLocked,
                     authenticateUser,
                     setLastActive,
+                    setShowMessage,
+                    showMessage
                 }}
             >
                 <GlobalTouchListener onTouch={handleGlobalTouch}>
