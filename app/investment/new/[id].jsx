@@ -10,7 +10,7 @@ import { router, useLocalSearchParams, useNavigation } from 'expo-router'
 import ToggleButtons from '../../../components/ToggleButtons'
 import PaymentDrawer from '../../../components/PaymentDrawer'
 import useAppwrite from '../../../lib/useAppwrite'
-import { createUserInvestmentOnSell, getInvestment, getInvestmentOfferTotal, getInvestors, updateInvestment, updateUser } from '@/lib/appwrite'
+import { createUserInvestmentOnSell, getInvestment, getInvestmentOfferTotal, getInvestors, graphData, updateInvestment, updateUser } from '@/lib/appwrite'
 import { convertDaysToReadableFormat } from '../../../components/dayConverter'
 import { RefreshControl } from 'react-native'
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -19,6 +19,8 @@ import DetailSkeletonLoader from '@/components/DetailLoader'
 import { UTCDate } from '@/components'
 import CustomModalAlert from '@/components/CustomModalAlert'
 import { updateCurrentUser } from '@/lib/updateAccountTransaction'
+// import GraphComponent from '@/components/GraphComponent'
+import GraphScreen from '@/components/GraphComponent'
 
 
 const Investment = () => {
@@ -29,6 +31,8 @@ const Investment = () => {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [active, setActive] = useState(true)
+    const [chartDataLoading, setChartDataLoading] = useState(true)
+    const [chartData, setChartData] = useState("")
     const [alternativeLoader, setAlternativeLoader] = useState(false)
     const [investors, setInvestors] = useState(0)
     const [offerTotal, setOfferTotal] = useState(0)
@@ -38,9 +42,30 @@ const Investment = () => {
     }
 
     const [refreshing, setRefreshing] = useState(false)
+    const getInvestorsCount = async () => {
+        setChartDataLoading(true)
+        const [investors,offers,graphs] = await Promise.all([
+            getInvestors(data?.$id),
+            getInvestmentOfferTotal(data?.$id),
+            graphData(data?.$id)
+        ])
+        if (investors){
+            setInvestors(investors)
+        }
+        if(offers){
+            setOfferTotal(offers)
+        }
+        if(graphs){
+            setChartData(graphs)
+        }
+        setChartDataLoading(false)
+    }
     const onRefresh = async()=>{
         setRefreshing(true)
-        await refetch()
+        await Promise.all([
+            refetch(),
+            getInvestorsCount()
+        ])
         setRefreshing(false)
     }
     const pushToPage = ()=>{
@@ -109,18 +134,6 @@ const Investment = () => {
     useEffect(() => {
 
         if (data?.$id){
-            const getInvestorsCount = async () => {
-                const [investors,offers] = await Promise.all([
-                    getInvestors(data?.$id),
-                    getInvestmentOfferTotal(data?.$id)
-                ])
-                if (investors){
-                    setInvestors(investors)
-                }
-                if(offers){
-                    setOfferTotal(offers)
-                }
-            }
             getInvestorsCount()
         }
     }, [data])
@@ -398,6 +411,14 @@ const Investment = () => {
                                         </View>
                                     </View>
                                 )}
+                            </View>
+                            {data?.immediate_start && (
+                                <GraphScreen 
+                                    chartData={chartData}
+                                    loading={chartDataLoading}
+                                />
+                            )}
+                            <View className="px-5">
                                 {(data?.images && data?.images.length>0) && (
                                     <View className="my-5">
                                         <View className="border-b pb-2 border-border-200">
@@ -479,6 +500,7 @@ const Investment = () => {
                                     </>
                                 )}
                             </View>
+                            
                             {/* <View className="my-10 p-5 border-t border-border-100">
                                 <View className="items-center justify-center flex-1">
                                     {data && data?.status === true && investors > 0 && (

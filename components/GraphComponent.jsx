@@ -1,104 +1,195 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, Dimensions, StyleSheet, PanResponder, TouchableOpacity } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { Dimensions } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
 
 const screenWidth = Dimensions.get("window").width;
 
-const dataSets = {
-  week: {
-    labels: ["S", "M", "T", "W", "T", "F", "S"],
-    data: [10, 12, 8, 15, 14, 18, 16],
-  },
-  month: {
-    labels: ["W1", "W2", "W3", "W4"],
-    data: [40, 55, 65, 70],
-  },
-  year: {
-    labels: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
-    data: [30, 35, 40, 50, 45, 55, 65, 60, 70, 75, 80, 85],
-  },
-};
+const GraphScreen = ({chartData,chartDataLoading}) => {
+  if (chartDataLoading){
+    return <View className="py-10"><Text className="text-muted-200 font-psemibold text-lg">Loading...</Text></View>;
+  }
+  if(!chartData["Last 7 Days"]){
+    return null;
+  }
+  const [selectedRange, setSelectedRange] = useState("Last 7 Days");
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, value: 0 });
 
-const GraphComponent = () => {
-  const [selectedFilter, setSelectedFilter] = useState("week");
-  const [tooltip, setTooltip] = useState(null);
+  // const chartData = {
+  //   "Last 7 Days": {
+  //     "labels": ["9th May", "8th May", "6th May", "5th May", "4th May", "3rd May", "2nd May"],
+  //     "data": [10.5, 1.5, 1.2, 1.8, 25, 30, 2.7]
+  //   },
+  //   "1 Month": {
+  //     "labels": ["12th Apr", "16 Apr", "21st Apr", "25th Apr", "30th Apr", "2nd May", "9th May"],
+  //     "data": [6.5, 8, 4.6, 5, 12, 25, 30]
+  //   },
+  //   "1 Year": {
+  //     "labels": ["21st Jun", "1st Aug", "12th Oct", "4th Dec", "2nd Feb", "14th Mar", "9th May"],
+  //     "data": [10, 20, 30, 18, 12, 6, 9]
+  //   }
+  // };
 
-  const chartConfig = {
-    backgroundGradientFrom: "#ffffff",
-    backgroundGradientTo: "#ffffff",
-    decimalPlaces: 0,
-    color: (opacity = 1) => `rgba(0, 128, 0, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    propsForDots: {
-      r: "6",
-      strokeWidth: "2",
-      stroke: "#008000",
-    },
+  const dataPoints = chartData[selectedRange].data;
+  const labels = chartData[selectedRange].labels;
+  const numPoints = dataPoints.length;
+  const graphWidth = screenWidth + screenWidth / 5.7; // ✅ Your exact width
+  const sectionWidth = graphWidth / numPoints;
+
+  // PanResponder for touch dragging
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gestureState) => {
+        let touchX = gestureState.moveX;
+
+        // Ensure within graph bounds
+        touchX = Math.max(0, Math.min(graphWidth, touchX));
+
+        // Find closest index
+        const index = Math.round((touchX / graphWidth) * (numPoints - 1));
+        const value = dataPoints[index];
+
+        // Update tooltip
+        setTooltip({
+          visible: true,
+          x: index * sectionWidth,
+          y: 50, // Position tooltip above graph
+          value,
+        });
+      },
+      onPanResponderRelease: () => {
+        setTooltip((prev) => ({ ...prev, visible: false }));
+      },
+    })
+  ).current;
+
+  // Function to handle x-axis label click
+  const handleLabelPress = (index) => {
+    const value = dataPoints[index];
+
+    setTooltip({
+      visible: true,
+      x: index * sectionWidth,
+      y: 50, // Position above the graph
+      value,
+    });
   };
-
-  const handleDataPointClick = ({ index, value, x, y }) => {
-    setTooltip({ value, x, y });
-    setTimeout(() => setTooltip(null), 2000); // Hide tooltip after 2 seconds
-  };
-
+  const presentRIO=chartData["Last 7 Days"]?.data?.slice(-1)[0]
+  const presentRIOPrevious=chartData["Last 7 Days"]?.data?.slice(-2)[0]
+  const RIODiff= presentRIO - presentRIOPrevious
+  
   return (
-    <View style={{ padding: 10 }}>
-      {/* Filter Options */}
-      <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 10 }}>
-        {["week", "month", "year"].map((option) => (
-          <TouchableOpacity
-            key={option}
-            onPress={() => setSelectedFilter(option)}
-            style={{
-              padding: 8,
-              margin: 5,
-              backgroundColor: selectedFilter === option ? "#008000" : "#ddd",
-              borderRadius: 5,
-            }}
-          >
-            <Text style={{ color: selectedFilter === option ? "#fff" : "#000" }}>
-              {option.toUpperCase()}
+    <View className="flex-1 pt-5 pb-3 mb-2 bg-white border-border border-b">
+      <View className="px-5">
+        <View className="flex-row justify-between relative z-20">
+          <View>
+            <Text className="text-base text-muted">ROI History</Text>
+            <Text className="text-4xl py-1 font-bold">{presentRIO}%</Text>
+            <Text className="text-[#009C6A] bg-[#009C6A26] px-2 text-center w-14 py-0.5 text-sm font-psemibold rounded-xl ">
+              {RIODiff > 0 ? `+${RIODiff}` : RIODiff}%
             </Text>
-          </TouchableOpacity>
-        ))}
+          </View>
+          <View className="absolute right-0 mt-5">
+            <SelectList
+              className="py-0"
+              setSelected={(val) => setSelectedRange(val)}
+              data={[
+                { key: "Last 7 Days", value: "Last 7 Days" },
+                { key: "1 Month", value: "1 Month" },
+                { key: "1 Year", value: "1 Year" },
+              ]}
+              save="value"
+              boxStyles={{ width: 120 }}
+              dropdownStyles={{ width: 120 }}
+              defaultOption={{ key: "Last 7 Days", value: "Last 7 Days" }}
+            />
+          </View>
+        </View>
+
+        {/* Dropdown */}
       </View>
 
-      {/* Line Chart */}
-      <View>
+      {/* Chart Container with Touch Tracking */}
+      <View className="items-center mt-4 overflow-x-hidden" {...panResponder.panHandlers}>
         <LineChart
           data={{
-            labels: dataSets[selectedFilter].labels,
-            datasets: [{ data: dataSets[selectedFilter].data }],
+            labels,
+            datasets: [{ data: dataPoints }],
           }}
-          width={screenWidth - 20}
+          width={graphWidth} // ✅ Your exact width restored
           height={220}
-          chartConfig={chartConfig}
-          bezier
-          onDataPointClick={handleDataPointClick}
-          style={{
-            borderRadius: 10,
+          withVerticalLabels={true}
+          withHorizontalLabels={false}
+          withInnerLines={false}
+          withOuterLines={false}
+          yAxisLabelWidth={0}
+          chartConfig={{
+            backgroundGradientFrom: "#fff",
+            backgroundGradientTo: "#fff",
+            color: (opacity = 1) => `rgba(72, 209, 122, ${opacity})`,
+            strokeWidth: 2,
+            propsForDots: { r: "0" }, // ✅ No dots
+            decimalPlaces: 0,
           }}
+          bezier
         />
 
         {/* Tooltip */}
-        {tooltip && (
+        {tooltip.visible && (
           <View
-            style={{
-              position: "absolute",
-              left: tooltip.x - 15,
-              top: tooltip.y - 30,
-              backgroundColor: "black",
-              padding: 5,
-              borderRadius: 5,
-            }}
+            style={[
+              styles.tooltip,
+              { left: tooltip.x - 20, top: tooltip.y },
+            ]}
           >
-            <Text style={{ color: "white", fontWeight: "bold" }}>{tooltip.value}%</Text>
+            <Text style={styles.tooltipText}>{tooltip.value}%</Text>
           </View>
         )}
       </View>
+
+      {/* Clickable X-axis labels */}
+      {/* <View style={styles.labelContainer}>
+        {labels.map((label, index) => (
+          <TouchableOpacity key={index} onPress={() => handleLabelPress(index)} style={[styles.label, { width: sectionWidth }]}>
+            <Text style={styles.labelText}>{label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View> */}
     </View>
   );
 };
 
-export default GraphComponent;
+const styles = StyleSheet.create({
+  tooltip: {
+    position: "absolute",
+    backgroundColor: "black",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  tooltipText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  labelContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: screenWidth + screenWidth / 4, // ✅ Match graph width
+    paddingHorizontal: 15,
+    marginTop: 10,
+  },
+  label: {
+    alignItems: "center",
+  },
+  labelText: {
+    fontSize: 12,
+    color: "black",
+    fontWeight: "600",
+  },
+});
+
+export default GraphScreen;
