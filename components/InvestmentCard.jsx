@@ -20,9 +20,44 @@ export const checkMatured = data =>{
     if ((duration-daysGone) >= 0)return false
     return true
 }
-const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date,investType,user,investment}) => {
-    const {daysGone} = UTCDate(date)
+export const checkMaturedInfo = data =>{
+    const {$createdAt:createdAt,investment:{immediate_start,date_to_introduction,duration_days:duration}} = data
+    const {daysGone} = UTCDate(createdAt)
+    let dayDiff = duration-daysGone
+    let daysGoner
+    let matured
+    let started=true
 
+    if(immediate_start){
+        if (dayDiff >= 0){
+            daysGoner = dayDiff
+        }else{
+            matured=true
+        }
+    }else{
+        const {daysGone,isPastOrToday} = UTCDate(date_to_introduction)
+        dayDiff = duration-daysGone
+        if(isPastOrToday){
+            if (dayDiff >= 0){
+                daysGoner = dayDiff
+            }else{
+                matured=true
+            }
+        }else{
+            started=false
+        }
+    }
+    return [daysGoner,matured,started,immediate_start,date_to_introduction]
+}
+const InvestmentCard = ({
+    logo,_id,name,
+    percentage,duration,
+    invested,date,
+    investType,user,
+    investment
+}) => {
+    const {daysGone} = UTCDate(date)
+    const [daysGoner,matured,started,immediate_start,date_to_introduction] = checkMaturedInfo(investment)
     return (
         <View className="mb-2">
             <TouchableOpacity
@@ -68,18 +103,35 @@ const InvestmentCard = ({logo,_id,name,percentage,duration,invested,date,investT
                         </View>
                         {!investType && (
                             <View className="flex-1 pt-1">
-                                <View className="pb-1">
-                                    {(duration-daysGone) >= 0 ? (
-                                        <Text className="text-muted-100 text-xs">
-                                            {duration-daysGone} days left
-                                        </Text>
-                                    ) : (
-                                        <Text className="text-muted-100 text-xs">
-                                            Matured
-                                        </Text>
-                                    )}
-                                </View>
-                                <ProgressBar date={date} duration={duration} />
+                                {immediate_start ? (
+                                    <>
+                                        <View className="pb-1">
+                                            {(duration-daysGone) >= 0 ? (
+                                                <Text className="text-muted-100 text-xs">
+                                                    {duration-daysGone} day{duration-daysGone > 1 ? "s" : ""} left
+                                                </Text>
+                                            ) : (
+                                                <Text className="text-muted-100 text-xs">
+                                                    Matured
+                                                </Text>
+                                            )}
+                                        </View>
+                                        <ProgressBar date={date} duration={duration} />
+                                    </>
+                                ):(<>
+                                    <View className="pb-1">
+                                        {!started ? (
+                                            <Text className="text-muted-100 text-xs">
+                                                Start date : {UTCDate(date_to_introduction).myDateFormat}
+                                            </Text>
+                                        ) : (
+                                            <Text className="text-muted-100 text-xs">
+                                                {matured ? "Matured" : `${daysGoner} day${daysGoner > 1 ? "s" : ""} left`}
+                                            </Text>
+                                        )}
+                                    </View>
+                                    <ProgressBar date={immediate_start ? date : date_to_introduction} duration={duration} setZero={!started ? true : false} />
+                                </>)}
                             </View>
                         )}
                     </View>

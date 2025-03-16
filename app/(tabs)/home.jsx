@@ -2,9 +2,7 @@ import { View, Text, ScrollView, Dimensions, Image, TouchableOpacity } from 'rea
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import Carousel from 'react-native-reanimated-carousel';
-import Animated, { useSharedValue, useAnimatedStyle, interpolate,Extrapolation, runOnJS, useDerivedValue } from 'react-native-reanimated';
-import { icons, images } from "../../constants";
+import { icons } from "../../constants";
 import { CustomButton } from '@/components'
 import EmptyState from '../../components/EmptyState';
 import InvestmentCard, { calculateProfit } from '../../components/InvestmentCard';
@@ -18,67 +16,8 @@ import { RefreshControl } from 'react-native';
 import GeneralDrawer from '../../components/GeneralDrawer';
 import PaymentMethods from '../../components/PaymentMethods';
 import UTCDate from '../../components/UTCDate';
-import ToggleButtons from '../../components/ToggleButtons';
 import { CustomFlatListCarousel } from '@/components/CustomCarousel';
 import Media_and_stories from '@/components/media_and_stories';
-
-// const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
-//     <Carousel
-//         loop
-//         width={width - 48}
-//         height={130}
-//         autoPlay={true}
-//         autoPlayInterval={10000}
-//         data={data}
-//         scrollAnimationDuration={1000}
-//         onProgressChange={useDerivedValue((_, absoluteProgress) => progressValue.value =absoluteProgress)}
-//         renderItem={({ item:{amount,title} }) => (
-//             <View
-//                 className="
-//                     bg-secondary flex-1 
-//                     justify-center 
-//                     border-[#00000014] 
-//                     rounded-lg
-//                 "
-//             >
-//                 <View className="relative flex">
-//                     <View className="absolute inset-0 z-10 p-5">
-//                         <View className="flex flex-row justify-between">
-//                             <View>
-//                                 <View>
-//                                     <Text className="text-muted text-base">
-//                                         {title}
-//                                     </Text>
-//                                 </View>
-//                                 <View className="mt-2">
-//                                     <Text className={`text-black-100 ${amount.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
-//                                         ₦{amount.toLocaleString()}
-//                                     </Text>
-//                                 </View>
-//                             </View>
-//                             {title !== "Investments" && (
-//                                 <View>
-//                                     <CustomButton 
-//                                         title="Top up"
-//                                         textStyles="text-white"
-//                                         containerStyles="w-[76px] h-9 text-xs item-end"
-//                                         handlePress={()=>setIsDrawerVisible(true)}
-//                                     />
-//                                 </View>
-//                             )}
-//                         </View>
-//                     </View>
-//                     <Image
-//                         source={images.home_bg_img}
-//                         className={`h-full ml-auto `}
-//                         resizeMode='cover'
-//                     />
-//                 </View>
-//             </View>
-//         )}
-//     />
-// )
-// const MemoizedCarousel = React.memo(CustomCarousel);
 
 
 const Home = () => {
@@ -86,7 +25,6 @@ const Home = () => {
     const { data:userInvestments, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
     const { data:{notForSellData,forSellData}, loading:load, refetch:refetchInfo } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
 
-    // const progressValue = useSharedValue(0); 
     const [isDrawerVisible, setIsDrawerVisible] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
     const [active, setActive] = useState(true)

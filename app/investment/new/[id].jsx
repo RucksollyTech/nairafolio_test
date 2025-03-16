@@ -125,7 +125,7 @@ const Investment = () => {
                     setAlternativeLoader(false)
                 }
             }
-        }else if(data && data?.status === false){
+        }else if((data && data?.status === false) || !data?.immediate_start && UTCDate(data?.date_to_introduction).isPastOrToday){
             pushToPage()
         }else{
             setIsDrawerVisible(true)
@@ -538,7 +538,7 @@ const Investment = () => {
                                 </Text>
                             )}
                             <CustomButton 
-                                title={(data && data?.isDollar) ? "Save Now" : (data && data?.status === false) ? "View offers" : "Invest Now"}
+                                title={(data && data?.isDollar) ? "Save Now" : ((data && data?.status === false) || (data && !data?.immediate_start && UTCDate(data?.date_to_introduction).isPastOrToday)) ? "View offers" : "Invest Now"}
                                 containerStyles="w-full h-16 mt-4" 
                                 textStyles="font-psans !text-white text-lg" 
                                 isLoading={loading || alternativeLoader}
