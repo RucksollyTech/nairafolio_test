@@ -12,7 +12,7 @@ import useAppwrite from '../../../lib/useAppwrite'
 import { createTransactions, getInvestment, getUserInvestment, getUserInvestmentData, searchInvestmentUpdates, updateOngoingInvestment, updateUser } from '../../../lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import UTCDate from '../../../components/UTCDate'
-import { calculateProfit, checkMatured } from '../../../components/InvestmentCard'
+import { calculateProfit, checkMatured, checkMaturedInfo } from '../../../components/InvestmentCard'
 import { convertDaysToReadableFormat } from '../../../components/dayConverter'
 import { FlatList } from 'react-native'
 import { RefreshControl } from 'react-native'
@@ -41,6 +41,7 @@ const Active = () => {
     const {id} = useLocalSearchParams();
     const { user, setUser, setLastActive } = useGlobalContext();
     const [investment, setInvestment] = useState({});
+    const [investmentCalcVal, setInvestmentCalcVal] = useState(null);
     const [updates, setUpdates] = useState({});
      
     const { data:investmentData, loading, refetch } = useAppwrite(()=>getUserInvestmentData(id,user?.$id))
@@ -269,9 +270,15 @@ const Active = () => {
             if((investmentData[0] && investmentData[0].sold) || (investmentData[0] && investmentData[0].is_matured)){
                 router.replace("/home")
             }
+            
         }
         if((!dateValue || !dateValue2) && investmentData){
             setInvestment(investmentData[0])
+            if(investmentData[0]){
+                const [daysGoner,matured,started,immediate_start,date_to_introduction] =checkMaturedInfo(investmentData[0]);
+                setInvestmentCalcVal({daysGoner,matured,started,immediate_start,date_to_introduction})
+            }
+        
         }
         if(investmentData){
             setUpdates(investmentData?.[0]?.investment?.updates)
@@ -405,16 +412,23 @@ const Active = () => {
                     <View className="flex-1 h-full">
                         
                         <View className="px-5">
-                            <View className="pt-7">
-                                <Money
-                                    value={(investment?.investment?.price_per_unit * investment?.unit) + calculateProfit({
-                                        percentage:investment?.rio,
-                                        daysGone:UTCDate(investment?.date_created)?.daysGone,
-                                        invested:investment?.investment?.price_per_unit * investment?.unit,
-                                        duration:investment?.investment?.duration_days
-                                    })}
-                                    textStyle="text-black-100 font-psans text-4xl"
-                                />
+                            <View className="pt-5">
+                                {(investmentCalcVal?.immediate_start || investmentCalcVal?.started) ? (
+                                    <Money
+                                        value={(investment?.investment?.price_per_unit * investment?.unit) + calculateProfit({
+                                            percentage:investment?.rio,
+                                            daysGone:UTCDate(investment?.date_created)?.daysGone,
+                                            invested:investment?.investment?.price_per_unit * investment?.unit,
+                                            duration:investment?.investment?.duration_days
+                                        })}
+                                        textStyle="text-black-100 font-psans text-4xl"
+                                    />
+                                ):(
+                                    <Money
+                                        value={investment?.investment?.price_per_unit * investment?.unit}
+                                        textStyle="text-black-100 font-psans text-4xl"
+                                    />
+                                )}
                             </View>
                             <View className="mt-2 flex-1">
                                 <View className="mt-2 flex flex-row flex-1">
@@ -428,15 +442,22 @@ const Active = () => {
                                     />
                                 </View>
                                 <View className="mt-2">
-                                    <Money
-                                        value={calculateProfit({
-                                            percentage:investment?.rio,
-                                            daysGone:UTCDate(investment?.date_created)?.daysGone,
-                                            invested:(investment?.investment?.price_per_unit * investment?.unit) ,
-                                            duration:investment?.investment?.duration_days
-                                        })}
-                                        textStyle="text-secondary-100 font-pregular text-base font-[700]"
-                                    />
+                                    {investmentCalcVal?.started ? (
+                                        <Money
+                                            value={calculateProfit({
+                                                percentage:investment?.rio,
+                                                daysGone:UTCDate(investment?.date_created)?.daysGone,
+                                                invested:(investment?.investment?.price_per_unit * investment?.unit) ,
+                                                duration:investment?.investment?.duration_days
+                                            })}
+                                            textStyle="text-secondary-100 font-pregular text-base font-[700]"
+                                        />
+
+                                    ):(
+                                        <Text className="text-muted font-pregular font-[700] text-base">
+                                            Start date : {UTCDate(investmentCalcVal?.date_to_introduction).myDateFormat}
+                                        </Text>
+                                    )}
                                 </View>
                                 <View className={`flex mt-2 items-center justify-center w-[100px] bg-[#F5F5F5] border border-border px-3 py-1.5 rounded-lg`}>
                                     {(investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 ? (
@@ -455,12 +476,8 @@ const Active = () => {
                             <View className="pt-6 min-h-24">
                                 {user?.$id === investment?.user?.$id ? (
                                     <View className="flex-1 flex flex-row gap-4">
-                                        {!investment?.is_up_for_sell ? (
+                                        {(!investment?.is_up_for_sell && !investmentCalcVal?.matured) ? (
                                             <TouchableOpacity
-                                                // Call on drawer to confirm action
-                                                // Then move to sell page that list this 
-                                                // This investment for sell
-
                                                 onPress={handleAdd}
                                                 activeOpacity={0.7}
                                                 disabled={loadingSubmit ? true : false}

@@ -125,10 +125,24 @@ const Investment = () => {
                     setAlternativeLoader(false)
                 }
             }
-        }else if((data && data?.status === false) || !data?.immediate_start && UTCDate(data?.date_to_introduction).isPastOrToday){
+        }else if((data && data?.status === false) || data?.immediate_start && UTCDate(data?.date_to_introduction).isPastOrToday){
             pushToPage()
         }else{
             setIsDrawerVisible(true)
+        }
+    }
+    const checkButtonStatus = () =>{
+        if(data && data?.isDollar){
+            return "Save Now"
+        }else if (data && data?.status === false){
+            return "View offers"
+        }else if (
+            data && data?.immediate_start && 
+            UTCDate(data?.date_to_introduction).isPastOrToday
+        ){
+            return "View offers"
+        }else{
+            return "Invest Now"
         }
     }
     useEffect(() => {
@@ -537,13 +551,17 @@ const Investment = () => {
                                     {" "}are willing to sell their shares
                                 </Text>
                             )}
-                            <CustomButton 
-                                title={(data && data?.isDollar) ? "Save Now" : ((data && data?.status === false) || (data && !data?.immediate_start && UTCDate(data?.date_to_introduction).isPastOrToday)) ? "View offers" : "Invest Now"}
-                                containerStyles="w-full h-16 mt-4" 
-                                textStyles="font-psans !text-white text-lg" 
-                                isLoading={loading || alternativeLoader}
-                                handlePress={handleBuyInvestButtonClick}
-                            />
+                            {(data?.isDollar && data?.status === false) ? (
+                                <></>
+                            ) : (
+                                <CustomButton 
+                                    title={checkButtonStatus()}
+                                    containerStyles="w-full h-16 mt-4" 
+                                    textStyles="font-psans !text-white text-lg" 
+                                    isLoading={loading || alternativeLoader}
+                                    handlePress={handleBuyInvestButtonClick}
+                                />
+                            )}
                         </View>
                     </View>
                 </>

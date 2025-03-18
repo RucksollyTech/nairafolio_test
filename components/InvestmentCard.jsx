@@ -21,6 +21,9 @@ export const checkMatured = data =>{
     return true
 }
 export const checkMaturedInfo = data =>{
+    if(!data){
+        return
+    }
     const {$createdAt:createdAt,investment:{immediate_start,date_to_introduction,duration_days:duration}} = data
     const {daysGone} = UTCDate(createdAt)
     let dayDiff = duration-daysGone
