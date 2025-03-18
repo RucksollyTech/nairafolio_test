@@ -50,12 +50,12 @@ const PaymentSuccess = () => {
         setStopRedirect(true)
         if(action ==="Investment"){
             setTimeout(() => {
-                router.push((investmentExtracted && investmentExtracted?.isDollar) ? `/dollar/${investmentExtracted?.$id}` : `/home`)
+                router.replace((investmentExtracted && investmentExtracted?.isDollar) ? `/dollar/${investmentExtracted?.$id}` : `/home`)
             }, 1000);
             return
         }else{
             setTimeout(() => {
-                router.push((investmentExtracted && investmentExtracted?.isDollar) ? `/dollar/${investmentExtracted?.$id}` : `/wallet`)
+                router.replace((investmentExtracted && investmentExtracted?.isDollar) ? `/dollar/${investmentExtracted?.$id}` : `/wallet`)
             }, 1000);
             return
         }

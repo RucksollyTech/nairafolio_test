@@ -62,7 +62,7 @@ const PaymentDrawer = ({
         // setUser(updatedUser)
         setTimeout(() => {
             setLoading(false)
-            router.push(investment.isDollar ? `/dollar/${user_investment?.$id}` : "/home")
+            router.replace(investment.isDollar ? `/dollar/${user_investment?.$id}` : "/home")
         }, 1000);
         if(investment.isDollar){
             onClose()
