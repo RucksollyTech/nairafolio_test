@@ -334,7 +334,7 @@ const PaymentDrawer = ({
                                                 </Text>
                                                 <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] h-14">
                                                     <Money 
-                                                        value={parseFloat(unit) * investment?.price_per_unit}
+                                                        value={((parseFloat(unit) && parseFloat(unit) !== NaN) ? parseFloat(unit) : 0) * investment?.price_per_unit}
                                                         textStyle={"font-xl"}
                                                     />
                                                 </View>

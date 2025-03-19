@@ -6,8 +6,9 @@ import { useEffect } from 'react';
 
 const AppLayout = () => {
     const pathname = usePathname();
-    const { locked } = useGlobalContext(); // Now this works inside the provider
+    const { locked, isLogged, loading} = useGlobalContext(); // Now this works inside the provider
     const colorScheme = useColorScheme();
+    
     const goToPageA = () => {
       
         if(
@@ -45,7 +46,17 @@ const AppLayout = () => {
             router.replace("/")
         }
     },[currentRouteName,otherScreen,locked, router])
-
+    useEffect(()=>{
+        if(
+            router && !loading && !isLogged 
+            && pathname !== "index"
+            && pathname !== "sign_in"
+            && pathname !== "sign_up"
+            && pathname !== "/"
+        ){
+            router.replace("/sign_in")
+        }
+    },[currentRouteName,otherScreen,loading,isLogged, router])
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack
