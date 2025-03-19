@@ -64,7 +64,7 @@ const Sales = () => {
                         </View>
                     )}
 
-                    {((sales && sales.length > 0) || !loading) ? (
+                    {((sales && sales.length > 0) && !loading) ? (
                         <View>
                             {!loading &&(
                                 <>
@@ -179,16 +179,16 @@ const Sales = () => {
                     
                     ):(
                         <>
-                        {!loading && (
-                            <View className={`
-                                p-10 flex-row justify-between items-center
-                            `}>
-                                <EmptyState 
-                                    title="No offer available"
-                                    subtitle="No offer available for now. Check later."
-                                />
-                            </View>
-                        )}
+                            {!loading && (
+                                <View className={`
+                                    p-10 flex-row justify-between items-center
+                                `}>
+                                    <EmptyState 
+                                        title="No offer available"
+                                        subtitle="No offer available for now. Check later."
+                                    />
+                                </View>
+                            )}
                         </>
                     )}
                 </View>
