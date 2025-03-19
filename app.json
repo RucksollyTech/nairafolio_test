@@ -18,6 +18,7 @@
     },
     "ios": {
       "supportsTablet": true,
+      
       "bundleIdentifier": "com.company.myapp",
       "infoPlist": {
         "CFBundleURLTypes": [

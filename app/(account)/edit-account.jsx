@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, RefreshControl } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, RefreshControl, TouchableWithoutFeedback } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '../../constants'
@@ -13,6 +13,9 @@ import GeneralDrawer from '../../components/GeneralDrawer'
 import { updateUserProfile } from '../../lib/appwrite'
 import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 import CustomNavigator from '../../components/CustomNavigator'
+import { KeyboardAvoidingView } from 'react-native'
+import { Platform } from 'react-native'
+import { Keyboard } from 'react-native'
 
 const EditAccount = () => {
     const { user, setUser, setLastActive } = useGlobalContext();
@@ -112,19 +115,12 @@ const EditAccount = () => {
     }, [uploading])
     
     return (
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" && "padding"} 
+            style={{ flex: 1 }}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView className="bg-white flex-1 h-full">
-            {/* <View className="bg-white px-5 pt-7">
-                <View>
-                    <TouchableOpacity
-                        onPress={()=>navigation.goBack()}
-                    >
-                        <Image
-                            source={icons.arrow_left}
-                            resizeMode="contain"
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View> */}
             <CustomNavigator navigator={navigation} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
@@ -276,6 +272,8 @@ const EditAccount = () => {
                 </View>
             </GeneralDrawer>
         </SafeAreaView>
+        </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     )
 }
 

@@ -147,16 +147,16 @@ const account = () => {
                             icon={icons.docs}
                             link={"/"}
                         />
-                        <AccountComponets 
+                        {/* <AccountComponets 
                             title={"Media and contents"}
                             icon={icons.media}
                             link={"/"}
-                        />
-                        <AccountComponets 
+                        /> */}
+                        {/* <AccountComponets 
                             title={"Help"}
                             icon={icons.phone}
                             link={"/"}
-                        />
+                        /> */}
                     </View>
                     <View className="mb-10 mt-10 justify-center items-center">
                         <TouchableOpacity
