@@ -10,9 +10,10 @@ import useAppwrite from '@/lib/useAppwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import InvestmentCard from '@/components/InvestmentCard';
 import { router } from 'expo-router';
+import { useMemo } from 'react';
 
 const Portfolio = () => {
-    const { user,setUser,setLastActive } = useGlobalContext();
+    const { user,setUser,setLastActive,loading:loads } = useGlobalContext();
     // const { data:{notForSellData,forSellData}, loading, refetch } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
     const { data:notForSellData, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
     const forSellData=[]
@@ -39,23 +40,37 @@ const Portfolio = () => {
     }
 
     const hasSold = !!forSellData?.length || false;
-    useEffect(() => {
-        if(forSellData){
-            const hasSolds = forSellData?.length || false;
-            setHasoldx(hasSolds);
-        }
-    }, [forSellData]);
-    useEffect(() => {
-        if(!user){
-            const activateUser = async ()=>{
-                await checkActiveUser()
-            }
-            activateUser()
-        }
-    }, [user,loading])
-    useEffect(() => {
-        checkActiveUser()
-    }, [notForSellData,forSellData])
+    // useEffect(() => {
+    //     if(forSellData){
+    //         const hasSolds = forSellData?.length || false;
+    //         setHasoldx(hasSolds);
+    //     }
+    // }, [forSellData]);
+    
+
+    const emptyComponent = useMemo(() => (
+        <View className="flex-1 justify-center items-center"> 
+            {loading ? (
+                <HomeSkeletonLoader />
+            ) : (
+                <View className="mt-20">
+                    <EmptyState
+                        title={"You have no Investments"}
+                        subtitle={"You can start by investing in the available opportunities"}
+                    />
+                    <View className="items-center justify-center pt-5">
+                        <CustomButton 
+                            title="Explore investments"
+                            textStyles="text-white"
+                            containerStyles="w-[180px] h-11 text-xs text-center"
+                            handlePress={()=>router.push("/explore")}
+                        />
+                    </View>
+                </View>
+            )}
+        </View>
+    ), [loading]);
+
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <View className='pb-5'>
@@ -88,7 +103,8 @@ const Portfolio = () => {
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
                 scrollEventThrottle={16}
-                data={active ? notForSellData : forSellData}
+                // data={active ? notForSellData : forSellData}
+                data={notForSellData}
                 keyExtractor={(item) => item.$id}
                 contentContainerStyle={{
                     paddingBottom: 24,
@@ -111,20 +127,8 @@ const Portfolio = () => {
                         />
                     </View>
                 )}
-                ListEmptyComponent={()=> (
-                    <View className="h-full flex-1 justify-center items-center">
-                        {loading ? (
-                            <HomeSkeletonLoader />
-                        ): (
-                            <View className="mt-20">
-                                <EmptyState
-                                    title={"You have no Investments"}
-                                    subtitle={"You can start by investing in the available opportunities"}
-                                />
-                            </View>
-                        )}
-                    </View>
-                )}
+                
+                ListEmptyComponent={emptyComponent}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 refreshControl={
