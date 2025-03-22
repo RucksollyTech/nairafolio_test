@@ -5,22 +5,27 @@ import FormField from './FormField'
 import { verifyUserPasscode } from '@/lib/appwrite'
 import { router } from 'expo-router'
 
-const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user}) => {
+const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading}) => {
     const [pin, setPin] = useState()
     const [errorMsg, setErrorMsg] = useState(null)
+    const [loads, setLoads] = useState(false)
     const continueFunction = async() => {
         setErrorMsg(null)
+        setLoads(true)
         const isPasscodeSuccess = await verifyUserPasscode(user.$id, parseInt(pin))
         if(pin){
             if(isPasscodeSuccess){
                 await actionFunc()
+                setLoads(false)
                 setPin(null)
                 setIsOpen(false)
             }else{
+                setLoads(false)
                 setPin(null)
                 setErrorMsg("Invalid passcode")
             }
         }else{
+            setLoads(false)
             setErrorMsg("Invalid passcode")
         }
         
@@ -47,7 +52,7 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user}) => {
                             handleChangeText={(e)=>setPin(e)}
                         />
                         <View className='pt-1 min-h-5'>
-                            {errorMsg && <Text className="text-red-500 text-xs">{errorMsg}</Text>}
+                            {errorMsg && <Text className="text-red-500 text-xs text-center">{errorMsg}</Text>}
                         </View>
                     </View>
                 )}
@@ -64,9 +69,10 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user}) => {
                     <TouchableOpacity 
                         className='border-t border-[#4e4e4e] w-full py-3'
                         onPress={user.hasPasscode ? continueFunction : ()=>router.push("/change-password")}
+                        disabled={loading || loads}
                     >
                         <Text className="font-psemibold text-lg text-blue-500 text-center">
-                            {user.hasPasscode ? "Continue" : "Set passcode"}
+                            {user.hasPasscode ? "Continue" : (loading || loads) ? "Validating..." : "Set passcode"}
                         </Text>
                     </TouchableOpacity>
                 )}

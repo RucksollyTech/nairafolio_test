@@ -31,7 +31,7 @@ const withdrawal = () => {
     });
     const [selectedBank, setSelectedBank] = useState()
     const [selectedItems, setSelectedItems] = useState()
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     const [loading, setLoading] = useState(user?.is_verified ? false : true);
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);

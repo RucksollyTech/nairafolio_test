@@ -27,6 +27,7 @@ import SuccessModal from '../../../components/SuccessModal'
 import CustomNavigator from '../../../components/CustomNavigator'
 import { OngoingDetailSkeletonLoader } from '@/components/DetailLoader'
 import CustomModalAlert from '@/components/CustomModalAlert'
+import PasswordConfirm from '@/components/PasswordConfirm'
 
 
 export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
@@ -57,6 +58,8 @@ const Active = () => {
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [loadings, setLoadings] = useState(false)
     const [loadError, setLoadError] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen2, setIsOpen2] = useState(false);
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [isDrawerVisible, setDrawerVisible] = useState(false);
@@ -1300,7 +1303,7 @@ const Active = () => {
                                     textStyles={"text-white font-psemibold"}
                                     loading={!unitToSell || !pricePlaced || unitToSell > investment?.unit }
                                     isLoading={loadingSubmit}
-                                    handlePress={handleSellShare}
+                                    handlePress={()=>setIsOpen(true)}
                                 />
                             ):(
                                 <CustomButton 
@@ -1309,7 +1312,7 @@ const Active = () => {
                                     textStyles={"text-white font-psemibold"}
                                     loading={!unitToSell || unitToSell > investment?.unit }
                                     isLoading={loadingSubmit}
-                                    handlePress={handleSellShareNairaFolio}
+                                    handlePress={()=>setIsOpen2(true)}
                                 />
                             )}
                         </View>
@@ -1738,6 +1741,20 @@ const Active = () => {
                     <Text className="font-psemibold text-lg text-blue-500 text-center">See Offers</Text>
                 </TouchableOpacity>
             </CustomModalAlert>
+            <PasswordConfirm  
+                actionFunc={handleSellShare}
+                user={user}
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+                loading={loadingSubmit}
+            />
+            <PasswordConfirm  
+                actionFunc={handleSellShareNairaFolio}
+                user={user}
+                setIsOpen={setIsOpen2}
+                isOpen={isOpen2}
+                loading={loadingSubmit}
+            />
         </SafeAreaView>
     )
 }
