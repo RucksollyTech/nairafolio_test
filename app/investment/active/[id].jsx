@@ -1733,7 +1733,7 @@ const Active = () => {
                 }
                 <TouchableOpacity 
                     className='border-t border-[#4e4e4e] w-full py-2.5'
-                    onPress={() => handleModalClick(`/sales/${investment?.investment?.$id}`)}
+                    // onPress={() => handleModalClick(`/sales/${investment?.investment?.$id}`)}
                 >
                     <Text className="font-psemibold text-lg text-blue-500 text-center">See Offers</Text>
                 </TouchableOpacity>

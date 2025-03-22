@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 
-const CustomModalAlert = ({children, isVisible, onClose, title, body,showDefault=true, defaultText }) => {
+const CustomModalAlert = ({children, isVisible, onClose, title, className, body,showDefault=true, defaultText }) => {
     return (
-        <Modal isVisible={isVisible} onBackdropPress={showDefault ? onClose : ()=>console.log("")} style={styles.modal}>
+        <Modal isVisible={isVisible} className={className ?? ""} onBackdropPress={showDefault ? onClose : ()=>console.log("")} style={styles.modal}>
             <View style={styles.container}>
                 <View className="px-5 pt-5 pb-2">
                     {title && (

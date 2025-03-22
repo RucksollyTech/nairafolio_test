@@ -17,6 +17,7 @@ import CustomNavigator from '../../components/CustomNavigator';
 import { KeyboardAvoidingView } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Keyboard } from 'react-native';
+import PasswordConfirm from '@/components/PasswordConfirm';
 
 const withdrawal = () => {
     const navigation = useNavigation();
@@ -30,6 +31,7 @@ const withdrawal = () => {
     });
     const [selectedBank, setSelectedBank] = useState()
     const [selectedItems, setSelectedItems] = useState()
+    const [isOpen, setIsOpen] = useState(true);
 
     const [loading, setLoading] = useState(user?.is_verified ? false : true);
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -227,11 +229,11 @@ const withdrawal = () => {
         setNext(false)
     }
 
-    useEffect(() => {
-        if(!user){
-            checkActiveUser()
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if(!user){
+    //         checkActiveUser()
+    //     }
+    // }, [user])
     useEffect(() => {
         const loadBanks = async () => {
             const banks_data = await fetchBanks();
@@ -413,7 +415,7 @@ const withdrawal = () => {
                         ):(
                             <CustomButton 
                                 title="Withdraw"
-                                handlePress={handleWithdrawal}
+                                handlePress={()=>setIsOpen(false)}
                                 containerStyles="h-14 mb-4 mx-5"
                                 textStyles="text-white font-psemibold"
                                 loading={loading || !withdrawalAmount || !selectedBank || !user}
@@ -552,6 +554,12 @@ const withdrawal = () => {
                             </View>
                         )}
                     </GeneralDrawer>
+                    <PasswordConfirm 
+                        actionFunc={handleWithdrawal}
+                        user={user}
+                        setIsOpen={setIsOpen}
+                        isOpen={isOpen}
+                    />
                 </SafeAreaView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

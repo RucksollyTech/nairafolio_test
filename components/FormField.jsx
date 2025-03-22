@@ -11,6 +11,8 @@ const FormField = ({
   keyboardType,
   placeholder,
   handleChangeText,
+  tintColor,
+  withPassword=true,
   otherStyles,
   data, // New prop for dropdown options
   ...props
@@ -27,11 +29,11 @@ const FormField = ({
   };
 
     return (
-        <KeyboardAvoidingView 
-            behavior={Platform.OS === "ios" ? "padding" : "height"} 
-            style={{ flex: 1 }}
-        >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        // <KeyboardAvoidingView 
+        //     behavior={Platform.OS === "ios" ? "padding" : "height"} 
+        //     style={{ flex: 1 }}
+        // >
+        // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className={`space-y-2 ${otherStyles}`}>
             {/* <Text className="font-pregular text-base text-black-100">{title}</Text> */}
             <View
@@ -41,10 +43,10 @@ const FormField = ({
                 border flex 
                 flex-row 
                 items-center 
-                bg-[#FDFDFD]
+                ${tintColor ?? "bg-[#FDFDFD]"}
                 ${isFocused ? "border-primary" : "border-border"}
                 `}
-                style={{ backgroundColor: "#FDFDFD" }}
+                // style={{ backgroundColor: "#FDFDFD" }}
             >
                 {data ? (
                 // Dropdown when `data` is provided
@@ -74,7 +76,12 @@ const FormField = ({
                 ) : (
                 // TextInput when no `data` is provided
                 <TextInput
-                    className="flex-1 bg-[#FDFDFD] text-black-100 font-pregular text-base"
+                    className={`
+                        flex-1 
+                        ${tintColor ?? "bg-[#FDFDFD] text-black-100"}
+                        font-pregular 
+                        text-base
+                    `}
                     value={value}
                     placeholder={placeholder}
                     keyboardType={keyboardType ?? "default"}
@@ -83,13 +90,13 @@ const FormField = ({
                     secureTextEntry={title === "Password" && !showPassword}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    style={{ backgroundColor: "#FDFDFD" }}
+                    // style={{ backgroundColor: "#FDFDFD" }}
                     {...props}
                 />
                 )}
 
                 {/* Password visibility toggle */}
-                {title === "Password" && !data && (
+                {title === "Password" && withPassword && !data && (
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                     <Image
                     source={!showPassword ? icons.eye_thin : icons.eye_close}
@@ -121,8 +128,8 @@ const FormField = ({
                 </View>
             )}
         </View>
-        </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+        // </TouchableWithoutFeedback>
+        // </KeyboardAvoidingView>
     );
 };
 

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, RefreshControl } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, useNavigation } from 'expo-router'
@@ -6,11 +6,14 @@ import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import CustomNavigator from '../../components/CustomNavigator'
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { updatePassword } from '@/lib/appwrite'
+import { createUserPasscode, updatePassword, updateUserPasscode } from '@/lib/appwrite'
+import { updateCurrentUser } from '@/lib/updateAccountTransaction'
 
 const ChangePassword = () => {
     const navigation = useNavigation();
-    const { setLastActive } = useGlobalContext();
+    const { setLastActive,user,setUser } = useGlobalContext();
+    const [refreshing, setRefreshing] = useState(false)
+    
     const [error, setError] = useState({
         message: "",
         color: "",
@@ -21,23 +24,63 @@ const ChangePassword = () => {
         oldPassword: ""
     })
     const [loading, setLoading] = useState(false)
+    const onRefresh = async()=>{
+        setRefreshing(true)
+        await updateCurrentUser(setUser)
+        setRefreshing(false)
+    }
     const handleMessages = (message,color) => {
         setError({message,color})
     }
     const handleSubmit = async() =>{
-        setLoading(true)
         setError({
             message: "",
             color: "",
         })
         if(formData.password !== formData.confirmPassword){
-            handleMessages("Passwords do not match.","text-red-500")
+            handleMessages("Passcode do not match.","text-red-500")
             return
         }
+        setLoading(true)
         if(formData.password || formData.oldPassword){
             try {
-                const updateRes = await updatePassword(formData.password,formData.oldPassword)
-                handleMessages("Passwords reset was successful","text-green-500")
+                // const updateRes = await updatePassword(formData.password,formData.oldPassword)
+                const updateRes = await updateUserPasscode(user.$id,{
+                    passcode: formData.password
+                },formData.oldPassword)
+                handleMessages("Passcode reset was successful","text-green-500")
+                return
+            } catch (error) {
+                handleMessages("Error updating password","text-red-500")
+            }finally {
+                setLoading(false)
+                setFormData({
+                    password: "",
+                    confirmPassword: "",
+                    oldPassword: ""
+                })
+            }
+        }
+    }
+    const handleCreate = async() =>{
+        setError({
+            message: "",
+            color: "",
+        })
+        if(formData.password !== formData.confirmPassword){
+            handleMessages("Passcode do not match.","text-red-500")
+            return
+        }
+        setLoading(true)
+        if(formData.password){
+            try {
+                // const updateRes = await updatePassword(formData.password,formData.oldPassword)
+                const updateRes = await createUserPasscode({
+                    user:user.$id,
+                    passcode: parseInt(formData.password)
+                })
+                handleMessages("Passcode was set successfully","text-green-500")
+                await updateCurrentUser(setUser)
                 return
             } catch (error) {
                 handleMessages("Error updating password","text-red-500")
@@ -60,31 +103,39 @@ const ChangePassword = () => {
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
                 scrollEventThrottle={16}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <View className="bg-white flex-1 h-full px-5 pb-10">
-                    <View className="pt-4">
+                    <View className="py-4">
                         <Text className="text-black-100 font-psans text-2xl">
-                            Change password
+                            {user.hasPasscode ? "Change passcode" : "Set passcode"}
                         </Text>
                     </View>
                     <View>
-                        <FormField 
+                        {user.hasPasscode && (
+                            <FormField
+                                keyboardType="number-pad" 
+                                title="Password"
+                                placeholder="Enter your current passcode."
+                                value={formData.oldPassword}
+                                otherStyles="mb-5"
+                                handleChangeText={(e)=>setFormData({...formData,oldPassword:e})}
+                            />
+                        )}
+                        <FormField
+                            keyboardType="number-pad" 
                             title="Password"
-                            placeholder="Enter your current password."
-                            value={formData.oldPassword}
-                            otherStyles="my-5"
-                            handleChangeText={(e)=>setFormData({...formData,oldPassword:e})}
-                        />
-                        <FormField 
-                            title="Password"
-                            placeholder="Enter your new password."
+                            placeholder="Enter your new passcode."
                             value={formData.password}
                             otherStyles="mb-5"
                             handleChangeText={(e)=>setFormData({...formData,password:e})}
                         />
-                        <FormField 
+                        <FormField
+                            keyboardType="number-pad" 
                             title="Password"
-                            placeholder="Re-enter your new password to confirm."
+                            placeholder="Re-enter your new passcode to confirm."
                             value={formData.confirmPassword}
                             otherStyles="mb-5"
                             handleChangeText={(e)=>setFormData({...formData,confirmPassword:e})}
@@ -100,7 +151,7 @@ const ChangePassword = () => {
                     <View>
                         <CustomButton 
                             title={"Save changes"}
-                            handlePress={handleSubmit}
+                            handlePress={user.hasPasscode ? handleSubmit : handleCreate}
                             containerStyles="mt-10 h-14"
                             textStyles="text-white font-psemibold"
                             isLoading={loading}
