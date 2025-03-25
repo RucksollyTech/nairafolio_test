@@ -17,12 +17,12 @@ const TransactionCard = ({transactions,transaction,index}) => {
                 flex-row
                 mb-5
                 py-4
-                ${transactions.length === index + 1 ? '' : 'border-border border-b'}
+                ${transactions.length === index + 1 ? '' : 'border-border dark:border-[#3B3C43] border-b'}
             `}
         >
             
             <View
-                className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
             >
                 <Image
                     source={icons.download}
@@ -62,7 +62,7 @@ const TransactionCard = ({transactions,transaction,index}) => {
                 <View>
                     <Money 
                         value={transaction?.amount}
-                        textStyle="font-psemibold text-muted text-right text-base"
+                        textStyle="font-psemibold text-muted dark:text-[#FFFFFFB2] text-right text-base"
                     />
                 </View>
                 <View className="mt-2">

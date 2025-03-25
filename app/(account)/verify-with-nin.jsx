@@ -11,7 +11,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { handleVerificationEmailAndNIN } from '../../lib/performActions'
 
 const VerifyWithNin = () => {
-    const { user, setUser,setLastActive } = useGlobalContext();
+    const { user, setUser,setLastActive,darkTheme } = useGlobalContext();
 
     const navigation = useNavigation();
     const [nin, setNin] = useState(0)
@@ -59,7 +59,7 @@ const VerifyWithNin = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -70,7 +70,7 @@ const VerifyWithNin = () => {
                 <View className="bg-white flex-1 h-full px-5 pb-10">
                     
                     <View className="pt-2">
-                        <Text className="text-black-100 font-psans text-2xl">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
                             Verify with NIN
                         </Text>
                     </View>
@@ -86,6 +86,7 @@ const VerifyWithNin = () => {
                             value={nin}
                             keyboardType={"number-pad"}
                             handleChangeText={(e)=>setNin(e)}
+                            darkTheme={darkTheme}
                         />
                     </View>
                     <View
@@ -110,9 +111,9 @@ const VerifyWithNin = () => {
                     </View>
                 </View>
             </ScrollView>
-            <GeneralDrawer dismissOnClickOutside={true} heights={"50px"} isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)}>
+            <GeneralDrawer darkTheme={darkTheme} dismissOnClickOutside={true} heights={"50px"} isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)}>
                 <View>
-                    <Text className="text-black-100 text-center font-psemibold text-2xl">
+                    <Text className="text-black-100 dark:text-white text-center font-psemibold text-2xl">
                         Dial{" "}<Text className="text-secondary-100 font-psemibold text-2xl">*346#</Text>{" "}to retrieve your NIN
                     </Text>
                 </View>
@@ -131,6 +132,7 @@ const VerifyWithNin = () => {
                 </View> */}
             </GeneralDrawer>
             <GeneralDrawer
+                darkTheme={darkTheme}
                 isVisible={isDrawerVisible2} 
                 onClose={handleClose} 
             >   
@@ -143,7 +145,7 @@ const VerifyWithNin = () => {
                                 />
                             </View>
                             <View className="mt-5">
-                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                     Your NIN have been submitted for review. This may take upto 5 working days.
                                 </Text>
                             </View>
@@ -164,7 +166,7 @@ const VerifyWithNin = () => {
                                 />
                             </View>
                             <View className="mt-5">
-                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                     Invalid NIN code
                                 </Text>
                             </View>

@@ -8,13 +8,13 @@ const TitleComponent = ({item}) => {
     const {title,body,$createdAt,$id} = item
     return (
         <View>
-            <View className="border flex-1 border-border bg-[#F8FAFA] rounded-lg mt-5">
+            <View className="border flex-1 border-border dark:border-[#3B3C43] bg-[#F8FAFA] rounded-lg mt-5">
                 <View 
                     className="
                         flex-1 
                         p-5 flex-row
                         border-b
-                        border-border
+                        border-border dark:border-[#3B3C43]
                     "
                 >
                     <View

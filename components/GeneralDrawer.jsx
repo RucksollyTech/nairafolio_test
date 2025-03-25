@@ -3,14 +3,14 @@ import {View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
 
 
-const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, header, dismissOnClickOutside }) => {
+const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, header, dismissOnClickOutside,darkTheme }) => {
     if (!isVisible) return null;
 
     return (
-        <View className="absolute inset-0 z-50 bg-black/50">
+        <View className={`absolute inset-0 z-50 bg-black/50 ${darkTheme === "dark" ? "dark" : ""}`}>
             {dismissOnClickOutside && <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />}
             <View
-                className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
+                className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1D1E25] rounded-t-[30px]"
                 style={{ minHeight: minHeights }}
             >
                 <View 
@@ -27,7 +27,7 @@ const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, head
                     )}
                     <TouchableOpacity onPress={onClose} className="ml-auto">
                         <Image 
-                            source={icons.cancel}
+                            source={darkTheme === "dark" ? icons.dark_cancel : icons.cancel}
                             resizeMode="contain"
                         />
                     </TouchableOpacity>

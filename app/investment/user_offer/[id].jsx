@@ -16,7 +16,7 @@ import { checkMatured } from '@/components/InvestmentCard';
 import { undoSellInvestment } from '@/components/PerformingTransaction';
 
 const UserOffer = () => {
-    const { setLastActive, user } = useGlobalContext();
+    const { setLastActive, user, darkTheme } = useGlobalContext();
     const [modalVisible, setModalVisible] = useState(false);
     const [loadError, setLoadError] = useState(false);
     const [loadings, setLoadings] = useState(false);
@@ -108,7 +108,7 @@ const UserOffer = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -127,7 +127,7 @@ const UserOffer = () => {
                     >
                         <View>
                             <View>
-                                <Text className="text-lg font-psemibold font-semibold text-header-200">
+                                <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
                                     Available offers
                                 </Text>
                             </View>
@@ -140,7 +140,7 @@ const UserOffer = () => {
                     </View>
                     {loading && (
                         <View className="pt-1">
-                            <HomeSkeletonLoader />
+                            <HomeSkeletonLoader darkTheme={darkTheme} />
                         </View>
                     )}
 
@@ -159,7 +159,7 @@ const UserOffer = () => {
                                                 className={`
                                                     rounded-lg
                                                     border
-                                                    border-border
+                                                    border-border dark:border-[#3B3C43]
                                                     bg-[#F8FAFA]
                                                 `}
                                             >
@@ -227,7 +227,7 @@ const UserOffer = () => {
                                                     className={`
                                                         flex-1 
                                                         border-t
-                                                        border-border
+                                                        border-border dark:border-[#3B3C43]
                                                         flex-row
                                                         py-2
                                                         px-3

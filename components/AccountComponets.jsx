@@ -9,7 +9,7 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData}) 
         router.push(link)
     }
     return (
-        <View className="py-4 border-b border-border-300">
+        <View className="py-4 border-b border-border dark:border-[#3B3C43]-300">
             <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={moveToPage}
@@ -41,13 +41,13 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData}) 
                                 <View className="w-[70%]">
                                     <View>
                                         <Text
-                                            className="text-lg text-header-200 font-psemibold"
+                                            className="text-lg text-header-200 dark:text-white  font-psemibold"
                                         >
                                             {title}
                                         </Text>
                                     </View>
                                     <View>
-                                        <Text className="text-muted text-sm">
+                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                             {subtitle} 
                                         </Text>
                                     </View>
@@ -72,14 +72,14 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData}) 
                             <>
                                 <View>
                                     <Text
-                                        className="text-lg text-header-200  font-psemibold"
+                                        className="text-lg text-header-200 dark:text-white   font-psemibold"
                                     >
                                         {title}
                                     </Text>
                                 </View>
                                 {subtitle && (
                                     <View>
-                                        <Text className="text-muted text-sm">
+                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                             {subtitle} 
                                         </Text>
                                     </View>

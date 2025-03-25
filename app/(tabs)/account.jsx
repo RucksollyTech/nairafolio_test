@@ -10,7 +10,7 @@ import { signOut } from '@/lib/appwrite'
 import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 
 const account = () => {
-    const { setUser, setIsLogged,user,setLastActive } = useGlobalContext();
+    const { setUser, setIsLogged,user,setLastActive,darkTheme } = useGlobalContext();
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [refreshing, setRefreshing] = useState(false);
 
@@ -22,6 +22,7 @@ const account = () => {
     const logout = async () => {
         setIsLoggingOut(true)
         await signOut();
+        await updateCurrentUser(setUser)
         setUser(null);
         setIsLogged(false);
         setIsLoggingOut(false)
@@ -38,13 +39,13 @@ const account = () => {
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
             <LinearGradient
-                colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                start={{ x: 0.5, y: 0 }}
-                end={{ x: 0.5, y: 1 }}
+                colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+                start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
+                end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
             >
                 <View className="px-5">
                     <View className="pt-8">
-                        <Text className="text-black-100 font-psans text-2xl">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
                             My Account
                         </Text>
                     </View>
@@ -57,7 +58,7 @@ const account = () => {
                     flex 
                     py-7 flex-row
                     border-b
-                    border-border
+                    border-border dark:border-[#3B3C43]
                     px-5
                 "
             >
@@ -78,13 +79,13 @@ const account = () => {
                 >
                     <View>
                         <Text
-                            className="text-xl text-header-200 font-psans"
+                            className="text-xl text-header-200 dark:text-white  font-psans"
                         >
                             {user.name}
                         </Text>
                     </View>
                     <View className="pt-2">
-                        <Text className="text-muted text-sm">
+                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                             {user.email}
                         </Text>
                     </View>

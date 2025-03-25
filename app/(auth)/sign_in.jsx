@@ -9,7 +9,7 @@ import { getCurrentUser, signIn, signOut } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sign_in = () => {
-    const { setUser, setIsLogged, setLastActive,setLocked } = useGlobalContext();
+    const { setUser, setIsLogged, setLastActive,setLocked, darkTheme } = useGlobalContext();
     const [errorMessage, setErrorMessage] = useState("");
 
     const [isSubmitting, setSubmitting] = useState(false);
@@ -103,6 +103,7 @@ const sign_in = () => {
                                         value={form.email}
                                         placeholder="Email address"
                                         handleChangeText={(e)=>setForm({...form, email: e})}
+                                        darkTheme={darkTheme}
                                     />
                                 </View>
                                 <View className='pt-4'>
@@ -111,6 +112,7 @@ const sign_in = () => {
                                         value={form.password}
                                         placeholder="Password"
                                         handleChangeText={(e)=>setForm({...form, password: e})}
+                                        darkTheme={darkTheme}
                                     />
                                 </View>
                                 <View className='mt-1.5'>

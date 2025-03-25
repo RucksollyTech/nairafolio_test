@@ -5,7 +5,7 @@ import FormField from './FormField'
 import { verifyUserPasscode } from '@/lib/appwrite'
 import { router } from 'expo-router'
 
-const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading}) => {
+const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading,darkTheme}) => {
     const [pin, setPin] = useState()
     const [errorMsg, setErrorMsg] = useState(null)
     const [loads, setLoads] = useState(false)
@@ -50,6 +50,7 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading}) => {
                             tintColor={"bg-black/80 text-muted"}
                             otherStyles="my-5 w-full"
                             handleChangeText={(e)=>setPin(e)}
+                            darkTheme={darkTheme}
                         />
                         <View className='pt-1 min-h-5'>
                             {errorMsg && <Text className="text-red-500 text-xs text-center">{errorMsg}</Text>}
@@ -69,10 +70,10 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading}) => {
                     <TouchableOpacity 
                         className='border-t border-[#4e4e4e] w-full py-3'
                         onPress={user.hasPasscode ? continueFunction : ()=>router.push("/change-password")}
-                        disabled={loading || loads}
+                        disabled={loads || loading}
                     >
                         <Text className="font-psemibold text-lg text-blue-500 text-center">
-                            {user.hasPasscode ? "Continue" : (loading || loads) ? "Validating..." : "Set passcode"}
+                            {user.hasPasscode ? "Continue" : (loads || loading) ? "Validating..." : "Set passcode"}
                         </Text>
                     </TouchableOpacity>
                 )}

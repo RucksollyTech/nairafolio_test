@@ -11,7 +11,7 @@ import { updateCurrentUser } from '@/lib/updateAccountTransaction'
 
 const ChangePassword = () => {
     const navigation = useNavigation();
-    const { setLastActive,user,setUser } = useGlobalContext();
+    const { setLastActive,user,setUser,darkTheme } = useGlobalContext();
     const [refreshing, setRefreshing] = useState(false)
     
     const [error, setError] = useState({
@@ -96,7 +96,7 @@ const ChangePassword = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
@@ -109,7 +109,7 @@ const ChangePassword = () => {
             >
                 <View className="bg-white flex-1 h-full px-5 pb-10">
                     <View className="py-4">
-                        <Text className="text-black-100 font-psans text-2xl">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
                             {user.hasPasscode ? "Change passcode" : "Set passcode"}
                         </Text>
                     </View>
@@ -122,6 +122,7 @@ const ChangePassword = () => {
                                 value={formData.oldPassword}
                                 otherStyles="mb-5"
                                 handleChangeText={(e)=>setFormData({...formData,oldPassword:e})}
+                                darkTheme={darkTheme}
                             />
                         )}
                         <FormField
@@ -131,6 +132,7 @@ const ChangePassword = () => {
                             value={formData.password}
                             otherStyles="mb-5"
                             handleChangeText={(e)=>setFormData({...formData,password:e})}
+                            darkTheme={darkTheme}
                         />
                         <FormField
                             keyboardType="number-pad" 
@@ -139,6 +141,7 @@ const ChangePassword = () => {
                             value={formData.confirmPassword}
                             otherStyles="mb-5"
                             handleChangeText={(e)=>setFormData({...formData,confirmPassword:e})}
+                            darkTheme={darkTheme}
                         />
                     </View>
                     {error?.message && (

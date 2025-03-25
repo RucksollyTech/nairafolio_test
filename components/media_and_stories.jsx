@@ -28,7 +28,7 @@ const Media_and_stories = ({setLastActive,refreshing}) => {
             {data && data.length >0 && (
                 <View className="mt-16 mx-6">
                     <View>
-                        <Text className="font-psans text-lg text-black-100">
+                        <Text className="font-psans text-lg text-black-100 dark:text-white">
                             Media and stories
                         </Text>
                     </View>

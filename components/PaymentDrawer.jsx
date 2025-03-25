@@ -21,7 +21,8 @@ const PaymentDrawer = ({
     user,
     title,
     user_investment,
-    setShowMessage
+    setShowMessage,
+    darkTheme
 }) => {
     if (!isVisible) return null;
     // const { user } = useGlobalContext();
@@ -162,7 +163,7 @@ const PaymentDrawer = ({
                         <>
                             <View 
                                 className={`
-                                    p-5 min-h-24 flex-row justify-between items-center ${!next  && "border-b border-border" }
+                                    p-5 min-h-24 flex-row justify-between items-center ${!next  && "border-b border-border dark:border-[#3B3C43]" }
                                 `}
                             >
                                 {next ? (
@@ -190,7 +191,7 @@ const PaymentDrawer = ({
                                             </TouchableOpacity>
                                         </View>
                                         <View className="pl-3">
-                                            <Text className="text-lg font-psemibold font-semibold text-header-200">
+                                            <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
                                                 Select payment method
                                             </Text>
                                         </View>
@@ -216,7 +217,7 @@ const PaymentDrawer = ({
                                             />
                                         </View>
                                         <View className="pl-3">
-                                            <Text className="text-lg font-psemibold font-semibold text-header-200">
+                                            <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
                                                 {title ?? "Secure an Investment"} 
                                             </Text>
                                         </View>
@@ -233,7 +234,7 @@ const PaymentDrawer = ({
                                 <View>
                                     {next ? (
                                         <View>
-                                            <View className="px-5 border-b border-border">
+                                            <View className="px-5 border-b border-border dark:border-[#3B3C43]">
                                                 <TouchableOpacity 
                                                     activeOpacity={0.9}
                                                     onPress={()=>handleOtherScreen(1)}
@@ -245,7 +246,7 @@ const PaymentDrawer = ({
                                                         py-4 flex-row
                                                         mb-5
                                                         border
-                                                        ${(active && active === 1) ? "border-secondary-100" : "border-border"}
+                                                        ${(active && active === 1) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                                         bg-[#F8FAFA]
                                                     `}
                                                 >
@@ -269,7 +270,7 @@ const PaymentDrawer = ({
                                                             <View className="my-auto justify-between flex-row">
                                                                 <View>
                                                                     <Text
-                                                                        className="text-lg text-header-200 font-psans"
+                                                                        className="text-lg text-header-200 dark:text-white  font-psans"
                                                                     >
                                                                         Wallet
                                                                     </Text>
@@ -304,6 +305,7 @@ const PaymentDrawer = ({
                                                 investment={investment}
                                                 user={user}
                                                 setModeSet={setModeSet}
+                                                darkTheme={darkTheme}
                                             />
                                         </View>
                                     ) : (
@@ -319,6 +321,7 @@ const PaymentDrawer = ({
                                                     handleChangeText={(e)=>setUnit(e)}
                                                     otherStyles={"mt-2"}
                                                     keyboardType="number-pad"
+                                                    darkTheme={darkTheme}
                                                 />
                                                 <View className='min-h-5'>
                                                     {!!unit && parseFloat(unit) < investment.min_investment && (

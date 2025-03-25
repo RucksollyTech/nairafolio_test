@@ -25,7 +25,7 @@ import GraphScreen from '@/components/GraphComponent'
 
 const Investment = () => {
     const {id} = useLocalSearchParams();
-    const { user, setLastActive,setUser } = useGlobalContext();
+    const { user, setLastActive,setUser, darkTheme } = useGlobalContext();
     const { data:listData, loading, refetch } = useAppwrite(()=>getInvestment(id))
     let data = listData && listData[0]
     const navigation = useNavigation();
@@ -153,7 +153,7 @@ const Investment = () => {
     }, [data])
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             {loading ? (
                 <DetailSkeletonLoader />
             ):(
@@ -208,7 +208,7 @@ const Investment = () => {
                                         </View>
                                     </View>
                                 </View>
-                                <View className="flex-1 mt-5 rounded-lg shadow overflow-hidden border border-border">
+                                <View className="flex-1 mt-5 rounded-lg shadow overflow-hidden border border-border dark:border-[#3B3C43]">
                                     <ImageBackground
                                         source={{uri: data?.cover_image}}
                                         resizeMode="cover"
@@ -217,7 +217,7 @@ const Investment = () => {
                                         <LinearGradient
                                             colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.8)']} // Ensure transparency at the top
                                             start={{ x: 0.5, y: 0.405 }}
-                                            end={{ x: 0.5, y: 1 }}
+                                            end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
                                             style={iOSStyleSetter()}
                                             className="h-full p-6 items-center justify-center"
                                         >
@@ -239,7 +239,7 @@ const Investment = () => {
                                     </ImageBackground>
                                 </View>
                                 <View className="bg-white py-3">
-                                    <Text className="text-xl font-pregular font-[700] text-black-100 ">
+                                    <Text className="text-xl font-pregular font-[700] text-black-100 dark:text-white ">
                                         {data?.name}
                                     </Text>
                                     <View className="py-2">
@@ -273,12 +273,12 @@ const Investment = () => {
                                     </View>
                                 </View>
                             </View>
-                            <View className="pt-5 px-5 border-t border-border-100 flex-1">
-                                <Text className="text-muted text-base">
+                            <View className="pt-5 px-5 border-t border-border dark:border-[#3B3C43]-100 flex-1">
+                                <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
                                     Highlights
                                 </Text>
                                 <View className="flex flex-row gap-4 mt-3 flex-1 pt-1">
-                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                         <View>
                                             <Image
                                                 source={icons.roi}
@@ -292,7 +292,7 @@ const Investment = () => {
                                             </Text>
                                         </View>
                                     </View>
-                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                         <View>
                                             <Image
                                                 source={icons.money}
@@ -318,7 +318,7 @@ const Investment = () => {
                                 </View>
                                 <View className="flex flex-row gap-4 flex-1">
                                     {!!data?.duration_days && (
-                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                             <View>
                                                 <Image
                                                     source={icons.calender}
@@ -334,7 +334,7 @@ const Investment = () => {
                                         </View>
                                     )}
                                     {!!data?.date_to_introduction && (
-                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                             <View>
                                                 <Image
                                                     source={icons.start_date}
@@ -384,7 +384,7 @@ const Investment = () => {
                                 {active && (
                                     <View>
                                         <View className="mb-10">
-                                            <View className="border-b pb-2 border-border-200">
+                                            <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
                                                 <Text className="text-muted-200 font-pmedium font-[600] text-lg">
                                                     Introduction
                                                 </Text>
@@ -396,7 +396,7 @@ const Investment = () => {
                                             </View>
                                         </View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border-200">
+                                            <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
                                                 <Text className="text-muted-200 font-pmedium font-[600] text-lg">
                                                     Objective
                                                 </Text>
@@ -412,7 +412,7 @@ const Investment = () => {
                                 {!active && (
                                     <View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border-200">
+                                            <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
                                                 <Text className="text-muted-200 font-pmedium font-[600] text-lg">
                                                     Reports
                                                 </Text>
@@ -435,7 +435,7 @@ const Investment = () => {
                             <View className="px-5">
                                 {(data?.images && data?.images.length>0) && (
                                     <View className="my-5">
-                                        <View className="border-b pb-2 border-border-200">
+                                        <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
                                             <Text className="text-muted-200 font-pmedium text-lg">
                                                 Images
                                             </Text>
@@ -465,7 +465,7 @@ const Investment = () => {
                                 )}
                                 {(data?.riskFactors && data?.riskFactors.length > 0) && (
                                     <View className="my-12 rounded-lg bg-[#F6F6F6]">
-                                        <View className="flex flex-row p-4 border-b border-border-200">
+                                        <View className="flex flex-row p-4 border-b border-border dark:border-[#3B3C43]-200">
                                             <View className="bg-[#D82F2F1A] rounded-full h-10 w-10 items-center justify-center">
                                                 <Image
                                                     source={icons.alert}
@@ -473,7 +473,7 @@ const Investment = () => {
                                                 />
                                             </View>
                                             <View className="my-auto ml-2">
-                                                <Text className="text-muted font-pmedium text-lg">
+                                                <Text className="text-muted dark:text-[#FFFFFFB2] font-pmedium text-lg">
                                                     Risk factors
                                                 </Text>
                                             </View>
@@ -498,13 +498,13 @@ const Investment = () => {
                                 {(data?.faq && data?.faq.length > 0) && (
                                     <>
                                         <View className="mt-5">
-                                            <Text className="text-muted font-pmedium text-lg">
+                                            <Text className="text-muted dark:text-[#FFFFFFB2] font-pmedium text-lg">
                                                 FAQs
                                             </Text>
                                         </View>
                                         <View className="mt-5">
                                             {data?.faq.map((faqData,index)=>(
-                                                <View key={index} className="border border-border-100 rounded-lg mb-4">
+                                                <View key={index} className="border border-border dark:border-[#3B3C43]-100 rounded-lg mb-4">
                                                     <Collapsible title={faqData.title}>
                                                         <Text>{faqData.body}</Text>
                                                     </Collapsible>
@@ -515,7 +515,7 @@ const Investment = () => {
                                 )}
                             </View>
                             
-                            {/* <View className="my-10 p-5 border-t border-border-100">
+                            {/* <View className="my-10 p-5 border-t border-border dark:border-[#3B3C43]-100">
                                 <View className="items-center justify-center flex-1">
                                     {data && data?.status === true && investors > 0 && (
                                         <Text className="text-muted-200">
@@ -538,7 +538,7 @@ const Investment = () => {
                             </View> */}
                         </View>
                     </ScrollView>
-                    <View className=" min-h-36 p-5 border-t border-border-100">
+                    <View className=" min-h-36 p-5 border-t border-border dark:border-[#3B3C43]-100">
                         <View className="items-center justify-center flex-1">
                             {data && data?.status === true && investors > 0 && (
                                 <Text className="text-muted-200">
@@ -572,6 +572,7 @@ const Investment = () => {
                     onClose={() => setIsDrawerVisible(false)} 
                     investment={data}
                     user={user}
+                    darkTheme={darkTheme}
                 />
             )}
             <CustomModalAlert

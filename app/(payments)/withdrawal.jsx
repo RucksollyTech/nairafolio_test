@@ -21,7 +21,7 @@ import PasswordConfirm from '@/components/PasswordConfirm';
 
 const withdrawal = () => {
     const navigation = useNavigation();
-    const { user,setUser,setLastActive } = useGlobalContext();
+    const { user,setUser,setLastActive,darkTheme } = useGlobalContext();
     const { data:myBanks, loading:loadingBanks, refetch } = useAppwrite(()=>getMyBanks(user?.$id))
     const [withdrawalAmount, setWithdrawalAmount] = useState();
     const [formData, setFormData] = useState({
@@ -250,7 +250,7 @@ const withdrawal = () => {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView className="bg-white flex-1 h-full">
-                    <CustomNavigator navigator={navigation} />
+                    <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <ScrollView
                         onTouchStart={() => setLastActive(Date.now())}
                         onScroll={() => setLastActive(Date.now())}
@@ -264,7 +264,7 @@ const withdrawal = () => {
                         <View className="bg-white flex-1 h-full px-5 pb-10">
                             
                             <View className="pt-2">
-                                <Text className="text-black-100 font-psans text-2xl">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl">
                                     Withdrawal
                                 </Text>
                             </View>
@@ -281,7 +281,7 @@ const withdrawal = () => {
                                     placeholder="₦ 5000"
                                     handleChangeText={(e)=>setWithdrawalAmount(e)}
                                     otherStyles="mt-2"
-
+                                    darkTheme={darkTheme}
                                 />
                                 <View className="pt-2">
                                     <Text className="text-base text-right font-psemibold text-secondary-100">
@@ -301,7 +301,7 @@ const withdrawal = () => {
                                     <View className="mt-2">
                                         {((loadingBanks && !myBanks) || (loadingBanks && myBanks && myBanks.length === 0)) && (
                                             <View>
-                                                <HomeSkeletonLoader />
+                                                <HomeSkeletonLoader darkTheme={darkTheme} />
                                             </View>
                                         )}
                                         {(myBanks && myBanks.length > 0) && myBanks.map((myBanksData,index)=>(
@@ -314,7 +314,7 @@ const withdrawal = () => {
                                                     py-4 flex-row
                                                     mb-5
                                                     border
-                                                    ${selectedItems?.$id === myBanksData?.$id ? "border-red-500" : "border-border"}
+                                                    ${selectedItems?.$id === myBanksData?.$id ? "border-red-500" : "border-border dark:border-[#3B3C43]"}
                                                     
                                                     bg-[#F8FAFA]
                                                     px-2
@@ -338,13 +338,13 @@ const withdrawal = () => {
                                                 >
                                                     <View>
                                                         <Text
-                                                            className="text-lg text-header-200 font-psans"
+                                                            className="text-lg text-header-200 dark:text-white  font-psans"
                                                         >
                                                             {myBanksData.name}
                                                         </Text>
                                                     </View>
                                                     <View>
-                                                        <Text className="text-muted text-sm">
+                                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                             {myBanksData.number}
                                                         </Text>
                                                     </View>
@@ -415,7 +415,7 @@ const withdrawal = () => {
                         ):(
                             <CustomButton 
                                 title="Withdraw"
-                                handlePress={()=>setIsOpen(false)}
+                                handlePress={()=>setIsOpen(true)}
                                 containerStyles="h-14 mb-4 mx-5"
                                 textStyles="text-white font-psemibold"
                                 loading={loading || !withdrawalAmount || !selectedBank || !user}
@@ -424,6 +424,7 @@ const withdrawal = () => {
                         )}
                     </View>
                     <GeneralDrawer 
+                        darkTheme={darkTheme}
                         isVisible={isDrawerVisible} 
                         onClose={handleCloseDrawer} 
                         noScroll={true} 
@@ -432,7 +433,7 @@ const withdrawal = () => {
                         {next ? (
                             <View className="px-5">
                                 <View className="pt-4">
-                                    <Text className="text-black-100 font-psans text-2xl">
+                                    <Text className="text-black-100 dark:text-white font-psans text-2xl">
                                         Verify it's you
                                     </Text>
                                 </View>
@@ -452,6 +453,7 @@ const withdrawal = () => {
                                             placeholder="Enter code"
                                             handleChangeText={(e)=>setFormData({...formData,code:e})}
                                             otherStyles="mt-2"
+                                            darkTheme={darkTheme}
                                         />
                                     </View>
                                 </View>
@@ -492,7 +494,7 @@ const withdrawal = () => {
                         ):(
                             <View className="px-5">
                                 <View className="pt-4">
-                                    <Text className="text-black-100 font-psans text-2xl">
+                                    <Text className="text-black-100 dark:text-white font-psans text-2xl">
                                         Add bank
                                     </Text>
                                 </View>
@@ -510,6 +512,7 @@ const withdrawal = () => {
                                             placeholder="Select bank"
                                             data={banks || []}
                                             handleChangeText={handleChangeInBankSelect}
+                                            darkTheme={darkTheme}
                                         />
                                     </View>
                                     <View className="mb-7">
@@ -525,6 +528,7 @@ const withdrawal = () => {
                                             placeholder="Enter bank account number"
                                             handleChangeText={(e)=>setFormData({...formData,account_number:e})}
                                             otherStyles="mt-2"
+                                            darkTheme={darkTheme}
                                         />
                                     </View>
                                 </View>
@@ -559,6 +563,8 @@ const withdrawal = () => {
                         user={user}
                         setIsOpen={setIsOpen}
                         isOpen={isOpen}
+                        loading={submittingBank}
+                        darkTheme={darkTheme}
                     />
                 </SafeAreaView>
             </TouchableWithoutFeedback>

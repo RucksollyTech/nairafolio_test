@@ -10,7 +10,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { useNavigation } from 'expo-router'
 
 
-const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMode,investment,user}) => {
+const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMode,investment,user,darkTheme}) => {
     const [loading, setLoading] = useState(false)
     const [depositAmount, setDepositAmount] = useState(0)
     const [next, setNext] = useState(false)
@@ -55,9 +55,9 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
     
         return unsubscribe;
     }, [navigation]);
-
+    
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} className={darkTheme === "dark" ? "dark" : ""}>
             {!next ? (
                 <View>
                     <TouchableOpacity 
@@ -71,8 +71,8 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                 flex 
                                 py-4 flex-row
                                 border
-                                ${(active && active === 2) ? "border-secondary-100" : "border-border"}
-                                bg-[#F8FAFA]
+                                ${(active && active === 2) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
+                                bg-[#F8FAFA] dark:bg-[#303540]
                             `}
                         >
                             <View
@@ -81,6 +81,7 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                 <Image
                                     source={icons.bank}
                                     resizeMode="cover"
+                                    tintColor={darkTheme === "dark" ? "#007784" : ""}
                                 />
                             </View>
                             <View
@@ -91,13 +92,13 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             >
                                 <View>
                                     <Text
-                                        className="text-lg text-header-200 font-psans"
+                                        className="text-lg text-header-200 dark:text-white font-psans"
                                     >
                                         Bank transfer
                                     </Text>
                                 </View>
                                 <View>
-                                    <Text className="text-muted text-sm">
+                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                         Direct transfer from your bank account
                                     </Text>
                                 </View>
@@ -126,8 +127,8 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                 py-4 flex-row
                                 mb-5
                                 border
-                                ${(active && active === 3) ? "border-secondary-100" : "border-border"}
-                                bg-[#F8FAFA]
+                                ${(active && active === 3) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
+                                bg-[#F8FAFA] dark:bg-[#303540]
                             `}
                         >
                             <View
@@ -136,6 +137,7 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                 <Image
                                     source={icons.card}
                                     resizeMode="cover"
+                                    tintColor={darkTheme === "dark" ? "#007784" : ""}
                                 />
                             </View>
                             <View
@@ -146,13 +148,13 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             >
                                 <View>
                                     <Text
-                                        className="text-lg text-header-200 font-psans"
+                                        className="text-lg text-header-200 dark:text-white  font-psans"
                                     >
                                         Debit card
                                     </Text>
                                 </View>
                                 <View>
-                                    <Text className="text-muted text-sm">
+                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                         Pay using Visa, Mastercard, or others 
                                     </Text>
                                 </View>
@@ -184,7 +186,7 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                         placeholder="Min ₦100"
                         handleChangeText={(e)=>setDepositAmount(e)}
                         otherStyles="mt-2"
-
+                        darkTheme={darkTheme}
                     />
                     <View>
                         <CustomButton 

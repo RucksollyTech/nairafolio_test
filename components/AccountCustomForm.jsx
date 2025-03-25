@@ -24,7 +24,7 @@ const AccountCustomForm = ({
                 bg-[#FDFDFD]
                 flex-1
                 ${
-                    isFocused ? "border-primary" : "border-border"
+                    isFocused ? "border-primary" : "border-border dark:border-[#3B3C43]"
                 }
             `}
             style={{ backgroundColor: "#FDFDFD" }}
@@ -49,7 +49,7 @@ const AccountCustomForm = ({
                 
             >
                 <TextInput
-                    className="flex-1 bg-[#FDFDFD] text-black-100 font-pregular text-base"
+                    className="flex-1 bg-[#FDFDFD] text-black-100 dark:text-white font-pregular text-base"
                     value={value}
                     placeholder={placeholder}
                     keyboardType={keyboardType ?? "default"}

@@ -18,16 +18,16 @@ export function Collapsible({ children, title }) {
             name="chevron.right"
             size={18}
             weight="medium"
-            className="text-black-100"
+            className="text-black-100 dark:text-white"
             style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
           />
         </View>
 
         <View className='py-4 pr-4 flex-1'>
-          <Text className='text-black-100 text-lg font-pmedium'>{title}</Text>
+          <Text className='text-black-100 dark:text-white text-lg font-pmedium'>{title}</Text>
         </View>
       </TouchableOpacity>
-      {isOpen && <View className='border-t flex-1 border-border-100 p-4'>
+      {isOpen && <View className='border-t flex-1 border-border dark:border-[#3B3C43]-100 p-4'>
         <Text className='text-base font-pregular text-black-200'>
           {children}
         </Text>

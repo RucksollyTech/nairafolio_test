@@ -21,7 +21,7 @@ import { TouchableWithoutFeedback } from 'react-native'
 
 const Wallet = () => {
     const navigation = useNavigation();
-    const { user, setUser, setLastActive } = useGlobalContext();
+    const { user, setUser, setLastActive, darkTheme } = useGlobalContext();
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactionsWithLimit(user.$id))
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [refreshing, setRefreshing] = useState(false)
@@ -56,7 +56,7 @@ const Wallet = () => {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView className="bg-white flex-1 h-full">
-                    <CustomNavigator navigator={navigation} />
+                    <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <ScrollView
                         onTouchStart={() => setLastActive(Date.now())}
                         onScroll={() => setLastActive(Date.now())}
@@ -70,7 +70,7 @@ const Wallet = () => {
                         <View className="bg-white flex-1 h-full px-5 pb-10">
                             
                             <View className="pt-2">
-                                <Text className="text-black-100 font-psans text-2xl">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl">
                                     Wallet
                                 </Text>
                             </View>
@@ -81,7 +81,7 @@ const Wallet = () => {
                                     </Text>
                                 </View>
                                 <View className="pt-5">
-                                    <Text className={`text-black-100 ${user?.wallet_balance?.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
+                                    <Text className={`text-black-100 dark:text-white ${user?.wallet_balance?.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
                                         ₦{user?.wallet_balance?.toLocaleString() ?? 0}
                                     </Text>
                                 </View>
@@ -106,7 +106,7 @@ const Wallet = () => {
                                 <TouchableOpacity
                                     onPress={()=>router.push("/withdrawal")}
                                     activeOpacity={0.7}
-                                    className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                    className={`border border-border dark:border-[#3B3C43]-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                 >
                                     <Text className={`font-pinter font-semibold text-base text-muted`}>
                                         Withdraw
@@ -123,19 +123,19 @@ const Wallet = () => {
                             {(loading && transactions.length===0) && (
                                 <>
                                     <View className="mt-5">
-                                        <Text className="text-black-100 font-psans text-xl">
+                                        <Text className="text-black-100 dark:text-white font-psans text-xl">
                                             Transactions
                                         </Text>
                                     </View>
                                     <View className="mt-5">
-                                        <HomeSkeletonLoader />
+                                        <HomeSkeletonLoader darkTheme={darkTheme} />
                                     </View>
                                 </>
                             )}
                             {(transactions && transactions.length > 0) && (
                                 <>
                                     <View className="mt-5">
-                                        <Text className="text-black-100 font-psans text-xl">
+                                        <Text className="text-black-100 dark:text-white font-psans text-xl">
                                             Transactions
                                         </Text>
                                     </View>
@@ -149,12 +149,12 @@ const Wallet = () => {
                                                     flex-row
                                                     mb-5
                                                     py-4
-                                                    ${transactions.length === index + 1 ? '' : 'border-border border-b'}
+                                                    ${transactions.length === index + 1 ? '' : 'border-border dark:border-[#3B3C43] border-b'}
                                                 `}
                                             >
                                                 
                                                 <View
-                                                    className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                                                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                                 >
                                                     <Image
                                                         source={icons.download}
@@ -194,7 +194,7 @@ const Wallet = () => {
                                                     <View>
                                                         <Money 
                                                             value={transaction.amount}
-                                                            textStyle="font-psemibold text-muted text-right text-base"
+                                                            textStyle="font-psemibold text-muted dark:text-[#FFFFFFB2] text-right text-base"
                                                         />
                                                     </View>
                                                     <View className="mt-2">
@@ -226,12 +226,13 @@ const Wallet = () => {
                             )}
                         </View>
                     </ScrollView>
-                    <GeneralDrawer 
+                    <GeneralDrawer
+                        darkTheme={darkTheme} 
                         heights={"50px"} 
                         isVisible={isDrawerVisible} 
                         onClose={() => setIsDrawerVisible(false)}
                     >
-                        <PaymentMethods user={user} />
+                        <PaymentMethods user={user} darkTheme={darkTheme} />
                     </GeneralDrawer>
                 </SafeAreaView>
             </TouchableWithoutFeedback>

@@ -12,7 +12,7 @@ const EmptyState = ({ title, subtitle ,notIncludeImg}) => {
             )}
 
             <Text 
-                className="text-xl font-psans text-muted mt-5"
+                className="text-xl font-psans text-muted dark:text-[#FFFFFFB2] mt-5"
             >
                 {title}
             </Text>

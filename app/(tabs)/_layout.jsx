@@ -4,9 +4,10 @@ import { Image, Platform, Text, View } from "react-native";
 
 import { icons } from "../../constants";
 import { Loader } from "../../components";
+import { useGlobalContext } from "@/context/GlobalProvider";
 // import { useGlobalContext } from "../../context/GlobalProvider";
 
-const TabIcon = ({ icon, color, name, focused }) => {
+const TabIcon = ({ icon, color, name, focused, darkTheme }) => {
   return (
     <View className="flex items-center justify-center gap-2 pt-10">
       <Image
@@ -15,7 +16,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
       />
       <Text
         className={`${focused ? "font-psans" : "font-pregular"} text-xs text-center w-16`}
-        style={{ color: color }}
+        style={{ color: (darkTheme === "dark" && focused) ? "#CBF5B8" : color }}
       >
         {name}
       </Text>
@@ -24,7 +25,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
 };
 
 const TabLayout = () => {
-  // const { loading, isLogged } = useGlobalContext();
+  const { darkTheme } = useGlobalContext();
 
   // if (!loading && !isLogged) return <Redirect href="/sign-in" />;
 
@@ -32,14 +33,14 @@ const TabLayout = () => {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#014148",
+          tabBarActiveTintColor: darkTheme === "dark" ? "#1D1E25" : "#014148",
           tabBarInactiveTintColor: "#737373",
           tabBarShowLabel: false,
           tabBarHideOnKeyboard:true,
           tabBarStyle: {
-            backgroundColor: "#FFFFFF",
+            backgroundColor: darkTheme === "dark" ? "#1D1E25" : "#FFFFFF",
             // borderTopWidth: 1,
-            borderTopColor: "#FFFFFF",
+            borderTopColor: darkTheme === "dark" ? "#1D1E25" : "#FFFFFF",
             // boxShadow: "0px 4px 14px 0px #000000",
             height: 80,
           },
@@ -52,6 +53,7 @@ const TabLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
+                darkTheme={darkTheme}
                 icon={focused ? icons.home : icons.home_thin}
                 color={color}
                 name="Home"
@@ -67,6 +69,7 @@ const TabLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
+                darkTheme={darkTheme}
                 icon={focused ? icons.location : icons.location_thin}
                 color={color}
                 name="Explore"
@@ -82,6 +85,7 @@ const TabLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
+                darkTheme={darkTheme}
                 icon={focused ? icons.portfolio : icons.portfolio_thin}
                 color={color}
                 name="Portfolio"
@@ -97,6 +101,7 @@ const TabLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
+                darkTheme={darkTheme}
                 icon={focused ? icons.user : icons.user_thin}
                 color={color}
                 name="Account"

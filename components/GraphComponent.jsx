@@ -81,7 +81,7 @@ const GraphScreen = ({chartData,chartDataLoading}) => {
   const RIODiff= presentRIO - presentRIOPrevious
   
   return (
-    <View className="flex-1 pt-5 pb-3 mb-2 bg-white border-border border-b">
+    <View className="flex-1 pt-5 pb-3 mb-2 bg-white border-border dark:border-[#3B3C43] border-b">
       <View className="px-5">
         <View className="flex-row justify-between relative z-20">
           <View>

@@ -11,7 +11,7 @@ import { signOut } from '@/lib/appwrite';
 
 
 const index = () => {
-    const { loading, isLogged, setLocked,setIsLogged, locked, authenticateUser, user, setLastActive } = useGlobalContext();
+    const { loading, isLogged, setLocked,setIsLogged,darkTheme, locked, authenticateUser, user, setLastActive } = useGlobalContext();
     const { returnUrl } = useLocalSearchParams();
 
     if (!loading && isLogged && !locked) return <Redirect href={returnUrl ? returnUrl : "/home"} />;
@@ -65,6 +65,7 @@ const index = () => {
                         user={user}
                         loading={loading}
                         returnUrl={returnUrl}
+                        darkTheme={darkTheme}
                     />
                 </ScrollView>
                 <View className='py-7 items-center justify-center flex-row gap-5'>
@@ -102,8 +103,8 @@ const index = () => {
                     <LinearGradient
                         colors={['rgba(255, 255, 255, 0)', '#FFFFFF']} // Start and end colors
                         locations={[0, 0.1626]} // Matching the 16.26% stop
-                        start={{ x: 0.5, y: 0 }} // From the top center
-                        end={{ x: 0.5, y: 1 }} 
+                        start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }} // From the top center
+                        end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }} 
                     >
                         <View className='bg-white mt-20'>
                             <View className='my-12 flex items-center justify-center'>
@@ -115,7 +116,7 @@ const index = () => {
                             
                             <View className='flex items-center justify-center'>
                                 <Text className='
-                                    text-black-100 
+                                    text-black-100 dark:text-white 
                                     px-5 font-psans 
                                     font-semibold 
                                     text-[33px] 
@@ -137,7 +138,7 @@ const index = () => {
                                 <View>
                                     <CustomButton 
                                         title="Login"
-                                        containerStyles="h-[50px] border border-border mt-5 bg-white mx-8"
+                                        containerStyles="h-[50px] border border-border dark:border-[#3B3C43] mt-5 bg-white mx-8"
                                         textStyles="text-dark-100"
                                         handlePress={()=>router.push("/sign_in")}
                                     />

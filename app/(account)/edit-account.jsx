@@ -18,7 +18,7 @@ import { Platform } from 'react-native'
 import { Keyboard } from 'react-native'
 
 const EditAccount = () => {
-    const { user, setUser, setLastActive } = useGlobalContext();
+    const { user, setUser, setLastActive,darkTheme } = useGlobalContext();
     const [uploading, setUploading] = useState(false);
     const [saved, setSaved] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -121,7 +121,7 @@ const EditAccount = () => {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -135,7 +135,7 @@ const EditAccount = () => {
                 <View className="bg-white flex-1 px-5 pb-10 relative">
                     
                     <View className="pt-4">
-                        <Text className="text-black-100 font-psans text-2xl">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
                             Edit profile
                         </Text>
                     </View>
@@ -227,6 +227,7 @@ const EditAccount = () => {
                 </View>
             </ScrollView>
             <GeneralDrawer 
+                darkTheme={darkTheme}
                 header={"Profile photo"}
                 isVisible={isDrawerVisible} 
                 onClose={() => setIsDrawerVisible(false)}

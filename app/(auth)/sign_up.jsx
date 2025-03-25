@@ -8,8 +8,8 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { createUser, signOut } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const sign_in = () => {
-    const { setUser, setIsLogged, setLastActive, setLocked } = useGlobalContext();
+const sign_up = () => {
+    const { setUser, setIsLogged, setLastActive, setLocked, darkTheme } = useGlobalContext();
     const [errorMessage, setErrorMessage] = useState("");
 
     const [isSubmitting, setSubmitting] = useState(false);
@@ -97,6 +97,7 @@ const sign_in = () => {
                                     value={form.name}
                                     placeholder="Enter full name"
                                     handleChangeText={(e)=>setForm({...form, name: e})}
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                             <View className='pt-4'>
@@ -105,6 +106,7 @@ const sign_in = () => {
                                     value={form.email}
                                     placeholder="Email address"
                                     handleChangeText={(e)=>setForm({...form, email: e})}
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                             <View className='flex flex-row pt-4 gap-3'>
@@ -113,7 +115,7 @@ const sign_in = () => {
                                     bg-[#FDFDFD] 
                                     rounded-2xl 
                                     flex-row
-                                    border border-border 
+                                    border border-border dark:border-[#3B3C43] 
                                     focus:border-primary 
                                     items-center'
                                 >
@@ -122,7 +124,7 @@ const sign_in = () => {
                                         resizeMode='contain'
                                         className='my-auto'
                                     />
-                                    <Text className='text-sm text-muted pl-1'>
+                                    <Text className='text-sm text-muted dark:text-[#FFFFFFB2] pl-1'>
                                         +234
                                     </Text>
                                 </View>
@@ -133,6 +135,7 @@ const sign_in = () => {
                                         placeholder="8160000031"
                                         handleChangeText={(e)=>setForm({...form, phone: e})}
                                         otherStyles="w-full"
+                                        darkTheme={darkTheme}
                                     />
                                 </View>
                             </View>
@@ -142,6 +145,7 @@ const sign_in = () => {
                                     value={form.password}
                                     placeholder="Password"
                                     handleChangeText={(e)=>setForm({...form, password: e})}
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                             <View className='pt-4'>
@@ -150,6 +154,7 @@ const sign_in = () => {
                                     value={form.password_confirm}
                                     placeholder="Confirm password"
                                     handleChangeText={(e)=>setForm({...form, password_confirm: e})}
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                         </View>
@@ -187,4 +192,4 @@ const sign_in = () => {
     )
 }
 
-export default sign_in
+export default sign_up

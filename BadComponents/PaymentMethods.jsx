@@ -85,19 +85,19 @@ const PaymentMethods = (destination) => {
             {virtualAccount ? (
                 // Display virtual account details to the user
                 <View className="relative z-[60]" style={{ flex: 1, padding: 20 }}>
-                    <Text className="text-lg text-header-200 font-psans">
+                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
                         Please transfer ₦{depositAmount} to the following account:
                     </Text>
-                    <Text className="text-lg text-header-200 font-psans">
+                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
                         Bank: {virtualAccount.bank.name}
                     </Text>
-                    <Text className="text-lg text-header-200 font-psans">
+                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
                         Account Number: {virtualAccount.account_number}
                     </Text>
-                    <Text className="text-lg text-header-200 font-psans">
+                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
                         Account Name: {virtualAccount.account_name}
                     </Text>
-                    <Text className="text-muted text-sm">
+                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                         After making the transfer, the payment will be automatically verified.
                     </Text>
                 </View>
@@ -116,7 +116,7 @@ const PaymentMethods = (destination) => {
                                         flex 
                                         py-4 flex-row
                                         border
-                                        border-border
+                                        border-border dark:border-[#3B3C43]
                                         bg-[#F8FAFA]
                                     "
                                 >
@@ -136,13 +136,13 @@ const PaymentMethods = (destination) => {
                                     >
                                         <View>
                                             <Text
-                                                className="text-lg text-header-200 font-psans"
+                                                className="text-lg text-header-200 dark:text-white  font-psans"
                                             >
                                                 Bank transfer
                                             </Text>
                                         </View>
                                         <View>
-                                            <Text className="text-muted text-sm">
+                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                 Direct transfer from your bank account
                                             </Text>
                                         </View>
@@ -168,7 +168,7 @@ const PaymentMethods = (destination) => {
                                         py-4 flex-row
                                         mb-5
                                         border
-                                        border-border
+                                        border-border dark:border-[#3B3C43]
                                         bg-[#F8FAFA]
                                     "
                                 >
@@ -188,13 +188,13 @@ const PaymentMethods = (destination) => {
                                     >
                                         <View>
                                             <Text
-                                                className="text-lg text-header-200 font-psans"
+                                                className="text-lg text-header-200 dark:text-white  font-psans"
                                             >
                                                 Debit card
                                             </Text>
                                         </View>
                                         <View>
-                                            <Text className="text-muted text-sm">
+                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                 Pay using Visa, Mastercard, or others 
                                             </Text>
                                         </View>

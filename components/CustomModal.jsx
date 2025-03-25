@@ -29,7 +29,7 @@ const CustomModal = ({
                         </View>
                     </View>
                     <Pressable
-                        className="border-t border-border px-4 py-3 mt-2"
+                        className="border-t border-border dark:border-[#3B3C43] px-4 py-3 mt-2"
                         onPress={onClose}
                     >
                         <Text className="text-header text-center font-medium">{buttonText}</Text>

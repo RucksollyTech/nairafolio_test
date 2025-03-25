@@ -7,7 +7,7 @@ import { Image } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000,setIsDrawerVisible }) => {
+export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000,setIsDrawerVisible,darkTheme }) => {
   const flatListRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const currentIndex = useRef(0);
@@ -49,7 +49,7 @@ export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000
                         <View className="flex flex-row justify-between">
                             <View>
                                 <View>
-                                    <Text className="text-muted text-base">
+                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
                                         {title}
                                     </Text>
                                 </View>
@@ -86,7 +86,7 @@ export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000
       />
 
       {/* Pagination Dots */}
-      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
         {data.map((_, index) => {
           const opacity = scrollX.interpolate({
             inputRange: [
@@ -105,7 +105,7 @@ export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000
                 width: 8,
                 height: 8,
                 borderRadius: 4,
-                backgroundColor: 'black',
+                backgroundColor: darkTheme === 'dark' ? 'white' : 'black',
                 margin: 5,
                 opacity,
               }}

@@ -44,12 +44,12 @@ const CustomCarousel = ({data,width,progressValue,setIsDrawerVisible}) =>(
                         <View className="flex flex-row justify-between">
                             <View>
                                 <View>
-                                    <Text className="text-muted text-base">
+                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
                                         {title}
                                     </Text>
                                 </View>
                                 <View className="mt-2">
-                                    <Text className={`text-black-100 ${amount.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
+                                    <Text className={`text-black-100 dark:text-white ${amount.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
                                         ₦{amount.toLocaleString()}
                                     </Text>
                                 </View>
@@ -150,18 +150,18 @@ const Home = () => {
             >
                 <View className="flex-1 h-full">
                     <LinearGradient
-                        colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                        start={{ x: 0.5, y: 0 }}
-                        end={{ x: 0.5, y: 1 }}
+                        colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+                        start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
+                        end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
                     >
                         <View className="px-5">
                             <View className="pt-10">
-                                <Text className="text-muted font-psemibold font-semibold text-sm">
+                                <Text className="text-muted dark:text-[#FFFFFFB2] font-psemibold font-semibold text-sm">
                                     Welcome,
                                 </Text>
                             </View>
                             <View className="pt-1">
-                                <Text className="text-black-100 font-psans text-xl">
+                                <Text className="text-black-100 dark:text-white font-psans text-xl">
                                     {user?.name || "--"}
                                 </Text>
                             </View>

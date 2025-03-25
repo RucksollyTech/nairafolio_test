@@ -16,10 +16,10 @@ const Drawer = ({ isVisible, onClose, children, header }) => {
             >
                 <View 
                     className="
-                        p-5 flex-row justify-between items-center border-b border-border
+                        p-5 flex-row justify-between items-center border-b border-border dark:border-[#3B3C43]
                     "
                 >
-                    <Text className="text-lg font-psemibold font-semibold text-header-200">
+                    <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
                         {header}
                     </Text>
                     <TouchableOpacity onPress={onClose}>

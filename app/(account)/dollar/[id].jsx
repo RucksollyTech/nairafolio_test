@@ -21,7 +21,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import { Keyboard } from 'react-native';
 
 const Dollar = () => {
-    const { setLastActive, user,setUser,setShowMessage,showMessage } = useGlobalContext();
+    const { setLastActive, user,setUser,setShowMessage,showMessage,darkTheme } = useGlobalContext();
 
     const {id} = useLocalSearchParams();
     const navigation = useNavigation();
@@ -118,12 +118,12 @@ const Dollar = () => {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView className="bg-white flex-1 h-full">
-                    <CustomNavigator navigator={navigation} />
+                    <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <View className="px-5">
                         {!loading && (
                             <View>
                                 <Text 
-                                    className="text-black-100 text-xl font-pregular font-[700]"
+                                    className="text-black-100 dark:text-white text-xl font-pregular font-[700]"
                                 >
                                     Dollar saving
                                 </Text>
@@ -150,17 +150,17 @@ const Dollar = () => {
                                         <Money
                                             dollar
                                             value={user?.dollar_ballance}
-                                            textStyle="text-black-100 font-psans text-4xl"
+                                            textStyle="text-black-100 dark:text-white font-psans text-4xl"
                                         />
                                     </View>
                                     <View className="mt-2 flex-1">
                                         <View className=" flex flex-row flex-1">
-                                            <Text className="text-muted font-pregular font-[700] text-base">
+                                            <Text className="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base">
                                                 Invested 
                                             </Text>
                                             <Money
                                                 value={(transactions && transactions.length > 0) ? getLastTransaction(transactions) : 0}
-                                                textStyle="text-muted font-pregular font-[700] text-base"
+                                                textStyle="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base"
                                                 containerStyle="pl-2"
                                             />
                                         </View>
@@ -195,7 +195,7 @@ const Dollar = () => {
                                         <TouchableOpacity
                                             onPress={handleConvert}
                                             activeOpacity={0.7}
-                                            className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                            className={`border border-border dark:border-[#3B3C43]-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                         >
                                             <Text className={`font-pinter font-semibold text-base text-muted`}>
                                                 Convert
@@ -215,7 +215,7 @@ const Dollar = () => {
                                 {transactions && transactions.length > 0 && (
                                     <View className='mt-5 px-5'>
                                         <View className='mb-3'>
-                                            <Text className="font-psans text-lg text-black-100">
+                                            <Text className="font-psans text-lg text-black-100 dark:text-white">
                                                 Activities
                                             </Text>
                                         </View>
@@ -244,6 +244,7 @@ const Dollar = () => {
                             user_investment={dollarInvestment}
                             title="Buy Dollars"
                             setShowMessage={setShowMessage}
+                            darkTheme={darkTheme}
                         />
                     )}
                     <CustomModalAlert
@@ -263,6 +264,7 @@ const Dollar = () => {
                         showDefault={true}
                     ><></></CustomModalAlert>
                     <GeneralDrawer 
+                        darkTheme={darkTheme}
                         heights={"50px"} 
                         header={"Convert Dollars"}
                         isVisible={isDrawerVisible2} 
@@ -282,6 +284,7 @@ const Dollar = () => {
                                             handleChangeText={(e)=>setDollarToSell(e)}
                                             otherStyles={"mt-2"}
                                             keyboardType="number-pad"
+                                            darkTheme={darkTheme}
                                         />
                                         <View className='min-h-5'>
                                             {user.dollar_ballance < dollarToSell && (
@@ -311,7 +314,7 @@ const Dollar = () => {
                                         />
                                     </View>
                                     <View className="mt-5">
-                                        <Text className="text-black-100 font-psans text-2xl text-center">
+                                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                             You have successfully converted {dollarToSell}.
                                         </Text>
                                     </View>

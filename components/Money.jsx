@@ -4,8 +4,8 @@ import React from 'react'
 const Money = ({value,containerStyle,textStyle,add,minus,addedText,dollar}) => {
     return (
         <View className={containerStyle ?? ""}>
-            <Text className={textStyle ?? "text-black-100 font-psans"}>{add && "+"}{minus && "-"}{dollar ? "$" : "₦"}{value && value.toLocaleString()}</Text>
-            {addedText && <Text className={textStyle ?? "text-black-100 font-psans"}>{addedText}</Text>}
+            <Text className={textStyle ?? "text-black-100 dark:text-white font-psans"}>{add && "+"}{minus && "-"}{dollar ? "$" : "₦"}{value && value.toLocaleString()}</Text>
+            {addedText && <Text className={textStyle ?? "text-black-100 dark:text-white font-psans"}>{addedText}</Text>}
         </View>
     )
 }

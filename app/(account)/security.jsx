@@ -28,7 +28,7 @@ export const checkBiometricSupport = async () => {
 
 
 const Security = () => {
-    const { setLastActive } = useGlobalContext();
+    const { setLastActive,darkTheme } = useGlobalContext();
     const navigation = useNavigation();
 
     const [biometricsEnabled, setBiometricsEnabled] = useState(false);
@@ -77,7 +77,7 @@ const Security = () => {
 
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -88,7 +88,7 @@ const Security = () => {
                 <View className="bg-white flex-1 h-full px-5 pb-10">
                     
                     <View className="pt-4">
-                        <Text className="text-black-100 font-psans text-2xl">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
                             Security
                         </Text>
                     </View>
@@ -107,7 +107,7 @@ const Security = () => {
                                     py-2 flex-row
                                     mb-5
                                     border
-                                    border-border
+                                    border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
                                 "
                             >
@@ -160,7 +160,7 @@ const Security = () => {
                                 py-2 flex-row
                                 mb-5
                                 border
-                                border-border
+                                border-border dark:border-[#3B3C43]
                                 bg-[#F8FAFA]
                             "
                         >

@@ -14,7 +14,7 @@ import { EmptyState, UTCDate } from '@/components'
 const notification = () => {
     const navigation = useNavigation();
 
-    const { setLastActive,user } = useGlobalContext();
+    const { setLastActive,user,darkTheme } = useGlobalContext();
     const { data:notifications, loading, refetch } = useAppwrite(()=>getNotifications(user?.$id))
 
     const [showOlder, setShowOlder] = useState(false)
@@ -39,9 +39,9 @@ const notification = () => {
     }, [notifications]);
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <View className="pt-2 px-5 pb-3">
-                <Text className="text-black-100 font-psans text-2xl">
+                <Text className="text-black-100 dark:text-white font-psans text-2xl">
                     Notification
                 </Text>
             </View>
@@ -66,11 +66,11 @@ const notification = () => {
                                         py-4 flex-row
                                         mb-5
                                         border-b
-                                        border-border
+                                        border-border dark:border-[#3B3C43]
                                     "
                                 >
                                     <View
-                                        className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                                        className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                     >
                                         <Image
                                             source={icons.download}
@@ -91,9 +91,9 @@ const notification = () => {
                                                     className="text-lg font-pmedium text-muted"
                                                 >
                                                     Your share{" "}
-                                                    <Text className="text-header-200 font-psans">{item.message}</Text>
+                                                    <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
                                                     {" "}has been sold at
-                                                    <Text className="text-header-200 font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
+                                                    <Text className="text-header-200 dark:text-white  font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
                                                 </Text>
                                             )}
                                             {item.action === "purchase" && (
@@ -101,14 +101,14 @@ const notification = () => {
                                                     className="text-lg font-pmedium text-muted"
                                                 >
                                                     You have successfully bought a share{" "}
-                                                    <Text className="text-header-200 font-psans">{item.message}</Text>
+                                                    <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
                                                     {" "}at
-                                                    <Text className="text-header-200 font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
+                                                    <Text className="text-header-200 dark:text-white  font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
                                                 </Text>
                                             )}
                                         </View>
                                         <View className="pt-2">
-                                            <Text className="text-muted text-sm">
+                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                 {UTCDate(item?.$createdAt)?.myDateFormat || "--"}
                                             </Text>
                                         </View>
@@ -131,11 +131,11 @@ const notification = () => {
                                     py-4 flex-row
                                     mb-5
                                     border-b
-                                    border-border
+                                    border-border dark:border-[#3B3C43]
                                 "
                             >
                                 <View
-                                    className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                 >
                                     <Image
                                         source={icons.file}
@@ -156,7 +156,7 @@ const notification = () => {
                                         </Text>
                                     </View>
                                     <View className="pt-2">
-                                        <Text className="text-muted text-sm">
+                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                             {UTCDate(item?.$createdAt)?.myDateFormat || "--"}
                                         </Text>
                                     </View>
@@ -199,11 +199,11 @@ const notification = () => {
                                                         py-4 flex-row
                                                         mb-5
                                                         border-b
-                                                        border-border
+                                                        border-border dark:border-[#3B3C43]
                                                     "
                                                 >
                                                     <View
-                                                        className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                                                        className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                                     >
                                                         <Image
                                                             source={icons.download}
@@ -224,9 +224,9 @@ const notification = () => {
                                                                     className="text-lg font-pmedium text-muted"
                                                                 >
                                                                     Your share{" "}
-                                                                    <Text className="text-header-200 font-psans">{item.message}</Text>
+                                                                    <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
                                                                     {" "}has been sold at
-                                                                    <Text className="text-header-200 font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
+                                                                    <Text className="text-header-200 dark:text-white  font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
                                                                 </Text>
                                                             )}
                                                             {item.action === "purchase" && (
@@ -234,14 +234,14 @@ const notification = () => {
                                                                     className="text-lg font-pmedium text-muted"
                                                                 >
                                                                     You have successfully bought a share{" "}
-                                                                    <Text className="text-header-200 font-psans">{item.message}</Text>
+                                                                    <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
                                                                     {" "}at
-                                                                    <Text className="text-header-200 font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
+                                                                    <Text className="text-header-200 dark:text-white  font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
                                                                 </Text>
                                                             )}
                                                         </View>
                                                         <View className="pt-2">
-                                                            <Text className="text-muted text-sm">
+                                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                                 {UTCDate(item?.$createdAt)?.myDateFormat || "--"}
                                                             </Text>
                                                         </View>
@@ -264,11 +264,11 @@ const notification = () => {
                                                     py-4 flex-row
                                                     mb-5
                                                     border-b
-                                                    border-border
+                                                    border-border dark:border-[#3B3C43]
                                                 "
                                             >
                                                 <View
-                                                    className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                                                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                                 >
                                                     <Image
                                                         source={icons.file}
@@ -289,7 +289,7 @@ const notification = () => {
                                                         </Text>
                                                     </View>
                                                     <View className="pt-2">
-                                                        <Text className="text-muted text-sm">
+                                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                             {UTCDate(item?.$createdAt)?.myDateFormat || "--"}
                                                         </Text>
                                                     </View>
@@ -322,7 +322,7 @@ const notification = () => {
                 ListEmptyComponent={()=> (<View className="h-full flex-1 justify-center items-center">
                     {loading ? (
                         <View className="px-5 pt-5">
-                            <HomeSkeletonLoader />
+                            <HomeSkeletonLoader darkTheme={darkTheme} />
                         </View>
                     ):(
                         <View className="px-5 pt-10">
@@ -341,13 +341,13 @@ const notification = () => {
 export default notification
 {/* <View className="flex-1 h-full"> */}
     {/* <LinearGradient
-        colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
+        colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+        start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
+        end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
     >
         <View className="px-5">
             <View className="pt-8">
-                <Text className="text-black-100 font-psans text-2xl">
+                <Text className="text-black-100 dark:text-white font-psans text-2xl">
                     Notification
                 </Text>
             </View>
@@ -372,11 +372,11 @@ export default notification
                     py-4 flex-row
                     mb-5
                     border-b
-                    border-border
+                    border-border dark:border-[#3B3C43]
                 "
             >
                 <View
-                    className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                 >
                     <Image
                         source={icons.download}
@@ -394,11 +394,11 @@ export default notification
                         <Text
                             className="text-lg font-pmedium text-muted"
                         >
-                            You just invested{" "}<Text className="text-header-200 font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 font-psans">Investment name</Text>.
+                            You just invested{" "}<Text className="text-header-200 dark:text-white  font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 dark:text-white  font-psans">Investment name</Text>.
                         </Text>
                     </View>
                     <View className="pt-2">
-                        <Text className="text-muted text-sm">
+                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                             Tue May 24th, 3:34pm
                         </Text>
                     </View>
@@ -418,11 +418,11 @@ export default notification
                     py-4 flex-row
                     mb-5
                     border-b
-                    border-border
+                    border-border dark:border-[#3B3C43]
                 "
             >
                 <View
-                    className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                 >
                     <Image
                         source={icons.download}
@@ -441,11 +441,11 @@ export default notification
                         <Text
                             className="text-lg font-pmedium text-muted"
                         >
-                            You just invested{" "}<Text className="text-header-200 font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 font-psans">Investment name</Text>.
+                            You just invested{" "}<Text className="text-header-200 dark:text-white  font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 dark:text-white  font-psans">Investment name</Text>.
                         </Text>
                     </View>
                     <View className="pt-2">
-                        <Text className="text-muted text-sm">
+                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                             Tue May 24th, 3:34pm
                         </Text>
                     </View>
@@ -465,11 +465,11 @@ export default notification
                     py-4 flex-row
                     mb-5
                     border-b
-                    border-border
+                    border-border dark:border-[#3B3C43]
                 "
             >
                 <View
-                    className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                 >
                     <Image
                         source={icons.file}
@@ -486,11 +486,11 @@ export default notification
                         <Text
                             className="text-lg font-pmedium text-muted"
                         >
-                            You just invested{" "}<Text className="text-header-200 font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 font-psans">Investment name</Text>.
+                            You just invested{" "}<Text className="text-header-200 dark:text-white  font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 dark:text-white  font-psans">Investment name</Text>.
                         </Text>
                     </View>
                     <View className="pt-2">
-                        <Text className="text-muted text-sm">
+                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                             Tue May 24th, 3:34pm
                         </Text>
                     </View>
@@ -527,7 +527,7 @@ export default notification
                 "
             >
                 <View
-                    className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                 >
                     <Image
                         source={icons.download}
@@ -545,11 +545,11 @@ export default notification
                         <Text
                             className="text-lg font-pmedium text-muted"
                         >
-                            You just invested{" "}<Text className="text-header-200 font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 font-psans">Investment name</Text>.
+                            You just invested{" "}<Text className="text-header-200 dark:text-white  font-psans">₦10,500</Text>{" "}into{" "}<Text className="text-header-200 dark:text-white  font-psans">Investment name</Text>.
                         </Text>
                     </View>
                     <View className="pt-2">
-                        <Text className="text-muted text-sm">
+                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                             Tue May 24th, 3:34pm
                         </Text>
                     </View>

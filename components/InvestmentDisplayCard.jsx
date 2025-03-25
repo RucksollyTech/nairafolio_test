@@ -19,7 +19,8 @@ const InvestmentDisplayCard = (
         min_investment,
         duration_days,
         company_name,
-        company_owner
+        company_owner,
+        darkTheme
     }
 ) => {
     const iOSStyleSetter = ()=>{
@@ -33,7 +34,7 @@ const InvestmentDisplayCard = (
             onPress={()=>router.push(`/investment/new/${_id}`)}
             activeOpacity={0.8}
         >
-            <View className="flex-1 rounded-lg shadow overflow-hidden border border-border">
+            <View className="flex-1 rounded-lg shadow overflow-hidden border border-border dark:border-[#3B3C43]">
                 <ImageBackground
                     source={{uri: cover_image}}
                     resizeMode="cover"
@@ -73,7 +74,7 @@ const InvestmentDisplayCard = (
                     </LinearGradient>
                 </ImageBackground>
                 <View className="bg-white p-3">
-                    <Text className="text-lg font-pregular font-[700] text-black-100 ">
+                    <Text className="text-lg font-pregular font-[700] text-black-100 dark:text-white ">
                         {name}
                     </Text>
                     <View className="py-2">
@@ -82,7 +83,7 @@ const InvestmentDisplayCard = (
                         </Text>
                     </View>
                     <View className="flex flex-row flex-wrap gap-4 mt-2">
-                        <View className="flex items-center justify-center bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
+                        <View className="flex items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43] px-3 py-2 rounded-lg">
                             <View className="flex flex-row ">
                                 <Image
                                     source={icons.roi}
@@ -94,7 +95,7 @@ const InvestmentDisplayCard = (
                                 </Text>
                             </View>
                         </View>
-                        <View className="flex items-center justify-center bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
+                        <View className="flex items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43] px-3 py-2 rounded-lg">
                             <View className="flex flex-row">
                                 <Image
                                     source={icons.money}
@@ -116,7 +117,7 @@ const InvestmentDisplayCard = (
                             </View>
                         </View>
                         {!!duration_days && (
-                            <View className="flex items-center justify-center bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
+                            <View className="flex items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43] px-3 py-2 rounded-lg">
                                 <View className="flex flex-row ">
                                     <Image
                                         source={icons.calender}
@@ -138,7 +139,7 @@ const InvestmentDisplayCard = (
                                 flex 
                                 pt-3 flex-row
                                 border-t
-                                border-border
+                                border-border dark:border-[#3B3C43]
                             "
                         >
                             <View

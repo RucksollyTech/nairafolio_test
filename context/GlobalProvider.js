@@ -8,6 +8,33 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { checkBiometricSupport } from "@/app/(account)/security";
 import { useNavigation } from "@react-navigation/native";
 
+// Save data
+export const storeData = async (key, value) => {
+    try {
+        await AsyncStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+        console.error("Error saving data", error);
+    }
+};
+
+// Retrieve data
+export const getData = async (key) => {
+    try {
+        const value = await AsyncStorage.getItem(key);
+        return value ? JSON.parse(value) : null;
+    } catch (error) {
+        console.error("Error retrieving data", error);
+    }
+};
+
+// Remove data
+export const removeData = async (key) => {
+    try {
+        await AsyncStorage.removeItem(key);
+    } catch (error) {
+        console.error("Error removing data", error);
+    }
+};
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
@@ -18,11 +45,17 @@ const GlobalProvider = ({ children }) => {
     const [locked, setLocked] = useState(true);
     const [showMessage, setShowMessage] = useState(false);
     const [lastActive, setLastActive] = useState(Date.now());
+    const [darkTheme, setDarkTheme] = useState(null);
+    const [toggleDarkTheme, setToggleDarkTheme] = useState(null);
 
     const navigation = useNavigation();
     const currentState = navigation.getState();
     const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
     const otherScreen = currentState.routes[currentState.index]?.params?.screen;
+    const toggleTheme = () => {
+        setDarkTheme((prev) => (prev === "dark" ? "light" : "dark"));
+        storeData("NairafolioColorScheme",darkTheme)
+    };
     
     useEffect(() => {
         getCurrentUser()
@@ -110,6 +143,11 @@ const GlobalProvider = ({ children }) => {
             <GlobalContext.Provider
                 value={{
                     isLogged,
+                    darkTheme,
+                    setDarkTheme,
+                    toggleTheme,
+                    // setToggleDarkTheme,
+                    // toggleDarkTheme,
                     setIsLogged,
                     user,
                     setUser,

@@ -65,12 +65,12 @@ export const DataContainer = ({data,transactions,index})=>(
             flex-row
             mb-5
             py-4
-            ${transactions?.length === index + 1 ? '' : 'border-border border-b'}
+            ${transactions?.length === index + 1 ? '' : 'border-border dark:border-[#3B3C43] border-b'}
         `}
     >
         
         <View
-            className="h-14 w-14 rounded-full items-center justify-center border border-border"
+            className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
         >
             <Image
                 source={icons.download}
@@ -110,7 +110,7 @@ export const DataContainer = ({data,transactions,index})=>(
             <View>
                 <Money 
                     value={data?.amount}
-                    textStyle="font-psemibold text-muted text-right text-base"
+                    textStyle="font-psemibold text-muted dark:text-[#FFFFFFB2] text-right text-base"
                 />
             </View>
             <View className="mt-2">
@@ -128,7 +128,7 @@ export const DataContainer = ({data,transactions,index})=>(
 
 const Transactions = () => {
     const navigation = useNavigation();
-    const { user,setUser,setLastActive } = useGlobalContext();
+    const { user,setUser,setLastActive,darkTheme } = useGlobalContext();
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactions(user.$id))
     const [showOlder, setShowOlder] = useState(false)
     const [showToday, setShowToday] = useState(false)
@@ -165,9 +165,9 @@ const Transactions = () => {
 
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme}/>
             <View className="pt-2 px-5 pb-3">
-                <Text className="text-black-100 font-psans text-2xl">
+                <Text className="text-black-100 dark:text-white font-psans text-2xl">
                     Transaction history
                 </Text>
             </View>
@@ -232,7 +232,7 @@ const Transactions = () => {
                 ListEmptyComponent={()=> (<View className="h-full flex-1 justify-center items-center">
                     {loading ? (
                         <View className="px-5 pt-5">
-                            <HomeSkeletonLoader />
+                            <HomeSkeletonLoader darkTheme={darkTheme} />
                         </View>
                     ): (
                         <View className="px-5 pt-10">

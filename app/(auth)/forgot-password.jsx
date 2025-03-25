@@ -5,9 +5,12 @@ import FormFieldAdjusted from '@/components/FormFieldAdjusted'
 import { CustomButton, SuccessModal } from '@/components'
 import { icons } from '@/constants'
 import { sendPasswordResetEmail } from '@/lib/appwrite'
+import { useGlobalContext } from '@/context/GlobalProvider'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("")
+    const { darkTheme } = useGlobalContext();
+
     const [successModal, setSuccessModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const handleDismissSuccessModal = ()=>{
@@ -36,6 +39,7 @@ const ForgotPassword = () => {
                         keyboardType={"email-address"}
                         placeholder={"Email Address"}
                         handleChangeText={(e) => setEmail(e)}
+                        darkTheme={darkTheme}
                     />
                     <View className='mt-6'>
                         <CustomButton 
@@ -61,12 +65,12 @@ const ForgotPassword = () => {
                         />
                     </View>
                     <View className="mt-5">
-                        <Text className="text-black-100 font-psans text-2xl text-center">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                             Password reset mail sent! 
                         </Text>
                     </View>
                     <View className="mt-2">
-                        <Text className="text-black-100 font-pmedium text-base text-center">
+                        <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
                             Password reset mail has been sent to the email address provided. Follow 
                             the instructions to reset your password.
                         </Text>

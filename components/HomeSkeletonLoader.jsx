@@ -4,9 +4,12 @@ import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
 
 const { width } = Dimensions.get('window'); // Get device screen width
 
-const HomeSkeletonLoader = () => {
+const HomeSkeletonLoader = ({darkTheme}) => {
     return (
-        <View style={styles.container}>
+        <View 
+        // style={styles.container}
+            className='flex-1 justify-center items-center bg-white'
+        >
             <ContentLoader 
                 speed={2}
                 width={width} 
@@ -23,13 +26,13 @@ const HomeSkeletonLoader = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-});
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         backgroundColor: '#fff',
+//     },
+// });
 
 export default HomeSkeletonLoader;

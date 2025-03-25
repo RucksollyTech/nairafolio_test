@@ -11,7 +11,7 @@ import CustomNavigator from '../../../components/CustomNavigator';
 import { useGlobalContext } from '@/context/GlobalProvider';
 
 const Update = () => {
-    const { setLastActive } = useGlobalContext();
+    const { setLastActive, darkTheme } = useGlobalContext();
 
     const {id} = useLocalSearchParams();
     const navigation = useNavigation();
@@ -26,7 +26,7 @@ const Update = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -37,7 +37,7 @@ const Update = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View className="pt-2 px-5 border-b border-border pb-6">
+                <View className="pt-2 px-5 border-b border-border dark:border-[#3B3C43] pb-6">
                     <View className="flex-row flex-1 items-center">
                         <View
                             className="
@@ -59,7 +59,7 @@ const Update = () => {
                         </View>
                         <View className="pl-3 mr-5 flex-1">
                             <View>
-                                <Text className="text-base font-psans text-header-200">
+                                <Text className="text-base font-psans text-header-200 dark:text-white ">
                                     {update?.[0]?.title}
                                 </Text>
                             </View>

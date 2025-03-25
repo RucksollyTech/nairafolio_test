@@ -17,13 +17,13 @@ const Card = ({title,body,thumbnail}) => {
                     mb-1
                     font-semibold
                     text-base
-                    text-black-100
+                    text-black-100 dark:text-white
                 "
             >
                 {title}
             </Text>
             <Text
-                className="text-muted text-sm"
+                className="text-muted dark:text-[#FFFFFFB2] text-sm"
                 numberOfLines={2}
             >
                 {body}

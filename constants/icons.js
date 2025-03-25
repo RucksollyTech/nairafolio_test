@@ -66,8 +66,12 @@ import portfolio_thin from "../assets/icons/portfolio_thin.png";
 import filter from "../assets/icons/filter.png";
 import convert from "../assets/icons/convert.png";
 
+import dark_cancel from "../assets/icons/dark_canel.png";
+
+
 export default {
     portfolio,
+    dark_cancel,
     filter,
     convert,
     portfolio_thin,

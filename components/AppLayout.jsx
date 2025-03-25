@@ -1,12 +1,13 @@
-import { useGlobalContext } from '@/context/GlobalProvider';
+import { getData, useGlobalContext } from '@/context/GlobalProvider';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ThemeProvider, DefaultTheme, DarkTheme, useNavigation } from '@react-navigation/native';
 import { Stack, router, usePathname } from 'expo-router';
 import { useEffect } from 'react';
+import { View } from 'react-native';
 
 const AppLayout = () => {
     const pathname = usePathname();
-    const { locked, isLogged, loading} = useGlobalContext(); // Now this works inside the provider
+    const { locked, isLogged, loading, setDarkTheme,darkTheme} = useGlobalContext(); // Now this works inside the provider
     const colorScheme = useColorScheme();
     
     const goToPageA = () => {
@@ -28,7 +29,16 @@ const AppLayout = () => {
     const currentState = navigation.getState();
     const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
     const otherScreen = currentState.routes[currentState.index]?.params?.screen;
-    
+    useEffect(() => {
+        const defScreen = async()=>{
+            const screenCol= await getData("NairafolioColorScheme")
+            if(!screenCol){
+                setDarkTheme(colorScheme);
+            }
+        }
+        defScreen()
+
+    }, [colorScheme]);
     useEffect(() => {
         if (locked) {
             goToPageA()
@@ -50,35 +60,37 @@ const AppLayout = () => {
         if(
             router && !loading && !isLogged 
             && pathname !== "index"
-            && pathname !== "sign_in"
-            && pathname !== "sign_up"
+            && pathname !== "/sign_in"
+            && pathname !== "/sign_up"
             && pathname !== "/"
         ){
             router.replace("/sign_in")
         }
     },[currentRouteName,otherScreen,loading,isLogged, router])
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack
-        screenOptions={{
-          contentStyle: { backgroundColor: "#ffffff" },
-        }}
-      >
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(notifications)" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(account)" options={{ headerShown: false }} />
-            <Stack.Screen name="(investment)" options={{ headerShown: false }} />
-            <Stack.Screen name="(payments)" options={{ headerShown: false }} />
-            <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
-            <Stack.Screen name="investment/new/[id]" options={{ headerShown: false }} />
-            <Stack.Screen name="investment/active/[id]" options={{ headerShown: false }} />
-            <Stack.Screen name="investment/user_offer/[id]" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider value={darkTheme === 'dark' ? DarkTheme : DefaultTheme}>
+            {/* <View className={darkTheme === 'dark' ? "dark" : ""}> */}
+                <Stack
+                    screenOptions={{
+                    contentStyle: { backgroundColor: "#ffffff" },
+                    }}
+                >
+                        <Stack.Screen name="index" options={{ headerShown: false }} />
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(notifications)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(account)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(investment)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(payments)" options={{ headerShown: false }} />
+                        <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
+                        <Stack.Screen name="investment/new/[id]" options={{ headerShown: false }} />
+                        <Stack.Screen name="investment/active/[id]" options={{ headerShown: false }} />
+                        <Stack.Screen name="investment/user_offer/[id]" options={{ headerShown: false }} />
+                        <Stack.Screen name="+not-found" />
+                </Stack>
+            {/* </View> */}
+        </ThemeProvider>
+    );
 };
 
 export default AppLayout;

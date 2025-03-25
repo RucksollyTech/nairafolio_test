@@ -40,7 +40,7 @@ export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
 
 const Active = () => {
     const {id} = useLocalSearchParams();
-    const { user, setUser, setLastActive } = useGlobalContext();
+    const { user, setUser, setLastActive, darkTheme } = useGlobalContext();
     const [investment, setInvestment] = useState({});
     const [investmentCalcVal, setInvestmentCalcVal] = useState(null);
     const [updates, setUpdates] = useState({});
@@ -387,12 +387,12 @@ const Active = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <View className="px-5">
                 {!loading && (
                     <View>
                         <Text 
-                            className="text-black-100 text-xl font-pregular font-[700]"
+                            className="text-black-100 dark:text-white text-xl font-pregular font-[700]"
                         >
                             {investment?.investment?.name}
                         </Text>
@@ -424,23 +424,23 @@ const Active = () => {
                                             invested:investment?.investment?.price_per_unit * investment?.unit,
                                             duration:investment?.investment?.duration_days
                                         })}
-                                        textStyle="text-black-100 font-psans text-4xl"
+                                        textStyle="text-black-100 dark:text-white font-psans text-4xl"
                                     />
                                 ):(
                                     <Money
                                         value={investment?.investment?.price_per_unit * investment?.unit}
-                                        textStyle="text-black-100 font-psans text-4xl"
+                                        textStyle="text-black-100 dark:text-white font-psans text-4xl"
                                     />
                                 )}
                             </View>
                             <View className="mt-2 flex-1">
                                 <View className="mt-2 flex flex-row flex-1">
-                                    <Text className="text-muted font-pregular font-[700] text-base">
+                                    <Text className="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base">
                                         Invested 
                                     </Text>
                                     <Money
                                         value={(investment?.investment?.price_per_unit * investment?.unit) }
-                                        textStyle="text-muted font-pregular font-[700] text-base"
+                                        textStyle="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base"
                                         containerStyle="pl-2"
                                     />
                                 </View>
@@ -457,12 +457,12 @@ const Active = () => {
                                         />
 
                                     ):(
-                                        <Text className="text-muted font-pregular font-[700] text-base">
+                                        <Text className="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base">
                                             Start date : {UTCDate(investmentCalcVal?.date_to_introduction).myDateFormat}
                                         </Text>
                                     )}
                                 </View>
-                                <View className={`flex mt-2 items-center justify-center w-[100px] bg-[#F5F5F5] border border-border px-3 py-1.5 rounded-lg`}>
+                                <View className={`flex mt-2 items-center justify-center w-[100px] bg-[#F5F5F5] border border-border dark:border-[#3B3C43] px-3 py-1.5 rounded-lg`}>
                                     {(investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 ? (
                                         <Text className="font-pregular text-base text-muted-100">
                                             {investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone} days left
@@ -525,7 +525,7 @@ const Active = () => {
                                             <TouchableOpacity
                                                 onPress={()=>setIsDrawerVisible2(true)}
                                                 activeOpacity={0.7}
-                                                className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                                className={`border border-border dark:border-[#3B3C43]-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                             >
                                                 <Text className={`font-pinter font-semibold text-base text-muted`}>
                                                     Sell shares
@@ -548,7 +548,7 @@ const Active = () => {
                                                     <TouchableOpacity
                                                         onPress={()=>setIsDrawerVisible4(true)}
                                                         activeOpacity={0.7}
-                                                        className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                                        className={`border border-border dark:border-[#3B3C43]-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                                     >
                                                         <Text className={`font-pinter font-semibold text-base text-muted`}>
                                                             Undo Sell
@@ -653,19 +653,19 @@ const Active = () => {
                                 </TouchableOpacity>
                             </View>
 
-                            <View className="flex-1 mt-1 rounded-lg border border-border">
-                                <View className="p-4 border-b border-border flex-1">
+                            <View className="flex-1 mt-1 rounded-lg border border-border dark:border-[#3B3C43]">
+                                <View className="p-4 border-b border-border dark:border-[#3B3C43] flex-1">
                                     <Text className="text-muted">
                                         Returns
                                     </Text>
                                 </View>
                                 <View className="p-4">
-                                    <Text className="text-muted text-base">
+                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
                                         Highlights
                                     </Text>
                                     <View className="flex flex-row gap-4 mt-4 flex-1">
                                         
-                                        <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                        <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                             <View>
                                                 <Image
                                                     source={icons.roi}
@@ -677,7 +677,7 @@ const Active = () => {
                                                 <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">{investment?.rio ?? 1}% ROI</Text>
                                             </View>
                                         </View>
-                                        <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                        <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                             <View>
                                                 <Image
                                                     source={icons.money}
@@ -701,7 +701,7 @@ const Active = () => {
                                             </View>
                                         </View>
                                     </View>
-                                    {/* <View className="flex mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                    {/* <View className="flex mt-4 items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                         <View>
                                             <Image
                                                 source={icons.calender}
@@ -717,7 +717,7 @@ const Active = () => {
                                     </View> */}
                                     <View className="flex flex-row gap-4 flex-1">
                                         {!!investment?.investment?.duration_days && (
-                                            <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                            <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                                 <View>
                                                     <Image
                                                         source={icons.calender}
@@ -733,7 +733,7 @@ const Active = () => {
                                             </View>
                                         )}
                                         {!!investment?.investment?.date_to_introduction && (
-                                            <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border-200 px-3 py-2.5 rounded-lg">
+                                            <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
                                                 <View>
                                                     <Image
                                                         source={icons.start_date}
@@ -757,10 +757,10 @@ const Active = () => {
 
                                 </View>
                                 <View className="p-4">
-                                    <Text className="text-muted text-base">
+                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
                                         Overview
                                     </Text>
-                                    <View className="pt-4 border-t border-border mt-4">
+                                    <View className="pt-4 border-t border-border dark:border-[#3B3C43] mt-4">
                                         <Text className="text-black-300 text-lg font-pregular font-[600]">
                                             {investment?.investment?.introduction ?? ""}
                                         </Text>
@@ -779,11 +779,11 @@ const Active = () => {
                                 {updates && updates.length>0 && (
                                     <>
                                         <View className="mt-8">
-                                            <Text className="text-black-100 text-xl font-pregular font-[700]">
+                                            <Text className="text-black-100 dark:text-white text-xl font-pregular font-[700]">
                                                 Updates
                                             </Text>
                                             <View className="mt-2">
-                                                <Text className="text-muted text-base font-pregular">
+                                                <Text className="text-muted dark:text-[#FFFFFFB2] text-base font-pregular">
                                                     Here are updates about your investment.
                                                 </Text>
                                             </View>
@@ -857,7 +857,7 @@ const Active = () => {
                                     </>
                                 )}
                                 {/* <View className="mt-8">
-                                    <Text className="text-black-100 text-xl font-pregular font-[700]">
+                                    <Text className="text-black-100 dark:text-white text-xl font-pregular font-[700]">
                                         Activities
                                     </Text>
                                     <View className="mt-4 mb-10">
@@ -868,12 +868,12 @@ const Active = () => {
                                                 flex 
                                                 py-4 flex-row
                                                 border-b
-                                                border-border
+                                                border-border dark:border-[#3B3C43]
                                                 mb-1
                                             "
                                         >
                                             <View
-                                                className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                                                className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                             >
                                                 <Image
                                                     source={icons.download}
@@ -889,14 +889,14 @@ const Active = () => {
                                             >
                                                 <View>
                                                     <Text
-                                                        className="text-lg font-[700] font-pmedium text-header-200"
+                                                        className="text-lg font-[700] font-pmedium text-header-200 dark:text-white "
                                                         numberOfLines={1}
                                                     >
                                                         Deposit
                                                     </Text>
                                                 </View>
                                                 <View className="pt-2">
-                                                    <Text className="text-muted text-sm">
+                                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                         Tue May 24th, 3:34pm
                                                     </Text>
                                                 </View>
@@ -929,7 +929,7 @@ const Active = () => {
                                             "
                                         >
                                             <View
-                                                className="h-14 w-14 rounded-full items-center justify-center border border-border"
+                                                className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                             >
                                                 <Image
                                                     source={icons.download}
@@ -945,14 +945,14 @@ const Active = () => {
                                             >
                                                 <View>
                                                     <Text
-                                                        className="text-lg font-[700] font-pmedium text-header-200"
+                                                        className="text-lg font-[700] font-pmedium text-header-200 dark:text-white "
                                                         numberOfLines={1}
                                                     >
                                                         Deposit
                                                     </Text>
                                                 </View>
                                                 <View className="pt-2">
-                                                    <Text className="text-muted text-sm">
+                                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                         Tue May 24th, 3:34pm
                                                     </Text>
                                                 </View>
@@ -986,9 +986,9 @@ const Active = () => {
                 <View>
                     <TouchableOpacity 
                         onPress={()=>setShowDateSelect(true)}
-                        className="border border-border flex-row rounded-md w-44"
+                        className="border border-border dark:border-[#3B3C43] flex-row rounded-md w-44"
                     >
-                        <View className="border-r border-border p-2 text-center justify-center">
+                        <View className="border-r border-border dark:border-[#3B3C43] p-2 text-center justify-center">
                             <Image
                                 source={icons.calender}
                                 resizeMode="cover"
@@ -1002,12 +1002,12 @@ const Active = () => {
                     </TouchableOpacity>
                     {showDateSelect && (
                         <>
-                            <View className="flex-row gap-3 border-border mt-3 pt-3 border-t">
+                            <View className="flex-row gap-3 border-border dark:border-[#3B3C43] mt-3 pt-3 border-t">
                                 <TouchableOpacity 
                                     onPress={showDatePicker}
-                                    className="border flex-1 border-border flex-row rounded-md w-44"
+                                    className="border flex-1 border-border dark:border-[#3B3C43] flex-row rounded-md w-44"
                                 >
-                                    <View className="border-r border-border p-2 text-center justify-center">
+                                    <View className="border-r border-border dark:border-[#3B3C43] p-2 text-center justify-center">
                                         <Image
                                             source={icons.calender}
                                             resizeMode="cover"
@@ -1021,9 +1021,9 @@ const Active = () => {
                                 </TouchableOpacity>
                                 <TouchableOpacity 
                                     onPress={showDatePicker2}
-                                    className="border flex-1 border-border flex-row rounded-md w-44"
+                                    className="border flex-1 border-border dark:border-[#3B3C43] flex-row rounded-md w-44"
                                 >
-                                    <View className="border-r border-border p-2 text-center justify-center">
+                                    <View className="border-r border-border dark:border-[#3B3C43] p-2 text-center justify-center">
                                         <Image
                                             source={icons.calender}
                                             resizeMode="cover"
@@ -1084,6 +1084,7 @@ const Active = () => {
                 onCancel={hideDatePicker2}
             />
             <GeneralDrawer
+                darkTheme={darkTheme}
                 header={success ? "success!" : activeMethod === 2 ? "Sell shares now" : "Sell shares"}
                 isVisible={isDrawerVisible2} 
                 onClose={handleSuccess}
@@ -1102,7 +1103,7 @@ const Active = () => {
                                     py-4 flex-row
                                     px-2
                                     border
-                                    border-border
+                                    border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
                                 `}
                             >
@@ -1114,13 +1115,13 @@ const Active = () => {
                                 >
                                     <View>
                                         <Text
-                                            className="text-lg text-header-200 font-psans"
+                                            className="text-lg text-header-200 dark:text-white  font-psans"
                                         >
                                             Put up your shares for sale
                                         </Text>
                                     </View>
                                     <View className="mt-1">
-                                        <Text className="text-muted text-sm">
+                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                             Set your price and wait for a buyer
                                         </Text>
                                     </View>
@@ -1151,7 +1152,7 @@ const Active = () => {
                                     py-4 flex-row
                                     px-2
                                     border
-                                    border-border
+                                    border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
                                 `}
                             >
@@ -1163,13 +1164,13 @@ const Active = () => {
                                 >
                                     <View>
                                         <Text
-                                            className="text-lg text-header-200 font-psans"
+                                            className="text-lg text-header-200 dark:text-white  font-psans"
                                         >
                                             Sell now
                                         </Text>
                                     </View>
                                     <View className="mt-1">
-                                        <Text className="text-muted text-sm">
+                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                             Instantly sell your shares at our price.
                                         </Text>
                                     </View>
@@ -1198,18 +1199,18 @@ const Active = () => {
                         </View>
                         <View className="mt-5">
                             {activeMethod === 2 ? (
-                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                     You have just sold {unitToSell} units of your shares to NairaFolio.
                                 </Text>
                             ) : (
-                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                     You have just put up {unitToSell} units of your shares up for sale.
                                 </Text>
                             )}
                         </View>
                         {activeMethod !== 2 && (
                             <View className="mt-2">
-                                <Text className="text-black-100 font-pmedium text-base text-center">
+                                <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
                                     Your wallet will be credited once someone else buys your shares
                                 </Text>
                             </View>
@@ -1232,6 +1233,7 @@ const Active = () => {
                                 handleDataAction={()=>setUnitToSell(investment?.unit)}
                                 handleChangeText={(e)=>setUnitToSell(e)}
                                 dataStyle={"text-muted-200 font-psemibold"}
+                                darkTheme={darkTheme}
                             />
                             {unitToSell > investment?.unit && (
                                 <Text className="mt-2 text-red-500 font-psemibold text-sm ">
@@ -1240,7 +1242,7 @@ const Active = () => {
                             )}
                             {activeMethod !== 2 && (
                                 <View>
-                                    <Text className="font-pregular px-2 text-base my-7 text-black-100">
+                                    <Text className="font-pregular px-2 text-base my-7 text-black-100 dark:text-white">
                                         Note that your shares will be sold only when someone else buys them.
                                     </Text>
                                 </View>
@@ -1254,6 +1256,7 @@ const Active = () => {
                                     data={"/Unit"}
                                     handleChangeText={(e)=>setPricePlaced(e)}
                                     dataStyle={"text-muted-200 font-psemibold"}
+                                    darkTheme={darkTheme}
                                 />
                             ):(
                                 <View>
@@ -1331,12 +1334,12 @@ const Active = () => {
                         />
                     </View>
                     <View className="mt-5">
-                        <Text className="text-black-100 font-psans text-2xl text-center">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                             Congratulations! 
                         </Text>
                     </View>
                     <View className="mt-2">
-                        <Text className="text-black-100 font-pmedium text-base text-center">
+                        <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
                             Your investment funds have been successfully transferred to your wallet. 
                         </Text>
                     </View>
@@ -1350,6 +1353,7 @@ const Active = () => {
                 </View>
             </SuccessModal>
             <GeneralDrawer
+                darkTheme={darkTheme}
                 header={"Select payment method"}
                 isVisible={isDrawerVisible3} 
                 onClose={()=>setIsDrawerVisible3(false)}
@@ -1358,7 +1362,7 @@ const Active = () => {
                     {!next ? (
                         <>
                             <View>
-                                <View className="px-5 border-b border-border">
+                                <View className="px-5 border-b border-border dark:border-[#3B3C43]">
                                     <TouchableOpacity 
                                         activeOpacity={0.9}
                                         onPress={()=>handleOtherScreen(1)}
@@ -1369,7 +1373,7 @@ const Active = () => {
                                             py-4 flex-row
                                             mb-5
                                             border
-                                            ${(active && active === 1) ? "border-secondary-100" : "border-border"}
+                                            ${(active && active === 1) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                             bg-[#F8FAFA]
                                         `}
                                     >
@@ -1393,7 +1397,7 @@ const Active = () => {
                                                 <View className="my-auto justify-between flex-row">
                                                     <View>
                                                         <Text
-                                                            className="text-lg text-header-200 font-psans"
+                                                            className="text-lg text-header-200 dark:text-white  font-psans"
                                                         >
                                                             Wallet
                                                         </Text>
@@ -1430,7 +1434,7 @@ const Active = () => {
                                             flex 
                                             py-4 flex-row
                                             border
-                                            ${(active && active === 2) ? "border-secondary-100" : "border-border"}
+                                            ${(active && active === 2) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                             bg-[#F8FAFA]
                                         `}
                                     >
@@ -1450,13 +1454,13 @@ const Active = () => {
                                         >
                                             <View>
                                                 <Text
-                                                    className="text-lg text-header-200 font-psans"
+                                                    className="text-lg text-header-200 dark:text-white  font-psans"
                                                 >
                                                     Bank transfer
                                                 </Text>
                                             </View>
                                             <View>
-                                                <Text className="text-muted text-sm">
+                                                <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                     Direct transfer from your bank account
                                                 </Text>
                                             </View>
@@ -1485,7 +1489,7 @@ const Active = () => {
                                             py-4 flex-row
                                             mb-5
                                             border
-                                            ${(active && active === 3) ? "border-secondary-100" : "border-border"}
+                                            ${(active && active === 3) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                             bg-[#F8FAFA]
                                         `}
                                     >
@@ -1505,13 +1509,13 @@ const Active = () => {
                                         >
                                             <View>
                                                 <Text
-                                                    className="text-lg text-header-200 font-psans"
+                                                    className="text-lg text-header-200 dark:text-white  font-psans"
                                                 >
                                                     Debit card
                                                 </Text>
                                             </View>
                                             <View>
-                                                <Text className="text-muted text-sm">
+                                                <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                                     Pay using Visa, Mastercard, or others 
                                                 </Text>
                                             </View>
@@ -1552,7 +1556,7 @@ const Active = () => {
                                             />
                                         </View>
                                         <View className="mt-5">
-                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                            <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                                 You have just bought {investment?.unit} units of shares from {investment?.investment?.name}.
                                             </Text>
                                         </View>
@@ -1573,7 +1577,7 @@ const Active = () => {
                                             />
                                         </View>
                                         <View className="mt-5">
-                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                            <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                                 An error occurred while trying to buy shares. Please try again later.
                                             </Text>
                                         </View>
@@ -1595,7 +1599,7 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-5">
-                                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                                     Insufficient funds
                                                 </Text>
                                             </View>
@@ -1614,7 +1618,7 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-5">
-                                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                                     An error occurred while trying to buy shares. Please try again later.
                                                 </Text>
                                             </View>
@@ -1633,6 +1637,7 @@ const Active = () => {
                 </View>
             </GeneralDrawer>
             <GeneralDrawer
+                darkTheme={darkTheme}
                 header={success ? "Success!" : loadError ? "Error occurred " :"Are you sure you want to undo this sell"}
                 isVisible={isDrawerVisible4} 
                 onClose={()=>setIsDrawerVisible4(false)}
@@ -1661,7 +1666,7 @@ const Active = () => {
                                             />
                                         </View>
                                         <View className="mt-5">
-                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                            <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                                 Success!
                                             </Text>
                                         </View>
@@ -1682,7 +1687,7 @@ const Active = () => {
                                             />
                                         </View>
                                         <View className="mt-5">
-                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                            <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                                 An error occurred. Please try again later.
                                             </Text>
                                         </View>
@@ -1703,7 +1708,7 @@ const Active = () => {
                                             />
                                         </View>
                                         <View className="mt-5">
-                                            <Text className="text-black-100 font-psans text-2xl text-center">
+                                            <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                                 An error occurred. Please try again later.
                                             </Text>
                                         </View>
@@ -1747,6 +1752,7 @@ const Active = () => {
                 setIsOpen={setIsOpen}
                 isOpen={isOpen}
                 loading={loadingSubmit}
+                darkTheme={darkTheme}
             />
             <PasswordConfirm  
                 actionFunc={handleSellShareNairaFolio}
@@ -1754,6 +1760,7 @@ const Active = () => {
                 setIsOpen={setIsOpen2}
                 isOpen={isOpen2}
                 loading={loadingSubmit}
+                darkTheme={darkTheme}
             />
         </SafeAreaView>
     )

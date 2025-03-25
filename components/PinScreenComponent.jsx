@@ -7,7 +7,7 @@ import { confirmPassword } from "@/lib/appwrite";
 import FormField from "./FormField";
 import CustomButton from "./CustomButton";
 
-const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnUrl }) => {
+const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnUrl,darkTheme }) => {
     const [pin, setPin] = useState("");
     const [hasBio, setHasBio] = useState(true);
     const [bodyLoader, setBodyLoader] = useState(true);
@@ -127,6 +127,7 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
                                         value={pin}
                                         placeholder="Enter your password"
                                         handleChangeText={(e)=>setPin(e)}
+                                        darkTheme={darkTheme}
                                     />
                                 </View>
                             </View>

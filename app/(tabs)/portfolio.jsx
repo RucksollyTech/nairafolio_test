@@ -13,7 +13,7 @@ import { router } from 'expo-router';
 import { useMemo } from 'react';
 
 const Portfolio = () => {
-    const { user,setUser,setLastActive,loading:loads } = useGlobalContext();
+    const { user,setUser,setLastActive,loading:loads,darkTheme } = useGlobalContext();
     // const { data:{notForSellData,forSellData}, loading, refetch } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
     const { data:notForSellData, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
     const forSellData=[]
@@ -51,7 +51,7 @@ const Portfolio = () => {
     const emptyComponent = useMemo(() => (
         <View className="flex-1 justify-center items-center"> 
             {loading ? (
-                <HomeSkeletonLoader />
+                <HomeSkeletonLoader darkTheme={darkTheme} />
             ) : (
                 <View className="mt-20">
                     <EmptyState
@@ -75,13 +75,13 @@ const Portfolio = () => {
         <SafeAreaView className="bg-white flex-1 h-full">
             <View className='pb-5'>
                 <LinearGradient
-                    colors={['#EAF6E4', 'rgba(234, 246, 228, 0)']}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
+                    colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
+                    start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
+                    end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
                 >
                     <View className="px-5">
                         <View className="pt-10">
-                            <Text className="text-black-100 font-psans text-2xl">
+                            <Text className="text-black-100 dark:text-white font-psans text-2xl">
                                 Portfolio
                             </Text>
                         </View>
@@ -124,6 +124,7 @@ const Portfolio = () => {
                             investment={mapData}
                             date = {mapData.date_created}
                             _id={mapData.$id}
+                            darkTheme={darkTheme}
                         />
                     </View>
                 )}

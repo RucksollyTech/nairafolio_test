@@ -57,12 +57,15 @@ const InvestmentCard = ({
     percentage,duration,
     invested,date,
     investType,user,
-    investment
+    investment,
+    darkTheme
 }) => {
     const {daysGone} = UTCDate(date)
     const [daysGoner,matured,started,immediate_start,date_to_introduction] = checkMaturedInfo(investment)
     return (
-        <View className="mb-2">
+        <View 
+            className={darkTheme === 'dark' ? "dark mb-2" : "mb-2"}
+        >
             <TouchableOpacity
                 onPress={()=>router.push(!investType ? `/investment/active/${_id}` : `/dollar/${investment?.$id}`)}
                 activeOpacity={0.7}
@@ -74,8 +77,10 @@ const InvestmentCard = ({
                         flex 
                         p-2.5 flex-row
                         border
-                        border-border
+                        border-border 
+                        dark:border-[#0000000F]
                         bg-[#F8F8F8]
+                        dark:bg-[#303540]
                     "
                 >
                     <View
@@ -98,7 +103,7 @@ const InvestmentCard = ({
                     >
                         <View className={investType ? "my-auto" : ""}>
                             <Text
-                                className="text-base font-[700] font-pmedium text-muted"
+                                className="text-base font-[700] font-pmedium text-muted dark:text-[#FFFFFFB2] "
                                 numberOfLines={1}
                             >
                                 {name}
@@ -119,7 +124,7 @@ const InvestmentCard = ({
                                                 </Text>
                                             )}
                                         </View>
-                                        <ProgressBar date={date} duration={duration} />
+                                        <ProgressBar date={date} duration={duration} darkTheme={darkTheme} />
                                     </>
                                 ):(<>
                                     <View className="pb-1">
@@ -133,7 +138,7 @@ const InvestmentCard = ({
                                             </Text>
                                         )}
                                     </View>
-                                    <ProgressBar date={immediate_start ? date : date_to_introduction} duration={duration} setZero={!started ? true : false} />
+                                    <ProgressBar date={immediate_start ? date : date_to_introduction} duration={duration} setZero={!started ? true : false} darkTheme={darkTheme} />
                                 </>)}
                             </View>
                         )}
@@ -143,11 +148,11 @@ const InvestmentCard = ({
                             width: "23.08%",
                         }}
                     >
-                        <View>
+                        <View className='ml-auto'>
                             <Money 
                                 dollar={investType}
                                 value={investType ? user.dollar_ballance : invested}
-                                textStyle="font-pmedium text-muted text-right text-base"
+                                textStyle="font-pmedium text-muted dark:text-[#FFFFFFB2] text-right text-base"
                             />
                         </View>
                         <View className="mt-1">

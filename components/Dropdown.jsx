@@ -16,7 +16,7 @@ const Dropdown = ({ options, onSelect, initialQuery,setIsOpen }) => {
         setIsOpen(false)
     }
     return (
-        <View className="mb-4 mt-2 rounded-2xl w-full relative border border-border bg-white">
+        <View className="mb-4 mt-2 rounded-2xl w-full relative border border-border dark:border-[#3B3C43] bg-white">
             <TouchableOpacity
                 className="p-4 flex flex-row justify-between"
                 onPress={setShowDoewnd}
@@ -32,7 +32,7 @@ const Dropdown = ({ options, onSelect, initialQuery,setIsOpen }) => {
                         name="chevron.right"
                         size={18}
                         weight="medium"
-                        className="text-black-100"
+                        className="text-black-100 dark:text-white"
                         style={{ transform: [{ rotate: showOptions ? '270deg' : '90deg' }] }}
                     />
                 </View>

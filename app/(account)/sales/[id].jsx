@@ -13,7 +13,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { UTCDate } from '@/components';
 
 const Sales = () => {
-    const { setLastActive } = useGlobalContext();
+    const { setLastActive, darkTheme } = useGlobalContext();
 
     const {id} = useLocalSearchParams();
     const navigation = useNavigation();
@@ -28,7 +28,7 @@ const Sales = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -47,7 +47,7 @@ const Sales = () => {
                     >
                         <View>
                             <View>
-                                <Text className="text-lg font-psemibold font-semibold text-header-200">
+                                <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
                                     Available offers
                                 </Text>
                             </View>
@@ -60,7 +60,7 @@ const Sales = () => {
                     </View>
                     {loading && (
                         <View className="pt-1">
-                            <HomeSkeletonLoader />
+                            <HomeSkeletonLoader darkTheme={darkTheme} />
                         </View>
                     )}
 
@@ -79,7 +79,7 @@ const Sales = () => {
                                                 className={`
                                                     rounded-lg
                                                     border
-                                                    border-border
+                                                    border-border dark:border-[#3B3C43]
                                                     bg-[#F8FAFA]
                                                 `}
                                             >
@@ -148,7 +148,7 @@ const Sales = () => {
                                                         flex-1 
                                                         flex 
                                                         border-t
-                                                        border-border
+                                                        border-border dark:border-[#3B3C43]
                                                         flex-row
                                                         py-2
                                                         px-3

@@ -15,7 +15,7 @@ import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 import { RefreshControl } from 'react-native'
 
 const VerifyAccount = () => {
-    const { user, setUser, setLastActive } = useGlobalContext();
+    const { user, setUser, setLastActive,darkTheme } = useGlobalContext();
 
     const navigation = useNavigation();
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -72,9 +72,9 @@ const VerifyAccount = () => {
     }
     return (
         <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} />
+            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <View className="pt-2 px-5">
-                <Text className="text-black-100 font-psans text-2xl">
+                <Text className="text-black-100 dark:text-white font-psans text-2xl">
                     Verify account
                 </Text>
             </View>
@@ -104,7 +104,7 @@ const VerifyAccount = () => {
                                     py-4 flex-row
                                     mb-5
                                     border
-                                    border-border
+                                    border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
                                 "
                             >
@@ -124,13 +124,13 @@ const VerifyAccount = () => {
                                 >
                                     <View>
                                         <Text
-                                            className="text-lg text-header-200 font-psans"
+                                            className="text-lg text-header-200 dark:text-white  font-psans"
                                         >
                                             Verify with NIN
                                         </Text>
                                     </View>
                                     <View>
-                                        <Text className="text-muted text-sm">
+                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
                                             Provide your NIN
                                         </Text>
                                     </View>
@@ -185,7 +185,7 @@ const VerifyAccount = () => {
                                     py-4 flex-row
                                     mb-5
                                     border
-                                    border-border
+                                    border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
                                 "
                             >
@@ -206,7 +206,7 @@ const VerifyAccount = () => {
                                     <View className="my-auto">
                                        <View>
                                             <Text
-                                                className="text-lg text-header-200 font-psans"
+                                                className="text-lg text-header-200 dark:text-white  font-psans"
                                             >
                                                 Verify Email
                                             </Text>
@@ -244,11 +244,12 @@ const VerifyAccount = () => {
             <GeneralDrawer
                 isVisible={isDrawerVisible} 
                 onClose={handleClose} 
+                darkTheme={darkTheme}
             >   
                 {!next ? (
                     <View className="px-5">
                         <View className="pt-4">
-                            <Text className="text-black-100 font-psans text-2xl">
+                            <Text className="text-black-100 dark:text-white font-psans text-2xl">
                                 Verify your mail
                             </Text>
                         </View>
@@ -268,6 +269,7 @@ const VerifyAccount = () => {
                                     placeholder="Enter code"
                                     handleChangeText={(e)=>setCode(e)}
                                     otherStyles="mt-2"
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                         </View>
@@ -297,7 +299,7 @@ const VerifyAccount = () => {
                                 />
                             </View>
                             <View className="mt-5">
-                                <Text className="text-black-100 font-psans text-2xl text-center">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
                                     Your email have been verified successfully.
                                 </Text>
                             </View>

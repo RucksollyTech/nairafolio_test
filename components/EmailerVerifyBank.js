@@ -17,17 +17,17 @@ const EmailerVerifyBank = async (data) => {
         
             const contentType = response.headers.get('content-type');
 
-            let data;
+            let datas;
             if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
+                datas = await response.json();
             } else {
-                data = await response.text(); 
+                datas = await response.text(); 
             }
 
             if (response.ok) {
-                // console.log('Email sent successfully:', data);
+                // console.log('Email sent successfully:', datas);
             } else {
-                console.error('Failed to send email:', data.error);
+                console.error('Failed to send email:', datas.error);
             }
             return response.ok;
         } catch (error) {

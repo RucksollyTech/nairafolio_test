@@ -62,7 +62,7 @@ const SearchInput = ({ initialQuery, refreshing }) => {
                 relative
                 border  
                 ${
-                    isFocused ? "border-primary" : "border-border"
+                    isFocused ? "border-primary" : "border-border dark:border-[#3B3C43]"
                 }
             `}>
                 <TouchableOpacity
@@ -83,7 +83,7 @@ const SearchInput = ({ initialQuery, refreshing }) => {
                     <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
                 </TouchableOpacity>
                 <TextInput
-                    className="text-base mt-0.5 text-black-100 flex-1 font-pregular"
+                    className="text-base mt-0.5 text-black-100 dark:text-white flex-1 font-pregular"
                     value={query}
                     placeholder="Search here"
                     placeholderTextColor="#BBBBBB"
