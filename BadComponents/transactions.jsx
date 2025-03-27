@@ -40,7 +40,7 @@ const DataContainer = ({data,transactions,index})=>(
             className="flex-1 px-3 "
         >
             <View>
-                <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
+                <Text className="text-base font-pmedium text-muted-300 dark:text-white" numberOfLines={1}>
                     {data?.action} {" "}
                     {data?.action === "Deposit" ? "into" : "to"} {" "}
                     <Text

@@ -21,6 +21,7 @@ const CustomNavigator = ({navigator,darkTheme}) => {
                         <Image
                             source={icons.arrow_left}
                             resizeMode="contain"
+                            tintColor={darkTheme === "dark" ? "#FFFFFF" : "#000000"}
                         />
                     </TouchableOpacity>
                     <View>

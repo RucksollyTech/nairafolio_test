@@ -90,7 +90,7 @@ const VerifyAccount = () => {
             >
                 <View className="bg-white flex-1 h-full px-5 pb-10">
                     <View className="py-4">
-                        <Text className="text-muted-300">
+                        <Text className="text-muted-300 dark:text-white">
                             You are required to provide some information about your identity.
                         </Text>
                     </View>

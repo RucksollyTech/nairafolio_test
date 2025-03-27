@@ -9,7 +9,7 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData}) 
         router.push(link)
     }
     return (
-        <View className="py-4 border-b border-border dark:border-[#3B3C43]-300">
+        <View className="py-4 border-b border-border-300">
             <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={moveToPage}

@@ -75,7 +75,7 @@ const VerifyWithNin = () => {
                         </Text>
                     </View>
                     <View className="pt-4 pb-2">
-                        <Text className="text-muted-300 text-lg">
+                        <Text className="text-muted-300 dark:text-white text-lg">
                             Provide your NIN to verify your Identity.
                         </Text>
                     </View>
@@ -118,7 +118,7 @@ const VerifyWithNin = () => {
                     </Text>
                 </View>
                 <View className="py-5">
-                    <Text className="text-muted-300 text-center font-pmedium text-base">
+                    <Text className="text-muted-300 dark:text-white text-center font-pmedium text-base">
                         Dial with the number linked to your NIN.
                     </Text>
                 </View>

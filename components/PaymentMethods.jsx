@@ -78,11 +78,18 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             <View
                                 className="h-14 w-14 rounded-full items-center justify-center"
                             >
-                                <Image
-                                    source={icons.bank}
-                                    resizeMode="cover"
-                                    tintColor={darkTheme === "dark" ? "#007784" : ""}
-                                />
+                                {darkTheme === "dark" ? (
+                                    <Image
+                                        source={icons.bank}
+                                        resizeMode="cover"
+                                        tintColor={"#007784"}
+                                    />
+                                ):(
+                                    <Image
+                                        source={icons.bank}
+                                        resizeMode="cover"
+                                    />
+                                )}
                             </View>
                             <View
                                 style={{

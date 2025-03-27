@@ -205,7 +205,7 @@ const Home = () => {
                                             <View className='mt-2'>
                                                 <Link
                                                     href={"/portfolio"}
-                                                    className='border text-muted-300 text-center p-3 border-border dark:border-[#3B3C43] rounded-lg font-psemibold'
+                                                    className='border text-muted-300 dark:text-white text-center p-3 border-border dark:border-[#3B3C43] rounded-lg font-psemibold'
                                                 >
                                                     See all
                                                 </Link>
@@ -234,7 +234,7 @@ const Home = () => {
                                             <View className='mt-2'>
                                                 <Link
                                                     href={"/portfolio"}
-                                                    className='border text-muted-300 text-center p-3 border-border dark:border-[#3B3C43] rounded-lg font-psemibold'
+                                                    className='border text-muted-300 dark:text-white text-center p-3 border-border dark:border-[#3B3C43] rounded-lg font-psemibold'
                                                 >
                                                     See all
                                                 </Link>

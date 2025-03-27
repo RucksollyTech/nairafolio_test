@@ -25,7 +25,7 @@ const Update = () => {
         setRefreshing(false)
     }
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={`${darkTheme ==="dark" ? "bg-dark_mode dark" : "bg-white"} flex-1 h-full`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
@@ -44,6 +44,7 @@ const Update = () => {
                                 h-16 w-16 
                                 rounded-full 
                                 bg-[#DFE7E8]
+                                dark:bg-[#CBF5B84D]
                                 items-center 
                                 justify-center
                             "
@@ -55,6 +56,7 @@ const Update = () => {
                                     w-8
                                     rounded-full
                                 "
+                                tintColor={darkTheme === "dark" ? "#CBF5B8" : "#014148"}
                             />
                         </View>
                         <View className="pl-3 mr-5 flex-1">
@@ -64,7 +66,7 @@ const Update = () => {
                                 </Text>
                             </View>
                             <View className="pt-1">
-                                <Text className="text-muted-200 text-sm font-pmedium font-[700]">
+                                <Text className="text-muted-200 dark:text-[#FFFFFF99] text-sm font-pmedium font-[700]">
                                     {UTCDate(update?.[0]?.$createdAt)?.myDateFormat}
                                 </Text>
                             </View>
@@ -79,7 +81,7 @@ const Update = () => {
                             </Text>
                         </View>
                         <View>
-                            <Text className="text-lg font-pmedium">
+                            <Text className="text-lg font-pmedium dark:text-white">
                                 {update?.[0]?.body}
                             </Text>
                         </View>

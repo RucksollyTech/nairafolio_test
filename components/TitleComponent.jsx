@@ -5,10 +5,11 @@ import UTCDate from './UTCDate'
 import { Link } from 'expo-router'
 
 const TitleComponent = ({item}) => {
-    const {title,body,$createdAt,$id} = item
+    const {title,body,$createdAt,$id,darkTheme,lines} = item
+    console.log({darkTheme,lines})
     return (
-        <View>
-            <View className="border flex-1 border-border dark:border-[#3B3C43] bg-[#F8FAFA] rounded-lg mt-5">
+        <View className={darkTheme === "dark" ? "dark" : ""}>
+            <View className="border flex-1 border-border dark:border-[#495161] bg-[#F8FAFA] dark:bg-[#303540] rounded-lg mt-5">
                 <View 
                     className="
                         flex-1 
@@ -22,6 +23,7 @@ const TitleComponent = ({item}) => {
                             h-14 w-14 
                             rounded-full 
                             bg-[#DFE7E8]
+                            dark:bg-[#CBF5B84D]
                             items-center 
                             justify-center
                         "
@@ -33,6 +35,7 @@ const TitleComponent = ({item}) => {
                                 w-6 
                                 rounded-full
                             "
+                            tintColor={darkTheme === "dark" ? "#CBF5B8" : "#014148"}
                         />
                     </View>
                     <View
@@ -44,8 +47,8 @@ const TitleComponent = ({item}) => {
                         <View className="my-auto w-full">
                             <Link href={`/update/${$id}`}>
                                 <Text
-                                    numberOfLines={2}
-                                    className="text-xl w-full font-[700] font-pmedium text-muted-300"
+                                    numberOfLines={lines ? undefined : 2}
+                                    className="text-xl w-full font-[700] font-pmedium text-muted-300 dark:text-white"
                                 >
                                     {title}
                                 </Text>
@@ -69,13 +72,13 @@ const TitleComponent = ({item}) => {
                     </View>
                 </View>
                 <View className="p-5">
-                        <Text numberOfLines={3} className="text-muted-200 text-lg font-pregular">
+                        <Text numberOfLines={lines ? undefined : 3} className="text-muted-200 dark:text-[#FFFFFF99] text-lg font-pregular">
                             <Link href={`/update/${$id}`}>
                                 {body}
                             </Link>
                         </Text>
                     <View className="pt-2 w-full">
-                        <Text className="text-muted-200 text-right text-sm font-pmedium font-[700]">
+                        <Text className="text-muted-200 dark:text-[#FFFFFF99] text-right text-sm font-pmedium font-[700]">
                             {UTCDate($createdAt)?.myDateFormat}
                         </Text>
                     </View>

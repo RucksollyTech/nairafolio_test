@@ -7,7 +7,7 @@ const screenWidth = Dimensions.get("window").width;
 
 const GraphScreen = ({chartData,chartDataLoading}) => {
   if (chartDataLoading){
-    return <View className="py-10"><Text className="text-muted-200 font-psemibold text-lg">Loading...</Text></View>;
+    return <View className="py-10"><Text className="text-muted-200 dark:text-[#FFFFFF99] font-psemibold text-lg">Loading...</Text></View>;
   }
   if(!chartData["Last 7 Days"]){
     return null;

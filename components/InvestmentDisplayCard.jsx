@@ -89,8 +89,9 @@ const InvestmentDisplayCard = (
                                     source={icons.roi}
                                     resizeMode="contain"
                                     className="my-auto"
+                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                 />
-                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
                                     {rio}% ROI
                                 </Text>
                             </View>
@@ -101,15 +102,16 @@ const InvestmentDisplayCard = (
                                     source={icons.money}
                                     resizeMode="contain"
                                     className="my-auto"
+                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                 />
                                 <View className="flex flex-row ">
                                     <Money 
                                         value={min_investment}
                                         containerStyle="flex"
-                                        textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200"
+                                        textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]"
                                     />
                                     <View className="flex flex-row ">
-                                        <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                        <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
                                             min
                                         </Text>
                                     </View>
@@ -123,8 +125,9 @@ const InvestmentDisplayCard = (
                                         source={icons.calender}
                                         resizeMode="contain"
                                         className="my-auto"
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                     />
-                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
                                         {convertDaysToReadableFormat(duration_days)} returns
                                     </Text>
                                 </View>
@@ -161,11 +164,11 @@ const InvestmentDisplayCard = (
                                 className="flex-1 px-3 "
                             >
                                 <View>
-                                    <Text className="text-sm text-muted-300">
+                                    <Text className="text-sm text-muted-300 dark:text-white">
                                         {company_name}
                                     </Text>
                                     <Text
-                                        className="text-lg font-[700] pt-1 font-pmedium text-muted-300"
+                                        className="text-lg font-[700] pt-1 font-pmedium text-muted-300 dark:text-white"
                                     >
                                         {company_owner}
                                     </Text>

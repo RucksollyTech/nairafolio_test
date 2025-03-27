@@ -21,7 +21,7 @@ const FormFieldAdjusted = ({
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-        <View className={`space-y-2 ${otherStyles}`}>
+        <View className={`space-y-2 ${otherStyles} ${darkTheme === "dark" && "dark"}`}>
             {!disAllowTitle && (
                 <Text className="px-2 font-pregular text-base text-black-100 dark:text-white">{title}</Text>
             )}
@@ -34,9 +34,10 @@ const FormFieldAdjusted = ({
                 flex-row 
                 items-center 
                 bg-[#FDFDFD]
+                dark:bg-[#27282F]
                 ${isFocused ? "border-primary" : "border-border dark:border-[#3B3C43]"}
                 `}
-                style={{ backgroundColor: "#FDFDFD" }}
+                style={{ backgroundColor: darkTheme === "dark" ? "#27282F" : "#FDFDFD" }}
             >
                 <TextInput
                     className="flex-1 bg-[#FDFDFD] text-black-100 dark:text-white font-pregular text-base"
@@ -47,7 +48,7 @@ const FormFieldAdjusted = ({
                     onChangeText={handleChangeText}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    style={{ backgroundColor: "#FDFDFD" }}
+                    style={{ backgroundColor: darkTheme === "dark" ? "#27282F" : "#FDFDFD" }}
                     {...props}
                 />
 

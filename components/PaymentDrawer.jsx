@@ -311,7 +311,7 @@ const PaymentDrawer = ({
                                     ) : (
                                         <View className="pt-3 px-5">
                                             <View>
-                                                <Text className="text-muted-200 font-pmedium">
+                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
                                                     {investment.isDollar ? "Enter the dollar amount" : "Number of units to purchase"}
                                                 </Text>
                                                 <FormField 
@@ -332,7 +332,7 @@ const PaymentDrawer = ({
                                                 </View>
                                             </View>
                                             <View className="mt-8">
-                                                <Text className="text-muted-200 font-pmedium">
+                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
                                                     {investment.isDollar ? "Total price" : "Price of units"}
                                                 </Text>
                                                 <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] h-14">
@@ -380,7 +380,7 @@ const PaymentDrawer = ({
                             p-10 flex-row justify-between items-center
                         `}>
                             <View>
-                                <Text className="text-muted-200 font-psemibold text-lg">
+                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-psemibold text-lg">
                                     Please select an investment
                                 </Text>
                             </View>

@@ -27,7 +27,7 @@ const Sales = () => {
         setRefreshing(false)
     }
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
@@ -52,7 +52,7 @@ const Sales = () => {
                                 </Text>
                             </View>
                             <View className='pt-2'>
-                                <Text className='text-muted-300 '>
+                                <Text className='text-muted-300 dark:text-white '>
                                     Here are offers available from investors who want to sell to you.
                                 </Text>
                             </View>
@@ -80,7 +80,7 @@ const Sales = () => {
                                                     rounded-lg
                                                     border
                                                     border-border dark:border-[#3B3C43]
-                                                    bg-[#F8FAFA]
+                                                    bg-[#F8FAFA] dark:bg-[#303540]
                                                 `}
                                             >
                                                 <View 
@@ -96,6 +96,7 @@ const Sales = () => {
                                                             h-12 w-12 
                                                             rounded-full 
                                                             bg-[#DFE7E8]
+                                                            dark:bg-[#CBF5B84D]
                                                             items-center 
                                                             justify-center
                                                         "
@@ -107,6 +108,7 @@ const Sales = () => {
                                                                 w-6
                                                                 rounded-full
                                                             "
+                                                            tintColor={darkTheme === "dark" ? "#CBF5B8" : "#141B34"}
                                                         />
                                                     </View>
                                                     <View
@@ -117,7 +119,7 @@ const Sales = () => {
                                                     >
                                                         <View>
                                                             <Text
-                                                                className="text-lg text-muted-200 font-psemibold"
+                                                                className="text-lg text-muted-200 dark:text-[#FFFFFF99] font-psemibold"
                                                             >
                                                                 {sale.unit} units
                                                             </Text>
@@ -131,7 +133,7 @@ const Sales = () => {
                                                     >
                                                         <View className="w-full items-end">
                                                             <View>
-                                                                <Text className="text-header-100 font-psans text-sm">
+                                                                <Text className="text-header-100 dark:text-white font-psans text-sm">
                                                                     ₦{sale?.unit * sale?.pricePlaced}
                                                                 </Text>
                                                             </View>

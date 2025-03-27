@@ -36,7 +36,7 @@ export const classNameColorsForTransactions = (action)=>{
         action === "Failed" || 
         action === "Sell Offer"
     ){
-        return "text-muted-300"
+        return "text-muted-300 dark:text-white"
     } else{
         return "text-red-500"
     }
@@ -86,7 +86,7 @@ export const DataContainer = ({data,transactions,index})=>(
             className="flex-1 px-3 "
         >
             <View>
-                <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
+                <Text className="text-base font-pmedium text-muted-300 dark:text-white" numberOfLines={1}>
                     {TransactionDisplayText(data?.action)}
                     <Text
                         className="text-lg font-[700] font-pmedium text-muted"

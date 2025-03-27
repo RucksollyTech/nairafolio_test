@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomModalAlert from './CustomModalAlert'
 import FormField from './FormField'
 import { verifyUserPasscode } from '@/lib/appwrite'
@@ -9,6 +9,13 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading,darkTheme}) =
     const [pin, setPin] = useState()
     const [errorMsg, setErrorMsg] = useState(null)
     const [loads, setLoads] = useState(false)
+    const handleNoPassCode = ()=>{
+        setIsOpen(false)
+        setPin(null)
+        setErrorMsg(null)
+        setLoads(false)
+        router.push("/change-password")
+    }
     const continueFunction = async() => {
         setErrorMsg(null)
         setLoads(true)
@@ -30,6 +37,14 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading,darkTheme}) =
         }
         
     }
+    useEffect(()=>{
+        if(!isOpen){
+            setIsOpen(false)
+            setPin(null)
+            setErrorMsg(null)
+            setLoads(false)
+        }
+    },[isOpen])
     return (
         <View className='z-[100]'>
             <CustomModalAlert
@@ -58,24 +73,36 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading,darkTheme}) =
                     </View>
                 )}
                 {errorMsg && !pin ? (
-                    <TouchableOpacity 
-                        className='border-t border-[#4e4e4e] w-full py-3'
-                        onPress={()=>setIsOpen(false)}
-                    >
-                        <Text className="font-psemibold text-base text-blue-500 text-center">
-                            Close
-                        </Text>
-                    </TouchableOpacity>
+                    <View className=' w-full flex-row'>
+                        <TouchableOpacity 
+                            className=' w-[100%] py-3 border-t border-[#4e4e4e]'
+                            onPress={()=>setIsOpen(false)}
+                        >
+                            <Text className="font-psemibold text-base text-blue-500 text-center">
+                                Close
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 ):(
-                    <TouchableOpacity 
-                        className='border-t border-[#4e4e4e] w-full py-3'
-                        onPress={user.hasPasscode ? continueFunction : ()=>router.push("/change-password")}
-                        disabled={loads || loading}
-                    >
-                        <Text className="font-psemibold text-lg text-blue-500 text-center">
-                            {user.hasPasscode ? "Continue" : (loads || loading) ? "Validating..." : "Set passcode"}
-                        </Text>
-                    </TouchableOpacity>
+                    <View className='border-t border-[#4e4e4e] flex-row'>
+                        <TouchableOpacity 
+                            className='py-3 my-auto w-[50%]'
+                            onPress={user.hasPasscode ? continueFunction : handleNoPassCode}
+                            disabled={loads || loading}
+                        >
+                            <Text className="font-psemibold text-lg text-blue-500 text-center">
+                                {user.hasPasscode ? "Continue" : (loads || loading) ? "Validating..." : "Set passcode"}
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            className='py-3 my-auto w-[50%]'
+                            onPress={()=>setIsOpen(false)}
+                        >
+                            <Text className="font-psemibold text-base text-red-500 text-center">
+                                Close
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 )}
                 
             </CustomModalAlert>

@@ -106,7 +106,7 @@ const Wallet = () => {
                                 <TouchableOpacity
                                     onPress={()=>router.push("/withdrawal")}
                                     activeOpacity={0.7}
-                                    className={`border border-border dark:border-[#3B3C43]-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                    className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                 >
                                     <Text className={`font-pinter font-semibold text-base text-muted`}>
                                         Withdraw
@@ -170,7 +170,7 @@ const Wallet = () => {
                                                     className="flex-1 px-3 "
                                                 >
                                                     <View>
-                                                        <Text className="text-base font-pmedium text-muted-300" numberOfLines={1}>
+                                                        <Text className="text-base font-pmedium text-muted-300 dark:text-white" numberOfLines={1}>
                                                             {TransactionDisplayText(transaction.action)}
                                                             <Text
                                                                 className="text-lg font-[700] font-pmedium text-muted"

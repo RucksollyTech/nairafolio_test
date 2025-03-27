@@ -125,7 +125,11 @@ const Investment = () => {
                     setAlternativeLoader(false)
                 }
             }
-        }else if((data && data?.status === false) || data?.immediate_start && UTCDate(data?.date_to_introduction).isPastOrToday){
+        }else if(
+            (data && data?.status === false) || 
+            (!data?.immediate_start && 
+            UTCDate(data?.date_to_introduction).isPastOrToday)
+        ){
             pushToPage()
         }else{
             setIsDrawerVisible(true)
@@ -137,7 +141,7 @@ const Investment = () => {
         }else if (data && data?.status === false){
             return "View offers"
         }else if (
-            data && data?.immediate_start && 
+            data && !data?.immediate_start && 
             UTCDate(data?.date_to_introduction).isPastOrToday
         ){
             return "View offers"
@@ -197,11 +201,11 @@ const Investment = () => {
                                         className="flex-1 px-3 "
                                     >
                                         <View>
-                                            <Text className="text-sm text-muted-300">
+                                            <Text className="text-sm text-muted-300 dark:text-white">
                                                 {data?.company_name}
                                             </Text>
                                             <Text
-                                                className="text-lg font-[700] pt-1 font-pmedium text-muted-300"
+                                                className="text-lg font-[700] pt-1 font-pmedium text-muted-300 dark:text-white"
                                             >
                                                 {data?.company_owner}
                                             </Text>
@@ -273,31 +277,33 @@ const Investment = () => {
                                     </View>
                                 </View>
                             </View>
-                            <View className="pt-5 px-5 border-t border-border dark:border-[#3B3C43]-100 flex-1">
+                            <View className="pt-5 px-5 border-t border-border-100 flex-1">
                                 <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
                                     Highlights
                                 </Text>
                                 <View className="flex flex-row gap-4 mt-3 flex-1 pt-1">
-                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
+                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
                                         <View>
                                             <Image
                                                 source={icons.roi}
                                                 resizeMode="contain"
                                                 className="my-auto"
+                                                tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                             />
                                         </View>
                                         <View className="mt-2">
-                                            <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                            <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
                                                 {data?.rio ?? 1}% ROI
                                             </Text>
                                         </View>
                                     </View>
-                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
+                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
                                         <View>
                                             <Image
                                                 source={icons.money}
                                                 resizeMode="contain"
                                                 className="my-auto"
+                                                tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                             />
                                         </View>
                                         <View className="mt-2">
@@ -305,10 +311,10 @@ const Investment = () => {
                                                 <Money 
                                                     value={data?.min_investment ?? 0}
                                                     containerStyle="flex"
-                                                    textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200"
+                                                    textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]"
                                                 />
                                                 <View className="flex flex-row ">
-                                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
                                                         min
                                                     </Text>
                                                 </View>
@@ -318,34 +324,36 @@ const Investment = () => {
                                 </View>
                                 <View className="flex flex-row gap-4 flex-1">
                                     {!!data?.duration_days && (
-                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
+                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
                                             <View>
                                                 <Image
                                                     source={icons.calender}
                                                     resizeMode="contain"
                                                     className="my-auto"
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                                 />
                                             </View>
                                             <View className="mt-2">
-                                                <Text className="font-pmedium text-center ml-2 my-auto font-[600] text-base text-muted-200">
+                                                <Text className="font-pmedium text-center ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
                                                     {convertDaysToReadableFormat(data?.duration_days ?? 0)} returns
                                                 </Text>
                                             </View>
                                         </View>
                                     )}
                                     {!!data?.date_to_introduction && (
-                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] border border-border dark:border-[#3B3C43]-200 px-3 py-2.5 rounded-lg">
+                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
                                             <View>
                                                 <Image
                                                     source={icons.start_date}
                                                     resizeMode="contain"
                                                     className="my-auto"
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                                 />
                                             </View>
                                             <View className="mt-2">
                                                 <View className="flex flex-row ">
                                                     <View className="flex flex-row ">
-                                                        <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200">
+                                                        <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
                                                             Starts {UTCDate(data?.date_to_introduction)?.simpleDateFormat}
                                                         </Text>
                                                     </View>
@@ -356,12 +364,12 @@ const Investment = () => {
                                 </View>
                                 {/* <View className="mt-4 items-center justify-center flex-1">
                                     {data && data?.status === true && investors > 0 && (
-                                        <Text className="text-muted-200">
+                                        <Text className="text-muted-200 dark:text-[#FFFFFF99]">
                                             Join{" "}<Text className="text-secondary-100">{investors ?? 0} Investors</Text>
                                         </Text>
                                     )}
                                     {data && data?.status === false && (
-                                        <Text className="text-muted-200">
+                                        <Text className="text-muted-200 dark:text-[#FFFFFF99]">
                                             <Text className="text-secondary-100">{offerTotal ?? 0} Investors</Text>
                                             {" "}are willing to sell their shares
                                         </Text>
@@ -384,25 +392,25 @@ const Investment = () => {
                                 {active && (
                                     <View>
                                         <View className="mb-10">
-                                            <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
-                                                <Text className="text-muted-200 font-pmedium font-[600] text-lg">
+                                            <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
                                                     Introduction
                                                 </Text>
                                             </View>
                                             <View className="pt-2">
-                                                <Text className="text-black-300 text-lg font-pregular font-[600]">
+                                                <Text className="text-black-300 dark:text-[#808D9E] text-lg font-pregular font-[600]">
                                                     {data?.introduction ?? ""}
                                                 </Text>
                                             </View>
                                         </View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
-                                                <Text className="text-muted-200 font-pmedium font-[600] text-lg">
+                                            <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
                                                     Objective
                                                 </Text>
                                             </View>
                                             <View className="pt-2">
-                                                <Text className="text-black-300 text-lg font-pregular font-[600]">
+                                                <Text className="text-black-300 dark:text-[#808D9E] text-lg font-pregular font-[600]">
                                                     {data?.objective ?? ""}
                                                 </Text>
                                             </View>
@@ -412,13 +420,13 @@ const Investment = () => {
                                 {!active && (
                                     <View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
-                                                <Text className="text-muted-200 font-pmedium font-[600] text-lg">
+                                            <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
                                                     Reports
                                                 </Text>
                                             </View>
                                             <View className="pt-2">
-                                                <Text className="text-black-300 text-lg font-pregular font-[600]">
+                                                <Text className="text-black-300 dark:text-[#808D9E] text-lg font-pregular font-[600]">
                                                     {data?.reports ?? ""}
                                                 </Text>
                                             </View>
@@ -435,8 +443,8 @@ const Investment = () => {
                             <View className="px-5">
                                 {(data?.images && data?.images.length>0) && (
                                     <View className="my-5">
-                                        <View className="border-b pb-2 border-border dark:border-[#3B3C43]-200">
-                                            <Text className="text-muted-200 font-pmedium text-lg">
+                                        <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                            <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium text-lg">
                                                 Images
                                             </Text>
                                         </View>
@@ -464,8 +472,8 @@ const Investment = () => {
                                     </View>
                                 )}
                                 {(data?.riskFactors && data?.riskFactors.length > 0) && (
-                                    <View className="my-12 rounded-lg bg-[#F6F6F6]">
-                                        <View className="flex flex-row p-4 border-b border-border dark:border-[#3B3C43]-200">
+                                    <View className="my-12 rounded-lg bg-[#F6F6F6] dark:bg-dark_mode-300">
+                                        <View className="flex flex-row p-4 border-b border-border-200 dark:border-[#0000000A]">
                                             <View className="bg-[#D82F2F1A] rounded-full h-10 w-10 items-center justify-center">
                                                 <Image
                                                     source={icons.alert}
@@ -504,7 +512,7 @@ const Investment = () => {
                                         </View>
                                         <View className="mt-5">
                                             {data?.faq.map((faqData,index)=>(
-                                                <View key={index} className="border border-border dark:border-[#3B3C43]-100 rounded-lg mb-4">
+                                                <View key={index} className="border border-border-100 rounded-lg mb-4">
                                                     <Collapsible title={faqData.title}>
                                                         <Text>{faqData.body}</Text>
                                                     </Collapsible>
@@ -515,15 +523,15 @@ const Investment = () => {
                                 )}
                             </View>
                             
-                            {/* <View className="my-10 p-5 border-t border-border dark:border-[#3B3C43]-100">
+                            {/* <View className="my-10 p-5 border-t border-border-100">
                                 <View className="items-center justify-center flex-1">
                                     {data && data?.status === true && investors > 0 && (
-                                        <Text className="text-muted-200">
+                                        <Text className="text-muted-200 dark:text-[#FFFFFF99]">
                                             Join{" "}<Text className="text-secondary-100">{investors ?? 0} Investors</Text>
                                         </Text>
                                     )}
                                     {data && data?.status === false && (
-                                        <Text className="text-muted-200">
+                                        <Text className="text-muted-200 dark:text-[#FFFFFF99]">
                                             <Text className="text-secondary-100">{offerTotal ?? 0} Investors</Text>
                                             {" "}are willing to sell their shares
                                         </Text>
@@ -538,15 +546,15 @@ const Investment = () => {
                             </View> */}
                         </View>
                     </ScrollView>
-                    <View className=" min-h-36 p-5 border-t border-border dark:border-[#3B3C43]-100">
+                    <View className=" min-h-36 p-5 border-t border-border-100">
                         <View className="items-center justify-center flex-1">
                             {data && data?.status === true && investors > 0 && (
-                                <Text className="text-muted-200">
+                                <Text className="text-muted-200 dark:text-[#FFFFFF99]">
                                     Join{" "}<Text className="text-secondary-100">{investors ?? 0} Investors</Text>
                                 </Text>
                             )}
                             {data && data?.status === false && (
-                                <Text className="text-muted-200">
+                                <Text className="text-muted-200 dark:text-[#FFFFFF99]">
                                     <Text className="text-secondary-100">{offerTotal ?? 0} Investors</Text>
                                     {" "}are willing to sell their shares
                                 </Text>

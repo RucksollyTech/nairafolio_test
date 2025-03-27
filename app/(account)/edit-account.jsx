@@ -120,160 +120,160 @@ const EditAccount = () => {
             style={{ flex: 1 }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView className="bg-white flex-1 h-full">
-            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
-            <ScrollView
-                onTouchStart={() => setLastActive(Date.now())}
-                onScroll={() => setLastActive(Date.now())}
-                scrollEventThrottle={16}
-                showsVerticalScrollIndicator={false} 
-                showsHorizontalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-            >
-                <View className="bg-white flex-1 px-5 pb-10 relative">
-                    
-                    <View className="pt-4">
-                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
-                            Edit profile
-                        </Text>
-                    </View>
-                    <View className="py-14 justify-center items-center flex-1">
-                        <TouchableOpacity 
-                            activeOpacity={0.9}
-                            onPress={()=>setIsDrawerVisible(true)}
-                            className="relative flex-1"
-                        >
-                            {accountForm?.image ? (
-                                <Image 
-                                    source={{uri : accountForm.image.uri}}
-                                    resizeMode='cover'
-                                    className="w-28 h-28 rounded-full"
-                                />
-                            ):(
-                                <Image 
-                                    source={{uri : user?.avatar}}
-                                    resizeMode='cover'
-                                    className="w-28 h-28 rounded-full"
-                                />
-                            )}
-                            
-                            <View className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-[#F5F5F5] items-center justify-center">
-                                <Image 
-                                    source={icons.edit}
-                                    resizeMode='cover'
-                                    className="rounded-full"
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    {saved && (
-                        <View className="relative">
-                            <View className="absolute -top-10 z-10 justify-center items-center">
-                                
-                                <View className={`
-                                    bg-[#00A6511A]
-                                    flex-row w-[140px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]
-                                `}>
-                                    <Text className={`text-secondary-100 text-center font-psemibold my-auto pl-2 text-xs`}>
-                                        Edit was successful
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    )}
-                    <View>
-                        <AccountCustomForm 
-                            title="First name"
-                            otherStyles="mb-4"
-                            value={accountForm.firstName}
-                            placeholder={"Enter your first name"}
-                            handleChangeText={(e)=>setAccountForm({...accountForm,firstName:e})}
-                        />
-                        <AccountCustomForm 
-                            title="Last name"
-                            otherStyles="mb-4"
-                            value={accountForm.lastName}
-                            placeholder={"Enter your last name"}
-                            handleChangeText={(e)=>setAccountForm({...accountForm,lastName:e})}
-                        />
-                        <AccountCustomForm 
-                            title="Email"
-                            otherStyles="mb-4"
-                            value={user.email}
-                            keyboardType={"email-address"}
-                            placeholder={"Enter your email address"}
-                        />
-                        <AccountCustomForm 
-                            title="Phone"
-                            otherStyles="mb-4"
-                            value={accountForm.phoneNumber}
-                            keyboardType={"phone-pad"}
-                            placeholder={"Enter your phone number"}
-                            handleChangeText={(e)=>setAccountForm({...accountForm,phoneNumber:e})}
-                        />
-                    </View>
-                    <View className="mt-10">
-                        <CustomButton 
-                            title="Save changes"
-                            containerStyles="h-16"
-                            textStyles="text-white font-psemibold"
-                            handlePress={submit}
-                            isLoading={uploading}
-                        />
-                    </View>
-                    
-                </View>
-            </ScrollView>
-            <GeneralDrawer 
-                darkTheme={darkTheme}
-                header={"Profile photo"}
-                isVisible={isDrawerVisible} 
-                onClose={() => setIsDrawerVisible(false)}
-                dismissOnClickOutside={true}
-            >
-                <View className="flex-1 flex-row gap-10 mb-10 mt-5">
-                    <TouchableOpacity 
-                        onPress={takePhoto}
-                        className="items-center justify-center"
+                <SafeAreaView className="bg-white flex-1 h-full">
+                    <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
+                    <ScrollView
+                        onTouchStart={() => setLastActive(Date.now())}
+                        onScroll={() => setLastActive(Date.now())}
+                        scrollEventThrottle={16}
+                        showsVerticalScrollIndicator={false} 
+                        showsHorizontalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        }
                     >
-                        <View className="mb-2">
-                            <Image 
-                                source={icons.cam}
-                                resizeMode='contain'
-                                className="w-10 h-10"
-                            />
-                        </View>
-                        <View>
-                            <Text className="font-psans text-header-100 text-sm">
-                                Camera
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <View>
-                        <TouchableOpacity 
-                            onPress={openPicker}
-                            className="items-center justify-center"
-                        >
-                            <View className="mb-2">
-                                <Image 
-                                    source={icons.gallery}
-                                    resizeMode='contain'
-                                    className="w-10 h-10"
-                                />
-                            </View>
-                            <View>
-                                <Text className="font-psans text-header-100 text-sm">
-                                    Gallery
+                        <View className="bg-white flex-1 px-5 pb-10 relative">
+                            
+                            <View className="pt-4">
+                                <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                                    Edit profile
                                 </Text>
                             </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </GeneralDrawer>
-        </SafeAreaView>
-        </TouchableWithoutFeedback>
+                            <View className="py-14 justify-center items-center flex-1">
+                                <TouchableOpacity 
+                                    activeOpacity={0.9}
+                                    onPress={()=>setIsDrawerVisible(true)}
+                                    className="relative flex-1"
+                                >
+                                    {accountForm?.image ? (
+                                        <Image 
+                                            source={{uri : accountForm.image.uri}}
+                                            resizeMode='cover'
+                                            className="w-28 h-28 rounded-full"
+                                        />
+                                    ):(
+                                        <Image 
+                                            source={{uri : user?.avatar}}
+                                            resizeMode='cover'
+                                            className="w-28 h-28 rounded-full"
+                                        />
+                                    )}
+                                    
+                                    <View className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-[#F5F5F5] items-center justify-center">
+                                        <Image 
+                                            source={icons.edit}
+                                            resizeMode='cover'
+                                            className="rounded-full"
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            {saved && (
+                                <View className="relative">
+                                    <View className="absolute -top-10 z-10 justify-center items-center">
+                                        
+                                        <View className={`
+                                            bg-[#00A6511A]
+                                            flex-row w-[140px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]
+                                        `}>
+                                            <Text className={`text-secondary-100 text-center font-psemibold my-auto pl-2 text-xs`}>
+                                                Edit was successful
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            )}
+                            <View>
+                                <AccountCustomForm 
+                                    title="First name"
+                                    otherStyles="mb-4"
+                                    value={accountForm.firstName}
+                                    placeholder={"Enter your first name"}
+                                    handleChangeText={(e)=>setAccountForm({...accountForm,firstName:e})}
+                                />
+                                <AccountCustomForm 
+                                    title="Last name"
+                                    otherStyles="mb-4"
+                                    value={accountForm.lastName}
+                                    placeholder={"Enter your last name"}
+                                    handleChangeText={(e)=>setAccountForm({...accountForm,lastName:e})}
+                                />
+                                <AccountCustomForm 
+                                    title="Email"
+                                    otherStyles="mb-4"
+                                    value={user.email}
+                                    keyboardType={"email-address"}
+                                    placeholder={"Enter your email address"}
+                                />
+                                <AccountCustomForm 
+                                    title="Phone"
+                                    otherStyles="mb-4"
+                                    value={accountForm.phoneNumber}
+                                    keyboardType={"phone-pad"}
+                                    placeholder={"Enter your phone number"}
+                                    handleChangeText={(e)=>setAccountForm({...accountForm,phoneNumber:e})}
+                                />
+                            </View>
+                            <View className="mt-10">
+                                <CustomButton 
+                                    title="Save changes"
+                                    containerStyles="h-16"
+                                    textStyles="text-white font-psemibold"
+                                    handlePress={submit}
+                                    isLoading={uploading}
+                                />
+                            </View>
+                            
+                        </View>
+                    </ScrollView>
+                    <GeneralDrawer 
+                        darkTheme={darkTheme}
+                        header={"Profile photo"}
+                        isVisible={isDrawerVisible} 
+                        onClose={() => setIsDrawerVisible(false)}
+                        dismissOnClickOutside={true}
+                    >
+                        <View className="flex-1 flex-row gap-10 mb-10 mt-5">
+                            <TouchableOpacity 
+                                onPress={takePhoto}
+                                className="items-center justify-center"
+                            >
+                                <View className="mb-2">
+                                    <Image 
+                                        source={icons.cam}
+                                        resizeMode='contain'
+                                        className="w-10 h-10"
+                                    />
+                                </View>
+                                <View>
+                                    <Text className="font-psans text-header-100 dark:text-white text-sm">
+                                        Camera
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                            <View>
+                                <TouchableOpacity 
+                                    onPress={openPicker}
+                                    className="items-center justify-center"
+                                >
+                                    <View className="mb-2">
+                                        <Image 
+                                            source={icons.gallery}
+                                            resizeMode='contain'
+                                            className="w-10 h-10"
+                                        />
+                                    </View>
+                                    <View>
+                                        <Text className="font-psans text-header-100 dark:text-white text-sm">
+                                            Gallery
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </GeneralDrawer>
+                </SafeAreaView>
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )
 }

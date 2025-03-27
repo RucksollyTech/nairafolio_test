@@ -195,7 +195,7 @@ const Dollar = () => {
                                         <TouchableOpacity
                                             onPress={handleConvert}
                                             activeOpacity={0.7}
-                                            className={`border border-border dark:border-[#3B3C43]-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                            className={`border border-border-100 bg-[#F5F5F5] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                         >
                                             <Text className={`font-pinter font-semibold text-base text-muted`}>
                                                 Convert
@@ -274,7 +274,7 @@ const Dollar = () => {
                             {!success ? (
                                 <>
                                     <View>
-                                        <Text className="text-muted-200 font-pmedium">
+                                        <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
                                             Enter the dollar amount to convert
                                         </Text>
                                         <FormField 
@@ -300,7 +300,7 @@ const Dollar = () => {
                                         </View>
                                     </View>
                                     <View className="mt-20">
-                                        <Text className="text-muted-200 text-center font-pmedium text-sm">
+                                        <Text className="text-muted-200 dark:text-[#FFFFFF99] text-center font-pmedium text-sm">
                                             By proceeding, you confirm  that you want to convert at the rate of ₦{dollarInvestment?.investment?.dollar_withdrawal_rate}. 
                                             Funds converted will be sent to your Nairafolio wallet
                                         </Text>

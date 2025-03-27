@@ -4,15 +4,15 @@ import { icons } from '../constants';
 
 const { height: screenHeight } = Dimensions.get('window'); 
 
-const Drawer = ({ isVisible, onClose, children, header }) => {
+const Drawer = ({ isVisible, onClose, children, header, darkTheme }) => {
     if (!isVisible) return null;
 
     return (
-        <View className="absolute inset-0 z-50 bg-black/50">
+        <View className={`absolute inset-0 z-50 bg-black/50 ${darkTheme === "dark" && "dark"}`}>
             <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />
             <View
                 style={styles.drawer}
-                className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
+                className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1D1E25] rounded-t-[30px]"
             >
                 <View 
                     className="

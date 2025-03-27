@@ -1,31 +1,41 @@
 import React from "react";
+import { Platform } from "react-native";
+import { Keyboard } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 
-const CustomModalAlert = ({children, isVisible, onClose, title, className, body,showDefault=true, defaultText }) => {
+const CustomModalAlert = ({children, cancelOutSide, isVisible, onClose, title, className, body,showDefault=true, defaultText }) => {
     return (
-        <Modal isVisible={isVisible} className={className ?? ""} onBackdropPress={showDefault ? onClose : ()=>console.log("")} style={styles.modal}>
-            <View style={styles.container}>
-                <View className="px-5 pt-5 pb-2">
-                    {title && (
-                        <Text style={styles.title} className="text-white text-center">
-                            {title}
-                        </Text>
-                    )}
-                    {body && (
-                        <Text style={styles.message} className="text-white">
-                            {body}
-                        </Text>
-                    )}
-                </View>
-                {children}
-                {showDefault && (
-                    <TouchableOpacity className="border-t border-[#4e4e4e]" style={styles.buttonSecondary} onPress={onClose}>
-                        <Text className="font-psemibold text-lg text-blue-500">{defaultText ?? "Cancel"}</Text>
-                    </TouchableOpacity>
-                )}
-            </View>
-        </Modal>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" && "padding"} 
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <Modal isVisible={isVisible} className={className ?? ""} onBackdropPress={(showDefault || cancelOutSide) ? onClose : ()=>console.log("")} style={styles.modal}>
+                    <View style={styles.container}>
+                        <View className="px-5 pt-5 pb-2 w-full">
+                            {title && (
+                                <Text style={styles.title} className="text-white text-center">
+                                    {title}
+                                </Text>
+                            )}
+                            {body && (
+                                <Text style={styles.message} className="text-white">
+                                    {body}
+                                </Text>
+                            )}
+                        </View>
+                        {children}
+                        {showDefault && (
+                            <TouchableOpacity className="border-t border-[#4e4e4e]" style={styles.buttonSecondary} onPress={onClose}>
+                                <Text className="font-psemibold text-lg text-blue-500">{defaultText ?? "Cancel"}</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
+                </Modal>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 };
 

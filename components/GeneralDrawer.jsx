@@ -20,7 +20,7 @@ const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, head
                 >
                     {header &&(
                         <View>
-                            <Text className="text-header-100 pt-2 px-2 font-psemibold text-lg">
+                            <Text className="text-header-100 dark:text-white pt-2 px-2 font-psemibold text-lg">
                                 {header}
                             </Text>
                         </View>
