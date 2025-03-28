@@ -153,17 +153,17 @@ const PaymentDrawer = ({
                     </View>
                 </CoverBg>
             )}
-            <View className="absolute inset-0 z-40 bg-black/50">
+            <View className={`absolute inset-0 z-40 bg-black/50 ${darkTheme === "dark" && "dark"}`}>
                 {/* <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={handleClose} /> */}
                 <View
                     style={styles.drawer}
-                    className="absolute bottom-0 inset-x-0 bg-white rounded-t-[30px]"
+                    className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1D1E25] rounded-t-[30px]"
                 >
                     {(investment && investment.price_per_unit > 0) ? (
                         <>
                             <View 
                                 className={`
-                                    p-5 min-h-24 flex-row justify-between items-center ${!next  && "border-b border-border dark:border-[#3B3C43]" }
+                                    p-5 min-h-24 flex-row justify-between items-center ${!next  && "border-b border-border dark:border-[#495161]" }
                                 `}
                             >
                                 {next ? (
@@ -187,6 +187,7 @@ const PaymentDrawer = ({
                                                         w-6
                                                         rounded-full
                                                     "
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#000000"}
                                                 />
                                             </TouchableOpacity>
                                         </View>
@@ -248,15 +249,24 @@ const PaymentDrawer = ({
                                                         border
                                                         ${(active && active === 1) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                                         bg-[#F8FAFA]
+                                                        dark:bg-[#303540]
                                                     `}
                                                 >
                                                     <View
                                                         className="h-14 w-14 rounded-full items-center justify-center"
                                                     >
-                                                        <Image
-                                                            source={icons.wallet}
-                                                            resizeMode="cover"
-                                                        />
+                                                        {darkTheme === "dark" ? (
+                                                            <Image
+                                                                source={icons.wallet}
+                                                                resizeMode="cover"
+                                                                tintColor={"#007784"}
+                                                            />
+                                                        ):(
+                                                            <Image
+                                                                source={icons.wallet}
+                                                                resizeMode="cover"
+                                                            />
+                                                        )}
                                                     </View>
                                                     <View
                                                         className="w-full flex-1"
@@ -335,10 +345,10 @@ const PaymentDrawer = ({
                                                 <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
                                                     {investment.isDollar ? "Total price" : "Price of units"}
                                                 </Text>
-                                                <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] h-14">
+                                                <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] dark:bg-[#242730] h-14">
                                                     <Money 
                                                         value={((parseFloat(unit) && parseFloat(unit) !== NaN) ? parseFloat(unit) : 0) * investment?.price_per_unit}
-                                                        textStyle={"font-xl"}
+                                                        textStyle={darkTheme === "dark" ? "text-white font-xl" : "font-xl"}
                                                     />
                                                 </View>
                                             </View>
@@ -357,10 +367,11 @@ const PaymentDrawer = ({
                                 <View className="px-5 pb-7">
                                     <CustomButton 
                                         title="Continue"
-                                        textStyles="text-white"
+                                        textStyles={darkTheme !== "dark" ? "text-white font-psemibold" : "text-black font-psemibold"}
                                         containerStyles="h-14"
                                         loading={parseFloat(unit) < investment.min_investment}
                                         handlePress={handleProceed}
+                                        darkTheme={darkTheme}
                                     />
                                 </View>
                             )}
@@ -368,9 +379,10 @@ const PaymentDrawer = ({
                                 <View className="px-5 pb-7">
                                     <CustomButton 
                                         title="Continue"
-                                        textStyles="text-white"
+                                        textStyles={darkTheme !== "dark" ? "text-white font-psemibold" : "text-black font-psemibold"}
                                         containerStyles="h-14"
                                         handlePress={majorSubmitHandler}
+                                        darkTheme={darkTheme}
                                     />
                                 </View>
                             )}

@@ -4,16 +4,16 @@ import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
 
 const { width } = Dimensions.get('window'); // Get device screen width
 
-const SkeletonLoader = () => {
+const SkeletonLoader = ({darkTheme}) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} className={`${darkTheme === "dark" ? "dark bg-[#1D1E25]" : "bg-white"}`}>
       <ContentLoader 
         speed={2}
         width={width} 
         height={400}
         viewBox={`0 0 ${width} 400`}
-        backgroundColor="#f5f5f5"
-        foregroundColor="#ecebeb"
+        backgroundColor={darkTheme === "dark" ? "#404255" : "#f5f5f5"}
+        foregroundColor={darkTheme === "dark" ? "#14151b" : "#ecebeb"}
       >
         <Rect x="20" y="20" rx="5" ry="5" width={width - 40} height="140" />
         <Rect x="20" y="170" rx="5" ry="5" width={width - 50} height="15" />
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
 });
 

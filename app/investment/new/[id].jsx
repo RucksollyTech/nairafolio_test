@@ -156,10 +156,10 @@ const Investment = () => {
         }
     }, [data])
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             {loading ? (
-                <DetailSkeletonLoader />
+                <DetailSkeletonLoader darkTheme={darkTheme} />
             ):(
                 <>
                     <ScrollView
@@ -242,7 +242,7 @@ const Investment = () => {
                                         </LinearGradient>
                                     </ImageBackground>
                                 </View>
-                                <View className="bg-white py-3">
+                                <View className="bg-white dark:bg-dark_mode py-3">
                                     <Text className="text-xl font-pregular font-[700] text-black-100 dark:text-white ">
                                         {data?.name}
                                     </Text>
@@ -277,7 +277,7 @@ const Investment = () => {
                                     </View>
                                 </View>
                             </View>
-                            <View className="pt-5 px-5 border-t border-border-100 flex-1">
+                            <View className="pt-5 px-5 border-t border-border-100 dark:border-[#495161] flex-1">
                                 <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
                                     Highlights
                                 </Text>
@@ -392,7 +392,7 @@ const Investment = () => {
                                 {active && (
                                     <View>
                                         <View className="mb-10">
-                                            <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                            <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
                                                 <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
                                                     Introduction
                                                 </Text>
@@ -404,7 +404,7 @@ const Investment = () => {
                                             </View>
                                         </View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                            <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
                                                 <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
                                                     Objective
                                                 </Text>
@@ -420,7 +420,7 @@ const Investment = () => {
                                 {!active && (
                                     <View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                            <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
                                                 <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
                                                     Reports
                                                 </Text>
@@ -443,7 +443,7 @@ const Investment = () => {
                             <View className="px-5">
                                 {(data?.images && data?.images.length>0) && (
                                     <View className="my-5">
-                                        <View className="border-b pb-2 border-border-200 dark:border-[#0000000A]">
+                                        <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
                                             <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium text-lg">
                                                 Images
                                             </Text>
@@ -473,7 +473,7 @@ const Investment = () => {
                                 )}
                                 {(data?.riskFactors && data?.riskFactors.length > 0) && (
                                     <View className="my-12 rounded-lg bg-[#F6F6F6] dark:bg-dark_mode-300">
-                                        <View className="flex flex-row p-4 border-b border-border-200 dark:border-[#0000000A]">
+                                        <View className="flex flex-row p-4 border-b border-border-200 dark:border-[#495161]">
                                             <View className="bg-[#D82F2F1A] rounded-full h-10 w-10 items-center justify-center">
                                                 <Image
                                                     source={icons.alert}
@@ -491,10 +491,10 @@ const Investment = () => {
                                             {data?.riskFactors.map((riskData,index)=>(
                                                 <View className="flex-row flex mb-10" key={index}>
                                                     <View className="w-6">
-                                                        <Text className="text-2xl">•</Text>
+                                                        <Text className="text-2xl dark:text-[#808D9E]">•</Text>
                                                     </View>
                                                     <View className="flex-1">
-                                                        <Text className="text-black-200 text-lg font-pregular">
+                                                        <Text className="text-black-200 dark:text-[#808D9E] text-lg font-pregular">
                                                             {riskData.body}
                                                         </Text>
                                                     </View>
@@ -504,7 +504,7 @@ const Investment = () => {
                                     </View>
                                 )}
                                 {(data?.faq && data?.faq.length > 0) && (
-                                    <>
+                                    <View className='pb-10'>
                                         <View className="mt-5">
                                             <Text className="text-muted dark:text-[#FFFFFFB2] font-pmedium text-lg">
                                                 FAQs
@@ -512,18 +512,18 @@ const Investment = () => {
                                         </View>
                                         <View className="mt-5">
                                             {data?.faq.map((faqData,index)=>(
-                                                <View key={index} className="border border-border-100 rounded-lg mb-4">
-                                                    <Collapsible title={faqData.title}>
+                                                <View key={index} className="border border-border-100 dark:border-[#495161] rounded-lg mb-4">
+                                                    <Collapsible title={faqData.title} darkTheme={darkTheme}>
                                                         <Text>{faqData.body}</Text>
                                                     </Collapsible>
                                                 </View>
                                             ))}
                                         </View>
-                                    </>
+                                    </View>
                                 )}
                             </View>
                             
-                            {/* <View className="my-10 p-5 border-t border-border-100">
+                            {/* <View className="my-10 p-5 border-t border-border-100 dark:border-[#495161]">
                                 <View className="items-center justify-center flex-1">
                                     {data && data?.status === true && investors > 0 && (
                                         <Text className="text-muted-200 dark:text-[#FFFFFF99]">
@@ -546,7 +546,7 @@ const Investment = () => {
                             </View> */}
                         </View>
                     </ScrollView>
-                    <View className=" min-h-36 p-5 border-t border-border-100">
+                    <View className=" min-h-36 p-5 border-t border-border-100 dark:border-[#495161]">
                         <View className="items-center justify-center flex-1">
                             {data && data?.status === true && investors > 0 && (
                                 <Text className="text-muted-200 dark:text-[#FFFFFF99]">
@@ -565,9 +565,10 @@ const Investment = () => {
                                 <CustomButton 
                                     title={checkButtonStatus()}
                                     containerStyles="w-full h-16 mt-4" 
-                                    textStyles="font-psans !text-white text-lg" 
+                                    textStyles={`font-psans text-lg ${darkTheme !== "dark" && "!text-white"}`} 
                                     isLoading={loading || alternativeLoader}
                                     handlePress={handleBuyInvestButtonClick}
+                                    darkTheme={darkTheme}
                                 />
                             )}
                         </View>

@@ -9,7 +9,7 @@ import { Collapsible } from "./Collapsible";
 import Dropdown from "./Dropdown";
 import CustomDropdown from "./CustomDropDown";
 
-const SearchInput = ({ initialQuery, refreshing }) => {
+const SearchInput = ({ initialQuery, refreshing, darkTheme }) => {
     const { data:categories, loading, refetch } = useAppwrite(getCategories)
     const pathname = usePathname();
     const [categorySelected, setCategorySelected] = useState("")
@@ -53,16 +53,17 @@ const SearchInput = ({ initialQuery, refreshing }) => {
     },[])
 
     return (
-        <View>
+        <View className={darkTheme === "dark" ? "dark" : ""}>
             <View className={`
                 flex-row 
                 items-center space-x-4 
                 w-full h-16 px-4 
                 bg-[#FBFBFB] rounded-2xl 
+                dark:bg-dark_mode-300
                 relative
                 border  
                 ${
-                    isFocused ? "border-primary" : "border-border dark:border-[#3B3C43]"
+                    isFocused ? "border-primary" : "border-border dark:border-[#7F7F7F4D]"
                 }
             `}>
                 <TouchableOpacity
@@ -94,7 +95,12 @@ const SearchInput = ({ initialQuery, refreshing }) => {
                 <TouchableOpacity
                     onPress={toggleDropdown}
                 >
-                    <Image source={icons.filter} className="w-5 h-5" resizeMode="contain" />
+                    <Image 
+                        source={icons.filter} 
+                        className="w-5 h-5" 
+                        resizeMode="contain" 
+                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
+                    />
                 </TouchableOpacity>
                 
                 {/* <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 10 }}>
@@ -121,9 +127,10 @@ const SearchInput = ({ initialQuery, refreshing }) => {
                 selected={selected}
                 setSelected={setSelected}
                 setIsOpen={setIsOpen}
+                darkTheme={darkTheme}
             />
             <View>
-                <Dropdown setIsOpen={setIsOpen} options={categories} onSelect={handleSelection} initialQuery={initialQuery?.categorySelected} />
+                <Dropdown darkTheme={darkTheme} setIsOpen={setIsOpen} options={categories} onSelect={handleSelection} initialQuery={initialQuery?.categorySelected} />
             </View>
         </View>
     );

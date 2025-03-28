@@ -131,7 +131,7 @@ const Dollar = () => {
                         )}
                     </View>
                     {loading ? (
-                        <OngoingDetailSkeletonLoader />
+                        <OngoingDetailSkeletonLoader darkTheme={darkTheme} />
                     ):(
                         <ScrollView
                             onTouchStart={() => setLastActive(Date.now())}

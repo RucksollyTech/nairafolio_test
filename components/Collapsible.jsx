@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { StyleSheet, TouchableOpacity,View, Text } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 
-export function Collapsible({ children, title }) {
+export function Collapsible({ children, title ,darkTheme}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <View>
+    <View className={darkTheme === "dark" ? "dark" : ""}>
       <TouchableOpacity
         style={styles.heading}
         onPress={() => setIsOpen((value) => !value)}
@@ -18,7 +18,7 @@ export function Collapsible({ children, title }) {
             name="chevron.right"
             size={18}
             weight="medium"
-            className="text-black-100 dark:text-white"
+            color={darkTheme === "dark" ? "#FFFFFF" : "#171717"}
             style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
           />
         </View>
@@ -27,8 +27,8 @@ export function Collapsible({ children, title }) {
           <Text className='text-black-100 dark:text-white text-lg font-pmedium'>{title}</Text>
         </View>
       </TouchableOpacity>
-      {isOpen && <View className='border-t flex-1 border-border-100 p-4'>
-        <Text className='text-base font-pregular text-black-200'>
+      {isOpen && <View className='border-t flex-1 border-border-100 dark:border-[#495161] p-4'>
+        <Text className='text-base font-pregular text-black-200 dark:text-[#808D9E]'>
           {children}
         </Text>
       </View>}

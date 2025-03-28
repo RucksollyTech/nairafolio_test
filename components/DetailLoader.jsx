@@ -5,16 +5,16 @@ import { Platform } from 'react-native';
 
 const { width } = Dimensions.get('window'); 
 
-const DetailSkeletonLoader = () => {
+const DetailSkeletonLoader = ({darkTheme}) => {
     return (
-        <View style={styles.container} className={Platform.OS !== 'android' ? "mt-40" : "mt-32"}>
+        <View style={styles.container} className={`${darkTheme === "dark" ? "dark bg-[#1D1E25]" : "bg-white"} ${Platform.OS !== 'android' ? "mt-40" : "mt-32"}`}>
             <ContentLoader 
                 speed={2}
                 width={width} 
                 height={900}
                 viewBox={`0 0 ${width} 900`}
-                backgroundColor="#f5f5f5"
-                foregroundColor="#ecebeb"
+                backgroundColor={darkTheme === "dark" ? "#404255" : "#f5f5f5"}
+                foregroundColor={darkTheme === "dark" ? "#14151b" : "#ecebeb"}
             >
                 <Circle cx="50" cy="50" r="30" />
                 <Rect x="100" y="40" rx="5" ry="5" width={width - 150} height="13" />
@@ -33,16 +33,16 @@ const DetailSkeletonLoader = () => {
     );
 };
 
-export const OngoingDetailSkeletonLoader = () => {
+export const OngoingDetailSkeletonLoader = ({darkTheme}) => {
     return (
-        <View style={styles.container} className={Platform.OS !== 'android' ? "mt-10" : "mt-7"}>
+        <View style={styles.container} className={`${darkTheme === "dark" ? "bg-[#1D1E25] dark" : "bg-white" } ${Platform.OS !== 'android' ? "mt-10" : "mt-7"}`}>
             <ContentLoader 
                 speed={2}
                 width={width} 
                 height={900}
                 viewBox={`0 0 ${width} 900`}
-                backgroundColor="#f5f5f5"
-                foregroundColor="#ecebeb"
+                backgroundColor={darkTheme === "dark" ? "#404255" : "#f5f5f5"}
+                foregroundColor={darkTheme === "dark" ? "#14151b" : "#ecebeb"}
             >
                 <Rect x="20" y="40" rx="5" ry="5" width={width - 40} height="16" />
                 <Rect x="20" y="70" rx="5" ry="5" width={width - 40} height="18" />
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
     },
 });
 

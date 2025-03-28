@@ -15,7 +15,7 @@ const HomeSkeletonLoader = ({darkTheme}) => {
                 width={width} 
                 height={400}
                 viewBox={`0 0 ${width} 400`}
-                backgroundColor={darkTheme === "dark" ? "#F8F8F8" : "#f5f5f5"}
+                backgroundColor={darkTheme === "dark" ? "#404255" : "#f5f5f5"}
                 foregroundColor={darkTheme === "dark" ? "#14151b" : "#ecebeb"}
             >
                 <Circle cx="50" cy="50" r="30" />

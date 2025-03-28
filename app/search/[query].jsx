@@ -50,7 +50,7 @@ const Search = () => {
         refetch();
     }, [query,selected]);
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
             <View>
                 <LinearGradient
                     colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
@@ -68,7 +68,7 @@ const Search = () => {
                 </LinearGradient>
                 <View className="px-5">
                     <View className="pt-3">
-                        <SearchInput refreshing={refreshing} initialQuery={{query:searchQuery,categorySelected:category}} />
+                        <SearchInput  darkTheme={darkTheme} refreshing={refreshing} initialQuery={{query:searchQuery,categorySelected:category}} />
                     </View>
                     
                 </View>
@@ -124,7 +124,7 @@ const Search = () => {
                 ListEmptyComponent={()=> (
                     <View className="h-full flex-1 justify-center items-center">
                         {loading ? (
-                            <SkeletonLoader />
+                            <SkeletonLoader darkTheme={darkTheme} />
                         ): (
                             <View className="mt-14">
                                 <EmptyState 
