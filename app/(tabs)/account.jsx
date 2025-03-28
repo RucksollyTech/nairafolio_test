@@ -37,7 +37,7 @@ const account = () => {
     }, [])
     
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <LinearGradient
                 colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
                 start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
@@ -97,7 +97,7 @@ const account = () => {
                     className="items-center justify-center"
                 >
                     <Link href={"/edit-account"}>
-                        <View className="h-11 w-11 rounded-full bg-[#F5F5F5] items-center justify-center">
+                        <View className="h-11 w-11 rounded-full bg-[#F5F5F5] dark:bg-[#3e3c3c] items-center justify-center">
                             <Image 
                                 source={icons.edit}
                             />
@@ -124,6 +124,7 @@ const account = () => {
                             subtitle={"Get your account verified."}
                             icon={icons.check}
                             link={"/verify-account"}
+                            darkTheme={darkTheme}
                             verified
                             verificationData={user.is_verified}
                         />
@@ -132,31 +133,38 @@ const account = () => {
                             subtitle={"Change password, Biomertrics"}
                             icon={icons.shield}
                             link={"/security"}
+                            darkTheme={darkTheme}
                         />
                         <AccountComponets 
                             title={"Transaction history"}
                             icon={icons.arrow_up_down}
                             link={"/transactions"}
+                            darkTheme={darkTheme}
+                            tintColor={"#CBF5B8"}
                         />
                         <AccountComponets 
                             title={"Wallet"}
                             icon={icons.wallet}
                             link={"/wallet"}
+                            darkTheme={darkTheme}
                         />
                         <AccountComponets 
                             title={"Terms & conditions"}
                             icon={icons.docs}
                             link={"/"}
+                            darkTheme={darkTheme}
                         />
                         {/* <AccountComponets 
                             title={"Media and contents"}
                             icon={icons.media}
                             link={"/"}
+                            darkTheme={darkTheme}
                         /> */}
                         {/* <AccountComponets 
                             title={"Help"}
                             icon={icons.phone}
                             link={"/"}
+                            darkTheme={darkTheme}
                         /> */}
                     </View>
                     <View className="mb-10 mt-10 justify-center items-center">

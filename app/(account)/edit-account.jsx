@@ -16,6 +16,7 @@ import CustomNavigator from '../../components/CustomNavigator'
 import { KeyboardAvoidingView } from 'react-native'
 import { Platform } from 'react-native'
 import { Keyboard } from 'react-native'
+import { IconSymbol } from '@/components/ui/IconSymbol'
 
 const EditAccount = () => {
     const { user, setUser, setLastActive,darkTheme } = useGlobalContext();
@@ -119,8 +120,8 @@ const EditAccount = () => {
             behavior={Platform.OS === "ios" && "padding"} 
             style={{ flex: 1 }}
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <SafeAreaView className="bg-white flex-1 h-full">
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} className={darkTheme === "dark" ? "dark" : ""}>
+                <SafeAreaView className="bg-white dark:bg-dark_mode flex-1 h-full">
                     <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <ScrollView
                         onTouchStart={() => setLastActive(Date.now())}
@@ -132,7 +133,7 @@ const EditAccount = () => {
                             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                         }
                     >
-                        <View className="bg-white flex-1 px-5 pb-10 relative">
+                        <View className="bg-white dark:bg-dark_mode flex-1 px-5 pb-10 relative">
                             
                             <View className="pt-4">
                                 <Text className="text-black-100 dark:text-white font-psans text-2xl">
@@ -184,28 +185,32 @@ const EditAccount = () => {
                                 </View>
                             )}
                             <View>
-                                <AccountCustomForm 
+                                <AccountCustomForm
+                                    darkTheme={darkTheme} 
                                     title="First name"
                                     otherStyles="mb-4"
                                     value={accountForm.firstName}
                                     placeholder={"Enter your first name"}
                                     handleChangeText={(e)=>setAccountForm({...accountForm,firstName:e})}
                                 />
-                                <AccountCustomForm 
+                                <AccountCustomForm
+                                    darkTheme={darkTheme} 
                                     title="Last name"
                                     otherStyles="mb-4"
                                     value={accountForm.lastName}
                                     placeholder={"Enter your last name"}
                                     handleChangeText={(e)=>setAccountForm({...accountForm,lastName:e})}
                                 />
-                                <AccountCustomForm 
+                                <AccountCustomForm
+                                    darkTheme={darkTheme} 
                                     title="Email"
                                     otherStyles="mb-4"
                                     value={user.email}
                                     keyboardType={"email-address"}
                                     placeholder={"Enter your email address"}
                                 />
-                                <AccountCustomForm 
+                                <AccountCustomForm
+                                    darkTheme={darkTheme} 
                                     title="Phone"
                                     otherStyles="mb-4"
                                     value={accountForm.phoneNumber}
@@ -218,9 +223,10 @@ const EditAccount = () => {
                                 <CustomButton 
                                     title="Save changes"
                                     containerStyles="h-16"
-                                    textStyles="text-white font-psemibold"
+                                    textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
                                     handlePress={submit}
                                     isLoading={uploading}
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                             
@@ -239,10 +245,11 @@ const EditAccount = () => {
                                 className="items-center justify-center"
                             >
                                 <View className="mb-2">
-                                    <Image 
-                                        source={icons.cam}
-                                        resizeMode='contain'
-                                        className="w-10 h-10"
+                                    <IconSymbol
+                                        name="camera.fill"
+                                        size={32}
+                                        weight="medium"
+                                        color={darkTheme === "dark" ? "#FFFFFF" : "#171717"}
                                     />
                                 </View>
                                 <View>
@@ -257,10 +264,11 @@ const EditAccount = () => {
                                     className="items-center justify-center"
                                 >
                                     <View className="mb-2">
-                                        <Image 
-                                            source={icons.gallery}
-                                            resizeMode='contain'
-                                            className="w-10 h-10"
+                                        <IconSymbol
+                                            name="gallery.fill"
+                                            size={32}
+                                            weight="medium"
+                                            color={darkTheme === "dark" ? "#FFFFFF" : "#171717"}
                                         />
                                     </View>
                                     <View>
