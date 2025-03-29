@@ -55,7 +55,7 @@ const sign_up = () => {
         logOutUserControl()
     },[])
     return (
-        <SafeAreaView className='bg-white flex-1'>
+        <SafeAreaView className={`flex-1 ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -68,6 +68,7 @@ const sign_up = () => {
                         <Image 
                             source={icons.left_arrow}
                             resizeMode='contain'
+                            tintColor={darkTheme=== "dark" ? "#FFFFFF" : "#000000"}
                         />
                     </Link>
                 </View>
@@ -78,7 +79,7 @@ const sign_up = () => {
                 >
                     <View>
                         <View>
-                            <Text className='font-psans text-3xl'>Sign up</Text>
+                            <Text className='font-psans dark:text-white text-3xl'>Sign up</Text>
                         </View>
                         <View className='mt-2'>
                             <Text className='
@@ -113,6 +114,7 @@ const sign_up = () => {
                                 <View className='
                                     flex px-4
                                     bg-[#FDFDFD] 
+                                    dark:bg-[#27282F]
                                     rounded-2xl 
                                     flex-row
                                     border border-border dark:border-[#3B3C43] 
@@ -169,9 +171,10 @@ const sign_up = () => {
                             <CustomButton 
                                 title="Sign up"
                                 containerStyles="h-[50px]"
-                                textStyles="text-white"
+                                textStyles={darkTheme !== "dark" && "text-white"}
                                 handlePress={submit}
                                 isLoading={isSubmitting}
+                                darkTheme={darkTheme}
                             />
                         </View>
                         <View className='mb-10'>

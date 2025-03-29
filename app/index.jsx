@@ -51,7 +51,7 @@ const index = () => {
     }
     if(locked && user){
         return(
-            <SafeAreaView className='bg-white flex-1'>
+            <SafeAreaView className={darkTheme === "dark" ? 'bg-dark_mode flex-1' : 'bg-white flex-1'}>
                 <ScrollView
                     onTouchStart={() => setLastActive(Date.now())}
                     onScroll={() => setLastActive(Date.now())}
@@ -116,7 +116,7 @@ const index = () => {
                             
                             <View className='flex items-center justify-center'>
                                 <Text className='
-                                    text-black-100 dark:text-white 
+                                    text-black-100
                                     px-5 font-psans 
                                     font-semibold 
                                     text-[33px] 

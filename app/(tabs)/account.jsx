@@ -97,7 +97,7 @@ const account = () => {
                     className="items-center justify-center"
                 >
                     <Link href={"/edit-account"}>
-                        <View className="h-11 w-11 rounded-full bg-[#F5F5F5] dark:bg-[#3e3c3c] items-center justify-center">
+                        <View className="h-10 w-10 rounded-full bg-[#F5F5F5] dark:bg-[#3e3c3c] items-center justify-center">
                             <Image 
                                 source={icons.edit}
                             />

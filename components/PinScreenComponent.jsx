@@ -79,7 +79,7 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
     },[])
     // authenticateUser
     return (
-        <View className='relative h-full'>
+        <View className={darkTheme === "dark" ? 'dark relative h-full' : 'relative h-full'}>
             {bodyLoader ? (
                 <View className='flex-1 justify-center items-center'>
                     <ActivityIndicator size="large" color="#0000ff" />
@@ -93,7 +93,7 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
                     >
                         <View className='absolute bottom-12 w-full'>
                             <Image 
-                                source={icons.logo_name_big}
+                                source={darkTheme === "dark" ? icons.inverted_logo : icons.logo_name_big}
                                 resizeMode='contain'
                                 className='w-[150px] mx-auto'
                             />
@@ -104,7 +104,7 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
                     >
                         <View className='w-full'>
                             <View className='mt-5'>
-                                <Text className='text-center font-psans text-3xl'>Welcome back</Text>
+                                <Text className='text-center dark:text-white font-psans text-3xl'>Welcome back</Text>
                             </View>
                             <View className='mt-2'>
                                 <Text className='
@@ -121,7 +121,7 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
                                         {errorMessage}
                                     </Text>
                                 </View>
-                                <View className='pt-4'>
+                                <View>
                                     <FormField 
                                         title="Password"
                                         value={pin}
@@ -137,10 +137,11 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
                                 <CustomButton 
                                     title="Login"
                                     containerStyles="h-[50px]"
-                                    textStyles="text-white"
+                                    textStyles={darkTheme !== "dark" && "text-white"}
                                     handlePress={verifyPin}
                                     loading={!pin}
                                     isLoading={isSubmitting}
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                         </View>

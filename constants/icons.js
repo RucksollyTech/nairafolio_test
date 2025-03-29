@@ -67,11 +67,13 @@ import filter from "../assets/icons/filter.png";
 import convert from "../assets/icons/convert.png";
 
 import dark_cancel from "../assets/icons/dark_canel.png";
+import inverted_logo from "../assets/icons/inverted_logo.png";
 
 
 export default {
     portfolio,
     dark_cancel,
+    inverted_logo,
     filter,
     convert,
     portfolio_thin,

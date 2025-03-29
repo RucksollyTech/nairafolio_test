@@ -50,7 +50,7 @@ const sign_in = () => {
         setLocked(false);
     },[])
     return (
-        <SafeAreaView className='bg-white flex-1'>
+        <SafeAreaView className={`flex-1 ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
@@ -69,12 +69,13 @@ const sign_in = () => {
                                 <Image 
                                     source={icons.left_arrow}
                                     resizeMode='contain'
+                                    tintColor={darkTheme=== "dark" ? "#FFFFFF" : "#000000"}
                                 />
                             </Link>
                         </View>
                         <View className='absolute bottom-12 w-full'>
                             <Image 
-                                source={icons.logo_name_big}
+                                source={darkTheme === "dark" ? icons.inverted_logo : icons.logo_name_big}
                                 resizeMode='contain'
                                 className='w-[150px] mx-auto'
                             />
@@ -85,7 +86,7 @@ const sign_in = () => {
                     >
                         <View className='w-full'>
                             <View className='mt-5'>
-                                <Text className='text-center font-psans text-3xl'>Welcome back</Text>
+                                <Text className='text-center dark:text-white font-psans text-3xl'>Welcome back</Text>
                             </View>
                             <View className='mt-2'>
                                 <Text className='
@@ -125,6 +126,7 @@ const sign_in = () => {
                                                 text-right
                                                 font-pregular 
                                                 text-primary
+                                                dark:text-[#00A651]
                                             '
                                         >
                                             Forgot password?
@@ -144,9 +146,10 @@ const sign_in = () => {
                                 <CustomButton 
                                     title="Login"
                                     containerStyles="h-[50px]"
-                                    textStyles="text-white"
+                                    textStyles={darkTheme !== "dark" && "text-white"}
                                     handlePress={submit}
                                     isLoading={isSubmitting}
+                                    darkTheme={darkTheme}
                                     loading={form.email === "" || form.password === ""}
                                 />
                             </View>
