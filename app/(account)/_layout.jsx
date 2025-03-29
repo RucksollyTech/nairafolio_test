@@ -44,6 +44,12 @@ const AccountLayout = () => {
                 }}
             />
             <Stack.Screen
+                name="change-passcode"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
                 name="transactions"
                 options={{
                     headerShown: false,

@@ -14,7 +14,7 @@ const PasswordConfirm = ({isOpen,setIsOpen,actionFunc,user,loading,darkTheme}) =
         setPin(null)
         setErrorMsg(null)
         setLoads(false)
-        router.push("/change-password")
+        router.push("/change-passcode")
     }
     const continueFunction = async() => {
         setErrorMsg(null)

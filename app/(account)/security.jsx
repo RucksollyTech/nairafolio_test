@@ -76,7 +76,7 @@ const Security = () => {
     }, []);
 
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
@@ -85,7 +85,7 @@ const Security = () => {
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >
-                <View className="bg-white flex-1 h-full px-5 pb-10">
+                <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
                     
                     <View className="pt-4">
                         <Text className="text-black-100 dark:text-white font-psans text-2xl">
@@ -93,7 +93,64 @@ const Security = () => {
                         </Text>
                     </View>
                     <View className="pt-6 pb-2">
-                        <Text className="text-[#2A3B59] text-lg font-psemibold">
+                        <Text className="text-[#2A3B59] dark:text-[#F1F1F1] text-lg font-psemibold">
+                            Passcode
+                        </Text>
+                    </View>
+                    <View>
+                        <Link href={"/change-passcode"} className="my-1">
+                            <View 
+                                className="
+                                    flex-1 
+                                    rounded-lg
+                                    flex 
+                                    py-2 flex-row
+                                    mb-5
+                                    border
+                                    border-border dark:border-[#3B3C43]
+                                    bg-[#F8FAFA]
+                                    dark:bg-dark_mode-300
+                                "
+                            >
+                                <View
+                                    className="h-14 w-14 rounded-full items-center justify-center"
+                                >
+                                    <Image
+                                        source={icons.lock}
+                                        resizeMode="cover"
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#2A3B59"}
+                                    />
+                                </View>
+                                <View
+                                    style={{
+                                        width: "74.54%",
+                                    }}
+                                    className="flex-1 px-3 my-auto"
+                                >
+                                    <View>
+                                        <Text
+                                            className="text-lg text-[#2A3B59] dark:text-white font-pmedium"
+                                        >
+                                            Change passcode
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        width: "10.08%",
+                                    }}
+                                    className="items-center justify-center"
+                                >
+                                    <Image 
+                                        source={icons.arrow_right_italic}
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#2A3B59"}
+                                    />
+                                </View>
+                            </View>
+                        </Link>
+                    </View>
+                    <View className="pt-6 pb-2">
+                        <Text className="text-[#2A3B59] dark:text-[#F1F1F1] text-lg font-psemibold">
                             Password
                         </Text>
                     </View>
@@ -109,6 +166,7 @@ const Security = () => {
                                     border
                                     border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
+                                    dark:bg-dark_mode-300
                                 "
                             >
                                 <View
@@ -117,6 +175,7 @@ const Security = () => {
                                     <Image
                                         source={icons.lock}
                                         resizeMode="cover"
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#2A3B59"}
                                     />
                                 </View>
                                 <View
@@ -127,7 +186,7 @@ const Security = () => {
                                 >
                                     <View>
                                         <Text
-                                            className="text-lg text-[#2A3B59] font-pmedium"
+                                            className="text-lg text-[#2A3B59] dark:text-white font-pmedium"
                                         >
                                             Change password
                                         </Text>
@@ -141,13 +200,14 @@ const Security = () => {
                                 >
                                     <Image 
                                         source={icons.arrow_right_italic}
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#2A3B59"}
                                     />
                                 </View>
                             </View>
                         </Link>
                     </View>
                     <View className="pt-6 pb-2">
-                        <Text className="text-[#2A3B59] text-lg font-psemibold">
+                        <Text className="text-[#2A3B59] dark:text-[#F1F1F1] text-lg font-psemibold">
                             Biometrics
                         </Text>
                     </View>
@@ -162,6 +222,7 @@ const Security = () => {
                                 border
                                 border-border dark:border-[#3B3C43]
                                 bg-[#F8FAFA]
+                                dark:bg-dark_mode-300
                             "
                         >
                             <View
@@ -170,6 +231,7 @@ const Security = () => {
                                 <Image
                                     source={icons.face_id}
                                     resizeMode="cover"
+                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#2A3B59"}
                                 />
                             </View>
                             <View
@@ -180,7 +242,7 @@ const Security = () => {
                             >
                                 <View>
                                     <Text
-                                        className="text-lg text-[#2A3B59] font-pmedium"
+                                        className="text-lg text-[#2A3B59] dark:text-white font-pmedium"
                                     >
                                         Log in with Biometrics
                                     </Text>
