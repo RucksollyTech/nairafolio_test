@@ -50,14 +50,25 @@ const FormField = ({
             >
                 {data ? (
                 // Dropdown when `data` is provided
-                    <View className="flex-row justify-center items-center dark:bg-[#27282F]">
-                        <Image 
-                            source={icons.bank}
-                            resizeMode="contain"
-                        />
-                        <TouchableOpacity
-                            className="flex-1 pl-2"  
-                            onPress={() => setShowDropdown(!showDropdown)}
+                    <TouchableOpacity 
+                        onPress={() => setShowDropdown(!showDropdown)}
+                        className="flex-row justify-center items-center dark:bg-[#27282F]"
+                    >
+                        {darkTheme === "dark" ? (
+                            <Image
+                                source={icons.bank}
+                                resizeMode="contain"
+                                tintColor={"#CBF5B8"}
+                            />
+                        ):(
+                            <Image
+                                source={icons.bank}
+                                resizeMode="contain"
+                            />
+                        )}
+                        <View
+                            className="flex-1 pl-2 "  
+                            // onPress={() => setShowDropdown(!showDropdown)}
                             style={{ backgroundColor: darkTheme === "dark" ? "#27282F" : "#FDFDFD"}}
                         >
                             <Text 
@@ -66,13 +77,14 @@ const FormField = ({
                             >
                                 {selectedOption || placeholder}
                             </Text>
-                        </TouchableOpacity>
+                        </View>
                         <Image 
                             source={icons.arrow_collapse}
                             resizeMode="contain"
+                            tintColor={darkTheme === "dark" ? "#FFFFFF" : "#000000"}
                             style={{ transform: [{ rotate: showDropdown ? '180deg' : '0deg' }] }}
                         />
-                    </View>
+                    </TouchableOpacity>
                 ) : (
                     // TextInput when no `data` is provided
                     <TextInput
@@ -99,9 +111,10 @@ const FormField = ({
                 {title === "Password" && withPassword && !data && (
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                         <Image
-                        source={!showPassword ? icons.eye_thin : icons.eye_close}
-                        className="w-6 h-6"
-                        resizeMode="contain"
+                            source={!showPassword ? icons.eye_thin : icons.eye_close}
+                            className="w-6 h-6"
+                            resizeMode="contain"
+                            tintColor={darkTheme === "dark" ? "#cfcccc" : "#141B34"}
                         />
                     </TouchableOpacity>
                 )}

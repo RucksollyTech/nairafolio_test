@@ -249,7 +249,7 @@ const withdrawal = () => {
             style={{ flex: 1 }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <SafeAreaView className="bg-white flex-1 h-full">
+                <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
                     <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <ScrollView
                         onTouchStart={() => setLastActive(Date.now())}
@@ -261,7 +261,7 @@ const withdrawal = () => {
                             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                         }
                     >
-                        <View className="bg-white flex-1 h-full px-5 pb-10">
+                        <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
                             
                             <View className="pt-2">
                                 <Text className="text-black-100 dark:text-white font-psans text-2xl">
@@ -317,6 +317,7 @@ const withdrawal = () => {
                                                     ${selectedItems?.$id === myBanksData?.$id ? "border-red-500" : "border-border dark:border-[#3B3C43]"}
                                                     
                                                     bg-[#F8FAFA]
+                                                    dark:bg-dark_mode-300
                                                     px-2
                                                 `}
                                                 onPress={()=>handleSelectBank(myBanksData)}
@@ -325,10 +326,18 @@ const withdrawal = () => {
                                                 <View
                                                     className="h-14 w-14 rounded-full items-center justify-center"
                                                 >
-                                                    <Image
-                                                        source={icons.bank}
-                                                        resizeMode="cover"
-                                                    />
+                                                    {darkTheme === "dark" ? (
+                                                        <Image
+                                                            source={icons.bank}
+                                                            resizeMode="cover"
+                                                            tintColor={"#CBF5B8"}
+                                                        />
+                                                    ):(
+                                                        <Image
+                                                            source={icons.bank}
+                                                            resizeMode="cover"
+                                                        />
+                                                    )}
                                                 </View>
                                                 <View
                                                     style={{
@@ -370,9 +379,9 @@ const withdrawal = () => {
                                                 source={icons.plus}
                                                 resizeMode="contain"
                                                 className="mr-2"
-                                                tintColor={"#2A3B59"}
+                                                tintColor={darkTheme === 'dark' ? "#FFFFFF" : "#2A3B59"}
                                             />
-                                            <Text className="mr-2 text-[#2A3B59] font-psemibold">
+                                            <Text className="mr-2 text-[#2A3B59] dark:text-white font-psemibold">
                                                 Add new bank
                                             </Text>
                                         </TouchableOpacity>
@@ -417,9 +426,10 @@ const withdrawal = () => {
                                 title="Withdraw"
                                 handlePress={()=>setIsOpen(true)}
                                 containerStyles="h-14 mb-4 mx-5"
-                                textStyles="text-white font-psemibold"
+                                textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
                                 loading={loading || !withdrawalAmount || !selectedBank || !user}
                                 isLoading={submittingBank}
+                                darkTheme={darkTheme}
                             />
                         )}
                     </View>
@@ -486,7 +496,8 @@ const withdrawal = () => {
                                     title="Verify"
                                     handlePress={handleVerifyBankCode}
                                     containerStyles="h-14 mb-4"
-                                    textStyles="text-white font-psemibold"
+                                    textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
+                                    darkTheme={darkTheme}
                                     isLoading={submittingBank}
                                     loading={!user || !formData.account_number || !formData.code}
                                 />
@@ -501,7 +512,7 @@ const withdrawal = () => {
 
                                 <View className="pt-7">
                                     <View className="mb-5">
-                                        <View>
+                                        <View className='mb-1'>
                                             <Text className="text-base text-[#8A97A8]">
                                                 Bank
                                             </Text>
@@ -551,8 +562,9 @@ const withdrawal = () => {
                                     title="Add bank"
                                     handlePress={handleAddBank}
                                     containerStyles="h-14 mb-4"
-                                    textStyles="text-white font-psemibold"
+                                    textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
                                     isLoading={submittingBank}
+                                    darkTheme={darkTheme}
                                     loading={!formData.account_number || !formData.bank_name || `${formData.account_number}`.length < 10}
                                 />
                             </View>

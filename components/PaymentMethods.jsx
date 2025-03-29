@@ -82,7 +82,7 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                     <Image
                                         source={icons.bank}
                                         resizeMode="cover"
-                                        tintColor={"#007784"}
+                                        tintColor={"#CBF5B8"}
                                     />
                                 ):(
                                     <Image
@@ -145,7 +145,7 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                     <Image
                                         source={icons.card}
                                         resizeMode="cover"
-                                        tintColor={"#007784"}
+                                        tintColor={"#CBF5B8"}
                                     />
                                 ):(
                                     <Image
@@ -207,9 +207,10 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             title="Continue"
                             handlePress={goToPayNow}
                             containerStyles="h-14 mb-4 mt-10"
-                            textStyles="text-white font-psemibold"
+                            textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
                             loading={!depositAmount || depositAmount <100 || !user}
                             isLoading={loading}
+                            darkTheme={darkTheme}
                         />
                     </View>
                 </View>

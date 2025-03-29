@@ -259,7 +259,7 @@ const PaymentDrawer = ({
                                                             <Image
                                                                 source={icons.wallet}
                                                                 resizeMode="cover"
-                                                                tintColor={"#007784"}
+                                                                tintColor={"#CBF5B8"}
                                                             />
                                                         ):(
                                                             <Image
