@@ -169,6 +169,7 @@ const notification = () => {
                                 >
                                     <Image 
                                         source={icons.arrow_right_italic}
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                     />
                                 </View>
                             </View>
@@ -302,6 +303,7 @@ const notification = () => {
                                                 >
                                                     <Image 
                                                         source={icons.arrow_right_italic}
+                                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                                     />
                                                 </View>
                                             </View>
@@ -503,6 +505,7 @@ export default notification
                 >
                     <Image 
                         source={icons.arrow_right_italic}
+                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                     />
                 </View>
             </View> */}

@@ -1444,6 +1444,7 @@ const Active = () => {
                                             >
                                                 <Image 
                                                     source={icons.arrow_right_italic}
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                                 />
                                             </View>
                                         </TouchableOpacity>
@@ -1498,6 +1499,7 @@ const Active = () => {
                                             >
                                                 <Image 
                                                     source={icons.arrow_right_italic}
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                                 />
                                             </View>
                                         </View>
@@ -1553,6 +1555,7 @@ const Active = () => {
                                             >
                                                 <Image 
                                                     source={icons.arrow_right_italic}
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                                 />
                                             </View>
                                         </View>

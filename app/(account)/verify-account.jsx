@@ -71,7 +71,7 @@ const VerifyAccount = () => {
         setSubmitError(false)
     }
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <View className="pt-2 px-5">
                 <Text className="text-black-100 dark:text-white font-psans text-2xl">
@@ -88,7 +88,7 @@ const VerifyAccount = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View className="bg-white flex-1 h-full px-5 pb-10">
+                <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
                     <View className="py-4">
                         <Text className="text-muted-300 dark:text-white">
                             You are required to provide some information about your identity.
@@ -106,6 +106,7 @@ const VerifyAccount = () => {
                                     border
                                     border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
+                                    dark:bg-dark_mode-300
                                 "
                             >
                                 <View
@@ -168,6 +169,7 @@ const VerifyAccount = () => {
                                 >
                                     <Image 
                                         source={icons.arrow_right_italic}
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                     />
                                 </View>
                             </View>
@@ -187,6 +189,7 @@ const VerifyAccount = () => {
                                     border
                                     border-border dark:border-[#3B3C43]
                                     bg-[#F8FAFA]
+                                    dark:bg-dark_mode-300
                                 "
                             >
                                 <View
@@ -234,6 +237,7 @@ const VerifyAccount = () => {
                                 >
                                     <Image 
                                         source={icons.arrow_right_italic}
+                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                     />
                                 </View>
                             </View>
@@ -285,9 +289,10 @@ const VerifyAccount = () => {
                             title="Verify"
                             handlePress={handleSubmit}
                             containerStyles="h-14 mb-4"
-                            textStyles="text-white font-psemibold"
+                            textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
                             isLoading={loading}
                             loading={!user || !code}
+                            darkTheme={darkTheme}
                         />
                     </View>
                 ):(
@@ -306,8 +311,9 @@ const VerifyAccount = () => {
                             <CustomButton
                                 handlePress={handleClose}
                                 title={"Continue"}
-                                textStyles={"font-psans text-white"}
+                                textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
                                 containerStyles={"mt-5 h-14"}
+                                darkTheme={darkTheme}
                             />
                         </View>
                     </View>

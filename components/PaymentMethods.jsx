@@ -118,6 +118,7 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             >
                                 <Image 
                                     source={icons.arrow_right_italic}
+                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                 />
                             </View>
                         </View>
@@ -181,6 +182,7 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             >
                                 <Image 
                                     source={icons.arrow_right_italic}
+                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                 />
                             </View>
                         </View>

@@ -58,7 +58,7 @@ const VerifyWithNin = () => {
         setSubmitError(false)
     }
     return (
-        <SafeAreaView className="bg-white flex-1 h-full">
+        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
@@ -67,7 +67,7 @@ const VerifyWithNin = () => {
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >
-                <View className="bg-white flex-1 h-full px-5 pb-10">
+                <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
                     
                     <View className="pt-2">
                         <Text className="text-black-100 dark:text-white font-psans text-2xl">
@@ -105,8 +105,9 @@ const VerifyWithNin = () => {
                             title={"Submit"}
                             handlePress={handleSubmit}
                             containerStyles="mt-10 h-14"
-                            textStyles="text-white font-psemibold"
+                            textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
                             isLoading={loading}
+                            darkTheme={darkTheme}
                         />
                     </View>
                 </View>
@@ -152,8 +153,9 @@ const VerifyWithNin = () => {
                             <CustomButton
                                 handlePress={handleClose}
                                 title={"Continue"}
-                                textStyles={"font-psans text-white"}
+                                textStyles={darkTheme === "dark" ? "font-psans" : "font-psans text-white"}
                                 containerStyles={"mt-5 h-14"}
+                                darkTheme={darkTheme}
                             />
                         </View>
                     </View>
@@ -173,8 +175,9 @@ const VerifyWithNin = () => {
                             <CustomButton
                                 handlePress={handleClose}
                                 title={"Continue"}
-                                textStyles={"font-psans text-white"}
+                                textStyles={darkTheme === "dark" ? "font-psans" : "font-psans text-white"}
                                 containerStyles={"mt-5 h-14"}
+                                darkTheme={darkTheme}
                             />
                         </View>
                     </View>

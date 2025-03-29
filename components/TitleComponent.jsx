@@ -66,6 +66,7 @@ const TitleComponent = ({item}) => {
                                     source={icons.arrow_right_italic}
                                     resizeMode="contain"
                                     className="my-auto"
+                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                 />
                             </Link>
                         </View>

@@ -340,33 +340,3 @@ const Dollar = () => {
 }
 
 export default Dollar;
-{/* <ScrollView
-                            onTouchStart={() => setLastActive(Date.now())}
-                            onScroll={() => setLastActive(Date.now())}
-                            scrollEventThrottle={16}
-                            showsVerticalScrollIndicator={false} 
-                            showsHorizontalScrollIndicator={false}
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                            }
-                        >
-                            <View className="flex-1 h-full">
-                                
-                                
-                                {transactions && transactions.length > 0 && (
-                                    <View className='mt-5 px-5'>
-                                        
-                                        <>
-                                            {transactions.map((trans,index) =>(
-                                                <TransactionCard 
-                                                    key={index} 
-                                                    index={index}
-                                                    transaction={trans} 
-                                                    transactions={transactions} 
-                                                />
-                                            ))}
-                                        </>
-                                    </View>
-                                )}
-                            </View>
-                        </ScrollView> */}
