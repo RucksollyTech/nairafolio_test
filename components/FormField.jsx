@@ -25,15 +25,10 @@ const FormField = ({
 
     const handleSelect = (option) => {
         setSelectedOption(option.name);
-        setShowDropdown(false); // Hide dropdown after selection
-        handleChangeText(option); // Update the parent component
+        setShowDropdown(false); 
+        handleChangeText(option);
     };
     return (
-        // <KeyboardAvoidingView 
-        //     behavior={Platform.OS === "ios" ? "padding" : "height"} 
-        //     style={{ flex: 1 }}
-        // >
-        // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className={`space-y-2 ${otherStyles} ${darkTheme === "dark" && "dark"}`}>
             {/* <Text className="font-pregular text-base text-black-100 dark:text-white">{title}</Text> */}
             <View
@@ -141,8 +136,6 @@ const FormField = ({
                 </View>
             )}
         </View>
-        // </TouchableWithoutFeedback>
-        // </KeyboardAvoidingView>
     );
 };
 

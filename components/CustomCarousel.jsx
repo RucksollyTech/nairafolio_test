@@ -49,7 +49,7 @@ export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000
                         <View className="flex flex-row justify-between">
                             <View>
                                 <View>
-                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
+                                    <Text className="text-muted text-base">
                                         {title}
                                     </Text>
                                 </View>

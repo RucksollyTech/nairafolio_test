@@ -221,9 +221,10 @@ const Home = () => {
                                                         <View className="items-center justify-center pt-5">
                                                             <CustomButton 
                                                                 title="Explore investments"
-                                                                textStyles="text-white"
+                                                                textStyles={darkTheme === "dark" && "text-white"}
                                                                 containerStyles="w-[180px] h-11 text-xs text-center"
                                                                 handlePress={()=>router.push("/explore")}
+                                                                darkTheme={darkTheme}
                                                             />
                                                         </View>
                                                     </View>
@@ -283,9 +284,10 @@ const Home = () => {
                                         <View className="items-center justify-center pt-5">
                                             <CustomButton 
                                                 title="Explore investments"
-                                                textStyles="text-white"
+                                                textStyles={darkTheme !== "dark" && "text-white"}
                                                 containerStyles="w-[180px] h-11 text-xs text-center"
                                                 handlePress={()=>router.push("/explore")}
+                                                darkTheme={darkTheme}
                                             />
                                         </View>
                                     </View>
