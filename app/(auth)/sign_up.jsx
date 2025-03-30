@@ -96,7 +96,7 @@ const sign_up = () => {
                                 <FormField 
                                     title="Name"
                                     value={form.name}
-                                    placeholder="Enter full name"
+                                    placeholder="Surname FirstName OtherName"
                                     handleChangeText={(e)=>setForm({...form, name: e})}
                                     darkTheme={darkTheme}
                                 />

@@ -1,8 +1,8 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons } from '../../constants'
-import { Link, useNavigation } from 'expo-router'
+import { Link, router, useNavigation } from 'expo-router'
 import CustomNavigator from '../../components/CustomNavigator'
 import GeneralDrawer from '../../components/GeneralDrawer'
 import { generateRandomNumber } from '../../lib/appwrite'
@@ -70,256 +70,278 @@ const VerifyAccount = () => {
         setCode("")
         setSubmitError(false)
     }
+    const moveToVerify = ()=>{
+        if(!user.is_nin_verified){
+            router.push("/verify-with-nin")
+            return
+        }
+    }
     return (
-        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
-            <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
-            <View className="pt-2 px-5">
-                <Text className="text-black-100 dark:text-white font-psans text-2xl">
-                    Verify account
-                </Text>
-            </View>
-            <ScrollView
-                onTouchStart={() => setLastActive(Date.now())}
-                onScroll={() => setLastActive(Date.now())}
-                scrollEventThrottle={16}
-                showsVerticalScrollIndicator={false} 
-                showsHorizontalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-            >
-                <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
-                    <View className="py-4">
-                        <Text className="text-muted-300 dark:text-white">
-                            You are required to provide some information about your identity.
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" && "padding"} 
+            style={{ flex: 1 }}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+                    <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
+                    <View className="pt-2 px-5">
+                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                            Verify account
                         </Text>
                     </View>
-                    <View>
-                        <Link href={"/verify-with-nin"}>
-                            <View 
-                                className="
-                                    flex-1 
-                                    rounded-lg
-                                    flex 
-                                    py-4 flex-row
-                                    mb-5
-                                    border
-                                    border-border dark:border-[#3B3C43]
-                                    bg-[#F8FAFA]
-                                    dark:bg-dark_mode-300
-                                "
-                            >
-                                <View
-                                    className="h-14 w-14 rounded-full items-center justify-center"
+                    <ScrollView
+                        onTouchStart={() => setLastActive(Date.now())}
+                        onScroll={() => setLastActive(Date.now())}
+                        scrollEventThrottle={16}
+                        showsVerticalScrollIndicator={false} 
+                        showsHorizontalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        }
+                    >
+                        <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
+                            <View className="py-4">
+                                <Text className="text-muted-300 dark:text-white">
+                                    You are required to provide some information about your identity.
+                                </Text>
+                            </View>
+                            <View>
+                                {/* <Link href={"/verify-with-nin"}> */}
+                                <TouchableOpacity
+                                    onPress={moveToVerify}
+                                    activeOpacity={0.9}
                                 >
-                                    <Image
-                                        source={icons.document_validation}
-                                        resizeMode="cover"
-                                    />
-                                </View>
-                                <View
-                                    style={{
-                                        width: "74.54%",
-                                    }}
-                                    className="flex-1 px-3 "
-                                >
-                                    <View>
-                                        <Text
-                                            className="text-lg text-header-200 dark:text-white  font-psans"
+                                    <View 
+                                        className="
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border
+                                            border-border dark:border-[#3B3C43]
+                                            bg-[#F8FAFA]
+                                            dark:bg-dark_mode-300
+                                        "
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
                                         >
-                                            Verify with NIN
-                                        </Text>
-                                    </View>
-                                    <View>
-                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
-                                            Provide your NIN
-                                        </Text>
-                                    </View>
-                                    {(user.is_nin_verified || user.is_verified) && (
-                                        <View className="mt-1">
-                                            <View className={`
-                                                bg-[#00A6511A]
-                                                items-center justify-center
-                                                flex-row w-[80px] border-[#FFFFFF4D] border py-1 rounded-[30px]
-                                            `}>
-                                                <Text className={`text-secondary-100 text-center font-psemibold my-auto text-xs`}>
-                                                    Verified
+                                            <Image
+                                                source={icons.document_validation}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                            className="flex-1 px-3 "
+                                        >
+                                            <View>
+                                                <Text
+                                                    className="text-lg text-header-200 dark:text-white  font-psans"
+                                                >
+                                                    Verify with NIN
                                                 </Text>
                                             </View>
-                                        </View>
-                                    )}
-                                    {(user.is_nin_pending) && (
-                                        <View className="mt-1">
-                                            <View className={`
-                                                bg-[#98a6001a]
-                                                flex-row w-[80px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]
-                                            `}>
-                                                <Text className={`text-yellow-600 text-center font-psemibold my-auto pl-2 text-xs`}>
-                                                    Pending
+                                            <View>
+                                                <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                                    Provide your NIN
                                                 </Text>
                                             </View>
-                                        </View>
-                                    )}
-                                </View>
-                                <View
-                                    style={{
-                                        width: "10.08%",
-                                    }}
-                                    className="items-center justify-center"
-                                >
-                                    <Image 
-                                        source={icons.arrow_right_italic}
-                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
-                                    />
-                                </View>
-                            </View>
-                        </Link>
-                    </View>
-                    <View className="mt-4">
-                        <TouchableOpacity
-                            onPress={()=> handleVerifyMail()}
-                        >
-                            <View 
-                                className="
-                                    flex-1 
-                                    rounded-lg
-                                    flex 
-                                    py-4 flex-row
-                                    mb-5
-                                    border
-                                    border-border dark:border-[#3B3C43]
-                                    bg-[#F8FAFA]
-                                    dark:bg-dark_mode-300
-                                "
-                            >
-                                <View
-                                    className="h-14 w-14 rounded-full items-center justify-center"
-                                >
-                                    <Image
-                                        source={icons.document_validation}
-                                        resizeMode="cover"
-                                    />
-                                </View>
-                                <View
-                                    style={{
-                                        width: "74.54%",
-                                    }}
-                                    className="flex-1 px-3 "
-                                >
-                                    <View className="my-auto">
-                                       <View>
-                                            <Text
-                                                className="text-lg text-header-200 dark:text-white  font-psans"
-                                            >
-                                                Verify Email
-                                            </Text>
-                                       </View>
-                                       {(user.is_email_verified || user.is_verified) && (
-                                            <View className="mt-1">
-                                                <View className={`
-                                                    bg-[#00A6511A]
-                                                    items-center justify-center
-                                                    flex-row w-[80px] border-[#FFFFFF4D] border py-1 rounded-[30px]
-                                                `}>
-                                                    <Text className={`text-secondary-100 text-center font-psemibold my-auto text-xs`}>
-                                                        Verified
-                                                    </Text>
+                                            {(user.is_nin_verified || user.is_verified) && (
+                                                <View className="mt-1">
+                                                    <View className={`
+                                                        bg-[#00A6511A]
+                                                        items-center justify-center
+                                                        flex-row w-[80px] border-[#FFFFFF4D] border py-1 rounded-[30px]
+                                                    `}>
+                                                        <Text className={`text-secondary-100 text-center font-psemibold my-auto text-xs`}>
+                                                            Verified
+                                                        </Text>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                       )}
+                                            )}
+                                            {(user.is_nin_pending) && (
+                                                <View className="mt-1">
+                                                    <View className={`
+                                                        bg-[#98a6001a]
+                                                        flex-row w-[80px] border-[#FFFFFF4D] border px-2 py-1 rounded-[30px]
+                                                    `}>
+                                                        <Text className={`text-yellow-600 text-center font-psemibold my-auto pl-2 text-xs`}>
+                                                            Pending
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            )}
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center"
+                                        >
+                                            {!user.is_nin_verified && (
+                                                <Image 
+                                                    source={icons.arrow_right_italic}
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
+                                                />
+                                            )}
+                                        </View>
                                     </View>
-                                </View>
-                                <View
-                                    style={{
-                                        width: "10.08%",
-                                    }}
-                                    className="items-center justify-center"
-                                >
-                                    <Image 
-                                        source={icons.arrow_right_italic}
-                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
-                                    />
-                                </View>
+                                </TouchableOpacity>
+                                {/* </Link> */}
                             </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ScrollView>
-            <GeneralDrawer
-                isVisible={isDrawerVisible} 
-                onClose={handleClose} 
-                darkTheme={darkTheme}
-            >   
-                {!next ? (
-                    <View className="px-5">
-                        <View className="pt-4">
-                            <Text className="text-black-100 dark:text-white font-psans text-2xl">
-                                Verify your mail
-                            </Text>
+                            <View className="mt-4">
+                                <TouchableOpacity
+                                    onPress={()=> handleVerifyMail()}
+                                >
+                                    <View 
+                                        className="
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border
+                                            border-border dark:border-[#3B3C43]
+                                            bg-[#F8FAFA]
+                                            dark:bg-dark_mode-300
+                                        "
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center"
+                                        >
+                                            <Image
+                                                source={icons.document_validation}
+                                                resizeMode="cover"
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "74.54%",
+                                            }}
+                                            className="flex-1 px-3 "
+                                        >
+                                            <View className="my-auto">
+                                            <View>
+                                                    <Text
+                                                        className="text-lg text-header-200 dark:text-white  font-psans"
+                                                    >
+                                                        Verify Email
+                                                    </Text>
+                                            </View>
+                                            {(user.is_email_verified || user.is_verified) && (
+                                                    <View className="mt-1">
+                                                        <View className={`
+                                                            bg-[#00A6511A]
+                                                            items-center justify-center
+                                                            flex-row w-[80px] border-[#FFFFFF4D] border py-1 rounded-[30px]
+                                                        `}>
+                                                            <Text className={`text-secondary-100 text-center font-psemibold my-auto text-xs`}>
+                                                                Verified
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                            )}
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "10.08%",
+                                            }}
+                                            className="items-center justify-center"
+                                        >
+                                            {!user.is_email_verified && (
+                                                <Image 
+                                                    source={icons.arrow_right_italic}
+                                                    tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
+                                                />
+                                            )}
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-
-                        <View className="pt-7">
-                            <View className="mb-7">
-                                <View>
-                                    <Text className="text-base text-[#8A97A8]">
-                                        We've sent you a verification code to your email!
-                                        Please check your inbox and enter the code to continue.
+                    </ScrollView>
+                    <GeneralDrawer
+                        isVisible={isDrawerVisible} 
+                        onClose={handleClose} 
+                        darkTheme={darkTheme}
+                    >   
+                        {!next ? (
+                            <View className="px-5">
+                                <View className="pt-4">
+                                    <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                                        Verify your mail
                                     </Text>
                                 </View>
-                                <FormField 
-                                    title="Verification Code"
-                                    value={code}
-                                    // keyboardType="number-pad"
-                                    placeholder="Enter code"
-                                    handleChangeText={(e)=>setCode(e)}
-                                    otherStyles="mt-2"
+
+                                <View className="pt-7">
+                                    <View className="mb-7">
+                                        <View>
+                                            <Text className="text-base text-[#8A97A8]">
+                                                We've sent you a verification code to your email!
+                                                Please check your inbox and enter the code to continue.
+                                            </Text>
+                                        </View>
+                                        <FormField 
+                                            title="Verification Code"
+                                            value={code}
+                                            // keyboardType="number-pad"
+                                            placeholder="Enter code"
+                                            handleChangeText={(e)=>setCode(e)}
+                                            otherStyles="mt-2"
+                                            darkTheme={darkTheme}
+                                        />
+                                    </View>
+                                </View>
+                                
+                                {submitError && (
+                                    <View className="py-2">
+                                        <Text className="text-red-500 text-sm font-psemibold">
+                                            Invalid/expired code 
+                                        </Text>
+                                    </View>
+                                )}
+                                <CustomButton 
+                                    title="Verify"
+                                    handlePress={handleSubmit}
+                                    containerStyles="h-14 mb-4"
+                                    textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
+                                    isLoading={loading}
+                                    loading={!user || !code}
                                     darkTheme={darkTheme}
                                 />
                             </View>
-                        </View>
-                        
-                        {submitError && (
-                            <View className="py-2">
-                                <Text className="text-red-500 text-sm font-psemibold">
-                                    Invalid/expired code 
-                                </Text>
+                        ):(
+                            <View>
+                                <View className="px-2">
+                                    <View className="flex-1 justify-center items-center">
+                                        <Image 
+                                            source={icons.good}
+                                        />
+                                    </View>
+                                    <View className="mt-5">
+                                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                            Your email have been verified successfully.
+                                        </Text>
+                                    </View>
+                                    <CustomButton
+                                        handlePress={handleClose}
+                                        title={"Continue"}
+                                        textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
+                                        containerStyles={"mt-5 h-14"}
+                                        darkTheme={darkTheme}
+                                    />
+                                </View>
                             </View>
                         )}
-                        <CustomButton 
-                            title="Verify"
-                            handlePress={handleSubmit}
-                            containerStyles="h-14 mb-4"
-                            textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
-                            isLoading={loading}
-                            loading={!user || !code}
-                            darkTheme={darkTheme}
-                        />
-                    </View>
-                ):(
-                    <View>
-                        <View className="px-2">
-                            <View className="flex-1 justify-center items-center">
-                                <Image 
-                                    source={icons.good}
-                                />
-                            </View>
-                            <View className="mt-5">
-                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
-                                    Your email have been verified successfully.
-                                </Text>
-                            </View>
-                            <CustomButton
-                                handlePress={handleClose}
-                                title={"Continue"}
-                                textStyles={darkTheme === "dark" ? "font-psemibold" : "text-white font-psemibold"}
-                                containerStyles={"mt-5 h-14"}
-                                darkTheme={darkTheme}
-                            />
-                        </View>
-                    </View>
-                )}
-            </GeneralDrawer>
-        </SafeAreaView>
+                    </GeneralDrawer>
+                </SafeAreaView>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     )
 }
 
