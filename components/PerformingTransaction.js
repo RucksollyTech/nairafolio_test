@@ -141,9 +141,8 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                         })
                     ]);
                     if(buyingUser?.expoPushToken){
-                        await sendPushNotification(buyingUser?.expoPushToken,`Sales of shares", "Your shares for ${investment?.name} has been sold`)
+                        await sendPushNotification(buyingUser,"Sales of shares", `Your shares for ${investment?.name} has been sold`,investment?.investment)
                         // Add text as message here
-
                         await createNotification(investment?.investment?.$id,investment?.name,parseFloat(value_spent * investment?.price_per_unit),"sales",sellerUserId)
                         await createNotification(investment?.investment?.$id,investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",buyingUser?.$id)
                     }
@@ -253,9 +252,8 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                         )
                     }
                     if(buyingUser?.expoPushToken){
-                        await sendPushNotification(buyingUser?.expoPushToken,`Sales of shares", "Your shares for ${investment?.name} has been sold`)
+                        await sendPushNotification(buyingUser,"Sales of shares", `Your shares for ${investment?.name} has been sold`,investment?.investment)
                         // Add text as message here
-
                         await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"sales",sellerUserId)
                         await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",buyingUser?.$id)
                     }

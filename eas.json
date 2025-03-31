@@ -4,6 +4,9 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "android": {
+      "googleServicesFile": "./google-services.json"
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal"

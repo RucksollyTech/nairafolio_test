@@ -1,6 +1,6 @@
 import { useFonts } from 'expo-font';
-import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import { Alert, Platform } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -13,42 +13,49 @@ import AppLayout from '@/components/AppLayout';
 import { saveExpoPushToken } from '@/lib/appwrite';
 import { router } from 'expo-router';
 import { View } from 'react-native';
+import Constants from 'expo-constants';
 
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 export  async function registerForPushNotificationsAsync() {
-  if (!Device.isDevice) {
-      Alert.alert("Error", "Push notifications only work on a real device.");
-      return;
-  }
+    let token
+    if (Device.isDevice) {
+        
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            // alert('Permission to send notification not granted!');
+            return;
+        }
+        
+        // const projectId =
+        //     Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+        const projectId = Constants.expoConfig?.extra?.eas?.projectId;
+        try {
+            if (projectId) {
+                token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
 
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
+            } else {
+                token = (await Notifications.getExpoPushTokenAsync()).data;
+            }
+        } catch (error) {
+            console.log('Error getting Expo push token:', error);
+            return null;
+        }
+        if (Platform.OS === 'android') {
+            await Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+    }
 
-  if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-  }
-
-  if (finalStatus !== 'granted') {
-      Alert.alert('Permission Required', 'Enable push notifications in settings.');
-      return;
-  }
-
-  const token = (await Notifications.getExpoPushTokenAsync()).data;
-  await saveExpoPushToken(token)
-  
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  return token;  // Save this token in your Appwrite database for each user
+    return token;  
 }
 
 export default function RootLayout() {
@@ -63,6 +70,7 @@ export default function RootLayout() {
     "Inter": require('../assets/fonts/Inter.ttf'),
   });
 
+  const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const responseListener = useRef();
 
@@ -72,18 +80,9 @@ export default function RootLayout() {
     }
   }, [loaded]);
   
-  // useEffect(() => {
-  //   const notificationSetter = async()=>{
-  //     await registerForPushNotificationsAsync();
-  //   }
-  //   notificationSetter()
-  // }, []);
+  
   useEffect(() => {
-      registerForPushNotificationsAsync()
-
-      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-          console.log('Notification Received:', notification);
-      });
+      registerForPushNotificationsAsync().then(token => token && setExpoPushToken(token));
 
       responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
           // console.log('Notification Clicked:', response);
@@ -91,7 +90,10 @@ export default function RootLayout() {
       });
 
       return () => {
+        // Delete the device notification from here
+          notificationListener.current &&
           Notifications.removeNotificationSubscription(notificationListener.current);
+          responseListener.current &&
           Notifications.removeNotificationSubscription(responseListener.current);
       };
   }, []);

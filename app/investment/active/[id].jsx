@@ -329,6 +329,7 @@ const Active = () => {
             return
         }
         if(insufficient_fund){
+            setLoadings(false)
             setIsInsufficientFund(true)
             return
         }
@@ -579,7 +580,7 @@ const Active = () => {
                                                         title={"Buy now"}
                                                         handlePress={()=> setIsDrawerVisible3(true)}
                                                         containerStyles={"h-14 font-psemibold"}
-                                                        textStyles={"text-white "}
+                                                        textStyles={darkTheme !== "dark" && "text-white"}
                                                         isLoading={loadings}
                                                         darkTheme={darkTheme}
                                                     />
@@ -1400,15 +1401,24 @@ const Active = () => {
                                                 border
                                                 ${(active && active === 1) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                                 bg-[#F8FAFA]
+                                                dark:bg-dark_mode-300
                                             `}
                                         >
                                             <View
                                                 className="h-14 w-14 rounded-full items-center justify-center"
                                             >
-                                                <Image
-                                                    source={icons.wallet}
-                                                    resizeMode="cover"
-                                                />
+                                                {darkTheme === "dark" ? (
+                                                    <Image
+                                                        source={icons.wallet}
+                                                        resizeMode="cover"
+                                                        tintColor={"#CBF5B8"}
+                                                    />
+                                                ):(
+                                                    <Image
+                                                        source={icons.wallet}
+                                                        resizeMode="cover"
+                                                    />
+                                                )}
                                             </View>
                                             <View
                                                 className="w-full flex-1"
@@ -1462,15 +1472,24 @@ const Active = () => {
                                                 border
                                                 ${(active && active === 2) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                                 bg-[#F8FAFA]
+                                                dark:bg-dark_mode-300
                                             `}
                                         >
                                             <View
                                                 className="h-14 w-14 rounded-full items-center justify-center"
                                             >
-                                                <Image
-                                                    source={icons.bank}
-                                                    resizeMode="cover"
-                                                />
+                                                {darkTheme === "dark" ? (
+                                                    <Image
+                                                        source={icons.bank}
+                                                        resizeMode="cover"
+                                                        tintColor={"#CBF5B8"}
+                                                    />
+                                                ):(
+                                                    <Image
+                                                        source={icons.bank}
+                                                        resizeMode="cover"
+                                                    />
+                                                )}
                                             </View>
                                             <View
                                                 style={{
@@ -1518,15 +1537,24 @@ const Active = () => {
                                                 border
                                                 ${(active && active === 3) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
                                                 bg-[#F8FAFA]
+                                                dark:bg-dark_mode-300
                                             `}
                                         >
                                             <View
                                                 className="h-14 w-14 rounded-full items-center justify-center"
                                             >
-                                                <Image
-                                                    source={icons.card}
-                                                    resizeMode="cover"
-                                                />
+                                                {darkTheme === "dark" ? (
+                                                    <Image
+                                                        source={icons.card}
+                                                        resizeMode="cover"
+                                                        tintColor={"#CBF5B8"}
+                                                    />
+                                                ):(
+                                                    <Image
+                                                        source={icons.card}
+                                                        resizeMode="cover"
+                                                    />
+                                                )}
                                             </View>
                                             <View
                                                 style={{
@@ -1565,10 +1593,11 @@ const Active = () => {
                                     <View className="px-5 pb-7">
                                         <CustomButton 
                                             title="Continue"
-                                            textStyles="text-white"
+                                            textStyles={darkTheme !== "dark" && "text-white"}
                                             containerStyles="h-14"
                                             handlePress={majorSubmitHandler}
                                             isLoading={loadings}
+                                            darkTheme={darkTheme}
                                         />
                                     </View>
                                 )}
@@ -1591,8 +1620,9 @@ const Active = () => {
                                             <CustomButton
                                                 handlePress={handleSuccessSales}
                                                 title={"Continue"}
-                                                textStyles={"font-psans text-white"}
+                                                textStyles={darkTheme !== "dark" ? "font-psans text-white" : "font-psans"}
                                                 containerStyles={"mt-5 h-14"}
+                                                darkTheme={darkTheme}
                                             />
                                         </View>
                                     </View>
@@ -1612,8 +1642,9 @@ const Active = () => {
                                             <CustomButton
                                                 handlePress={handleFailSales}
                                                 title={"Continue"}
-                                                textStyles={"font-psans text-white"}
                                                 containerStyles={"mt-5 h-14"}
+                                                textStyles={darkTheme !== "dark" ? "font-psans text-white" : "font-psans"}
+                                                darkTheme={darkTheme}
                                             />
                                         </View>
                                     </View>
@@ -1634,8 +1665,9 @@ const Active = () => {
                                                 <CustomButton
                                                     handlePress={handleInsufficientFundClick}
                                                     title={"Continue"}
-                                                    textStyles={"font-psans text-white"}
                                                     containerStyles={"mt-5 h-14"}
+                                                    textStyles={darkTheme !== "dark" ? "font-psans text-white" : "font-psans"}
+                                                    darkTheme={darkTheme}
                                                 />
                                             </View>
                                         ):(
@@ -1653,8 +1685,9 @@ const Active = () => {
                                                 <CustomButton
                                                     handlePress={handleFailSales}
                                                     title={"Continue"}
-                                                    textStyles={"font-psans text-white"}
                                                     containerStyles={"mt-5 h-14"}
+                                                    textStyles={darkTheme !== "dark" ? "font-psans text-white" : "font-psans"}
+                                                    darkTheme={darkTheme}
                                                 />
                                             </View>
                                         )}
@@ -1676,10 +1709,11 @@ const Active = () => {
                                 <View className="px-5 pb-7">
                                     <CustomButton 
                                         title="Continue"
-                                        textStyles="text-white"
                                         containerStyles="h-14"
                                         handlePress={handleUndoSell}
                                         isLoading={loadings}
+                                        textStyles={darkTheme !== "dark" && "text-white"}
+                                        darkTheme={darkTheme}
                                     />
                                 </View>
                             </>
@@ -1701,8 +1735,9 @@ const Active = () => {
                                             <CustomButton
                                                 handlePress={handleSuccessUndoSales}
                                                 title={"Continue"}
-                                                textStyles={"font-psans text-white"}
                                                 containerStyles={"mt-5 h-14"}
+                                                textStyles={darkTheme !== "dark" ? "font-psans text-white" : "font-psans"}
+                                                darkTheme={darkTheme}
                                             />
                                         </View>
                                     </View>
@@ -1722,8 +1757,9 @@ const Active = () => {
                                             <CustomButton
                                                 handlePress={handleFailSalesUndoSales}
                                                 title={"Continue"}
-                                                textStyles={"font-psans text-white"}
                                                 containerStyles={"mt-5 h-14"}
+                                                textStyles={darkTheme !== "dark" ? "font-psans text-white" : "font-psans"}
+                                                darkTheme={darkTheme}
                                             />
                                         </View>
                                     </View>
@@ -1743,8 +1779,9 @@ const Active = () => {
                                             <CustomButton
                                                 handlePress={handleFailSalesUndoSales}
                                                 title={"Continue"}
-                                                textStyles={"font-psans text-white"}
                                                 containerStyles={"mt-5 h-14"}
+                                                textStyles={darkTheme !== "dark" ? "font-psans text-white" : "font-psans"}
+                                                darkTheme={darkTheme}
                                             />
                                         </View>
                                     </View>
