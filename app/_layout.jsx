@@ -104,13 +104,13 @@ export default function RootLayout() {
 
   return (
     <GlobalProvider>
-        {Platform.OS === 'ios' && (
+        {/* {Platform.OS === 'ios' && (
             <View className='relative'>
                 <View className='absolute top-0 z-10 left-0 right-0' style={{ height: 44, backgroundColor: '#EAF6E4' }} />
             </View>
-        )}
+        )} */}
         <AppLayout />
-        <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/>
+        {/* <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/> */}
     </GlobalProvider>
   );
 }

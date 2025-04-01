@@ -1,10 +1,11 @@
+import { useGlobalContext } from "@/context/GlobalProvider";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Platform } from "react-native";
 
 
 const PaymentLayout = () => {
-
+    const { darkTheme } = useGlobalContext();
   return (
     <>
         <Stack>
@@ -47,7 +48,8 @@ const PaymentLayout = () => {
         </Stack>
 
         {/* <Loader isLoading={loading} /> */}
-        <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/>
+        <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} style={darkTheme === "dark" ? "light" : "dark"}/>
+        {/* <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/> */}
     </>
   );
 };

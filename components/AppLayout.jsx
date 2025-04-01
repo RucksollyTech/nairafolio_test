@@ -2,8 +2,9 @@ import { getData, useGlobalContext } from '@/context/GlobalProvider';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ThemeProvider, DefaultTheme, DarkTheme, useNavigation } from '@react-navigation/native';
 import { Stack, router, usePathname } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 const AppLayout = () => {
     const pathname = usePathname();
@@ -69,6 +70,11 @@ const AppLayout = () => {
     },[currentRouteName,otherScreen,loading,isLogged, router])
     return (
         <ThemeProvider value={darkTheme === 'dark' ? DarkTheme : DefaultTheme}>
+            {Platform.OS === 'ios' && (
+                <View className='relative'>
+                    <View className='absolute top-0 z-10 left-0 right-0' style={{ height: 44, backgroundColor: darkTheme === 'dark' ? "#1D1E25" : '#EAF6E4' }} />
+                </View>
+            )}
             {/* <View className={darkTheme === 'dark' ? "dark" : ""}> */}
                 <Stack
                     screenOptions={{
@@ -89,6 +95,8 @@ const AppLayout = () => {
                         <Stack.Screen name="+not-found" />
                 </Stack>
             {/* </View> */}
+            <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#FFFFFF"} style={darkTheme === "dark" ? "light" : "dark"}/>
+
         </ThemeProvider>
     );
 };

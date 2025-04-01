@@ -113,7 +113,8 @@ const TabLayout = () => {
       </Tabs>
 
       {/* <Loader isLoading={loading} /> */}
-      <StatusBar backgroundColor="#EAF6E4" style={Platform.OS === 'ios' ? "dark" : "light" }/>
+      <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} style={darkTheme === "dark" ? "light" : "dark"}/>
+      {/* <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} style={Platform.OS === 'ios' ? `${darkTheme === "dark" ? "light" : "dark"}` : `${darkTheme === "dark" ? "light" : "dark"}` }/> */}
     </>
   );
 };

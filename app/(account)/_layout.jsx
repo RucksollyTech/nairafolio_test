@@ -1,3 +1,4 @@
+import { useGlobalContext } from "@/context/GlobalProvider";
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Platform } from "react-native";
@@ -6,7 +7,7 @@ import { Platform } from "react-native";
 // import { useGlobalContext } from "../../context/GlobalProvider";
 
 const AccountLayout = () => {
-//   const { loading, isLogged } = useGlobalContext();
+  const { darkTheme } = useGlobalContext();
 
 //   if (!loading && isLogged) return <Redirect href="/home" />;
 
@@ -76,7 +77,9 @@ const AccountLayout = () => {
         </Stack>
 
         {/* <Loader isLoading={loading} /> */}
-        <StatusBar backgroundColor="#FFFFFF" style={Platform.OS === 'ios' ? "dark" : "light" }/>
+        <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} style={darkTheme === "dark" ? "light" : "dark"}/>
+
+        {/* <StatusBar backgroundColor="#FFFFFF" style={Platform.OS === 'ios' ? "dark" : "light" }/> */}
     </>
   );
 };

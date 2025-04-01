@@ -1,3 +1,4 @@
+import { useGlobalContext } from "@/context/GlobalProvider";
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Platform } from "react-native";
@@ -5,7 +6,7 @@ import { Platform } from "react-native";
 // import { useGlobalContext } from "../../context/GlobalProvider";
 
 const NotificationLayout = () => {
-//   const { loading, isLogged } = useGlobalContext();
+  const { darkTheme } = useGlobalContext();
 
 //   if (!loading && isLogged) return <Redirect href="/home" />;
 
@@ -21,7 +22,8 @@ const NotificationLayout = () => {
             </Stack>
 
             {/* <Loader isLoading={loading} /> */}
-            <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/>
+            {/* <StatusBar style={Platform.OS === 'ios' ? "dark" : "auto" }/> */}
+            <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} style={darkTheme === "dark" ? "light" : "dark"}/>
         </>
     );
 };
