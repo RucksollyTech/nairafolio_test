@@ -48,10 +48,72 @@ const notification = () => {
             )}
             <View className="px-5">
                 {(notifications && notifications.length > 0) && notifications.map((item,index)=>{
-                    if(item.action === "sales" || item.action === "purchase"){
-                        return(
-                            <View className="pt-2" key={index}>
+                    if(UTCDate(item.$createdAt)?.isToday){
+                        if(item.action === "sales" || item.action === "purchase"){
+                            return(
+                                <View className="pt-2" key={index}>
+                                    <View 
+                                        className="
+                                            flex-1 
+                                            rounded-lg
+                                            flex 
+                                            py-4 flex-row
+                                            mb-5
+                                            border-b
+                                            border-border dark:border-[#3B3C43]
+                                        "
+                                    >
+                                        <View
+                                            className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
+                                        >
+                                            <Image
+                                                source={icons.download}
+                                                resizeMode="cover"
+                                                tintColor={item.action === "sales" ? "#40BF6A" : "#E33629"}
+                                                className={item.action !== "sales" ? "rotate-180" : ""}
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                width: "84.62%",
+                                            }}
+                                            className="flex-1 px-3 "
+                                        >
+                                            <View>
+                                                {item.action === "sales" && (
+                                                    <Text
+                                                        className="text-lg font-pmedium text-muted"
+                                                    >
+                                                        Your share{" "}
+                                                        <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
+                                                        {" "}has been sold at {" "}
+                                                        <Text className="text-header-200 dark:text-white  font-psans"> ₦{(item.amount)?.toLocaleString()}</Text>.
+                                                    </Text>
+                                                )}
+                                                {item.action === "purchase" && (
+                                                    <Text
+                                                        className="text-lg font-pmedium text-muted"
+                                                    >
+                                                        You have successfully bought a share{" "}
+                                                        <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
+                                                        {" "}at{" "}
+                                                        <Text className="text-header-200 dark:text-white  font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
+                                                    </Text>
+                                                )}
+                                            </View>
+                                            <View className="pt-2">
+                                                <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                                    {UTCDate(item?.$createdAt)?.myDateFormat || "--"}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            )
+                        }else{
+                            return(
                                 <View 
+                                    key={index}
                                     className="
                                         flex-1 
                                         rounded-lg
@@ -66,39 +128,22 @@ const notification = () => {
                                         className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
                                     >
                                         <Image
-                                            source={icons.download}
+                                            source={icons.file}
                                             resizeMode="cover"
-                                            tintColor={item.action === "sales" ? "#40BF6A" : "#E33629"}
-                                            className={item.action !== "sales" ? "rotate-180" : ""}
                                         />
                                     </View>
                                     <View
                                         style={{
-                                            width: "84.62%",
+                                            width: "74.54%",
                                         }}
                                         className="flex-1 px-3 "
                                     >
                                         <View>
-                                            {item.action === "sales" && (
-                                                <Text
-                                                    className="text-lg font-pmedium text-muted"
-                                                >
-                                                    Your share{" "}
-                                                    <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
-                                                    {" "}has been sold at {" "}
-                                                    <Text className="text-header-200 dark:text-white  font-psans"> ₦{(item.amount)?.toLocaleString()}</Text>.
-                                                </Text>
-                                            )}
-                                            {item.action === "purchase" && (
-                                                <Text
-                                                    className="text-lg font-pmedium text-muted"
-                                                >
-                                                    You have successfully bought a share{" "}
-                                                    <Text className="text-header-200 dark:text-white  font-psans">{item.message}</Text>
-                                                    {" "}at{" "}
-                                                    <Text className="text-header-200 dark:text-white  font-psans">₦{(item.amount)?.toLocaleString()}</Text>.
-                                                </Text>
-                                            )}
+                                            <Text
+                                                className="text-lg font-pmedium text-muted"
+                                            >
+                                                {item.message}
+                                            </Text>
                                         </View>
                                         <View className="pt-2">
                                             <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
@@ -106,63 +151,20 @@ const notification = () => {
                                             </Text>
                                         </View>
                                     </View>
-                                </View>
-                            </View>
-                        )
-                    }else{
-                        return(
-                            <View 
-                                key={index}
-                                className="
-                                    flex-1 
-                                    rounded-lg
-                                    flex 
-                                    py-4 flex-row
-                                    mb-5
-                                    border-b
-                                    border-border dark:border-[#3B3C43]
-                                "
-                            >
-                                <View
-                                    className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
-                                >
-                                    <Image
-                                        source={icons.file}
-                                        resizeMode="cover"
-                                    />
-                                </View>
-                                <View
-                                    style={{
-                                        width: "74.54%",
-                                    }}
-                                    className="flex-1 px-3 "
-                                >
-                                    <View>
-                                        <Text
-                                            className="text-lg font-pmedium text-muted"
-                                        >
-                                            {item.message}
-                                        </Text>
-                                    </View>
-                                    <View className="pt-2">
-                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
-                                            {UTCDate(item?.$createdAt)?.myDateFormat || "--"}
-                                        </Text>
+                                    <View
+                                        style={{
+                                            width: "10.08%",
+                                        }}
+                                        className="items-center justify-center"
+                                    >
+                                        <Image 
+                                            source={icons.arrow_right_italic}
+                                            tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
+                                        />
                                     </View>
                                 </View>
-                                <View
-                                    style={{
-                                        width: "10.08%",
-                                    }}
-                                    className="items-center justify-center"
-                                >
-                                    <Image 
-                                        source={icons.arrow_right_italic}
-                                        tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
-                                    />
-                                </View>
-                            </View>
-                        )
+                            )
+                        }
                     }
                 })}
             </View>

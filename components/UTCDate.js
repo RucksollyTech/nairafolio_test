@@ -4,6 +4,7 @@ import isToday from 'dayjs/plugin/isToday';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import duration from 'dayjs/plugin/duration';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { formatToNigerianTime } from './ConvertToLocalTime';
 
 dayjs.extend(utc);
 dayjs.extend(localizedFormat);
@@ -20,13 +21,14 @@ const UTCDate = (date) => {
     let isPastOrToday = false;
 
     if (date) {
-        const dates = dayjs(date).utc();
+        const dates = dayjs(formatToNigerianTime(date)).utc();
+        // const dates = dayjs(date).utc();
         const daysGone = now.diff(dates, 'days');
         const datetime = dates.format();
         const diffInMinutes = now.diff(dates, 'minute');
         const simpleDateFormat = dates.format('MMM D, YYYY');
         const isoDate = dates.toISOString();
-
+        
         if (dates.isToday()) {
             isToday = true;
             myDateFormat = `Today, ${dates.format('h:mma')}`;
