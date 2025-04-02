@@ -19,7 +19,6 @@ SplashScreen.preventAutoHideAsync();
 export  async function registerForPushNotificationsAsync() {
     let token
     if (Device.isDevice) {
-        
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
@@ -30,7 +29,6 @@ export  async function registerForPushNotificationsAsync() {
             // alert('Permission to send notification not granted!');
             return;
         }
-        
         // const projectId =
         //     Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
         const projectId = Constants.expoConfig?.extra?.eas?.projectId;
@@ -54,7 +52,6 @@ export  async function registerForPushNotificationsAsync() {
             });
         }
     }
-
     return token;  
 }
 
@@ -80,23 +77,25 @@ export default function RootLayout() {
     }
   }, [loaded]);
   
-  
-  useEffect(() => {
-      registerForPushNotificationsAsync().then(token => token && setExpoPushToken(token));
+    useEffect(() => {
+        const callForNotifications = async ()=>{
+            const toks = await registerForPushNotificationsAsync();
+            setExpoPushToken(toks)
+        }
+        callForNotifications()
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            // console.log('Notification Clicked:', response);
+            router.push("/notification")
+        });
 
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-          // console.log('Notification Clicked:', response);
-          router.push("/notification")
-      });
-
-      return () => {
-        // Delete the device notification from here
-          notificationListener.current &&
-          Notifications.removeNotificationSubscription(notificationListener.current);
-          responseListener.current &&
-          Notifications.removeNotificationSubscription(responseListener.current);
-      };
-  }, []);
+        return () => {
+            // Delete the device notification from here
+            notificationListener.current &&
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            responseListener.current &&
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
 
   if (!loaded) {
     return null;

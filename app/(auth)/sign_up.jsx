@@ -1,18 +1,20 @@
-import { View, Text, ImageBackground, Image, ScrollView, Dimensions, Alert } from 'react-native'
+import { View, Text, ImageBackground, Image, ScrollView, Dimensions, Alert, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '@/constants'
 import { CustomButton, FormField } from '@/components'
 import { Link, router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import { createUser, signOut } from '@/lib/appwrite'
+import { createUser, saveExpoPushToken, signOut } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from 'react-native'
+import { registerForPushNotificationsAsync } from '../_layout'
 
 const sign_up = () => {
     const { setUser, setIsLogged, setLastActive, setLocked, darkTheme } = useGlobalContext();
     const [errorMessage, setErrorMessage] = useState("");
+    const [generalLoad, setGeneralLoad] = useState(false);
 
     const [showNext, setShowNext] = useState(false);
     const [isSubmitting, setSubmitting] = useState(false);
@@ -39,6 +41,16 @@ const sign_up = () => {
         hideDatePicker();
     };
 
+    const handleNotificationSetup = async()=>{
+        setGeneralLoad(true)
+        try {
+            await registerForPushNotificationsAsync()
+        } catch (error) {
+            
+        }finally{
+            setGeneralLoad(false)
+        }
+    }
 
     const submit = async () => {
         setErrorMessage("")
@@ -62,6 +74,14 @@ const sign_up = () => {
             setIsLogged(true);
             await AsyncStorage.setItem('isSignedUp', JSON.stringify(true));
             setLocked(false)
+            try {
+                const token = await registerForPushNotificationsAsync();
+                if (token) {
+                    await saveExpoPushToken(token);
+                }
+            } catch (error) {
+                // throw new Error("Could not get devTo");
+            }
             router.replace("/home");
         } catch (error) {
             setErrorMessage("Please use another email address. That email is taken");
@@ -74,9 +94,18 @@ const sign_up = () => {
             setUser(null)
             setIsLogged(false);
             await signOut()
+            
         }
         logOutUserControl()
+        handleNotificationSetup()
     },[])
+    // if(generalLoad){
+    //     return (
+    //         <View className='flex-1 flex justify-center items-center'>
+    //             <ActivityIndicator size="large" color="#0000ff" />
+    //         </View>
+    //     )
+    // }
     return (
         <SafeAreaView className={`flex-1 ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <ScrollView

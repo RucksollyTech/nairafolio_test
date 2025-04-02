@@ -5,8 +5,9 @@ import { icons, images } from '@/constants'
 import { CustomButton, FormField } from '@/components'
 import { Link, router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import { getCurrentUser, signIn, signOut } from '@/lib/appwrite'
+import { getCurrentUser, saveExpoPushToken, signIn, signOut } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { registerForPushNotificationsAsync } from '../_layout'
 
 const sign_in = () => {
     const { setUser, setIsLogged, setLastActive,setLocked, darkTheme } = useGlobalContext();
@@ -32,6 +33,15 @@ const sign_in = () => {
             setIsLogged(true);
             await AsyncStorage.setItem('isSignedUp', JSON.stringify(true));
             setLocked(false);
+            try {
+                const token = await registerForPushNotificationsAsync();
+                if (token) {
+                    await saveExpoPushToken(token);
+                }
+            } catch (error) {
+                // throw new Error("Could not get devTo");
+            }
+        
             router.replace("/home");
         } catch (error) {
             setErrorMessage("Invalid credentials");
@@ -39,15 +49,22 @@ const sign_in = () => {
             setSubmitting(false);
         }
     };
-    
+    const handleNotificationSetup = async()=>{
+        try {
+            await registerForPushNotificationsAsync()
+        } catch (error) {
+        }
+    }
     useEffect(()=>{
         const logOutUserControl = async()=>{
             setUser(null)
             setIsLogged(false);
             await signOut()
+            // await registerForPushNotificationsAsync()
         }
         logOutUserControl()
         setLocked(false);
+        handleNotificationSetup()
     },[])
     return (
         <SafeAreaView className={`flex-1 ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
