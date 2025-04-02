@@ -14,7 +14,7 @@ import { registerForPushNotificationsAsync } from '../_layout'
 const sign_up = () => {
     const { setUser, setIsLogged, setLastActive, setLocked, darkTheme } = useGlobalContext();
     const [errorMessage, setErrorMessage] = useState("");
-    const [generalLoad, setGeneralLoad] = useState(false);
+    // const [generalLoad, setGeneralLoad] = useState(false);
 
     const [showNext, setShowNext] = useState(false);
     const [isSubmitting, setSubmitting] = useState(false);
@@ -42,13 +42,13 @@ const sign_up = () => {
     };
 
     const handleNotificationSetup = async()=>{
-        setGeneralLoad(true)
+        // setGeneralLoad(true)
         try {
             await registerForPushNotificationsAsync()
         } catch (error) {
             
         }finally{
-            setGeneralLoad(false)
+            // setGeneralLoad(false)
         }
     }
 
@@ -89,6 +89,42 @@ const sign_up = () => {
             setSubmitting(false);
         }
     };
+    function isValidEmail(email) {
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return pattern.test(email);
+    }
+    function isValidPassword(password) {
+        const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
+        return pattern.test(password);
+    }
+      
+    const moveToNext = ()=>{
+        setErrorMessage("")
+        if (form.email === "") {
+            setErrorMessage("Email field is required")
+            return
+        }
+        if(!isValidEmail(form.email)){
+            setErrorMessage("Invalid email address")
+            return
+        }
+        if (
+            form.password === "" ||
+            form.password_confirm === ""
+        ){
+            setErrorMessage("Password field is required")
+            return
+        }
+        if(!isValidPassword(form.password)){
+            setErrorMessage("Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 symbol.")
+            return
+        }
+        if (form.password !== form.password_confirm){
+            setErrorMessage("Password and Confirm password must be the equal")
+            return
+        }
+        setShowNext(true)
+    }
     useEffect(()=>{
         const logOutUserControl = async()=>{
             setUser(null)
@@ -116,13 +152,26 @@ const sign_up = () => {
                 showsHorizontalScrollIndicator={false}
             >
                 <View className='pt-3 pl-2'>
-                    <Link href={"/"}>
-                        <Image 
-                            source={icons.left_arrow}
-                            resizeMode='contain'
-                            tintColor={darkTheme=== "dark" ? "#FFFFFF" : "#000000"}
-                        />
-                    </Link>
+                    {showNext ? (
+                        <TouchableOpacity
+                            activeOpacity={0.9}
+                            onPress={()=>setShowNext(false)}
+                        >
+                            <Image 
+                                source={icons.left_arrow}
+                                resizeMode='contain'
+                                tintColor={darkTheme=== "dark" ? "#FFFFFF" : "#000000"}
+                            />
+                        </TouchableOpacity>
+                    ) : (
+                        <Link href={"/"}>
+                            <Image 
+                                source={icons.left_arrow}
+                                resizeMode='contain'
+                                tintColor={darkTheme=== "dark" ? "#FFFFFF" : "#000000"}
+                            />
+                        </Link>
+                    )}
                 </View>
                 <View className="w-full px-5 flex justify-center h-full"
                     style={{
@@ -263,7 +312,7 @@ const sign_up = () => {
                                 title={showNext ? "Sign up" : "Continue"}
                                 containerStyles="h-[50px]"
                                 textStyles={darkTheme !== "dark" && "text-white"}
-                                handlePress={showNext ? submit : ()=>setShowNext(true)}
+                                handlePress={showNext ? submit : moveToNext}
                                 isLoading={isSubmitting}
                                 darkTheme={darkTheme}
                             />
