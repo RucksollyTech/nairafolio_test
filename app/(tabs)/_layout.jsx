@@ -25,9 +25,9 @@ const TabIcon = ({ icon, color, name, focused, darkTheme }) => {
 };
 
 const TabLayout = () => {
-  const { darkTheme } = useGlobalContext();
+  const { darkTheme, loading , isLogged } = useGlobalContext();
 
-  // if (!loading && !isLogged) return <Redirect href="/sign-in" />;
+  if (!loading && !isLogged) return <Redirect href="/sign-in" />;
 
   return (
     <>

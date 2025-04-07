@@ -5,9 +5,15 @@ import { SelectList } from "react-native-dropdown-select-list";
 
 const screenWidth = Dimensions.get("window").width;
 
-const GraphScreen = ({chartData,chartDataLoading}) => {
-  if (chartDataLoading){
-    return <View className="py-10"><Text className="text-muted-200 dark:text-[#FFFFFF99] font-psemibold text-lg">Loading...</Text></View>;
+const GraphScreen = ({chartData,loading,darkTheme}) => {
+  if (loading){
+    return (
+      <View className="py-10 flex-1 items-center justify-center">
+        <Text className="text-muted-200 dark:text-[#FFFFFF99] font-psemibold text-lg">
+          Loading chart data...
+        </Text>
+      </View>
+    );
   }
   if(!chartData["Last 7 Days"]){
     return null;
@@ -15,25 +21,10 @@ const GraphScreen = ({chartData,chartDataLoading}) => {
   const [selectedRange, setSelectedRange] = useState("Last 7 Days");
   const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, value: 0 });
 
-  // const chartData = {
-  //   "Last 7 Days": {
-  //     "labels": ["9th May", "8th May", "6th May", "5th May", "4th May", "3rd May", "2nd May"],
-  //     "data": [10.5, 1.5, 1.2, 1.8, 25, 30, 2.7]
-  //   },
-  //   "1 Month": {
-  //     "labels": ["12th Apr", "16 Apr", "21st Apr", "25th Apr", "30th Apr", "2nd May", "9th May"],
-  //     "data": [6.5, 8, 4.6, 5, 12, 25, 30]
-  //   },
-  //   "1 Year": {
-  //     "labels": ["21st Jun", "1st Aug", "12th Oct", "4th Dec", "2nd Feb", "14th Mar", "9th May"],
-  //     "data": [10, 20, 30, 18, 12, 6, 9]
-  //   }
-  // };
-
   const dataPoints = chartData[selectedRange].data;
   const labels = chartData[selectedRange].labels;
   const numPoints = dataPoints.length;
-  const graphWidth = screenWidth + screenWidth / 5.7; // ✅ Your exact width
+  const graphWidth = screenWidth + screenWidth / 5.7;
   const sectionWidth = graphWidth / numPoints;
 
   // PanResponder for touch dragging
@@ -81,12 +72,12 @@ const GraphScreen = ({chartData,chartDataLoading}) => {
   const RIODiff= presentRIO - presentRIOPrevious
   
   return (
-    <View className="flex-1 pt-5 pb-3 mb-2 bg-white border-border dark:border-[#3B3C43] border-b">
+    <View className={`flex-1 pt-5 pb-3 mb-2 ${darkTheme === "dark" ? "dark border-[#3B3C43] bg-dark_mode" : "bg-white border-border"} border-b`}>
       <View className="px-5">
         <View className="flex-row justify-between relative z-20">
           <View>
             <Text className="text-base text-muted">ROI History</Text>
-            <Text className="text-4xl py-1 font-bold">{presentRIO}%</Text>
+            <Text className="text-4xl py-1 dark:text-white font-bold">{presentRIO}%</Text>
             <Text className="text-[#009C6A] bg-[#009C6A26] px-2 text-center w-14 py-0.5 text-sm font-psemibold rounded-xl ">
               {RIODiff > 0 ? `+${RIODiff}` : RIODiff}%
             </Text>
@@ -100,10 +91,24 @@ const GraphScreen = ({chartData,chartDataLoading}) => {
                 { key: "1 Month", value: "1 Month" },
                 { key: "1 Year", value: "1 Year" },
               ]}
+              search={false} 
               save="value"
-              boxStyles={{ width: 120 }}
-              dropdownStyles={{ width: 120 }}
+              boxStyles={{ 
+                width: 120 ,
+                backgroundColor: darkTheme ==="dark"? "#303540" : "#fff",
+              }}
+              inputStyles={{
+                color: darkTheme ==="dark"? "#fff" : "#000"
+              }}
+              dropdownTextStyles ={{
+                color: darkTheme ==="dark"? "#fff" : "#000"
+              }}
+              dropdownStyles={{ 
+                width: 120 ,
+                backgroundColor: darkTheme ==="dark"? "#303540" : "#fff",
+              }}
               defaultOption={{ key: "Last 7 Days", value: "Last 7 Days" }}
+              label="Last 7 Days"
             />
           </View>
         </View>
@@ -118,7 +123,7 @@ const GraphScreen = ({chartData,chartDataLoading}) => {
             labels,
             datasets: [{ data: dataPoints }],
           }}
-          width={graphWidth} // ✅ Your exact width restored
+          width={graphWidth} 
           height={220}
           withVerticalLabels={true}
           withHorizontalLabels={false}
@@ -126,11 +131,11 @@ const GraphScreen = ({chartData,chartDataLoading}) => {
           withOuterLines={false}
           yAxisLabelWidth={0}
           chartConfig={{
-            backgroundGradientFrom: "#fff",
-            backgroundGradientTo: "#fff",
+            backgroundGradientFrom: darkTheme ==="dark" ? "#1D1E25" : "#fff",
+            backgroundGradientTo: darkTheme ==="dark" ? "#1D1E25" : "#fff",
             color: (opacity = 1) => `rgba(72, 209, 122, ${opacity})`,
             strokeWidth: 2,
-            propsForDots: { r: "0" }, // ✅ No dots
+            propsForDots: { r: "0" },
             decimalPlaces: 0,
           }}
           bezier

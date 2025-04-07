@@ -70,6 +70,10 @@ const sign_up = () => {
                 form.email, form.password, form.name,form.phone,
                 dateValue
             );
+            if (!result || !result.$id){
+                Alert.alert("Error", "Failed to create user");
+                return
+            }
             setUser(result);
             setIsLogged(true);
             await AsyncStorage.setItem('isSignedUp', JSON.stringify(true));
@@ -79,10 +83,10 @@ const sign_up = () => {
                 if (token) {
                     await saveExpoPushToken(token);
                 }
+                router.replace("/home");
             } catch (error) {
-                // throw new Error("Could not get devTo");
+                throw new Error("Device not supported");
             }
-            router.replace("/home");
         } catch (error) {
             setErrorMessage("Please use another email address. That email is taken");
         } finally {
@@ -130,7 +134,6 @@ const sign_up = () => {
             setUser(null)
             setIsLogged(false);
             await signOut()
-            
         }
         logOutUserControl()
         handleNotificationSetup()

@@ -150,10 +150,11 @@ const Investment = () => {
         }
     }
     useEffect(() => {
-
-        if (data?.$id){
-            getInvestorsCount()
-        }
+        try {
+            if (data.$id){
+                getInvestorsCount()
+            }
+        } catch (error) {}
     }, [data])
     return (
         <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
@@ -438,6 +439,7 @@ const Investment = () => {
                                 <GraphScreen 
                                     chartData={chartData}
                                     loading={chartDataLoading}
+                                    darkTheme={darkTheme}
                                 />
                             )}
                             <View className="px-5">
