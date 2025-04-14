@@ -277,6 +277,7 @@ const UserOffer = () => {
                                 p-10 flex-row justify-between items-center
                             `}>
                                 <EmptyState 
+                                    darkTheme={darkTheme}
                                     title="No offer available"
                                     subtitle="No offer available for now. Check later."
                                 />

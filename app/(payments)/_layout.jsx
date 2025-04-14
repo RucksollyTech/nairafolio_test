@@ -1,20 +1,37 @@
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { useFocusEffect } from "expo-router";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
 import { Platform } from "react-native";
+import * as NavigationBar from "expo-navigation-bar"
 
 
 const PaymentLayout = () => {
     const { darkTheme } = useGlobalContext();
+    useEffect(() => {
+        if(Platform.OS === "android"){
+            NavigationBar.setVisibilityAsync('hidden');
+        }
+    }, [])
+    useFocusEffect(() => {
+        let timeout;
+        if (Platform.OS === 'android') {
+            NavigationBar.setBehaviorAsync('inset-swipe');
+            NavigationBar.setVisibilityAsync('visible');
+
+            timeout = setTimeout(() => {
+                NavigationBar.setVisibilityAsync('hidden');
+            }, 3000);
+        }
+
+        return () => {
+            if (timeout) clearTimeout(timeout);
+        };
+    })
   return (
     <>
         <Stack>
-            <Stack.Screen
-                name="pay-investment/[id]"
-                options={{
-                    headerShown: false,
-                }}
-            />
             <Stack.Screen
                 name="wallet"
                 options={{
@@ -33,12 +50,7 @@ const PaymentLayout = () => {
                     headerShown: false,
                 }}
             />
-            <Stack.Screen
-                name="pay-with-card"
-                options={{
-                    headerShown: false,
-                }}
-            />
+            
             <Stack.Screen
                 name="withdrawal"
                 options={{

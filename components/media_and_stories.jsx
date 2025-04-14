@@ -13,7 +13,7 @@ const cardWidth = screenWidth / 2.15 - 20;
 export const openLink = async (link) => {
     await WebBrowser.openBrowserAsync(link);
 };
-const Media_and_stories = ({setLastActive,refreshing}) => {
+const Media_and_stories = ({setLastActive,refreshing,darkTheme}) => {
     const { data, loading, refetch } = useAppwrite(getBlogs)
     const onRefresh = async()=>{
         await refetch()
@@ -24,7 +24,7 @@ const Media_and_stories = ({setLastActive,refreshing}) => {
         }
     },[refreshing])
     return (
-        <View>
+        <View className={darkTheme === "dark" && "dark"}>
             {data && data.length >0 && (
                 <View className="mt-16 mx-6">
                     <View>
@@ -58,6 +58,7 @@ const Media_and_stories = ({setLastActive,refreshing}) => {
                             }}
                         >
                             <Card
+                                darkTheme={darkTheme}
                                 title={title}
                                 thumbnail={image}
                                 body={body}

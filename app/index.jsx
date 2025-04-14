@@ -95,10 +95,9 @@ const index = () => {
             <View className='relative w-full flex h-full items-center justify-center'>
                 <Image 
                     source={images.onboarding}
-                    className="w-[80%]"
+                    className="w-[100%] absolute -top-3"
                     resizeMode="contain"
                 />
-                
                 <View className='absolute bottom-0 w-full '>
                     <LinearGradient
                         colors={['rgba(255, 255, 255, 0)', '#FFFFFF']} // Start and end colors

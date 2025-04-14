@@ -119,6 +119,7 @@ const sign_in = () => {
                                     <FormField 
                                         title="Email"
                                         value={form.email}
+                                        keyboardType={"email-address"}
                                         placeholder="Email address"
                                         handleChangeText={(e)=>setForm({...form, email: e})}
                                         darkTheme={darkTheme}

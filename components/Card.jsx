@@ -1,9 +1,9 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 
-const Card = ({title,body,thumbnail}) => {
+const Card = ({title,body,thumbnail,darkTheme}) => {
     return (
-        <View className="flex-1">
+        <View className={darkTheme === "dark" ? "flex-1 dark" : "flex-1"}>
             <View className="rounded-lg bg-muted">
                 <Image
                     className="max-w-[100%] rounded-lg h-[100px]"

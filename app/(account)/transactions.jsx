@@ -236,7 +236,7 @@ const Transactions = () => {
                         </View>
                     ): (
                         <View className="px-5 pt-10">
-                            <EmptyState title={"No transactions"}/>
+                            <EmptyState darkTheme={darkTheme} title={"No transactions"}/>
                         </View>
                     )}
                 </View>)}

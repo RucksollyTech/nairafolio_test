@@ -1,9 +1,9 @@
 import { View, Text, Image } from "react-native";
 import { images } from "../constants";
 
-const EmptyState = ({ title, subtitle ,notIncludeImg}) => {
+const EmptyState = ({ title, subtitle ,notIncludeImg, darkTheme}) => {
     return (
-        <View className="flex justify-center items-center px-4 h-full flex-1">
+        <View className={`flex justify-center items-center px-4 h-full flex-1 ${darkTheme === "dark" && "dark"}`}>
             {!notIncludeImg && (
                 <Image
                     source={images.empty}

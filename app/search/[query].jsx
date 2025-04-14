@@ -128,6 +128,7 @@ const Search = () => {
                         ): (
                             <View className="mt-14">
                                 <EmptyState 
+                                    darkTheme={darkTheme}
                                     title="No Investment Found"
                                     subtitle="No investment found for this search query"
                                     notIncludeImg

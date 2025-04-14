@@ -3,11 +3,11 @@ import {View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
 
 
-const SuccessModal = ({ isVisible, onClose, children, header }) => {
+const SuccessModal = ({ isVisible, onClose, children, header , darkTheme}) => {
     if (!isVisible) return null;
 
     return (
-        <View className="absolute inset-0 z-50 bg-white">
+        <View className={`absolute inset-0 z-50 ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <View
                 className="absolute top-20 inset-x-0 "
             >

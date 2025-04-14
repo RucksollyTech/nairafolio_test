@@ -5,7 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "androidNavigationBar": {
-      "backgroundColor": "#FFFFFF"
+      "backgroundColor": "#FFFFFF",
+      "barStyle": "dark-content"
+      // "visible": "sticky-immersive"
     },
     "icon": "./assets/images/icon.png",
     "scheme": "nairafolio",

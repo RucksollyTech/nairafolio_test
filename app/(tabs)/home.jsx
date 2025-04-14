@@ -215,6 +215,7 @@ const Home = () => {
                                                 {active && (
                                                     <View className="mt-10">
                                                         <EmptyState
+                                                            darkTheme={darkTheme}
                                                             title={"You have no Investments"}
                                                             subtitle={"You can start by investing in the available opportunities"}
                                                         />
@@ -278,6 +279,7 @@ const Home = () => {
                                 ) : (
                                     <View className="mt-20">
                                         <EmptyState
+                                            darkTheme={darkTheme}
                                             title={"You have no Investments"}
                                             subtitle={"You can start by investing in the available opportunities"}
                                         />

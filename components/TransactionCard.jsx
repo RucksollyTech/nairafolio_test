@@ -6,18 +6,18 @@ import { TransactionDisplayText, classNameColorsForTransactions, transactionIcon
 import UTCDate from './UTCDate'
 import Money from './Money'
 
-const TransactionCard = ({transactions,transaction,index}) => {
+const TransactionCard = ({transactions,transaction,index,darkTheme}) => {
     return (
-        
         <View 
             key={transaction?.$id}
             className={`
+                ${darkTheme === "dark" && "dark"}
                 flex-1 
                 flex
                 flex-row
                 mb-5
                 py-4
-                ${transactions.length === index + 1 ? '' : 'border-border dark:border-[#3B3C43] border-b'}
+                ${transactions.length === index + 1 ? '' : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"} border-b`}
             `}
         >
             

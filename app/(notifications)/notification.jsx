@@ -322,7 +322,7 @@ const notification = () => {
                         </View>
                     ):(
                         <View className="px-5 pt-10">
-                            <EmptyState title={"No notification"}/>
+                            <EmptyState darkTheme={darkTheme} title={"No notification"}/>
                         </View>
                     )}
                 </View>)}

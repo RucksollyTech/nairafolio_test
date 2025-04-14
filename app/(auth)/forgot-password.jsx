@@ -30,7 +30,7 @@ const ForgotPassword = () => {
 
     };
     return (
-        <SafeAreaView className='flex-1 bg-white'>
+        <SafeAreaView className={darkTheme === "dark" ? "flex-1 dark bg-dark_mode" : 'flex-1 bg-white'}>
             <View className='flex-1 items-center justify-center px-5'>
                 <View className='w-full'>
                     <FormFieldAdjusted 
@@ -54,6 +54,7 @@ const ForgotPassword = () => {
                 </View>
             </View>
             <SuccessModal
+                darkTheme={darkTheme}
                 header={"success!"}
                 isVisible={successModal} 
                 onClose={handleDismissSuccessModal}
@@ -81,6 +82,7 @@ const ForgotPassword = () => {
                         title={"Continue"}
                         textStyles={"font-psans text-white"}
                         containerStyles={"mt-5 h-14"}
+                        darkTheme={darkTheme}
                     />
                 </View>
             </SuccessModal>

@@ -1,9 +1,17 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
+import { Dimensions } from 'react-native';
 
+const { height: screenHeight } = Dimensions.get('window'); 
 
-const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, header, dismissOnClickOutside,darkTheme }) => {
+const GeneralDrawer = ({ 
+    isVisible, onClose, 
+    children,minHeights, 
+    noScroll, header, 
+    dismissOnClickOutside,darkTheme,
+    makeFull 
+}) => {
     if (!isVisible) return null;
 
     return (
@@ -11,7 +19,7 @@ const GeneralDrawer = ({ isVisible, onClose, children,minHeights, noScroll, head
             {dismissOnClickOutside && <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />}
             <View
                 className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1D1E25] rounded-t-[30px]"
-                style={{ minHeight: minHeights }}
+                style={{ minHeight: makeFull ? screenHeight * 0.92 : minHeights }}
             >
                 <View 
                     className="

@@ -89,7 +89,7 @@ const explore = () => {
                     {loading ? (
                         <SkeletonLoader darkTheme={darkTheme} />
                     ): (
-                        <EmptyState title={"No investment now"} subtitle={"Check back later"}/>
+                        <EmptyState darkTheme={darkTheme} title={"No investment now"} subtitle={"Check back later"}/>
                     )}
                 </View>)}
                 showsVerticalScrollIndicator={false}

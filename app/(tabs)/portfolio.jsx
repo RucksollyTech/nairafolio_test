@@ -55,6 +55,7 @@ const Portfolio = () => {
             ) : (
                 <View className="mt-20">
                     <EmptyState
+                        darkTheme={darkTheme}
                         title={"You have no Investments"}
                         subtitle={"You can start by investing in the available opportunities"}
                     />

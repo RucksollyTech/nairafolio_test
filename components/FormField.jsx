@@ -94,6 +94,7 @@ const FormField = ({
                         keyboardType={keyboardType ?? "default"}
                         placeholderTextColor="#BBBBBB"
                         onChangeText={handleChangeText}
+                        autoCapitalize="none"
                         secureTextEntry={title === "Password" && !showPassword}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}

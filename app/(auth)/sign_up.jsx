@@ -276,8 +276,9 @@ const sign_up = () => {
                                         <FormField 
                                             title="Email"
                                             value={form.email}
+                                            keyboardType={"email-address"}
                                             placeholder="Email address"
-                                            handleChangeText={(e)=>setForm({...form, email: e})}
+                                            handleChangeText={(e)=>setForm({...form, email: e.trim()})}
                                             darkTheme={darkTheme}
                                         />
                                     </View>

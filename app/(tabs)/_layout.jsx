@@ -3,10 +3,11 @@ import { Redirect, Tabs } from "expo-router";
 import { Image, Platform, Text, View } from "react-native";
 
 import { icons } from "../../constants";
-import { Loader } from "../../components";
 import { useGlobalContext } from "@/context/GlobalProvider";
-// import { useGlobalContext } from "../../context/GlobalProvider";
+import { useEffect } from "react";
 
+import * as NavigationBar from "expo-navigation-bar"
+import { useFocusEffect } from "expo-router";
 const TabIcon = ({ icon, color, name, focused, darkTheme }) => {
   return (
     <View className="flex items-center justify-center gap-2 pt-10">
@@ -26,7 +27,27 @@ const TabIcon = ({ icon, color, name, focused, darkTheme }) => {
 
 const TabLayout = () => {
   const { darkTheme, loading , isLogged } = useGlobalContext();
+  useEffect(() => {
+    if(Platform.OS === "android"){
+      NavigationBar.setVisibilityAsync('hidden');
+    }
+  }, [])
+  useFocusEffect(() => {
+    let timeout;
+    if (Platform.OS === 'android') {
+      NavigationBar.setBehaviorAsync('inset-swipe');
+      NavigationBar.setVisibilityAsync('visible');
 
+      timeout = setTimeout(() => {
+        NavigationBar.setVisibilityAsync('hidden');
+      }, 3000);
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  })
+  
   if (!loading && !isLogged) return <Redirect href="/sign-in" />;
 
   return (
@@ -113,7 +134,10 @@ const TabLayout = () => {
       </Tabs>
 
       {/* <Loader isLoading={loading} /> */}
-      <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} style={darkTheme === "dark" ? "light" : "dark"}/>
+      <StatusBar 
+        backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} 
+        style={darkTheme === "dark" ? "light" : "dark"}
+      />
       {/* <StatusBar backgroundColor={darkTheme === "dark" ? "#1D1E25" : "#EAF6E4"} style={Platform.OS === 'ios' ? `${darkTheme === "dark" ? "light" : "dark"}` : `${darkTheme === "dark" ? "light" : "dark"}` }/> */}
     </>
   );

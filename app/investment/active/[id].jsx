@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, Image, Alert, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -31,7 +31,7 @@ import PasswordConfirm from '@/components/PasswordConfirm'
 import { KeyboardAvoidingView } from 'react-native'
 import { Platform } from 'react-native'
 
-
+const { height: screenHeight } = Dimensions.get('window'); 
 export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
     router.push({
         pathname: "/pay-with/[mode]",
@@ -1087,7 +1087,7 @@ const Active = () => {
                         </View>
                         {updates?.length === 0 && (
                             <View className="mt-2">
-                                <EmptyState title={"No update found"} subtitle={"No update found for the date selected"} />
+                                <EmptyState darkTheme={darkTheme} title={"No update found"} subtitle={"No update found for the date selected"} />
                             </View>
                         )}
                     </View>
@@ -1109,6 +1109,7 @@ const Active = () => {
                     header={success ? "success!" : activeMethod === 2 ? "Sell shares now" : "Sell shares"}
                     isVisible={isDrawerVisible2} 
                     onClose={handleSuccess}
+                    makeFull={success}
                 >
                     {!next ? (
                         <>
@@ -1213,35 +1214,43 @@ const Active = () => {
                             </TouchableOpacity>
                         </>
                     ):success ? (
-                        <View className="px-2">
-                            <View className="flex-1 justify-center items-center">
-                                <Image 
-                                    source={icons.good}
-                                />
-                            </View>
-                            <View className="mt-5">
-                                {activeMethod === 2 ? (
-                                    <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
-                                        You have just sold {unitToSell} units of your shares to NairaFolio.
-                                    </Text>
-                                ) : (
-                                    <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
-                                        You have just put up {unitToSell} units of your shares up for sale.
-                                    </Text>
+                        <View 
+                            className="px-2 flex-col justify-between"
+                            style={{
+                                minHeight: screenHeight - 200 
+                            }}
+                        >
+                            <View className=' justify-center items-center'>
+                                <View className="flex-1 justify-center items-center mt-24">
+                                    <Image 
+                                        source={icons.good}
+                                    />
+                                </View>
+                                <View className="mt-5">
+                                    {activeMethod === 2 ? (
+                                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                            You have just sold {unitToSell} units of your shares to NairaFolio.
+                                        </Text>
+                                    ) : (
+                                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                            You have just put up {unitToSell} units of your shares up for sale.
+                                        </Text>
+                                    )}
+                                </View>
+                                {activeMethod !== 2 && (
+                                    <View className="mt-2">
+                                        <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
+                                            Your wallet will be credited once someone else buys your shares
+                                        </Text>
+                                    </View>
                                 )}
                             </View>
-                            {activeMethod !== 2 && (
-                                <View className="mt-2">
-                                    <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
-                                        Your wallet will be credited once someone else buys your shares
-                                    </Text>
-                                </View>
-                            )}
                             <CustomButton
                                 handlePress={handleSuccess}
                                 title={"Continue"}
-                                textStyles={"font-psans text-white"}
-                                containerStyles={"mt-5 h-14"}
+                                textStyles={darkTheme !== "dark" && "font-psans text-white"}
+                                containerStyles={"mt-24 h-14"}
+                                darkTheme={darkTheme}
                             />
                         </View>
                     ):(
@@ -1309,7 +1318,7 @@ const Active = () => {
                                         </View>
                                     </View>
                                 )}
-                                {unitToSell >0 && pricePlaced > 0 && (
+                                {unitToSell > 0 && pricePlaced > 0 && (
                                     <View className="mt-5 justify-center items-center flex-row">
                                         <Text className="font-pregular text-base my-7 text-secondary-100">
                                             For {unitToSell} units you’ll get{" "}
@@ -1349,6 +1358,7 @@ const Active = () => {
                     )}
                 </GeneralDrawer>
                 <SuccessModal
+                    darkTheme={darkTheme}
                     header={"success!"}
                     isVisible={successModal} 
                     onClose={handleDismissSuccessModal}
@@ -1373,8 +1383,9 @@ const Active = () => {
                         <CustomButton
                             handlePress={handleDismissSuccessModal}
                             title={"Continue"}
-                            textStyles={"font-psans text-white"}
+                            textStyles={darkTheme !== "dark" && "font-psans text-white"}
                             containerStyles={"mt-5 h-14"}
+                            darkTheme={darkTheme}
                         />
                     </View>
                 </SuccessModal>

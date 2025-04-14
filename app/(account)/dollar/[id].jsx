@@ -225,6 +225,7 @@ const Dollar = () => {
                             }}
                             renderItem={({ item, index }) =>(
                                 <TransactionCard 
+                                    darkTheme={darkTheme}
                                     index={index}
                                     transaction={item} 
                                     transactions={transactions} 

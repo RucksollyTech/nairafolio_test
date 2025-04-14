@@ -5,6 +5,8 @@ import { Stack, router, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { Platform, View } from 'react-native';
+import * as NavigationBar from "expo-navigation-bar"
+import { useFocusEffect } from 'expo-router';
 
 const AppLayout = () => {
     const pathname = usePathname();
@@ -30,6 +32,28 @@ const AppLayout = () => {
     const currentState = navigation.getState();
     const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
     const otherScreen = currentState.routes[currentState.index]?.params?.screen;
+    
+    useEffect(() => {
+        if(Platform.OS === "android"){
+            NavigationBar.setVisibilityAsync('hidden');
+        }
+    }, [])
+    useFocusEffect(() => {
+        let timeout;
+        if (Platform.OS === 'android') {
+            NavigationBar.setBehaviorAsync('inset-swipe');
+            NavigationBar.setVisibilityAsync('visible');
+
+            timeout = setTimeout(() => {
+                NavigationBar.setVisibilityAsync('hidden');
+            }, 3000);
+        }
+
+        return () => {
+            if (timeout) clearTimeout(timeout);
+        };
+    })
+
     useEffect(() => {
         const defScreen = async()=>{
             const screenCol= await getData("NairafolioColorScheme")
@@ -68,6 +92,7 @@ const AppLayout = () => {
             router.replace("/sign_in")
         }
     },[currentRouteName,otherScreen,loading,isLogged, router])
+    
     return (
         <ThemeProvider value={darkTheme === 'dark' ? DarkTheme : DefaultTheme}>
             {Platform.OS === 'ios' && (

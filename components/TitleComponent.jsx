@@ -6,7 +6,6 @@ import { Link } from 'expo-router'
 
 const TitleComponent = ({item}) => {
     const {title,body,$createdAt,$id,darkTheme,lines} = item
-    console.log({darkTheme,lines})
     return (
         <View className={darkTheme === "dark" ? "dark" : ""}>
             <View className="border flex-1 border-border dark:border-[#495161] bg-[#F8FAFA] dark:bg-[#303540] rounded-lg mt-5">

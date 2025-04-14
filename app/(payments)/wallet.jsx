@@ -220,6 +220,7 @@ const Wallet = () => {
                             <>
                                 <View className="mt-5">
                                     <EmptyState
+                                        darkTheme={darkTheme}
                                         title={"No transactions"}
                                     />
                                 </View>

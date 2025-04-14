@@ -9,7 +9,7 @@ const PaymentLoader = ({title1,title2,title3,style1,style2,style3,loading,setLoa
         setShowCancel(false)
         setTimeout(() => {
             setShowCancel(true)
-        }, 6000);
+        }, 10000);
     }, [loading])
     
     return (

@@ -160,7 +160,7 @@ const PaymentMethods = (destination) => {
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <Link href={"/pay-with-card"} className="px-5">
+                            <Link href={"/"} className="px-5">
                                 <View 
                                     className="
                                         flex-1 
