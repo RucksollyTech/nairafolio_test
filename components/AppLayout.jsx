@@ -33,26 +33,27 @@ const AppLayout = () => {
     const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
     const otherScreen = currentState.routes[currentState.index]?.params?.screen;
     
-    useEffect(() => {
-        if(Platform.OS === "android"){
-            NavigationBar.setVisibilityAsync('hidden');
-        }
-    }, [])
-    useFocusEffect(() => {
-        let timeout;
-        if (Platform.OS === 'android') {
-            NavigationBar.setBehaviorAsync('inset-swipe');
-            NavigationBar.setVisibilityAsync('visible');
+    // useEffect(() => {
+    //     if(Platform.OS === "android"){
+    //         NavigationBar.setPositionAsync("absolute")
+    //         NavigationBar.setVisibilityAsync('hidden');
+    //     }
+    // }, [])
+    // useFocusEffect(() => {
+    //     let timeout;
+    //     if (Platform.OS === 'android') {
+    //         NavigationBar.setBehaviorAsync('inset-swipe');
+    //         NavigationBar.setVisibilityAsync('visible');
 
-            timeout = setTimeout(() => {
-                NavigationBar.setVisibilityAsync('hidden');
-            }, 3000);
-        }
+    //         timeout = setTimeout(() => {
+    //             NavigationBar.setVisibilityAsync('hidden');
+    //         }, 3000);
+    //     }
 
-        return () => {
-            if (timeout) clearTimeout(timeout);
-        };
-    })
+    //     return () => {
+    //         if (timeout) clearTimeout(timeout);
+    //     };
+    // })
 
     useEffect(() => {
         const defScreen = async()=>{

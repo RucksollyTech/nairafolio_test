@@ -144,7 +144,7 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                         await sendPushNotification(buyingUser,"Sales of shares", `Your shares for ${investment?.name} has been sold`,investment?.investment)
                         // Add text as message here
                         await createNotification(investment?.investment?.$id,investment?.name,parseFloat(value_spent * investment?.price_per_unit),"sales",sellerUserId)
-                        await createNotification(investment?.investment?.$id,investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",buyingUser?.$id)
+                        await createNotification(investment?.investment?.$id,investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",user?.$id)
                     }
                     return {
                         updatedUser,
@@ -255,7 +255,7 @@ export const WalletCheckOutSales = async(investment,value_spent,user)=>{
                         await sendPushNotification(buyingUser,"Sales of shares", `Your shares for ${investment?.name} has been sold`,investment?.investment)
                         // Add text as message here
                         await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"sales",sellerUserId)
-                        await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",buyingUser?.$id)
+                        await createNotification(investment?.$id,investment?.investment?.name,parseFloat(value_spent * investment?.price_per_unit),"purchase",user?.$id)
                     }
                     return {
                         updatedUser,
@@ -402,7 +402,8 @@ export const sellInvestmentNairaFolio = async(data)=>{
                             rio:investment?.rio,
                             immediate_start:investment?.immediate_start
                         }
-                    )
+                    ),
+                    createNotification(investment?.$id,investment?.investment?.name,parseFloat(putUnit * investment?.investment?.price_by_nairafolio),"sales",user.$id)
                 ]
             )
             await updateCurrentUser(setUser)
@@ -440,7 +441,8 @@ export const sellInvestmentNairaFolio = async(data)=>{
                             rio:investment?.rio,
                             immediate_start:investment?.immediate_start
                         }
-                    )
+                    ),
+                    createNotification(investment?.$id,investment?.investment?.name,parseFloat(putUnit * investment?.investment?.price_by_nairafolio),"sales",user.$id)
                 ]
             )
         }

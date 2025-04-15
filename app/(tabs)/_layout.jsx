@@ -27,26 +27,26 @@ const TabIcon = ({ icon, color, name, focused, darkTheme }) => {
 
 const TabLayout = () => {
   const { darkTheme, loading , isLogged } = useGlobalContext();
-  useEffect(() => {
-    if(Platform.OS === "android"){
-      NavigationBar.setVisibilityAsync('hidden');
-    }
-  }, [])
-  useFocusEffect(() => {
-    let timeout;
-    if (Platform.OS === 'android') {
-      NavigationBar.setBehaviorAsync('inset-swipe');
-      NavigationBar.setVisibilityAsync('visible');
+  // useEffect(() => {
+  //   if(Platform.OS === "android"){
+  //     NavigationBar.setVisibilityAsync('hidden');
+  //   }
+  // }, [])
+  // useFocusEffect(() => {
+  //   let timeout;
+  //   if (Platform.OS === 'android') {
+  //     NavigationBar.setBehaviorAsync('inset-swipe');
+  //     NavigationBar.setVisibilityAsync('visible');
 
-      timeout = setTimeout(() => {
-        NavigationBar.setVisibilityAsync('hidden');
-      }, 3000);
-    }
+  //     timeout = setTimeout(() => {
+  //       NavigationBar.setVisibilityAsync('hidden');
+  //     }, 3000);
+  //   }
 
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
-  })
+  //   return () => {
+  //     if (timeout) clearTimeout(timeout);
+  //   };
+  // })
   
   if (!loading && !isLogged) return <Redirect href="/sign-in" />;
 
