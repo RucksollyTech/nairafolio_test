@@ -8,6 +8,7 @@ import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { signOut } from '@/lib/appwrite';
+import { myClassConverter } from '@/lib/performActions';
 
 
 const index = () => {
@@ -137,7 +138,10 @@ const index = () => {
                                 <View>
                                     <CustomButton 
                                         title="Login"
-                                        containerStyles="h-[50px] border border-border dark:border-[#3B3C43] mt-5 bg-white mx-8"
+                                        containerStyles={myClassConverter(
+                                            darkTheme,"h-[50px] border mt-5 bg-white mx-8",
+                                            "dark:border-[#3B3C43]","border-border"
+                                        )}
                                         textStyles="text-dark-100"
                                         handlePress={()=>router.push("/sign_in")}
                                     />

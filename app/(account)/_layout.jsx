@@ -43,6 +43,12 @@ const AccountLayout = () => {
                 }}
             />
             <Stack.Screen
+                name="themes"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
                 name="verify-account"
                 options={{
                     headerShown: false,

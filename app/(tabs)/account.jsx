@@ -5,12 +5,12 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { icons } from '../../constants'
 import AccountComponets from '../../components/AccountComponets'
 import { Link, router } from 'expo-router'
-import { useGlobalContext } from '@/context/GlobalProvider'
+import { getData, removeData, useGlobalContext } from '@/context/GlobalProvider'
 import { signOut } from '@/lib/appwrite'
 import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 
 const account = () => {
-    const { setUser, setIsLogged,user,setLastActive,darkTheme } = useGlobalContext();
+    const { setUser, setIsLogged,user,setLastActive,darkTheme,setDarkTheme } = useGlobalContext();
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [refreshing, setRefreshing] = useState(false);
 
@@ -22,11 +22,17 @@ const account = () => {
     const logout = async () => {
         setIsLoggingOut(true)
         await signOut();
-        await updateCurrentUser(setUser)
+        // await updateCurrentUser(setUser)
         setUser(null);
         setIsLogged(false);
-        setIsLoggingOut(false)
 
+        const screenCol= await getData("NairafolioColorScheme")
+        if(screenCol){
+            setDarkTheme(null);
+            await removeData("NairafolioColorScheme")
+        }
+
+        setIsLoggingOut(false)
         router.replace("/sign_in");
     };
     useEffect(() => {
@@ -140,7 +146,8 @@ const account = () => {
                             icon={icons.arrow_up_down}
                             link={"/transactions"}
                             darkTheme={darkTheme}
-                            tintColor={"#CBF5B8"}
+                            // #014148
+                            tintColor={darkTheme === "dark" ? "#CBF5B8" : "#014148"}
                         />
                         <AccountComponets 
                             title={"Wallet"}
@@ -154,12 +161,15 @@ const account = () => {
                             link={"/"}
                             darkTheme={darkTheme}
                         />
-                        {/* <AccountComponets 
-                            title={"Media and contents"}
-                            icon={icons.media}
-                            link={"/"}
+                        <AccountComponets 
+                            title={"Themes"}
+                            icon={icons.tag}
+                            link={"/themes"}
+                            // tintColor={"#267103"}
+                            tintColor={darkTheme === "dark" ? "#CBF5B8" : "#267103"}
+
                             darkTheme={darkTheme}
-                        /> */}
+                        />
                         {/* <AccountComponets 
                             title={"Help"}
                             icon={icons.phone}
@@ -167,7 +177,7 @@ const account = () => {
                             darkTheme={darkTheme}
                         /> */}
                     </View>
-                    <View className="mb-10 mt-10 justify-center items-center">
+                    <View className="mb-10 mt-10 text-[#174402] justify-center items-center">
                         <TouchableOpacity
                             onPress={logout}
                             activeOpacity={0.1}

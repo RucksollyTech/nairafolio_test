@@ -169,7 +169,9 @@ const Home = () => {
                             <View className="px-5">
                                 {(userInvestments && userInvestments.length > 0) ? (
                                     <View className="mt-6 min-h-[225px]">
-                                        {active && notForSellData.length > 0 && notForSellData.map((mapData,index)=>(
+                                    {/* userInvestments */}
+                                        {/* {active && notForSellData.length > 0 && notForSellData.map((mapData,index)=>( */}
+                                        {active && userInvestments?.length > 0 && (userInvestments.slice(0,3))?.map((mapData,index)=>(
                                             <View key={index} className="mb-2">
                                                 <InvestmentCard 
                                                     logo = {mapData.investment.logo}
