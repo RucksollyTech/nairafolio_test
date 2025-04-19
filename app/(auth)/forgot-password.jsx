@@ -6,6 +6,7 @@ import { CustomButton, SuccessModal } from '@/components'
 import { icons } from '@/constants'
 import { sendPasswordResetEmail } from '@/lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider'
+import { myClassConverter } from '@/lib/performActions'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("")
@@ -66,12 +67,22 @@ const ForgotPassword = () => {
                         />
                     </View>
                     <View className="mt-5">
-                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            `font-psans text-2xl text-center`,
+                            "text-white",
+                            "text-black-100"
+                        )}>
                             Password reset mail sent! 
                         </Text>
                     </View>
                     <View className="mt-2">
-                        <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            `font-pmedium text-base text-center`,
+                            "text-white",
+                            "text-black-100"
+                        )}>
                             Password reset mail has been sent to the email address provided. Follow 
                             the instructions to reset your password.
                         </Text>

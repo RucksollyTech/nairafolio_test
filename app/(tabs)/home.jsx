@@ -18,7 +18,7 @@ import PaymentMethods from '../../components/PaymentMethods';
 import UTCDate from '../../components/UTCDate';
 import { CustomFlatListCarousel } from '@/components/CustomCarousel';
 import Media_and_stories from '@/components/media_and_stories';
-import { Keyboard } from 'react-native';
+import { myClassConverter } from '@/lib/performActions';
 
 
 const Home = () => {
@@ -91,7 +91,12 @@ const Home = () => {
             style={{ flex: 1 }}
             className={darkTheme === 'dark' ? "dark" : ""}
         >
-            <SafeAreaView className="bg-white dark:bg-[#1D1E25] flex-1 h-full">
+            <SafeAreaView className={myClassConverter(
+                darkTheme,
+                `flex-1 h-full`,
+                "bg-[#1D1E25]",
+                "bg-white"
+            )}>
                 <ScrollView
                     onTouchStart={() => setLastActive(Date.now())}
                     onScroll={() => setLastActive(Date.now())}
@@ -112,12 +117,22 @@ const Home = () => {
                             <View className="px-5 pt-10 flex-row justify-between">
                                 <View>
                                     <View>
-                                        <Text className="text-muted dark:text-[#FFFFFFB2] font-psemibold font-semibold text-sm">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-psemibold font-semibold text-sm`,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                        )}>
                                             Welcome,
                                         </Text>
                                     </View>
                                     <View className="pt-1">
-                                        <Text className="text-black-100 dark:text-white font-psans text-xl">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-psans text-xl`,
+                                            "text-white",
+                                            "text-black-100"
+                                        )}>
                                             {user?.name || "--"}
                                         </Text>
                                     </View>
@@ -159,6 +174,7 @@ const Home = () => {
                                 toggler={toggler}
                                 title1={"Investments"}
                                 title2={"Up for sale"}
+                                darkTheme={darkTheme}
                             />
                         )} */}
                         {(loading || load) ? (
@@ -207,7 +223,12 @@ const Home = () => {
                                             <View className='mt-2'>
                                                 <Link
                                                     href={"/portfolio"}
-                                                    className='border text-muted-300 dark:text-white text-center p-3 border-border dark:border-[#3B3C43] rounded-lg font-psemibold'
+                                                    className={myClassConverter(
+                                                        darkTheme,
+                                                        `border text-center p-3 rounded-lg font-psemibold`,
+                                                        "text-white border-[#3B3C43]",
+                                                        "text-muted-300 border-border"
+                                                    )}
                                                 >
                                                     See all
                                                 </Link>
@@ -238,7 +259,12 @@ const Home = () => {
                                             <View className='mt-2'>
                                                 <Link
                                                     href={"/portfolio"}
-                                                    className='border text-muted-300 dark:text-white text-center p-3 border-border dark:border-[#3B3C43] rounded-lg font-psemibold'
+                                                    className={myClassConverter(
+                                                        darkTheme,
+                                                        `border text-center p-3 rounded-lg font-psemibold`,
+                                                        "text-white border-[#3B3C43]",
+                                                        "text-muted-300 border-border"
+                                                    )}
                                                 >
                                                     See all
                                                 </Link>
@@ -299,7 +325,7 @@ const Home = () => {
                             </View>
                         )}
                         <View>
-                            <Media_and_stories setLastActive={setLastActive} refreshing={refreshing} />
+                            <Media_and_stories darkTheme={darkTheme} setLastActive={setLastActive} refreshing={refreshing} />
                         </View>
                     </View>
 

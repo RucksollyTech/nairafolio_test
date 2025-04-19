@@ -6,6 +6,7 @@ import { StyleSheet } from 'nativewind'
 import Money from './Money'
 import { router } from 'expo-router'
 import { convertDaysToReadableFormat } from './dayConverter'
+import { myClassConverter } from '@/lib/performActions'
 
 const InvestmentDisplayCard = (
     {
@@ -35,7 +36,12 @@ const InvestmentDisplayCard = (
             activeOpacity={0.8}
             className={darkTheme === "dark" ? "dark" : ""}
         >
-            <View className="flex-1 rounded-lg shadow overflow-hidden border border-border dark:border-[#3B3C43]">
+            <View className={myClassConverter(
+                darkTheme,
+                `flex-1 rounded-lg shadow overflow-hidden border`,
+                "border-[#3B3C43]",
+                "border-border"
+            )}>
                 <ImageBackground
                     source={{uri: cover_image}}
                     resizeMode="cover"
@@ -74,8 +80,18 @@ const InvestmentDisplayCard = (
                         </View>
                     </LinearGradient>
                 </ImageBackground>
-                <View className="bg-white dark:bg-[#242730] p-3">
-                    <Text className="text-lg font-pregular font-[700] text-black-100 dark:text-white ">
+                <View className={myClassConverter(
+                    darkTheme,
+                    `p-3`,
+                    "bg-[#242730]",
+                    "bg-white"
+                )}>
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-lg font-pregular font-[700]`,
+                        "text-white",
+                        "text-black-100"
+                    )}>
                         {name}
                     </Text>
                     <View className="py-2">
@@ -84,16 +100,13 @@ const InvestmentDisplayCard = (
                         </Text>
                     </View>
                     <View className="flex flex-row flex-wrap gap-4 mt-2">
-                        <View className="
-                            flex items-center 
-                            justify-center 
-                            bg-[#F6F6F6] border 
-                            dark:bg-[#303540]
-                            border-border 
-                            dark:border-[#00000014] 
-                            px-3 py-2 rounded-lg
-
-                        ">
+                        <View className={myClassConverter(
+                            darkTheme,
+                            `flex items-center 
+                            justify-center border px-3 py-2 rounded-lg`,
+                            "bg-[#303540] border-[#00000014] ",
+                            "bg-[#F6F6F6] border-border "
+                        )}>
                             <View className="flex flex-row ">
                                 <Image
                                     source={icons.roi}
@@ -101,12 +114,22 @@ const InvestmentDisplayCard = (
                                     className="my-auto"
                                     tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                 />
-                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                    "text-[#FFFFFF99]",
+                                    "text-muted-200"
+                                )}>
                                     {rio}% ROI
                                 </Text>
                             </View>
                         </View>
-                        <View className="flex items-center justify-center dark:border-[#00000014] dark:bg-[#303540] bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
+                        <View className={myClassConverter(
+                            darkTheme,
+                            `flex items-center justify-center border px-3 py-2 rounded-lg`,
+                            "border-[#00000014] bg-[#303540]",
+                            "bg-[#F6F6F6] border-border"
+                        )}>
                             <View className="flex flex-row">
                                 <Image
                                     source={icons.money}
@@ -118,10 +141,20 @@ const InvestmentDisplayCard = (
                                     <Money 
                                         value={min_investment}
                                         containerStyle="flex"
-                                        textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]"
+                                        textStyle={myClassConverter(
+                                            darkTheme,
+                                            `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                            "text-[#FFFFFF99]",
+                                            "text-muted-200"
+                                        )}
                                     />
                                     <View className="flex flex-row ">
-                                        <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                            "text-[#FFFFFF99]",
+                                            "text-muted-200"
+                                        )}>
                                             min
                                         </Text>
                                     </View>
@@ -129,7 +162,12 @@ const InvestmentDisplayCard = (
                             </View>
                         </View>
                         {!!duration_days && (
-                            <View className="flex items-center justify-center dark:border-[#00000014] dark:bg-[#303540] bg-[#F6F6F6] border border-border px-3 py-2 rounded-lg">
+                            <View className={myClassConverter(
+                                darkTheme,
+                                `flex items-center justify-center border px-3 py-2 rounded-lg`,
+                                "border-[#00000014] bg-[#303540]",
+                                "bg-[#F6F6F6] border-border"
+                            )}>
                                 <View className="flex flex-row ">
                                     <Image
                                         source={icons.calender}
@@ -137,7 +175,12 @@ const InvestmentDisplayCard = (
                                         className="my-auto"
                                         tintColor={darkTheme === "dark" ? "#FFFFFF" : "#141B34"}
                                     />
-                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                        "text-[#FFFFFF99]",
+                                        "text-muted-200"
+                                    )}>
                                         {convertDaysToReadableFormat(duration_days)} returns
                                     </Text>
                                 </View>
@@ -147,13 +190,15 @@ const InvestmentDisplayCard = (
                     </View>
                     <View className="mt-4">
                         <View 
-                            className="
-                                flex-1 
+                            className={myClassConverter(
+                                darkTheme,
+                                `flex-1 
                                 flex 
                                 pt-3 flex-row
-                                border-t
-                                border-border dark:border-[#3B3C43]
-                            "
+                                border-t`,
+                                "border-[#3B3C43]",
+                                "border-border"
+                            )}
                         >
                             <View
                                 style={{
@@ -174,11 +219,21 @@ const InvestmentDisplayCard = (
                                 className="flex-1 px-3 "
                             >
                                 <View>
-                                    <Text className="text-sm text-muted-300 dark:text-white">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `text-sm`,
+                                        "text-white",
+                                        "text-muted-300"
+                                    )}>
                                         {company_name}
                                     </Text>
                                     <Text
-                                        className="text-lg font-[700] pt-1 font-pmedium text-muted-300 dark:text-white"
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `text-lg font-[700] pt-1 font-pmedium`,
+                                            "text-white",
+                                            "text-muted-300"
+                                        )}
                                     >
                                         {company_owner}
                                     </Text>

@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from 'react-native'
 import { registerForPushNotificationsAsync } from '../_layout'
+import { myClassConverter } from '@/lib/performActions'
 
 const sign_up = () => {
     const { setUser, setIsLogged, setLastActive, setLocked, darkTheme } = useGlobalContext();
@@ -183,7 +184,12 @@ const sign_up = () => {
                 >
                     <View>
                         <View>
-                            <Text className='font-psans dark:text-white text-3xl'>
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-psans text-3xl`,
+                                "text-white",
+                                "light"
+                            )}>
                                 {showNext ? "Name and Phone number" : "Sign up"}
                             </Text>
                         </View>
@@ -210,22 +216,26 @@ const sign_up = () => {
                                         />
                                     </View>
                                     <View className='flex flex-row pt-4 gap-3'>
-                                        <View className='
-                                            flex px-4
-                                            bg-[#FDFDFD] 
-                                            dark:bg-[#27282F]
-                                            rounded-2xl 
-                                            flex-row
-                                            border border-border dark:border-[#3B3C43] 
-                                            focus:border-primary 
-                                            items-center'
+                                        <View className={myClassConverter(
+                                                darkTheme,
+                                                `flex px-4 rounded-2xl 
+                                                flex-row border focus:border-primary 
+                                                items-center`,
+                                                "bg-[#27282F] border-[#3B3C43] ",
+                                                "bg-[#FDFDFD] border-border"
+                                            )}
                                         >
                                             <Image 
                                                 source={icons.ngLogo}
                                                 resizeMode='contain'
                                                 className='my-auto'
                                             />
-                                            <Text className='text-sm text-muted dark:text-[#FFFFFFB2] pl-1'>
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm pl-1`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 +234
                                             </Text>
                                         </View>
@@ -244,18 +254,23 @@ const sign_up = () => {
                                     <View className="mt-3 pt-3">
                                         <TouchableOpacity 
                                             onPress={showDatePicker}
-                                            className={`
-                                                w-full h-16 
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `w-full h-16 
                                                 px-4 rounded-2xl 
                                                 border flex 
                                                 flex-row 
-                                                items-center 
-                                                bg-[#FDFDFD] dark:bg-[#27282F]
-                                                border-border dark:border-[#7F7F7F4D]
-                                            `}
-                                            // className="border flex-1 border-border dark:border-[#3B3C43] flex-row rounded-md w-44"
+                                                items-center `,
+                                                "bg-[#27282F] border-[#7F7F7F4D]",
+                                                "bg-[#FDFDFD] border-border"
+                                            )}
                                         >
-                                            <View className="border-r h-full border-border dark:border-[#3B3C43] pr-4 text-center justify-center">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `border-r h-full pr-4 text-center justify-center`,
+                                                "border-[#3B3C43]",
+                                                "border-border"
+                                            )}>
                                                 <Image
                                                     source={icons.calender}
                                                     resizeMode="cover"
@@ -263,7 +278,12 @@ const sign_up = () => {
                                                 />
                                             </View>
                                             <View className="p-2 text-center justify-center">
-                                                <Text className="font-pregular text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pregular text-base`,
+                                                    "text-[#FFFFFF99]",
+                                                    "text-muted-200"
+                                                )}>
                                                     {!dateValue ? "Enter your date of birth" : dateValue?.toDateString()}
                                                 </Text>
                                             </View>

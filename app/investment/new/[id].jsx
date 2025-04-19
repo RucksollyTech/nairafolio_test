@@ -21,6 +21,7 @@ import CustomModalAlert from '@/components/CustomModalAlert'
 import { updateCurrentUser } from '@/lib/updateAccountTransaction'
 // import GraphComponent from '@/components/GraphComponent'
 import GraphScreen from '@/components/GraphComponent'
+import { myClassConverter } from '@/lib/performActions'
 
 
 const Investment = () => {
@@ -202,18 +203,33 @@ const Investment = () => {
                                         className="flex-1 px-3 "
                                     >
                                         <View>
-                                            <Text className="text-sm text-muted-300 dark:text-white">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm`,
+                                                "text-white",
+                                                "text-muted-300"
+                                            )}>
                                                 {data?.company_name}
                                             </Text>
                                             <Text
-                                                className="text-lg font-[700] pt-1 font-pmedium text-muted-300 dark:text-white"
+                                                className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-[700] pt-1 font-pmedium`,
+                                                    "text-white",
+                                                    "text-muted-300"
+                                                )}
                                             >
                                                 {data?.company_owner}
                                             </Text>
                                         </View>
                                     </View>
                                 </View>
-                                <View className="flex-1 mt-5 rounded-lg shadow overflow-hidden border border-border dark:border-[#3B3C43]">
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `flex-1 mt-5 rounded-lg shadow overflow-hidden border`,
+                                    "border-[#3B3C43]",
+                                    "border-border"
+                                )}>
                                     <ImageBackground
                                         source={{uri: data?.cover_image}}
                                         resizeMode="cover"
@@ -243,8 +259,18 @@ const Investment = () => {
                                         </LinearGradient>
                                     </ImageBackground>
                                 </View>
-                                <View className="bg-white dark:bg-dark_mode py-3">
-                                    <Text className="text-xl font-pregular font-[700] text-black-100 dark:text-white ">
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `py-3`,
+                                    "bg-dark_mode",
+                                    "bg-white"
+                                )}>
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `text-xl font-pregular font-[700]`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}>
                                         {data?.name}
                                     </Text>
                                     <View className="py-2">
@@ -278,12 +304,27 @@ const Investment = () => {
                                     </View>
                                 </View>
                             </View>
-                            <View className="pt-5 px-5 border-t border-border-100 dark:border-[#495161] flex-1">
-                                <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
+                            <View className={myClassConverter(
+                                darkTheme,
+                                `pt-5 px-5 border-t flex-1`,
+                                "border-[#495161]",
+                                "border-border-100"
+                            )}>
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `text-base`,
+                                    "text-[#FFFFFFB2]",
+                                    "text-muted"
+                                )}>
                                     Highlights
                                 </Text>
                                 <View className="flex flex-row gap-4 mt-3 flex-1 pt-1">
-                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                    <View className={myClassConverter(
+                                        darkTheme,
+                                        `flex w-[48%] items-center justify-center border px-3 py-2.5 rounded-lg`,
+                                        "bg-dark_mode-300 border-[#0000000A]",
+                                        "bg-[#F6F6F6] border-border-200"
+                                    )}>
                                         <View>
                                             <Image
                                                 source={icons.roi}
@@ -293,12 +334,22 @@ const Investment = () => {
                                             />
                                         </View>
                                         <View className="mt-2">
-                                            <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                "text-[#FFFFFF99]",
+                                                "text-muted-200"
+                                            )}>
                                                 {data?.rio ?? 1}% ROI
                                             </Text>
                                         </View>
                                     </View>
-                                    <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                    <View className={myClassConverter(
+                                        darkTheme,
+                                        `flex w-[48%] items-center justify-center border`,
+                                        "bg-dark_mode-300 border-[#0000000A]",
+                                        "bg-[#F6F6F6] border-border-200 px-3 py-2.5 rounded-lg"
+                                    )}>
                                         <View>
                                             <Image
                                                 source={icons.money}
@@ -312,10 +363,20 @@ const Investment = () => {
                                                 <Money 
                                                     value={data?.min_investment ?? 0}
                                                     containerStyle="flex"
-                                                    textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]"
+                                                    textStyle={myClassConverter(
+                                                        darkTheme,
+                                                        `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                        "text-[#FFFFFF99]",
+                                                        "text-muted-200"
+                                                    )}
                                                 />
                                                 <View className="flex flex-row ">
-                                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                        "text-[#FFFFFF99]",
+                                                        "text-muted-200"
+                                                    )}>
                                                         min
                                                     </Text>
                                                 </View>
@@ -325,7 +386,12 @@ const Investment = () => {
                                 </View>
                                 <View className="flex flex-row gap-4 flex-1">
                                     {!!data?.duration_days && (
-                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                        <View className={myClassConverter(
+                                            darkTheme,
+                                            `flex w-[48%] mt-4 items-center justify-center border px-3 py-2.5 rounded-lg`,
+                                            "bg-dark_mode-300 border-[#0000000A]",
+                                            "bg-[#F6F6F6] border-border-200"
+                                        )}>
                                             <View>
                                                 <Image
                                                     source={icons.calender}
@@ -335,14 +401,24 @@ const Investment = () => {
                                                 />
                                             </View>
                                             <View className="mt-2">
-                                                <Text className="font-pmedium text-center ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pmedium text-center ml-2 my-auto font-[600] text-base`,
+                                                    "text-[#FFFFFF99]",
+                                                    "text-muted-200"
+                                                )}>
                                                     {convertDaysToReadableFormat(data?.duration_days ?? 0)} returns
                                                 </Text>
                                             </View>
                                         </View>
                                     )}
                                     {!!data?.date_to_introduction && (
-                                        <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                        <View className={myClassConverter(
+                                            darkTheme,
+                                            `flex w-[48%] mt-4 items-center justify-center border px-3 py-2.5 rounded-lg`,
+                                            "bg-dark_mode-300 border-[#0000000A]",
+                                            "bg-[#F6F6F6] border-border-200"
+                                        )}>
                                             <View>
                                                 <Image
                                                     source={icons.start_date}
@@ -354,7 +430,12 @@ const Investment = () => {
                                             <View className="mt-2">
                                                 <View className="flex flex-row ">
                                                     <View className="flex flex-row ">
-                                                        <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                                        <Text className={myClassConverter(
+                                                            darkTheme,
+                                                            `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                            "text-[#FFFFFF99]",
+                                                            "text-muted-200"
+                                                        )}>
                                                             Starts {UTCDate(data?.date_to_introduction)?.simpleDateFormat}
                                                         </Text>
                                                     </View>
@@ -388,30 +469,61 @@ const Investment = () => {
                                 toggler={toggler}
                                 title1={"Overview"}
                                 title2={"Reports"}
+                                darkTheme={darkTheme}
                             />
                             <View className="px-5 pt-7">
                                 {active && (
                                     <View>
                                         <View className="mb-10">
-                                            <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
-                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `border-b pb-2 `,
+                                                "border-[#495161]",
+                                                "border-border-200"
+                                            )}>
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pmedium font-[600] text-lg`,
+                                                    "text-[#FFFFFF99]",
+                                                    "text-muted-200"
+                                                )}>
                                                     Introduction
                                                 </Text>
                                             </View>
                                             <View className="pt-2">
-                                                <Text className="text-black-300 dark:text-[#808D9E] text-lg font-pregular font-[600]">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-pregular font-[600]`,
+                                                    "text-[#808D9E]",
+                                                    "text-black-300"
+                                                )}>
                                                     {data?.introduction ?? ""}
                                                 </Text>
                                             </View>
                                         </View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
-                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `border-b pb-2`,
+                                                "border-[#495161]",
+                                                "border-border-200"
+                                            )}>
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pmedium font-[600] text-lg`,
+                                                    "text-[#FFFFFF99]",
+                                                    "text-muted-200"
+                                                )}>
                                                     Objective
                                                 </Text>
                                             </View>
                                             <View className="pt-2">
-                                                <Text className="text-black-300 dark:text-[#808D9E] text-lg font-pregular font-[600]">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-pregular font-[600]`,
+                                                    "text-[#808D9E]",
+                                                    "text-black-300"
+                                                )}>
                                                     {data?.objective ?? ""}
                                                 </Text>
                                             </View>
@@ -421,13 +533,28 @@ const Investment = () => {
                                 {!active && (
                                     <View>
                                         <View className="mb-7">
-                                            <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
-                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium font-[600] text-lg">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `border-b pb-2`,
+                                                "border-[#495161]",
+                                                "border-border-200"
+                                            )}>
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pmedium font-[600] text-lg`,
+                                                    "text-[#FFFFFF99]",
+                                                    "text-muted-200"
+                                                )}>
                                                     Reports
                                                 </Text>
                                             </View>
                                             <View className="pt-2">
-                                                <Text className="text-black-300 dark:text-[#808D9E] text-lg font-pregular font-[600]">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-pregular font-[600]`,
+                                                    "text-[#808D9E]",
+                                                    "text-black-300"
+                                                )}>
                                                     {data?.reports ?? ""}
                                                 </Text>
                                             </View>
@@ -445,8 +572,18 @@ const Investment = () => {
                             <View className="px-5">
                                 {(data?.images && data?.images.length>0) && (
                                     <View className="my-5">
-                                        <View className="border-b pb-2 border-border-200 dark:border-[#495161]">
-                                            <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium text-lg">
+                                        <View className={myClassConverter(
+                                            darkTheme,
+                                            `border-b pb-2`,
+                                            "border-[#495161]",
+                                            "border-border-200"
+                                        )}>
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-pmedium text-lg`,
+                                                "text-[#FFFFFF99]",
+                                                "text-muted-200"
+                                            )}>
                                                 Images
                                             </Text>
                                         </View>
@@ -474,8 +611,18 @@ const Investment = () => {
                                     </View>
                                 )}
                                 {(data?.riskFactors && data?.riskFactors.length > 0) && (
-                                    <View className="my-12 rounded-lg bg-[#F6F6F6] dark:bg-dark_mode-300">
-                                        <View className="flex flex-row p-4 border-b border-border-200 dark:border-[#495161]">
+                                    <View className={myClassConverter(
+                                        darkTheme,
+                                        `my-12 rounded-lg`,
+                                        "bg-dark_mode-300",
+                                        "bg-[#F6F6F6]"
+                                    )}>
+                                        <View className={myClassConverter(
+                                            darkTheme,
+                                            `flex flex-row p-4 border-b`,
+                                            "border-[#495161]",
+                                            "border-border-200"
+                                        )}>
                                             <View className="bg-[#D82F2F1A] rounded-full h-10 w-10 items-center justify-center">
                                                 <Image
                                                     source={icons.alert}
@@ -483,7 +630,12 @@ const Investment = () => {
                                                 />
                                             </View>
                                             <View className="my-auto ml-2">
-                                                <Text className="text-muted dark:text-[#FFFFFFB2] font-pmedium text-lg">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pmedium text-lg`,
+                                                    "text-[#FFFFFFB2]",
+                                                    "text-muted"
+                                                )}>
                                                     Risk factors
                                                 </Text>
                                             </View>
@@ -493,10 +645,20 @@ const Investment = () => {
                                             {data?.riskFactors.map((riskData,index)=>(
                                                 <View className="flex-row flex mb-10" key={index}>
                                                     <View className="w-6">
-                                                        <Text className="text-2xl dark:text-[#808D9E]">•</Text>
+                                                        <Text className={myClassConverter(
+                                                            darkTheme,
+                                                            `text-2xl`,
+                                                            "text-[#808D9E]",
+                                                            ""
+                                                        )}>•</Text>
                                                     </View>
                                                     <View className="flex-1">
-                                                        <Text className="text-black-200 dark:text-[#808D9E] text-lg font-pregular">
+                                                        <Text className={myClassConverter(
+                                                            darkTheme,
+                                                            `text-lg font-pregular`,
+                                                            "text-[#808D9E]",
+                                                            "text-black-200"
+                                                        )}>
                                                             {riskData.body}
                                                         </Text>
                                                     </View>
@@ -508,13 +670,23 @@ const Investment = () => {
                                 {(data?.faq && data?.faq.length > 0) && (
                                     <View className='pb-10'>
                                         <View className="mt-5">
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] font-pmedium text-lg">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-pmedium text-lg`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 FAQs
                                             </Text>
                                         </View>
                                         <View className="mt-5">
                                             {data?.faq.map((faqData,index)=>(
-                                                <View key={index} className="border border-border-100 dark:border-[#495161] rounded-lg mb-4">
+                                                <View key={index} className={myClassConverter(
+                                                    darkTheme,
+                                                    `border rounded-lg mb-4`,
+                                                    "border-[#495161]",
+                                                    "border-border-100"
+                                                )}>
                                                     <Collapsible title={faqData.title} darkTheme={darkTheme}>
                                                         <Text>{faqData.body}</Text>
                                                     </Collapsible>
@@ -548,15 +720,30 @@ const Investment = () => {
                             </View> */}
                         </View>
                     </ScrollView>
-                    <View className=" min-h-36 p-5 border-t border-border-100 dark:border-[#495161]">
+                    <View className={myClassConverter(
+                        darkTheme,
+                        `min-h-36 p-5 border-t`,
+                        "border-[#495161]",
+                        "border-border-100"
+                    )}>
                         <View className="items-center justify-center flex-1">
                             {data && data?.status === true && investors > 0 && (
-                                <Text className="text-muted-200 dark:text-[#FFFFFF99]">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    ``,
+                                    "text-[#FFFFFF99]",
+                                    "text-muted-200"
+                                )}>
                                     Join{" "}<Text className="text-secondary-100">{investors ?? 0} Investors</Text>
                                 </Text>
                             )}
                             {data && data?.status === false && (
-                                <Text className="text-muted-200 dark:text-[#FFFFFF99]">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    ``,
+                                    "text-[#FFFFFF99]",
+                                    "text-muted-200"
+                                )}>
                                     <Text className="text-secondary-100">{offerTotal ?? 0} Investors</Text>
                                     {" "}are willing to sell their shares
                                 </Text>

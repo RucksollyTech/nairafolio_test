@@ -8,6 +8,7 @@ import CustomNavigator from '../../components/CustomNavigator'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { createUserPasscode, updatePassword, updateUserPasscode } from '@/lib/appwrite'
 import { updateCurrentUser } from '@/lib/updateAccountTransaction'
+import { myClassConverter } from '@/lib/performActions'
 
 const ChangePasscode = () => {
     const navigation = useNavigation();
@@ -107,9 +108,19 @@ const ChangePasscode = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
+                <View className={myClassConverter(
+                    darkTheme,
+                    "flex-1 h-full px-5 pb-10",
+                    "bg-dark_mode ",
+                    "bg-white "
+                )}>
                     <View className="py-4">
-                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            "font-psans text-2xl",
+                            "text-white",
+                            "text-black-100"
+                        )}>
                             {user.hasPasscode ? "Change passcode" : "Set passcode"}
                         </Text>
                     </View>

@@ -17,6 +17,7 @@ import { KeyboardAvoidingView } from 'react-native'
 import { Platform } from 'react-native'
 import { Keyboard } from 'react-native'
 import { IconSymbol } from '@/components/ui/IconSymbol'
+import { myClassConverter } from '@/lib/performActions'
 
 const EditAccount = () => {
     const { user, setUser, setLastActive,darkTheme } = useGlobalContext();
@@ -121,7 +122,12 @@ const EditAccount = () => {
             style={{ flex: 1 }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} className={darkTheme === "dark" ? "dark" : ""}>
-                <SafeAreaView className="bg-white dark:bg-dark_mode flex-1 h-full">
+                <SafeAreaView className={myClassConverter(
+                    darkTheme,
+                    "flex-1 h-full",
+                    "bg-dark_mode",
+                    "bg-white"
+                )}>
                     <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <ScrollView
                         onTouchStart={() => setLastActive(Date.now())}
@@ -133,10 +139,20 @@ const EditAccount = () => {
                             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                         }
                     >
-                        <View className="bg-white dark:bg-dark_mode flex-1 px-5 pb-10 relative">
+                        <View className={myClassConverter(
+                                darkTheme,
+                                "flex-1 px-5 pb-10 relative",
+                                "bg-dark_mode",
+                                "bg-white"
+                            )}>
                             
                             <View className="pt-4">
-                                <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    "font-psans text-2xl",
+                                    "text-white",
+                                    "text-black-100"
+                                )}>
                                     Edit profile
                                 </Text>
                             </View>
@@ -253,7 +269,12 @@ const EditAccount = () => {
                                     />
                                 </View>
                                 <View>
-                                    <Text className="font-psans text-header-100 dark:text-white text-sm">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        "font-psans text-sm",
+                                        "text-white",
+                                        "text-header-100"
+                                    )}>
                                         Camera
                                     </Text>
                                 </View>
@@ -272,7 +293,12 @@ const EditAccount = () => {
                                         />
                                     </View>
                                     <View>
-                                        <Text className="font-psans text-header-100 dark:text-white text-sm">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            "font-psans text-sm",
+                                            "text-white",
+                                            "text-header-100"
+                                        )}>
                                             Gallery
                                         </Text>
                                     </View>

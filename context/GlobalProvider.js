@@ -52,9 +52,9 @@ const GlobalProvider = ({ children }) => {
     const currentState = navigation.getState();
     const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
     const otherScreen = currentState.routes[currentState.index]?.params?.screen;
-    const toggleTheme = () => {
+    const toggleTheme = async() => {
         setDarkTheme((prev) => (prev === "dark" ? "light" : "dark"));
-        storeData("NairafolioColorScheme",darkTheme)
+        await storeData("NairafolioColorScheme",darkTheme)
     };
     
     useEffect(() => {

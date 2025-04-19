@@ -8,6 +8,7 @@ import { Link, router } from 'expo-router'
 import { getData, removeData, useGlobalContext } from '@/context/GlobalProvider'
 import { signOut } from '@/lib/appwrite'
 import { updateCurrentUser } from '../../lib/updateAccountTransaction'
+import { myClassConverter } from '@/lib/performActions'
 
 const account = () => {
     const { setUser, setIsLogged,user,setLastActive,darkTheme,setDarkTheme } = useGlobalContext();
@@ -51,7 +52,12 @@ const account = () => {
             >
                 <View className="px-5">
                     <View className="pt-8">
-                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            `font-psans text-2xl`,
+                            "text-white",
+                            "text-black-100"
+                        )}>
                             My Account
                         </Text>
                     </View>
@@ -59,14 +65,15 @@ const account = () => {
             </LinearGradient>
             
             <View 
-                className="
-                    rounded-lg
+                className={myClassConverter(
+                    darkTheme,
+                    `rounded-lg px-5 
                     flex 
                     py-7 flex-row
-                    border-b
-                    border-border dark:border-[#3B3C43]
-                    px-5
-                "
+                    border-b`,
+                    "border-[#3B3C43]",
+                    "border-border"
+                )}
             >
                 <View
                     className="items-center justify-center "
@@ -85,13 +92,23 @@ const account = () => {
                 >
                     <View>
                         <Text
-                            className="text-xl text-header-200 dark:text-white  font-psans"
+                            className={myClassConverter(
+                                darkTheme,
+                                `text-xl font-psans`,
+                                "text-white",
+                                "text-header-200"
+                            )}
                         >
                             {user.name}
                         </Text>
                     </View>
                     <View className="pt-2">
-                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            `text-sm`,
+                            "text-[#FFFFFFB2]",
+                            "text-muted"
+                        )}>
                             {user.email}
                         </Text>
                     </View>
@@ -103,7 +120,12 @@ const account = () => {
                     className="items-center justify-center"
                 >
                     <Link href={"/edit-account"}>
-                        <View className="h-10 w-10 rounded-full bg-[#F5F5F5] dark:bg-[#3e3c3c] items-center justify-center">
+                        <View className={myClassConverter(
+                            darkTheme,
+                            `h-10 w-10 rounded-full items-center justify-center`,
+                            "bg-[#3e3c3c]",
+                            "bg-[#F5F5F5]"
+                        )}>
                             <Image 
                                 source={icons.edit}
                             />

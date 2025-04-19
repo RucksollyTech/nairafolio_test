@@ -140,7 +140,7 @@ const index = () => {
                                         title="Login"
                                         containerStyles={myClassConverter(
                                             darkTheme,"h-[50px] border mt-5 bg-white mx-8",
-                                            "dark:border-[#3B3C43]","border-border"
+                                            "border-[#3B3C43]","border-border"
                                         )}
                                         textStyles="text-dark-100"
                                         handlePress={()=>router.push("/sign_in")}

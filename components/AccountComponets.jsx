@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Link, router } from 'expo-router'
 import { icons } from '../constants'
+import { myClassConverter } from '@/lib/performActions'
 
 const AccountComponets = ({icon,link,title,subtitle,verified,verificationData,darkTheme,tintColor}) => {
     const moveToPage=()=>{
@@ -10,7 +11,12 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData,da
     }
     return (
         <View className={darkTheme === "dark" ? "dark" : ""}>
-            <View className="py-4 border-b border-border-300 dark:border-[#495161]">
+            <View className={myClassConverter(
+                darkTheme,
+                `py-4 border-b`,
+                "border-[#495161]",
+                "border-border-300"
+            )}>
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={moveToPage}
@@ -24,7 +30,12 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData,da
                         "
                     >
                         <View
-                            className="h-14 w-14 bg-[#F5F5F5] dark:bg-dark_mode-300 rounded-full items-center justify-center"
+                            className={myClassConverter(
+                                darkTheme,
+                                `h-14 w-14 rounded-full items-center justify-center`,
+                                "bg-dark_mode-300",
+                                "bg-[#F5F5F5]"
+                            )}
                         >
                             {tintColor ? (
                                 <Image
@@ -51,13 +62,23 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData,da
                                     <View className="w-[70%]">
                                         <View>
                                             <Text
-                                                className="text-lg text-header-200 dark:text-white  font-psemibold"
+                                                className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-psemibold`,
+                                                    "text-white",
+                                                    "text-header-200"
+                                                )}
                                             >
                                                 {title}
                                             </Text>
                                         </View>
                                         <View>
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 {subtitle} 
                                             </Text>
                                         </View>
@@ -82,14 +103,24 @@ const AccountComponets = ({icon,link,title,subtitle,verified,verificationData,da
                                 <>
                                     <View>
                                         <Text
-                                            className="text-lg text-header-200 dark:text-white   font-psemibold"
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `text-lg font-psemibold`,
+                                                "text-white",
+                                                "text-header-200"
+                                            )}
                                         >
                                             {title}
                                         </Text>
                                     </View>
                                     {subtitle && (
                                         <View>
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 {subtitle} 
                                             </Text>
                                         </View>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { icons } from "../constants";
+import { myClassConverter } from "@/lib/performActions";
 
 
 const AccountCustomForm = ({
@@ -23,14 +24,12 @@ const AccountCustomForm = ({
                     w-full
                     px-4 rounded-2xl 
                     border flex 
-                    bg-[#FDFDFD]
-                    dark:bg-dark_mode-300
+                    ${darkTheme === "dark" ? "bg-dark_mode-300" : "bg-[#FDFDFD]"}
                     flex-1
                     ${
-                        isFocused ? "border-primary" : "border-border dark:border-[#3B3C43]"
+                        isFocused ? "border-primary" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`
                     }
                 `}
-                // style={{ backgroundColor: "#FDFDFD" }}
             >
                 <View className="pt-3">
                     <Text
@@ -52,7 +51,12 @@ const AccountCustomForm = ({
                     
                 >
                     <TextInput
-                        className="flex-1 bg-[#FDFDFD] dark:bg-dark_mode-300 text-black-100 dark:text-white font-pregular text-base"
+                        className={myClassConverter(
+                            darkTheme,
+                            `flex-1 font-pregular text-base`,
+                            "bg-dark_mode-300 text-white",
+                            "bg-[#FDFDFD] text-black-100"
+                        )}
                         value={value}
                         placeholder={placeholder}
                         keyboardType={keyboardType ?? "default"}

@@ -11,6 +11,7 @@ import HomeSkeletonLoader from '../../components/HomeSkeletonLoader'
 import EmptyState from '../../components/EmptyState'
 import UTCDate from '../../components/UTCDate'
 import CustomNavigator from '../../components/CustomNavigator'
+import { myClassConverter } from '@/lib/performActions'
 
 export const TransactionDisplayText=(action)=>{
     if(action === "Deposit"){
@@ -25,7 +26,7 @@ export const TransactionDisplayText=(action)=>{
         return `${action} to `
     }
 }
-export const classNameColorsForTransactions = (action)=>{
+export const classNameColorsForTransactions = (action, darkTheme = "dark")=>{
     if(
         action === "Deposit" || 
         action === "Reversal"
@@ -36,7 +37,12 @@ export const classNameColorsForTransactions = (action)=>{
         action === "Failed" || 
         action === "Sell Offer"
     ){
-        return "text-muted-300 dark:text-white"
+        return myClassConverter(
+            darkTheme,
+            ``,
+            "text-white",
+            "text-muted-300"
+        )
     } else{
         return "text-red-500"
     }
@@ -57,7 +63,7 @@ export const transactionIconChange = (action)=>{
         return false
     }
 }
-export const DataContainer = ({data,transactions,index})=>(
+export const DataContainer = ({data,transactions,index,darkTheme})=>(
     <View 
         className={`
             flex-1 
@@ -65,12 +71,17 @@ export const DataContainer = ({data,transactions,index})=>(
             flex-row
             mb-5
             py-4
-            ${transactions?.length === index + 1 ? '' : 'border-border dark:border-[#3B3C43] border-b'}
+            ${transactions?.length === index + 1 ? '' : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"} border-b`}
         `}
     >
         
         <View
-            className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
+            className={myClassConverter(
+                darkTheme,
+                `border h-14 w-14 rounded-full items-center justify-center`,
+                "border-[#3B3C43]",
+                "border-border"
+            )}
         >
             <Image
                 source={icons.download}
@@ -86,7 +97,12 @@ export const DataContainer = ({data,transactions,index})=>(
             className="flex-1 px-3 "
         >
             <View>
-                <Text className="text-base font-pmedium text-muted-300 dark:text-white" numberOfLines={1}>
+                <Text className={myClassConverter(
+                    darkTheme,
+                    `text-base font-pmedium `,
+                    "text-white",
+                    "text-muted-300"
+                )} numberOfLines={1}>
                     {TransactionDisplayText(data?.action)}
                     <Text
                         className="text-lg font-[700] font-pmedium text-muted"
@@ -110,12 +126,17 @@ export const DataContainer = ({data,transactions,index})=>(
             <View>
                 <Money 
                     value={data?.amount}
-                    textStyle="font-psemibold text-muted dark:text-[#FFFFFFB2] text-right text-base"
+                    textStyle={myClassConverter(
+                        darkTheme,
+                        `font-psemibold text-right text-base`,
+                        "text-[#FFFFFFB2]",
+                        "text-muted"
+                    )}
                 />
             </View>
             <View className="mt-2">
                 <Text
-                    className={`font-pmedium ${classNameColorsForTransactions(data?.action)} text-right text-sm`}
+                    className={`font-pmedium ${classNameColorsForTransactions(data?.action,darkTheme)} text-right text-sm`}
                 >
                     {data?.type}
                     
@@ -167,7 +188,12 @@ const Transactions = () => {
         <SafeAreaView className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme}/>
             <View className="pt-2 px-5 pb-3">
-                <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                <Text className={myClassConverter(
+                    darkTheme,
+                    `font-psans text-2xl`,
+                    "text-white",
+                    "text-black-100 "
+                )}>
                     Transaction history
                 </Text>
             </View>
@@ -188,6 +214,7 @@ const Transactions = () => {
                                     data={item}
                                     transactions={transactions}
                                     index={index}
+                                    darkTheme={darkTheme}
                                 />
                             </View>
                         )
@@ -213,6 +240,7 @@ const Transactions = () => {
                                                     data={transact}
                                                     transactions={transactions}
                                                     index={index}
+                                                    darkTheme={darkTheme}
                                                 />
                                             </View>
                                         )

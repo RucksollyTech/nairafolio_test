@@ -1,3 +1,4 @@
+import { myClassConverter } from '@/lib/performActions';
 import React from 'react';
 import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
 
@@ -29,7 +30,12 @@ const CustomModal = ({
                         </View>
                     </View>
                     <Pressable
-                        className="border-t border-border dark:border-[#3B3C43] px-4 py-3 mt-2"
+                        className={myClassConverter(
+                            darkTheme,
+                            `border-t px-4 py-3 mt-2`,
+                            "border-[#3B3C43]",
+                            "border-border"
+                        )}
                         onPress={onClose}
                     >
                         <Text className="text-header text-center font-medium">{buttonText}</Text>

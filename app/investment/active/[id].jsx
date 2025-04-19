@@ -30,6 +30,7 @@ import CustomModalAlert from '@/components/CustomModalAlert'
 import PasswordConfirm from '@/components/PasswordConfirm'
 import { KeyboardAvoidingView } from 'react-native'
 import { Platform } from 'react-native'
+import { myClassConverter } from '@/lib/performActions'
 
 const { height: screenHeight } = Dimensions.get('window'); 
 export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
@@ -399,7 +400,12 @@ const Active = () => {
                     {!loading && (
                         <View>
                             <Text 
-                                className="text-black-100 dark:text-white text-xl font-pregular font-[700]"
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `text-xl font-pregular font-[700]`,
+                                    "text-white",
+                                    "text-black-100"
+                                )}
                             >
                                 {investment?.investment?.name}
                             </Text>
@@ -431,23 +437,43 @@ const Active = () => {
                                                 invested:investment?.investment?.price_per_unit * investment?.unit,
                                                 duration:investment?.investment?.duration_days
                                             })}
-                                            textStyle="text-black-100 dark:text-white font-psans text-4xl"
+                                            textStyle={myClassConverter(
+                                                darkTheme,
+                                                `font-psans text-4xl`,
+                                                "text-white",
+                                                "text-black-100"
+                                            )}
                                         />
                                     ):(
                                         <Money
                                             value={investment?.investment?.price_per_unit * investment?.unit}
-                                            textStyle="text-black-100 dark:text-white font-psans text-4xl"
+                                            textStyle={myClassConverter(
+                                                darkTheme,
+                                                `font-psans text-4xl`,
+                                                "text-white",
+                                                "text-black-100"
+                                            )}
                                         />
                                     )}
                                 </View>
                                 <View className=" flex-1">
                                     <View className=" flex flex-row flex-1">
-                                        <Text className="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-pregular font-[700] text-base`,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                        )}>
                                             Invested 
                                         </Text>
                                         <Money
                                             value={(investment?.investment?.price_per_unit * investment?.unit) }
-                                            textStyle="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base"
+                                            textStyle={myClassConverter(
+                                                darkTheme,
+                                                `font-pregular font-[700] text-base`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}
                                             containerStyle="pl-2"
                                         />
                                     </View>
@@ -464,12 +490,22 @@ const Active = () => {
                                             />
 
                                         ):(
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-pregular font-[700] text-base`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 Start date : {UTCDate(investmentCalcVal?.date_to_introduction).myDateFormat}
                                             </Text>
                                         )}
                                     </View>
-                                    <View className={`flex mt-2 items-center justify-center w-[100px] bg-[#F5F5F5] dark:bg-[#303540] border border-border dark:border-[#DCDCDC4D] px-3 py-1.5 rounded-lg`}>
+                                    <View className={myClassConverter(
+                                        darkTheme,
+                                        `flex mt-2 items-center justify-center w-[100px] border px-3 py-1.5 rounded-lg`,
+                                        "bg-[#303540] border-[#DCDCDC4D]",
+                                        "bg-[#F5F5F5] border-border"
+                                    )}>
                                         {(investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 ? (
                                             <Text className="font-pregular text-base text-muted-100">
                                                 {investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone} days left
@@ -491,9 +527,14 @@ const Active = () => {
                                                     onPress={handleAdd}
                                                     activeOpacity={0.7}
                                                     disabled={loadingSubmit ? true : false}
-                                                    className={`${ loadingSubmit && "opacity-50" } bg-primary dark:bg-dark_mode-200 rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                                    className={`${ loadingSubmit && "opacity-50" } ${darkTheme === "dark" ? "bg-dark_mode-200" : "bg-primary"} rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                                 >
-                                                    <Text className={`font-pinter font-semibold text-base text-white dark:text-[#171717]`}>
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `font-pinter font-semibold text-base`,
+                                                        "text-[#171717]",
+                                                        "text-white"
+                                                    )}>
                                                         Add
                                                     </Text>
                                                     <View className="ml-2">
@@ -510,9 +551,14 @@ const Active = () => {
                                                     onPress={handleMoveToWallet}
                                                     activeOpacity={0.7}
                                                     disabled={((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) ? true : false}
-                                                    className={`${((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } bg-primary dark:bg-dark_mode-200 rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                                    className={`${((investment?.investment?.duration_days-UTCDate(investment?.date_created)?.daysGone) >= 0 || loadingSubmit) && "opacity-50" } ${darkTheme === "dark" ? "bg-dark_mode-200" : "bg-primary"} rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
                                                 >
-                                                    <Text className={`font-pinter font-semibold text-base text-white dark:text-[#171717]`}>
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `font-pinter font-semibold text-base`,
+                                                        "text-[#171717]",
+                                                        "text-white"
+                                                    )}>
                                                         Move to wallet
                                                     </Text>
                                                     <View className="ml-2">
@@ -531,9 +577,19 @@ const Active = () => {
                                                 <TouchableOpacity
                                                     onPress={()=>setIsDrawerVisible2(true)}
                                                     activeOpacity={0.7}
-                                                    className={`border border-border-100 dark:border-[#00000014] bg-[#F5F5F5] dark:bg-[#303540] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                                    className={myClassConverter(
+                                                        darkTheme,
+                                                        `border rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                                        "border-[#00000014] bg-[#303540]",
+                                                        "border-border-100 bg-[#F5F5F5]"
+                                                    )}
                                                 >
-                                                    <Text className={`font-pinter font-semibold text-base text-muted dark:text-white`}>
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `font-pinter font-semibold text-base`,
+                                                        "text-white",
+                                                        "text-muted"
+                                                    )}>
                                                         Sell shares
                                                     </Text>
                                                     <View className="ml-2">
@@ -554,9 +610,19 @@ const Active = () => {
                                                         <TouchableOpacity
                                                             onPress={()=>setIsDrawerVisible4(true)}
                                                             activeOpacity={0.7}
-                                                            className={`border border-border-100 dark:border-[#00000014] bg-[#F5F5F5] dark:bg-[#303540] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                                            className={myClassConverter(
+                                                                darkTheme,
+                                                                `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                                                "border-[#00000014] bg-[#303540]",
+                                                                "border-border-100 bg-[#F5F5F5]"
+                                                            )}
                                                         >
-                                                            <Text className={`font-pinter font-semibold text-base text-muted dark:text-white`}>
+                                                            <Text className={myClassConverter(
+                                                                darkTheme,
+                                                                `font-pinter font-semibold text-base`,
+                                                                "text-white",
+                                                                "text-muted"
+                                                            )}>
                                                                 Cancel ad
                                                             </Text>
                                                             <View className="ml-2">
@@ -597,14 +663,15 @@ const Active = () => {
                                         onPress={()=>router.push(`/investment/user_offer/${investment?.investment?.$id}`)}
                                     >
                                         <View 
-                                            className={`
-                                                flex-1 
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `flex-1 
                                                 py-2.5 flex-row
                                                 px-3
-                                                rounded-lg
-                                                bg-[#CBF5B84D]
-                                                dark:bg-[#f1f1f1]
-                                            `}
+                                                rounded-lg`,
+                                                "bg-[#f1f1f1]",
+                                                "bg-[#CBF5B84D]"
+                                            )}
                                         >
                                             <View
                                                 className="
@@ -661,19 +728,44 @@ const Active = () => {
                                     </TouchableOpacity>
                                 </View>
 
-                                <View className="flex-1 mt-1 rounded-lg border border-border dark:border-[#3B3C43]">
-                                    <View className="p-4 border-b border-border dark:border-[#3B3C43] flex-1">
-                                        <Text className="text-muted dark:text-[#FFFFFFB2]">
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `flex-1 mt-1 rounded-lg border `,
+                                    "border-[#3B3C43]",
+                                    "border-border"
+                                )}>
+                                    <View className={myClassConverter(
+                                        darkTheme,
+                                        `p-4 border-b flex-1`,
+                                        "border-[#3B3C43]",
+                                        "border-border"
+                                    )}>
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            ``,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                        )}>
                                             Returns
                                         </Text>
                                     </View>
                                     <View className="p-4">
-                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `text-base`,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                        )}>
                                             Highlights
                                         </Text>
                                         <View className="flex flex-row gap-4 mt-4 flex-1">
                                             
-                                            <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `flex w-[48%] items-center justify-center border px-3 py-2.5 rounded-lg`,
+                                                "bg-dark_mode-300 border-[#0000000A]",
+                                                "bg-[#F6F6F6] border-border-200"
+                                            )}>
                                                 <View>
                                                     <Image
                                                         source={icons.roi}
@@ -683,10 +775,20 @@ const Active = () => {
                                                     />
                                                 </View>
                                                 <View className="mt-2">
-                                                    <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">{investment?.rio ?? 1}% ROI</Text>
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                        "text-[#FFFFFF99]",
+                                                        "text-muted-200"
+                                                    )}>{investment?.rio ?? 1}% ROI</Text>
                                                 </View>
                                             </View>
-                                            <View className="flex w-[48%] items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `flex w-[48%] items-center justify-center border px-3 py-2.5 rounded-lg`,
+                                                "bg-dark_mode-300 border-[#0000000A]",
+                                                "bg-[#F6F6F6] border-border-200"
+                                            )}>
                                                 <View>
                                                     <Image
                                                         source={icons.money}
@@ -700,10 +802,20 @@ const Active = () => {
                                                         <Money 
                                                             value={investment?.investment?.min_investment}
                                                             containerStyle="flex"
-                                                            textStyle="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]"
+                                                            textStyle={myClassConverter(
+                                                                darkTheme,
+                                                                `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                                "text-[#FFFFFF99]",
+                                                                "text-muted-200"
+                                                            )}
                                                         />
                                                         <View className="flex flex-row ">
-                                                            <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                                            <Text className={myClassConverter(
+                                                                darkTheme,
+                                                                `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                                "text-[#FFFFFF99]",
+                                                                "text-muted-200"
+                                                            )}>
                                                                 min
                                                             </Text>
                                                         </View>
@@ -728,7 +840,12 @@ const Active = () => {
                                         </View> */}
                                         <View className="flex flex-row gap-4 flex-1">
                                             {!!investment?.investment?.duration_days && (
-                                                <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                                <View className={myClassConverter(
+                                                    darkTheme,
+                                                    `flex w-[48%] mt-4 items-center justify-center border px-3 py-2.5 rounded-lg`,
+                                                    "bg-dark_mode-300 border-[#0000000A]",
+                                                    "bg-[#F6F6F6] border-border-200"
+                                                )}>
                                                     <View>
                                                         <Image
                                                             source={icons.calender}
@@ -738,14 +855,24 @@ const Active = () => {
                                                         />
                                                     </View>
                                                     <View className="mt-2">
-                                                        <Text className="font-pmedium text-center ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                                        <Text className={myClassConverter(
+                                                            darkTheme,
+                                                            `font-pmedium text-center ml-2 my-auto font-[600] text-base`,
+                                                            "text-[#FFFFFF99]",
+                                                            "text-muted-200"
+                                                        )}>
                                                             {convertDaysToReadableFormat(investment?.investment?.duration_days ?? 0)} returns
                                                         </Text>
                                                     </View>
                                                 </View>
                                             )}
                                             {!!investment?.investment?.date_to_introduction && (
-                                                <View className="flex w-[48%] mt-4 items-center justify-center bg-[#F6F6F6] dark:bg-dark_mode-300 border border-border-200 dark:border-[#0000000A] px-3 py-2.5 rounded-lg">
+                                                <View className={myClassConverter(
+                                                    darkTheme,
+                                                    `flex w-[48%] mt-4 items-center justify-center border px-3 py-2.5 rounded-lg`,
+                                                    "bg-dark_mode-300 border-[#0000000A]",
+                                                    "bg-[#F6F6F6] border-border-200"
+                                                )}>
                                                     <View>
                                                         <Image
                                                             source={icons.start_date}
@@ -757,7 +884,12 @@ const Active = () => {
                                                     <View className="mt-2">
                                                         <View className="flex flex-row ">
                                                             <View className="flex flex-row ">
-                                                                <Text className="font-pmedium ml-2 my-auto font-[600] text-base text-muted-200 dark:text-[#FFFFFF99]">
+                                                                <Text className={myClassConverter(
+                                                                    darkTheme,
+                                                                    `font-pmedium ml-2 my-auto font-[600] text-base`,
+                                                                    "text-[#FFFFFF99]",
+                                                                    "text-muted-200"
+                                                                )}>
                                                                     Starts {UTCDate(investment?.investment?.date_to_introduction)?.simpleDateFormat}
                                                                 </Text>
                                                             </View>
@@ -770,11 +902,26 @@ const Active = () => {
 
                                     </View>
                                     <View className="p-4">
-                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-base">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `text-base`,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                        )}>
                                             Overview
                                         </Text>
-                                        <View className="pt-4 border-t border-border dark:border-[#3B3C43] mt-4">
-                                            <Text className="text-black-300 dark:text-[#808D9E] text-lg font-pregular font-[600]">
+                                        <View className={myClassConverter(
+                                            darkTheme,
+                                            `pt-4 border-t mt-4`,
+                                            "border-[#3B3C43]",
+                                            "border-border"
+                                        )}>
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-lg font-pregular font-[600]`,
+                                                "text-[#808D9E]",
+                                                "text-black-300"
+                                            )}>
                                                 {investment?.investment?.introduction ?? ""}
                                             </Text>
                                         </View>
@@ -792,11 +939,21 @@ const Active = () => {
                                     {updates && updates.length>0 && (
                                         <>
                                             <View className="mt-8">
-                                                <Text className="text-black-100 dark:text-white text-xl font-pregular font-[700]">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-xl font-pregular font-[700]`,
+                                                    "text-black-100",
+                                                    "text-white"
+                                                )}>
                                                     Updates
                                                 </Text>
                                                 <View className="mt-2">
-                                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-base font-pregular">
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `text-base font-pregular`,
+                                                        "text-[#FFFFFFB2]",
+                                                        "text-muted"
+                                                    )}>
                                                         Here are updates about your investment.
                                                     </Text>
                                                 </View>
@@ -1004,9 +1161,19 @@ const Active = () => {
                     <View>
                         <TouchableOpacity 
                             onPress={()=>setShowDateSelect(true)}
-                            className="border border-border dark:border-[#3B3C43] flex-row rounded-md w-44"
+                            className={myClassConverter(
+                                darkTheme,
+                                `border flex-row rounded-md w-44`,
+                                "border-[#3B3C43]",
+                                "border-border"
+                            )}
                         >
-                            <View className="border-r border-border dark:border-[#3B3C43] p-2 text-center justify-center">
+                            <View className={myClassConverter(
+                                darkTheme,
+                                `border-r p-2 text-center justify-center`,
+                                "border-[#3B3C43]",
+                                "border-border"
+                            )}>
                                 <Image
                                     source={icons.calender}
                                     resizeMode="cover"
@@ -1014,19 +1181,39 @@ const Active = () => {
                                 />
                             </View>
                             <View className="p-2 text-center justify-center">
-                                <Text className=" text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-pmedium`,
+                                    "text-[#FFFFFF99]",
+                                    "text-muted-200"
+                                )}>
                                     Select date
                                 </Text>
                             </View>
                         </TouchableOpacity>
                         {showDateSelect && (
                             <>
-                                <View className="flex-row gap-3 border-border dark:border-[#3B3C43] mt-3 pt-3 border-t">
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `flex-row gap-3 mt-3 pt-3 border-t`,
+                                    "border-[#3B3C43]",
+                                    "border-border"
+                                )}>
                                     <TouchableOpacity 
                                         onPress={showDatePicker}
-                                        className="border flex-1 border-border dark:border-[#3B3C43] flex-row rounded-md w-44"
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `border flex-1 flex-row rounded-md w-44`,
+                                            "border-[#3B3C43]",
+                                            "border-border"
+                                        )}
                                     >
-                                        <View className="border-r border-border dark:border-[#3B3C43] p-2 text-center justify-center">
+                                        <View className={myClassConverter(
+                                            darkTheme,
+                                            `border-r p-2 text-center justify-center`,
+                                            "border-[#3B3C43] ",
+                                            "border-border"
+                                        )}>
                                             <Image
                                                 source={icons.calender}
                                                 resizeMode="cover"
@@ -1034,16 +1221,31 @@ const Active = () => {
                                             />
                                         </View>
                                         <View className="p-2 text-center justify-center">
-                                            <Text className="text-sm text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm font-pmedium`,
+                                                "text-[#FFFFFF99]",
+                                                "text-muted-200"
+                                            )}>
                                                 Select start date
                                             </Text>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity 
                                         onPress={showDatePicker2}
-                                        className="border flex-1 border-border dark:border-[#3B3C43] flex-row rounded-md w-44"
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `border flex-1 flex-row rounded-md w-44`,
+                                            "border-[#3B3C43]",
+                                            "border-border"
+                                        )}
                                     >
-                                        <View className="border-r border-border dark:border-[#3B3C43] p-2 text-center justify-center">
+                                        <View className={myClassConverter(
+                                            darkTheme,
+                                            `border-r p-2 text-center justify-center`,
+                                            "border-[#3B3C43]",
+                                            "border-border"
+                                        )}>
                                             <Image
                                                 source={icons.calender}
                                                 resizeMode="cover"
@@ -1051,7 +1253,12 @@ const Active = () => {
                                             />
                                         </View>
                                         <View className="p-2 text-center justify-center">
-                                            <Text className="text-sm text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm font-pmedium`,
+                                                "text-[#FFFFFF99]",
+                                                "text-muted-200"
+                                            )}>
                                                 Select end date
                                             </Text>
                                         </View>
@@ -1060,12 +1267,22 @@ const Active = () => {
                                 {(dateValue || dateValue2) && (
                                     <View className="flex-1 flex-row gap-2 mt-2">
                                         <View className="flex-1">
-                                            <Text className="text-sm font-pmedium text-muted-200 dark:text-[#FFFFFF99]">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm font-pmedium`,
+                                                "text-[#FFFFFF99]",
+                                                "text-muted-200"
+                                            )}>
                                                 {dateValue?.toDateString()}
                                             </Text>
                                         </View>
                                         <View className="flex-1">
-                                            <Text className="text-sm font-pmedium text-muted-200 dark:text-[#FFFFFF99]">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm font-pmedium`,
+                                                "text-[#FFFFFF99]",
+                                                "text-muted-200"
+                                            )}>
                                                 {dateValue2?.toDateString()}
                                             </Text>
                                         </View>
@@ -1118,16 +1335,17 @@ const Active = () => {
                                 onPress={()=>handleSellMethodSelect(1)}
                             >
                                 <View 
-                                    className={`
-                                        flex-1 
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `flex-1 
                                         rounded-lg
                                         flex 
                                         py-4 flex-row
                                         px-2
-                                        border
-                                        border-border dark:border-[#3B3C43]
-                                        bg-[#F8FAFA] dark:bg-[#303540]
-                                    `}
+                                        border`,
+                                        "border-[#3B3C43] bg-[#303540]",
+                                        "border-border bg-[#F8FAFA]"
+                                    )}
                                 >
                                     <View
                                         style={{
@@ -1137,13 +1355,23 @@ const Active = () => {
                                     >
                                         <View>
                                             <Text
-                                                className="text-lg text-header-200 dark:text-white  font-psans"
+                                                className={myClassConverter(
+                                                darkTheme,
+                                                `text-lg font-psans`,
+                                                "text-white",
+                                                "text-header-200"
+                                            )}
                                             >
                                                 Put up your shares for sale
                                             </Text>
                                         </View>
                                         <View className="mt-1">
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 Set your price and wait for a buyer
                                             </Text>
                                         </View>
@@ -1168,16 +1396,17 @@ const Active = () => {
                                 onPress={()=>handleSellMethodSelect(2)}
                             >
                                 <View 
-                                    className={`
-                                        flex-1 
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `flex-1 
                                         rounded-lg
                                         flex 
                                         py-4 flex-row
                                         px-2
-                                        border
-                                        border-border dark:border-[#3B3C43]
-                                        bg-[#F8FAFA] dark:bg-[#303540]
-                                    `}
+                                        border`,
+                                        "border-[#3B3C43] bg-[#303540]",
+                                        "border-border bg-[#F8FAFA]"
+                                    )}
                                 >
                                     <View
                                         style={{
@@ -1187,13 +1416,23 @@ const Active = () => {
                                     >
                                         <View>
                                             <Text
-                                                className="text-lg text-header-200 dark:text-white  font-psans"
+                                                className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-psans`,
+                                                    "text-white",
+                                                    "text-header-200"
+                                                )}
                                             >
                                                 Sell now
                                             </Text>
                                         </View>
                                         <View className="mt-1">
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 Instantly sell your shares at our price.
                                             </Text>
                                         </View>
@@ -1228,18 +1467,33 @@ const Active = () => {
                                 </View>
                                 <View className="mt-5">
                                     {activeMethod === 2 ? (
-                                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-psans text-2xl text-center`,
+                                            "text-white",
+                                            "text-black-100"
+                                        )}>
                                             You have just sold {unitToSell} units of your shares to NairaFolio.
                                         </Text>
                                     ) : (
-                                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-psans text-2xl text-center`,
+                                            "text-white",
+                                            "text-black-100"
+                                        )}>
                                             You have just put up {unitToSell} units of your shares up for sale.
                                         </Text>
                                     )}
                                 </View>
                                 {activeMethod !== 2 && (
                                     <View className="mt-2">
-                                        <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-pmedium text-base text-center`,
+                                            "text-white",
+                                            "text-black-100"
+                                        )}>
                                             Your wallet will be credited once someone else buys your shares
                                         </Text>
                                     </View>
@@ -1263,7 +1517,12 @@ const Active = () => {
                                     placeholder={"Enter unit"}
                                     handleDataAction={()=>setUnitToSell(investment?.unit)}
                                     handleChangeText={(e)=>setUnitToSell(e)}
-                                    dataStyle={"text-muted-200 dark:text-[#FFFFFF99] font-psemibold"}
+                                    dataStyle={myClassConverter(
+                                        darkTheme,
+                                        `font-psemibold`,
+                                        "text-[#FFFFFF99]",
+                                        "text-muted-200"
+                                    )}
                                     darkTheme={darkTheme}
                                 />
                                 {unitToSell > investment?.unit && (
@@ -1273,7 +1532,12 @@ const Active = () => {
                                 )}
                                 {activeMethod !== 2 && (
                                     <View>
-                                        <Text className="font-pregular px-2 text-base my-7 text-black-100 dark:text-white">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-pregular px-2 text-base my-7`,
+                                            "text-white",
+                                            "text-black-100"
+                                        )}>
                                             Note that your shares will be sold only when someone else buys them.
                                         </Text>
                                     </View>
@@ -1286,16 +1550,31 @@ const Active = () => {
                                         placeholder={"Enter price per unit"}
                                         data={"/Unit"}
                                         handleChangeText={(e)=>setPricePlaced(e)}
-                                        dataStyle={"text-muted-200 dark:text-[#FFFFFF99] font-psemibold"}
+                                        dataStyle={myClassConverter(
+                                            darkTheme,
+                                            `font-psemibold`,
+                                            "text-[#FFFFFF99]",
+                                            "text-muted-200"
+                                        )}
                                         darkTheme={darkTheme}
                                     />
                                 ):(
                                     <View>
                                         <View className="mt-5 mb-7">
-                                            <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
+                                            <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-pmedium`,
+                                            "text-[#FFFFFF99]",
+                                            "text-muted-200"
+                                        )}>
                                                 Price of units
                                             </Text>
-                                            <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] dark:bg-[#27282F] h-14">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `mt-3 items-center justify-center rounded-lg h-14`,
+                                                "bg-[#27282F]",
+                                                "bg-[#F7F7F7]"
+                                            )}>
                                                 <Money 
                                                     value={unitToSell * investment?.investment?.price_by_nairafolio}
                                                     textStyle={darkTheme === "dark" ? "font-xl !text-white" : "font-xl"}
@@ -1370,12 +1649,22 @@ const Active = () => {
                             />
                         </View>
                         <View className="mt-5">
-                            <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-psans text-2xl text-center`,
+                                "text-white",
+                                "text-black-100"
+                            )}>
                                 Congratulations! 
                             </Text>
                         </View>
                         <View className="mt-2">
-                            <Text className="text-black-100 dark:text-white font-pmedium text-base text-center">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-pmedium text-base text-center`,
+                                "text-white",
+                                "text-black-100"
+                            )}>
                                 Your investment funds have been successfully transferred to your wallet. 
                             </Text>
                         </View>
@@ -1399,7 +1688,12 @@ const Active = () => {
                         {!next ? (
                             <>
                                 <View>
-                                    <View className="px-5 border-b border-border dark:border-[#3B3C43]">
+                                    <View className={myClassConverter(
+                                        darkTheme,
+                                        `px-5 border-b`,
+                                        "border-[#3B3C43]",
+                                        "border-border"
+                                    )}>
                                         <TouchableOpacity 
                                             activeOpacity={0.9}
                                             onPress={()=>handleOtherScreen(1)}
@@ -1410,9 +1704,8 @@ const Active = () => {
                                                 py-4 flex-row
                                                 mb-5
                                                 border
-                                                ${(active && active === 1) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
-                                                bg-[#F8FAFA]
-                                                dark:bg-dark_mode-300
+                                                ${(active && active === 1) ? "border-secondary-100" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`}
+                                                ${darkTheme === "dark" ? "bg-dark_mode-300" : "bg-[#F8FAFA]"}
                                             `}
                                         >
                                             <View
@@ -1443,7 +1736,12 @@ const Active = () => {
                                                     <View className="my-auto justify-between flex-row">
                                                         <View>
                                                             <Text
-                                                                className="text-lg text-header-200 dark:text-white  font-psans"
+                                                                className={myClassConverter(
+                                                                    darkTheme,
+                                                                    `text-lg font-psans`,
+                                                                    "text-white",
+                                                                    "text-header-200"
+                                                                )}
                                                             >
                                                                 Wallet
                                                             </Text>
@@ -1481,9 +1779,8 @@ const Active = () => {
                                                 flex 
                                                 py-4 flex-row
                                                 border
-                                                ${(active && active === 2) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
-                                                bg-[#F8FAFA]
-                                                dark:bg-dark_mode-300
+                                                ${(active && active === 2) ? "border-secondary-100" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`}
+                                                ${darkTheme === "dark" ? "bg-dark_mode-300" : "bg-[#F8FAFA]"}
                                             `}
                                         >
                                             <View
@@ -1510,13 +1807,23 @@ const Active = () => {
                                             >
                                                 <View>
                                                     <Text
-                                                        className="text-lg text-header-200 dark:text-white  font-psans"
+                                                        className={myClassConverter(
+                                                            darkTheme,
+                                                            `text-lg font-psans`,
+                                                            "text-white",
+                                                            "text-header-200"
+                                                        )}
                                                     >
                                                         Bank transfer
                                                     </Text>
                                                 </View>
                                                 <View>
-                                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `text-sm`,
+                                                        "text-[#FFFFFFB2]",
+                                                        "text-muted"
+                                                    )}>
                                                         Direct transfer from your bank account
                                                     </Text>
                                                 </View>
@@ -1546,9 +1853,8 @@ const Active = () => {
                                                 py-4 flex-row
                                                 mb-5
                                                 border
-                                                ${(active && active === 3) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
-                                                bg-[#F8FAFA]
-                                                dark:bg-dark_mode-300
+                                                ${(active && active === 3) ? "border-secondary-100" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`}
+                                                ${darkTheme === "dark" ? "bg-dark_mode-300" : "bg-[#F8FAFA]"}
                                             `}
                                         >
                                             <View
@@ -1575,13 +1881,23 @@ const Active = () => {
                                             >
                                                 <View>
                                                     <Text
-                                                        className="text-lg text-header-200 dark:text-white  font-psans"
+                                                        className={myClassConverter(
+                                                            darkTheme,
+                                                            `text-lg font-psans`,
+                                                            "text-white",
+                                                            "text-header-200"
+                                                        )}
                                                     >
                                                         Debit card
                                                     </Text>
                                                 </View>
                                                 <View>
-                                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `text-sm`,
+                                                        "text-[#FFFFFFB2]",
+                                                        "text-muted"
+                                                    )}>
                                                         Pay using Visa, Mastercard, or others 
                                                     </Text>
                                                 </View>
@@ -1624,7 +1940,12 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-5">
-                                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-psans text-2xl text-center`,
+                                                    "text-white",
+                                                    "text-black-100"
+                                                )}>
                                                     You have just bought {investment?.unit} units of shares from {investment?.investment?.name}.
                                                 </Text>
                                             </View>
@@ -1646,7 +1967,12 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-5">
-                                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-psans text-2xl text-center`,
+                                                    "text-white",
+                                                    "text-black-100"
+                                                )}>
                                                     An error occurred while trying to buy shares. Please try again later.
                                                 </Text>
                                             </View>
@@ -1669,7 +1995,12 @@ const Active = () => {
                                                     />
                                                 </View>
                                                 <View className="mt-5">
-                                                    <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `font-psans text-2xl text-center`,
+                                                        "text-white",
+                                                        "text-black-100"
+                                                    )}>
                                                         Insufficient funds
                                                     </Text>
                                                 </View>
@@ -1689,7 +2020,12 @@ const Active = () => {
                                                     />
                                                 </View>
                                                 <View className="mt-5">
-                                                    <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `font-psans text-2xl text-center`,
+                                                        "text-white",
+                                                        "text-black-100"
+                                                    )}>
                                                         An error occurred while trying to buy shares. Please try again later.
                                                     </Text>
                                                 </View>
@@ -1739,7 +2075,12 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-5">
-                                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                                <Text className={myClassConverter(
+                                                darkTheme,
+                                                    `font-psans text-2xl text-center`,
+                                                    "text-white",
+                                                    "text-black-100"
+                                                )}>
                                                     Success!
                                                 </Text>
                                             </View>
@@ -1761,7 +2102,12 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-5">
-                                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                                <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-psans text-2xl text-center`,
+                                                "text-white",
+                                                "text-black-100"
+                                            )}>
                                                     An error occurred. Please try again later.
                                                 </Text>
                                             </View>
@@ -1783,7 +2129,12 @@ const Active = () => {
                                                 />
                                             </View>
                                             <View className="mt-5">
-                                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-psans text-2xl text-center`,
+                                                    "text-white",
+                                                    "text-black-100"
+                                                )}>
                                                     An error occurred. Please try again later.
                                                 </Text>
                                             </View>

@@ -1,3 +1,4 @@
+import { myClassConverter } from "@/lib/performActions";
 import React, { useState, useRef } from "react";
 import { View, Text, Dimensions, StyleSheet, PanResponder, TouchableOpacity } from "react-native";
 import { LineChart } from "react-native-chart-kit";
@@ -9,7 +10,12 @@ const GraphScreen = ({chartData,loading,darkTheme}) => {
   if (loading){
     return (
       <View className="py-10 flex-1 items-center justify-center">
-        <Text className="text-muted-200 dark:text-[#FFFFFF99] font-psemibold text-lg">
+        <Text className={myClassConverter(
+            darkTheme,
+            `font-psemibold text-lg`,
+            "text-[#FFFFFF99]",
+            "text-muted-200"
+        )}>
           Loading chart data...
         </Text>
       </View>
@@ -77,7 +83,12 @@ const GraphScreen = ({chartData,loading,darkTheme}) => {
         <View className="flex-row justify-between relative z-20">
           <View>
             <Text className="text-base text-muted">ROI History</Text>
-            <Text className="text-4xl py-1 dark:text-white font-bold">{presentRIO}%</Text>
+            <Text className={myClassConverter(
+                darkTheme,
+                `text-4xl py-1 font-bold`,
+                "text-white",
+                "light"
+            )}>{presentRIO}%</Text>
             <Text className="text-[#009C6A] bg-[#009C6A26] px-2 text-center w-14 py-0.5 text-sm font-psemibold rounded-xl ">
               {RIODiff > 0 ? `+${RIODiff}` : RIODiff}%
             </Text>

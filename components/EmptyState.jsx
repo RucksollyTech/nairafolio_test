@@ -1,5 +1,6 @@
 import { View, Text, Image } from "react-native";
 import { images } from "../constants";
+import { myClassConverter } from "@/lib/performActions";
 
 const EmptyState = ({ title, subtitle ,notIncludeImg, darkTheme}) => {
     return (
@@ -12,7 +13,12 @@ const EmptyState = ({ title, subtitle ,notIncludeImg, darkTheme}) => {
             )}
 
             <Text 
-                className="text-xl font-psans text-muted dark:text-[#FFFFFFB2] mt-5"
+                className={myClassConverter(
+                    darkTheme,
+                    `text-xl font-psans mt-5`,
+                    "text-[#FFFFFFB2]",
+                    "text-muted"
+                )}
             >
                 {title}
             </Text>

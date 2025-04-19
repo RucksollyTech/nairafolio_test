@@ -18,6 +18,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Keyboard } from 'react-native';
 import PasswordConfirm from '@/components/PasswordConfirm';
+import { myClassConverter } from '@/lib/performActions';
 
 const withdrawal = () => {
     const navigation = useNavigation();
@@ -261,10 +262,20 @@ const withdrawal = () => {
                             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                         }
                     >
-                        <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
+                        <View className={myClassConverter(
+                            darkTheme,
+                            `flex-1 h-full px-5 pb-10`,
+                            "bg-dark_mode",
+                            "bg-white"
+                        )}>
                             
                             <View className="pt-2">
-                                <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-psans text-2xl`,
+                                    "text-white",
+                                    "text-black-100"
+                                )}>
                                     Withdrawal
                                 </Text>
                             </View>
@@ -314,10 +325,8 @@ const withdrawal = () => {
                                                     py-4 flex-row
                                                     mb-5
                                                     border
-                                                    ${selectedItems?.$id === myBanksData?.$id ? "border-red-500" : "border-border dark:border-[#3B3C43]"}
-                                                    
-                                                    bg-[#F8FAFA]
-                                                    dark:bg-dark_mode-300
+                                                    ${selectedItems?.$id === myBanksData?.$id ? "border-red-500" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`}
+                                                    ${darkTheme === "dark" ? "bg-dark_mode-300" : "bg-[#F8FAFA]"}
                                                     px-2
                                                 `}
                                                 onPress={()=>handleSelectBank(myBanksData)}
@@ -347,13 +356,23 @@ const withdrawal = () => {
                                                 >
                                                     <View>
                                                         <Text
-                                                            className="text-lg text-header-200 dark:text-white  font-psans"
+                                                            className={myClassConverter(
+                                                                darkTheme,
+                                                                `text-lg font-psans`,
+                                                                "text-white",
+                                                                "text-header-200"
+                                                            )}
                                                         >
                                                             {myBanksData.name}
                                                         </Text>
                                                     </View>
                                                     <View>
-                                                        <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                                        <Text className={myClassConverter(
+                                                            darkTheme,
+                                                            `text-sm`,
+                                                            "text-[#FFFFFFB2]",
+                                                            "text-muted"
+                                                        )}>
                                                             {myBanksData.number}
                                                         </Text>
                                                     </View>
@@ -381,7 +400,12 @@ const withdrawal = () => {
                                                 className="mr-2"
                                                 tintColor={darkTheme === 'dark' ? "#FFFFFF" : "#2A3B59"}
                                             />
-                                            <Text className="mr-2 text-[#2A3B59] dark:text-white font-psemibold">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `mr-2 font-psemibold`,
+                                                "text-white",
+                                                "text-[#2A3B59]"
+                                            )}>
                                                 Add new bank
                                             </Text>
                                         </TouchableOpacity>
@@ -443,7 +467,12 @@ const withdrawal = () => {
                         {next ? (
                             <View className="px-5">
                                 <View className="pt-4">
-                                    <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-psans text-2xl`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}>
                                         Verify it's you
                                     </Text>
                                 </View>
@@ -505,7 +534,12 @@ const withdrawal = () => {
                         ):(
                             <View className="px-5">
                                 <View className="pt-4">
-                                    <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-psans text-2xl`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}>
                                         Add bank
                                     </Text>
                                 </View>

@@ -4,6 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, FlatList, TouchableWith
 import { icons } from "../constants";
 import { KeyboardAvoidingView } from "react-native";
 import { Platform } from "react-native";
+import { myClassConverter } from "@/lib/performActions";
 
 const FormField = ({
   title,
@@ -30,7 +31,6 @@ const FormField = ({
     };
     return (
         <View className={`space-y-2 ${otherStyles} ${darkTheme === "dark" && "dark"}`}>
-            {/* <Text className="font-pregular text-base text-black-100 dark:text-white">{title}</Text> */}
             <View
                 className={`
                     w-full h-16 
@@ -38,16 +38,19 @@ const FormField = ({
                     border flex 
                     flex-row 
                     items-center 
-                    ${tintColor ?? "bg-[#FDFDFD] dark:bg-[#27282F]"}
-                    ${isFocused ? "border-primary" : "border-border dark:border-[#7F7F7F4D]"}
+                    ${tintColor ?? `${darkTheme === "dark" ? "bg-[#27282F]" : "bg-[#FDFDFD]"}`}
+                    ${isFocused ? "border-primary" : `${darkTheme === "dark" ? "border-[#7F7F7F4D]" : "border-border"}`}
                 `}
-                // style={{ backgroundColor: "#FDFDFD" }}
             >
                 {data ? (
-                // Dropdown when `data` is provided
                     <TouchableOpacity 
                         onPress={() => setShowDropdown(!showDropdown)}
-                        className="flex-row justify-center items-center dark:bg-[#27282F]"
+                        className={myClassConverter(
+                            darkTheme,
+                            `flex-row justify-center items-center`,
+                            "bg-[#27282F]",
+                            ""
+                        )}
                     >
                         {darkTheme === "dark" ? (
                             <Image
@@ -67,7 +70,12 @@ const FormField = ({
                             style={{ backgroundColor: darkTheme === "dark" ? "#27282F" : "#FDFDFD"}}
                         >
                             <Text 
-                                className="text-black-100 dark:text-white font-pregular text-base"
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `font-pregular text-base`,
+                                    "text-white",
+                                    "text-black-100"
+                                )}
                                 numberOfLines={1}
                             >
                                 {selectedOption || placeholder}
@@ -85,7 +93,7 @@ const FormField = ({
                     <TextInput
                         className={`
                             flex-1 
-                            ${tintColor ?? "bg-[#FDFDFD] dark:bg-[#27282F] text-black-100 dark:text-white"}
+                            ${tintColor ?? `${darkTheme === "dark" ? "bg-[#27282F] text-white" : "bg-[#FDFDFD] text-black-100"}`}
                             font-pregular 
                             text-base
                         `}
@@ -119,7 +127,12 @@ const FormField = ({
             {/* Dropdown options */}
             {showDropdown && data && (
                 <View
-                    className="absolute z-10 overflow-y-auto h-[300px] bg-white dark:bg-[#27282F] rounded-lg shadow-lg mt-14 max-h-40"
+                    className={myClassConverter(
+                        darkTheme,
+                        `absolute z-10 overflow-y-auto h-[300px] rounded-lg shadow-lg mt-14 max-h-40`,
+                        "bg-[#27282F]",
+                        "bg-white"
+                    )}
                     style={{ width: "100%" }}
                 >
                     <FlatList
@@ -130,7 +143,12 @@ const FormField = ({
                             className="p-4 border-b border-gray-200"
                             onPress={() => handleSelect(item)}
                         >
-                            <Text className="text-black-100 dark:text-white font-pregular">{item.name}</Text>
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-pregular`,
+                                "text-white",
+                                "text-black-100"
+                            )}>{item.name}</Text>
                         </TouchableOpacity>
                         )}
                     />

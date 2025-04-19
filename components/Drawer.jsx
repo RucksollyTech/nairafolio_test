@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions, StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
+import { myClassConverter } from '@/lib/performActions';
 
 const { height: screenHeight } = Dimensions.get('window'); 
 
@@ -12,14 +13,27 @@ const Drawer = ({ isVisible, onClose, children, header, darkTheme }) => {
             <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />
             <View
                 style={styles.drawer}
-                className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1D1E25] rounded-t-[30px]"
+                className={myClassConverter(
+                    darkTheme,
+                    `absolute bottom-0 inset-x-0 rounded-t-[30px]`,
+                    "bg-[#1D1E25]",
+                    "bg-white"
+                )}
             >
                 <View 
-                    className="
-                        p-5 flex-row justify-between items-center border-b border-border dark:border-[#3B3C43]
-                    "
+                    className={myClassConverter(
+                        darkTheme,
+                        `p-5 flex-row justify-between items-center border-b`,
+                        "border-[#3B3C43]",
+                        "border-border"
+                    )}
                 >
-                    <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-lg font-psemibold font-semibold`,
+                        "text-white",
+                        "text-header-200"
+                    )}>
                         {header}
                     </Text>
                     <TouchableOpacity onPress={onClose}>

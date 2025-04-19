@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import UTCDate from './UTCDate'
+import { myClassConverter } from '@/lib/performActions'
 
 const ProgressBar = ({date,duration,setZero,darkTheme}) => {
     const {daysGone} = UTCDate(date)
@@ -9,9 +10,19 @@ const ProgressBar = ({date,duration,setZero,darkTheme}) => {
         <View
         className={darkTheme === 'dark' ? "dark w-full" : "w-full"}
         >
-            <View className="w-full h-1 bg-[#D9D9D9] dark:bg-[#D9D9D933] rounded-[10px]">
+            <View className={myClassConverter(
+                darkTheme,
+                `w-full h-1 rounded-[10px]`,
+                "bg-[#D9D9D933]",
+                "bg-[#D9D9D9]"
+            )}>
                 <View 
-                    className={`h-full rounded-[10px] bg-primary dark:bg-[#CBF5B8]`}
+                    className={myClassConverter(
+                        darkTheme,
+                        `h-full rounded-[10px]`,
+                        "bg-[#CBF5B8]",
+                        "bg-primary"
+                    )}
                     style={{
                         width: `${percentage <= 100 ? percentage : 100}%`,
                     }}

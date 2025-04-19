@@ -8,6 +8,7 @@ import { getCategories } from "@/lib/appwrite";
 import { Collapsible } from "./Collapsible";
 import Dropdown from "./Dropdown";
 import CustomDropdown from "./CustomDropDown";
+import { myClassConverter } from "@/lib/performActions";
 
 const SearchInput = ({ initialQuery, refreshing, darkTheme }) => {
     const { data:categories, loading, refetch } = useAppwrite(getCategories)
@@ -58,12 +59,12 @@ const SearchInput = ({ initialQuery, refreshing, darkTheme }) => {
                 flex-row 
                 items-center space-x-4 
                 w-full h-16 px-4 
-                bg-[#FBFBFB] rounded-2xl 
-                dark:bg-dark_mode-300
+                ${darkTheme === "dark" ? "bg-dark_mode-300" : "bg-[#FBFBFB]"}
+                 rounded-2xl 
                 relative
                 border  
                 ${
-                    isFocused ? "border-primary" : "border-border dark:border-[#7F7F7F4D]"
+                    isFocused ? "border-primary" : `${darkTheme === "dark" ? "border-[#7F7F7F4D]" : "border-border"}`
                 }
             `}>
                 <TouchableOpacity
@@ -84,7 +85,12 @@ const SearchInput = ({ initialQuery, refreshing, darkTheme }) => {
                     <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
                 </TouchableOpacity>
                 <TextInput
-                    className="text-base mt-0.5 text-black-100 dark:text-white flex-1 font-pregular"
+                    className={myClassConverter(
+                        darkTheme,
+                        `text-base mt-0.5 pl-2 flex-1 font-pregular`,
+                        "text-white",
+                        "text-black-100"
+                    )}
                     value={query}
                     placeholder="Search here"
                     placeholderTextColor="#BBBBBB"

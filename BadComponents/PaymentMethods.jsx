@@ -9,6 +9,7 @@ import CustomButton from './CustomButton'
 import { createCustomer, createDedicatedVirtualAccount, initiateBankTransferPayment } from '../lib/payStack';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { WebView } from "react-native-webview";
+import { myClassConverter } from '@/lib/performActions'
 
 const PaymentMethods = (destination) => {
     const { user } = useGlobalContext();
@@ -85,19 +86,44 @@ const PaymentMethods = (destination) => {
             {virtualAccount ? (
                 // Display virtual account details to the user
                 <View className="relative z-[60]" style={{ flex: 1, padding: 20 }}>
-                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-lg font-psans`,
+                        "text-white",
+                        "text-header-200"
+                    )}>
                         Please transfer ₦{depositAmount} to the following account:
                     </Text>
-                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-lg font-psans`,
+                        "text-white",
+                        "text-header-200"
+                    )}>
                         Bank: {virtualAccount.bank.name}
                     </Text>
-                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-lg font-psans`,
+                        "text-white",
+                        "text-header-200"
+                    )}>
                         Account Number: {virtualAccount.account_number}
                     </Text>
-                    <Text className="text-lg text-header-200 dark:text-white  font-psans">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-lg font-psans`,
+                        "text-white",
+                        "text-header-200"
+                    )}>
                         Account Name: {virtualAccount.account_name}
                     </Text>
-                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-sm`,
+                        "text-[#FFFFFFB2]",
+                        "text-muted"
+                    )}>
                         After making the transfer, the payment will be automatically verified.
                     </Text>
                 </View>
@@ -110,15 +136,16 @@ const PaymentMethods = (destination) => {
                                 onPress={()=>setNext(true)}
                             >
                                 <View 
-                                    className="
-                                        flex-1 
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `flex-1 
                                         rounded-lg
                                         flex 
                                         py-4 flex-row
-                                        border
-                                        border-border dark:border-[#3B3C43]
-                                        bg-[#F8FAFA]
-                                    "
+                                        border`,
+                                        "border-[#3B3C43]",
+                                        "border-border bg-[#F8FAFA]"
+                                    )}
                                 >
                                     <View
                                         className="h-14 w-14 rounded-full items-center justify-center"
@@ -136,13 +163,23 @@ const PaymentMethods = (destination) => {
                                     >
                                         <View>
                                             <Text
-                                                className="text-lg text-header-200 dark:text-white  font-psans"
+                                                className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-psans`,
+                                                    "text-white",
+                                                    "text-header-200"
+                                                )}
                                             >
                                                 Bank transfer
                                             </Text>
                                         </View>
                                         <View>
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 Direct transfer from your bank account
                                             </Text>
                                         </View>
@@ -162,16 +199,17 @@ const PaymentMethods = (destination) => {
                             </TouchableOpacity>
                             <Link href={"/"} className="px-5">
                                 <View 
-                                    className="
-                                        flex-1 
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `flex-1 
                                         rounded-lg
                                         flex 
                                         py-4 flex-row
                                         mb-5
-                                        border
-                                        border-border dark:border-[#3B3C43]
-                                        bg-[#F8FAFA]
-                                    "
+                                        border`,
+                                        "border-[#3B3C43]",
+                                        "border-border bg-[#F8FAFA]"
+                                    )}
                                 >
                                     <View
                                         className="h-14 w-14 rounded-full items-center justify-center"
@@ -189,13 +227,24 @@ const PaymentMethods = (destination) => {
                                     >
                                         <View>
                                             <Text
-                                                className="text-lg text-header-200 dark:text-white  font-psans"
+                                                className={myClassConverter(
+                                                    darkTheme,
+                                                    `text-lg font-psans`,
+                                                    "text-white",
+                                                    "text-header-200"
+                                                )}
+                                            
                                             >
                                                 Debit card
                                             </Text>
                                         </View>
                                         <View>
-                                            <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-sm`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}>
                                                 Pay using Visa, Mastercard, or others 
                                             </Text>
                                         </View>

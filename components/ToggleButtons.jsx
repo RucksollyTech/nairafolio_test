@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ToggleButtons = ({ active, toggler, title1, title2, marginTop }) => {
+const ToggleButtons = ({ active, toggler, title1, title2, marginTop,darkTheme }) => {
     return (
-        <View className={`${ marginTop ?? "mt-12" } relative border-b border-border dark:border-[#3B3C43] flex flex-row justify-between w-full`}>
+        <View className={`${ marginTop ?? "mt-12" } relative border-b ${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"} flex flex-row justify-between w-full`}>
             <View className="w-full flex-1">
                 <TouchableOpacity 
                     className="items-center justify-center"

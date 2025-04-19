@@ -6,6 +6,7 @@ import { getBlogs } from '@/lib/appwrite'
 import { FlatList } from 'react-native'
 import { Dimensions } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
+import { myClassConverter } from '@/lib/performActions'
 
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = screenWidth / 2.15 - 20; 
@@ -28,7 +29,12 @@ const Media_and_stories = ({setLastActive,refreshing,darkTheme}) => {
             {data && data.length >0 && (
                 <View className="mt-16 mx-6">
                     <View>
-                        <Text className="font-psans text-lg text-black-100 dark:text-white">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            `font-psans text-lg`,
+                            "text-white",
+                            "text-black-100"
+                        )}>
                             Media and stories
                         </Text>
                     </View>

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { icons } from '../constants';
 import { Dimensions } from 'react-native';
+import { myClassConverter } from '@/lib/performActions';
 
 const { height: screenHeight } = Dimensions.get('window'); 
 
@@ -18,7 +19,12 @@ const GeneralDrawer = ({
         <View className={`absolute inset-0 z-50 bg-black/50 ${darkTheme === "dark" ? "dark" : ""}`}>
             {dismissOnClickOutside && <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={onClose} />}
             <View
-                className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1D1E25] rounded-t-[30px]"
+                className={myClassConverter(
+                    darkTheme,
+                    `absolute bottom-0 inset-x-0 rounded-t-[30px]`,
+                    "bg-[#1D1E25]",
+                    "bg-white"
+                )}
                 style={{ minHeight: makeFull ? screenHeight * 0.92 : minHeights }}
             >
                 <View 
@@ -28,7 +34,12 @@ const GeneralDrawer = ({
                 >
                     {header &&(
                         <View>
-                            <Text className="text-header-100 dark:text-white pt-2 px-2 font-psemibold text-lg">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `pt-2 px-2 font-psemibold text-lg`,
+                                "text-white",
+                                "text-header-100"
+                            )}>
                                 {header}
                             </Text>
                         </View>

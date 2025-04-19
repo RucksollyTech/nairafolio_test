@@ -10,6 +10,7 @@ import { useLocalSearchParams } from 'expo-router'
 import SkeletonLoader from '../../components/SkeletonLoader'
 import EmptyState from '../../components/EmptyState'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { myClassConverter } from '@/lib/performActions'
 
 
 
@@ -59,7 +60,12 @@ const Search = () => {
                 >
                     <View className="px-5">
                         <View className="pt-10">
-                            <Text className="text-black-100 dark:text-white font-psans text-xl">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-psans text-xl`,
+                                "text-white",
+                                "text-black-100"
+                            )}>
                                 Explore Investments
                             </Text>
                         </View>

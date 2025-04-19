@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { myClassConverter } from '@/lib/performActions';
 
 const Dropdown = ({darkTheme, options, onSelect, initialQuery,setIsOpen }) => {
   const [selectedValue, setSelectedValue] = useState(initialQuery || null);
@@ -28,7 +29,12 @@ const Dropdown = ({darkTheme, options, onSelect, initialQuery,setIsOpen }) => {
                 activeOpacity={0.9}
             >
                 <View className='pl-4'>
-                    <Text className="text-gray-700 dark:text-gray-400">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        ``,
+                        "text-gray-400",
+                        "text-gray-700"
+                    )}>
                     {selectedValue || 'Select an option'}
                     </Text>
                 </View>
@@ -45,24 +51,32 @@ const Dropdown = ({darkTheme, options, onSelect, initialQuery,setIsOpen }) => {
 
             {/* Dropdown Options (absolute positioning) */}
             {showOptions && (
-                <View className="
-                    absolute top-14 
+                <View className={myClassConverter(
+                    darkTheme,
+                    `absolute top-14 
                     overflow-hidden 
-                    left-0 w-full border-t 
-                    rounded-2xl 
-                    border-gray-300 
-                    dark:border-[#0000000D]
-                    bg-white 
-                    dark:bg-dark_mode-300
-                    z-20
-                ">
+                    left-0 w-full border-t z-20 
+                    rounded-2xl `,
+                    "border-[#0000000D] bg-dark_mode-300",
+                    "border-gray-300 bg-white"
+                )}>
                     {options && ["All",...options].map((option, index) => (
                         <TouchableOpacity
                             key={index}
-                            className="p-4 border-b border-gray-200 dark:border-[#0000000D] bg-white dark:bg-dark_mode-300"
+                            className={myClassConverter(
+                                darkTheme,
+                                `p-4 border-b`,
+                                "border-[#0000000D] bg-dark_mode-300",
+                                "border-gray-200 bg-white"
+                            )}
                             onPress={() => handleSelect(option)}
                         >
-                            <Text className="text-gray-700 dark:text-[#FFFFFF]">{option}</Text>
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                ``,
+                                "text-[#FFFFFF]",
+                                "text-gray-700"
+                            )}>{option}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>

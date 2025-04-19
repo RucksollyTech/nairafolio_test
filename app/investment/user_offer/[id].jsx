@@ -14,6 +14,7 @@ import { UTCDate } from '@/components';
 import CustomModalAlert from '@/components/CustomModalAlert';
 import { checkMatured } from '@/components/InvestmentCard';
 import { undoSellInvestment } from '@/components/PerformingTransaction';
+import { myClassConverter } from '@/lib/performActions';
 
 const UserOffer = () => {
     const { setLastActive, user, darkTheme } = useGlobalContext();
@@ -127,12 +128,22 @@ const UserOffer = () => {
                     >
                         <View>
                             <View>
-                                <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `text-lg font-psemibold font-semibold`,
+                                    "text-white",
+                                    "text-header-200"
+                                )}>
                                     Available offers
                                 </Text>
                             </View>
                             <View className='pt-2'>
-                                <Text className='text-muted-300 dark:text-white '>
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    ``,
+                                    "text-white",
+                                    "text-muted-300"
+                                )}>
                                     Here are offers available from investors who want to sell to you.
                                 </Text>
                             </View>
@@ -156,12 +167,13 @@ const UserOffer = () => {
                                             // onPress={()=>router.push(`/investment/active/${sale.$id}`)}
                                         >
                                             <View
-                                                className={`
-                                                    rounded-lg
-                                                    border
-                                                    border-border dark:border-[#3B3C43]
-                                                    bg-[#F8FAFA] dark:bg-[#303540]
-                                                `}
+                                                className={myClassConverter(
+                                                    darkTheme,
+                                                    `rounded-lg
+                                                    border`,
+                                                    "border-[#3B3C43] bg-[#303540]",
+                                                    "border-border bg-[#F8FAFA]"
+                                                )}
                                             >
                                                 <View 
                                                     className={`
@@ -172,14 +184,14 @@ const UserOffer = () => {
                                                     `}
                                                 >
                                                     <View
-                                                        className="
-                                                            h-12 w-12 
-                                                            rounded-full 
-                                                            bg-[#DFE7E8]
-                                                            dark:bg-[#CBF5B84D]
-                                                            items-center 
-                                                            justify-center
-                                                        "
+                                                        className={myClassConverter(
+                                                            darkTheme,
+                                                            `h-12 w-12 
+                                                            rounded-full items-center 
+                                                            justify-center`,
+                                                            "bg-[#CBF5B84D]",
+                                                            "bg-[#DFE7E8]"
+                                                        )}
                                                     >
                                                         <Image
                                                             source={icons.tag}
@@ -199,7 +211,12 @@ const UserOffer = () => {
                                                     >
                                                         <View>
                                                             <Text
-                                                                className="text-lg text-muted-200 dark:text-[#FFFFFF99] font-psemibold"
+                                                                className={myClassConverter(
+                                                                    darkTheme,
+                                                                    `text-lg font-psemibold`,
+                                                                    "text-[#FFFFFF99]",
+                                                                    "text-muted-200"
+                                                                )}
                                                             >
                                                                 {sale.unit} units
                                                             </Text>
@@ -213,7 +230,12 @@ const UserOffer = () => {
                                                     >
                                                         <View className="w-full items-end">
                                                             <View>
-                                                                <Text className="text-header-100 dark:text-white font-psans text-sm">
+                                                                <Text className={myClassConverter(
+                                                                    darkTheme,
+                                                                    `font-psans text-sm`,
+                                                                    "text-white",
+                                                                    "text-header-100"
+                                                                )}>
                                                                     ₦{sale?.unit * sale?.pricePlaced}
                                                                 </Text>
                                                             </View>
@@ -226,14 +248,15 @@ const UserOffer = () => {
                                                     </View>
                                                 </View>
                                                 <View
-                                                    className={`
-                                                        flex-1 
-                                                        border-t
-                                                        border-border dark:border-[#3B3C43]
-                                                        flex-row
+                                                    className={myClassConverter(
+                                                        darkTheme,
+                                                        `flex-1 
+                                                        border-t flex-row
                                                         py-2
-                                                        px-3
-                                                    `}
+                                                        px-3`,
+                                                        "border-[#3B3C43]",
+                                                        "border-border"
+                                                    )}
                                                 >
                                                     {/*  */}
                                                     {sale.investment.duration_days - UTCDate(sale.date_created).daysGone > 0 ? (

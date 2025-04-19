@@ -11,6 +11,7 @@ import PaymentLoader from './PaymentLoader';
 import CoverBg from './CoverBg';
 import { createTransactions } from '../lib/appwrite';
 import PaymentMethods from './PaymentMethods';
+import { myClassConverter } from '@/lib/performActions';
 
 const { height: screenHeight } = Dimensions.get('window'); 
 
@@ -157,13 +158,18 @@ const PaymentDrawer = ({
                 {/* <TouchableOpacity className="absolute inset-0" activeOpacity={1} onPress={handleClose} /> */}
                 <View
                     style={styles.drawer}
-                    className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1D1E25] rounded-t-[30px]"
+                    className={myClassConverter(
+                        darkTheme,
+                        `absolute bottom-0 inset-x-0 rounded-t-[30px]`,
+                        "bg-[#1D1E25]",
+                        "bg-white"
+                    )}
                 >
                     {(investment && investment.price_per_unit > 0) ? (
                         <>
                             <View 
                                 className={`
-                                    p-5 min-h-24 flex-row justify-between items-center ${!next  && "border-b border-border dark:border-[#495161]" }
+                                    p-5 min-h-24 flex-row justify-between items-center ${!next  && `${darkTheme === "dark" ? "border-b border-[#495161]" : "border-b border-border"}`}
                                 `}
                             >
                                 {next ? (
@@ -192,7 +198,12 @@ const PaymentDrawer = ({
                                             </TouchableOpacity>
                                         </View>
                                         <View className="pl-3">
-                                            <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-lg font-psemibold font-semibold`,
+                                                "text-white",
+                                                "text-header-200"
+                                            )}>
                                                 Select payment method
                                             </Text>
                                         </View>
@@ -218,7 +229,12 @@ const PaymentDrawer = ({
                                             />
                                         </View>
                                         <View className="pl-3">
-                                            <Text className="text-lg font-psemibold font-semibold text-header-200 dark:text-white ">
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `text-lg font-psemibold font-semibold`,
+                                                "text-white",
+                                                "text-header-200"
+                                            )}>
                                                 {title ?? "Secure an Investment"} 
                                             </Text>
                                         </View>
@@ -235,7 +251,12 @@ const PaymentDrawer = ({
                                 <View>
                                     {next ? (
                                         <View>
-                                            <View className="px-5 border-b border-border dark:border-[#3B3C43]">
+                                            <View className={myClassConverter(
+                                                darkTheme,
+                                                `px-5 border-b`,
+                                                "border-[#3B3C43]",
+                                                "border-border"
+                                            )}>
                                                 <TouchableOpacity 
                                                     activeOpacity={0.9}
                                                     onPress={()=>handleOtherScreen(1)}
@@ -247,9 +268,8 @@ const PaymentDrawer = ({
                                                         py-4 flex-row
                                                         mb-5
                                                         border
-                                                        ${(active && active === 1) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
-                                                        bg-[#F8FAFA]
-                                                        dark:bg-[#303540]
+                                                        ${(active && active === 1) ? "border-secondary-100" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`}
+                                                        ${darkTheme === "dark" ? "bg-[#303540]" : "bg-[#F8FAFA]"}
                                                     `}
                                                 >
                                                     <View
@@ -280,7 +300,12 @@ const PaymentDrawer = ({
                                                             <View className="my-auto justify-between flex-row">
                                                                 <View>
                                                                     <Text
-                                                                        className="text-lg text-header-200 dark:text-white  font-psans"
+                                                                        className={myClassConverter(
+                                                                            darkTheme,
+                                                                            `text-lg font-psans`,
+                                                                            "text-white",
+                                                                            "text-header-200"
+                                                                        )}
                                                                     >
                                                                         Wallet
                                                                     </Text>
@@ -322,7 +347,12 @@ const PaymentDrawer = ({
                                     ) : (
                                         <View className="pt-3 px-5">
                                             <View>
-                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pmedium`,
+                                                    "text-[#FFFFFF99]",
+                                                    "text-muted-200 "
+                                                )}>
                                                     {investment.isDollar ? "Enter the dollar amount" : "Number of units to purchase"}
                                                 </Text>
                                                 <FormField 
@@ -343,10 +373,20 @@ const PaymentDrawer = ({
                                                 </View>
                                             </View>
                                             <View className="mt-8">
-                                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
+                                                <Text className={myClassConverter(
+                                                    darkTheme,
+                                                    `font-pmedium`,
+                                                    "text-[#FFFFFF99]",
+                                                    "text-muted-200"
+                                                )}>
                                                     {investment.isDollar ? "Total price" : "Price of units"}
                                                 </Text>
-                                                <View className="mt-3 items-center justify-center rounded-lg bg-[#F7F7F7] dark:bg-[#242730] h-14">
+                                                <View className={myClassConverter(
+                                                    darkTheme,
+                                                    `mt-3 items-center justify-center rounded-lg h-14`,
+                                                    "bg-[#242730]",
+                                                    "bg-[#F7F7F7]"
+                                                )}>
                                                     <Money 
                                                         value={((parseFloat(unit) && parseFloat(unit) !== NaN) ? parseFloat(unit) : 0) * investment?.price_per_unit}
                                                         textStyle={darkTheme === "dark" ? "text-white font-xl" : "font-xl"}
@@ -393,7 +433,12 @@ const PaymentDrawer = ({
                             p-10 flex-row justify-between items-center
                         `}>
                             <View>
-                                <Text className="text-muted-200 dark:text-[#FFFFFF99] font-psemibold text-lg">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-psemibold text-lg`,
+                                    "text-[#FFFFFF99] ",
+                                    "text-muted-200"
+                                )}>
                                     Please select an investment
                                 </Text>
                             </View>

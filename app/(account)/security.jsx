@@ -8,6 +8,7 @@ import showAlert from '../../components/CustomAlert'
 import * as LocalAuthentication from "expo-local-authentication";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { myClassConverter } from '@/lib/performActions'
 
 export const checkBiometricSupport = async () => {
     const hasHardware = await LocalAuthentication.hasHardwareAsync();
@@ -85,32 +86,45 @@ const Security = () => {
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >
-                <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
+                <View className={myClassConverter(
+                        darkTheme,
+                        "flex-1 h-full px-5 pb-10",
+                        "bg-dark_mode ",
+                        "bg-white"
+                    )}
+                >
                     
                     <View className="pt-4">
-                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                        <Text className={myClassConverter(
+                                darkTheme,
+                                "font-psans text-2xl",
+                                "text-white",
+                                "text-black-100"
+                            )}
+                        >
                             Security
                         </Text>
                     </View>
                     <View className="pt-6 pb-2">
-                        <Text className="text-[#2A3B59] dark:text-[#F1F1F1] text-lg font-psemibold">
+                        <Text className={myClassConverter(
+                                darkTheme,
+                                "text-lg font-psemibold",
+                                "text-[#F1F1F1]",
+                                "text-[#2A3B59]"
+                            )}
+                        >
                             Passcode
                         </Text>
                     </View>
                     <View>
                         <Link href={"/change-passcode"} className="my-1">
                             <View 
-                                className="
-                                    flex-1 
-                                    rounded-lg
-                                    flex 
-                                    py-2 flex-row
-                                    mb-5
-                                    border
-                                    border-border dark:border-[#3B3C43]
-                                    bg-[#F8FAFA]
-                                    dark:bg-dark_mode-300
-                                "
+                                className={myClassConverter(
+                                    darkTheme,
+                                    "flex-1 rounded-lg flex py-2 flex-row mb-5 border",
+                                    "border-[#3B3C43] bg-dark_mode-300",
+                                    "border-border bg-[#F8FAFA]"
+                                )}
                             >
                                 <View
                                     className="h-14 w-14 rounded-full items-center justify-center"
@@ -129,7 +143,12 @@ const Security = () => {
                                 >
                                     <View>
                                         <Text
-                                            className="text-lg text-[#2A3B59] dark:text-white font-pmedium"
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                "text-lg font-pmedium",
+                                                "text-white",
+                                                "text-[#2A3B59] "
+                                            )}
                                         >
                                             Change passcode
                                         </Text>
@@ -150,24 +169,25 @@ const Security = () => {
                         </Link>
                     </View>
                     <View className="pt-6 pb-2">
-                        <Text className="text-[#2A3B59] dark:text-[#F1F1F1] text-lg font-psemibold">
+                        <Text className={myClassConverter(
+                                darkTheme,
+                                "text-lg font-psemibold",
+                                "text-[#F1F1F1]",
+                                "text-[#2A3B59]"
+                            )}
+                        >
                             Password
                         </Text>
                     </View>
                     <View>
                         <Link href={"/change-password"} className="my-1">
                             <View 
-                                className="
-                                    flex-1 
-                                    rounded-lg
-                                    flex 
-                                    py-2 flex-row
-                                    mb-5
-                                    border
-                                    border-border dark:border-[#3B3C43]
-                                    bg-[#F8FAFA]
-                                    dark:bg-dark_mode-300
-                                "
+                                className={myClassConverter(
+                                    darkTheme,
+                                    "flex-1 rounded-lg flex py-2 flex-row mb-5 border",
+                                    "border-[#3B3C43] bg-dark_mode-300",
+                                    "border-border bg-[#F8FAFA]"
+                                )}
                             >
                                 <View
                                     className="h-14 w-14 rounded-full items-center justify-center"
@@ -186,7 +206,12 @@ const Security = () => {
                                 >
                                     <View>
                                         <Text
-                                            className="text-lg text-[#2A3B59] dark:text-white font-pmedium"
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                "text-lg font-pmedium",
+                                                "text-white",
+                                                "text-[#2A3B59]"
+                                            )}
                                         >
                                             Change password
                                         </Text>
@@ -207,23 +232,29 @@ const Security = () => {
                         </Link>
                     </View>
                     <View className="pt-6 pb-2">
-                        <Text className="text-[#2A3B59] dark:text-[#F1F1F1] text-lg font-psemibold">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            "text-lg font-psemibold",
+                            "text-[#F1F1F1]",
+                            "text-[#2A3B59]"
+                        )}>
                             Biometrics
                         </Text>
                     </View>
                     <View className="my-1">
                         <View 
-                            className="
-                                flex-1 
+                            className={myClassConverter(
+                                darkTheme,
+                                `flex-1
                                 rounded-lg
                                 flex 
                                 py-2 flex-row
                                 mb-5
                                 border
-                                border-border dark:border-[#3B3C43]
-                                bg-[#F8FAFA]
-                                dark:bg-dark_mode-300
-                            "
+                                `,
+                                "border-[#3B3C43] bg-dark_mode-300",
+                                "border-border bg-[#F8FAFA]"
+                            )}
                         >
                             <View
                                 className="h-14 w-14 rounded-full items-center justify-center"
@@ -242,7 +273,12 @@ const Security = () => {
                             >
                                 <View>
                                     <Text
-                                        className="text-lg text-[#2A3B59] dark:text-white font-pmedium"
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `text-lg font-pmedium`,
+                                            "text-white",
+                                            "text-[#2A3B59]"
+                                        )}
                                     >
                                         Log in with Biometrics
                                     </Text>

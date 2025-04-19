@@ -4,6 +4,7 @@ import Money from './Money'
 import ProgressBar from './ProgressBar'
 import UTCDate from './UTCDate'
 import { router } from 'expo-router'
+import { myClassConverter } from '@/lib/performActions'
 
 export const calculateProfit = (data)=>{
     const {percentage,daysGone,invested,duration} = data
@@ -71,17 +72,16 @@ const InvestmentCard = ({
                 activeOpacity={0.7}
             >
                 <View 
-                    className="
-                        flex-1 
+                    className={myClassConverter(
+                        darkTheme,
+                        `flex-1 
                         rounded-lg
                         flex 
                         p-2.5 flex-row
-                        border
-                        border-border 
-                        dark:border-[#0000000F]
-                        bg-[#F8F8F8]
-                        dark:bg-[#303540]
-                    "
+                        border`,
+                        "border-[#0000000F] bg-[#303540]",
+                        "border-border bg-[#F8F8F8]"
+                    )}
                 >
                     <View
                         style={{
@@ -103,7 +103,12 @@ const InvestmentCard = ({
                     >
                         <View className={investType ? "my-auto" : ""}>
                             <Text
-                                className="text-base font-[700] font-pmedium text-muted dark:text-[#FFFFFFB2] "
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `text-base font-[700] font-pmedium`,
+                                    "text-[#FFFFFFB2]",
+                                    "text-muted"
+                                )}
                                 numberOfLines={1}
                             >
                                 {name}
@@ -152,7 +157,12 @@ const InvestmentCard = ({
                             <Money 
                                 dollar={investType}
                                 value={investType ? user.dollar_ballance : invested}
-                                textStyle="font-pmedium text-muted dark:text-[#FFFFFFB2] text-right text-base"
+                                textStyle={myClassConverter(
+                                    darkTheme,
+                                    `font-pmedium text-base text-right`,
+                                    "text-[#FFFFFFB2]",
+                                    "text-muted"
+                                )}
                             />
                         </View>
                         <View className="mt-1">

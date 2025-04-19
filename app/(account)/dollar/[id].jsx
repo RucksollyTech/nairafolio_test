@@ -19,6 +19,7 @@ import { CustomButton, FormField } from '@/components';
 import { CheckBalance } from '@/components/PerformingTransaction';
 import { KeyboardAvoidingView } from 'react-native';
 import { Keyboard } from 'react-native';
+import { myClassConverter } from '@/lib/performActions';
 
 const Dollar = () => {
     const { setLastActive, user,setUser,setShowMessage,showMessage,darkTheme } = useGlobalContext();
@@ -123,7 +124,12 @@ const Dollar = () => {
                     {!loading && (
                         <View>
                             <Text 
-                                className="text-black-100 dark:text-white text-xl font-pregular font-[700]"
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `text-xl font-pregular font-[700]`,
+                                    "text-white",
+                                    "text-black-100"
+                                )}
                             >
                                 Dollar saving
                             </Text>
@@ -141,17 +147,32 @@ const Dollar = () => {
                                 <Money
                                     dollar
                                     value={user?.dollar_ballance}
-                                    textStyle="text-black-100 dark:text-white font-psans text-4xl"
+                                    textStyle={myClassConverter(
+                                        darkTheme,
+                                        `font-psans text-4xl`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}
                                 />
                             </View>
                             <View className="mt-2 ">
                                 <View className=" flex flex-row">
-                                    <Text className="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pregular font-[700] text-base`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                    )}>
                                         Invested 
                                     </Text>
                                     <Money
                                         value={(transactions && transactions.length > 0) ? getLastTransaction(transactions) : 0}
-                                        textStyle="text-muted dark:text-[#FFFFFFB2] font-pregular font-[700] text-base"
+                                        textStyle={myClassConverter(
+                                            darkTheme,
+                                            `font-pregular font-[700] text-base`,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                        )}
                                         containerStyle="pl-2"
                                     />
                                 </View>
@@ -169,9 +190,19 @@ const Dollar = () => {
                                 <TouchableOpacity
                                     onPress={handleAdd}
                                     activeOpacity={0.7}
-                                    className={` bg-primary dark:bg-dark_mode-200 rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                        "bg-dark_mode-200",
+                                        "bg-primary"
+                                    )}
                                 >
-                                    <Text className={`font-pinter font-semibold text-base text-white dark:text-[#171717]`}>
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pinter font-semibold text-base`,
+                                        "text-[#171717]",
+                                        "text-white"
+                                    )}>
                                         Add
                                     </Text>
                                     <View className="ml-2">
@@ -186,9 +217,19 @@ const Dollar = () => {
                                 <TouchableOpacity
                                     onPress={handleConvert}
                                     activeOpacity={0.7}
-                                    className={`border border-border-100 dark:border-[#00000014] bg-[#F5F5F5] dark:bg-[#303540] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                        "border-[#00000014] bg-[#303540]",
+                                        "border-border-100 bg-[#F5F5F5]"
+                                    )}
                                 >
-                                    <Text className={`font-pinter font-semibold text-base text-muted dark:text-white`}>
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pinter font-semibold text-base`,
+                                        "text-white",
+                                        "text-muted"
+                                    )}>
                                         Convert
                                     </Text>
                                     <View className="ml-2">
@@ -204,7 +245,12 @@ const Dollar = () => {
                             {transactions && transactions.length > 0 && (
                                 <View className='mt-5'>
                                     <View className='mb-3'>
-                                        <Text className="font-psans text-lg text-black-100 dark:text-white">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-psans text-lg`,
+                                            "text-black-100",
+                                            "text-white"
+                                        )}>
                                             Activities
                                         </Text>
                                     </View>
@@ -277,7 +323,12 @@ const Dollar = () => {
                         {!success ? (
                             <>
                                 <View>
-                                    <Text className="text-muted-200 dark:text-[#FFFFFF99] font-pmedium">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pmedium`,
+                                        "text-[#FFFFFF99]",
+                                        "text-muted-200"
+                                    )}>
                                         Enter the dollar amount to convert
                                     </Text>
                                     <FormField 
@@ -303,7 +354,12 @@ const Dollar = () => {
                                     </View>
                                 </View>
                                 <View className="mt-40">
-                                    <Text className="text-muted-200 dark:text-[#FFFFFF99] text-center font-pmedium text-sm">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `text-center font-pmedium text-sm`,
+                                        "text-[#FFFFFF99]",
+                                        "text-muted-200"
+                                    )}>
                                         By proceeding, you confirm  that you want to convert at the rate of ₦{dollarInvestment?.investment?.dollar_withdrawal_rate}. 
                                         Funds converted will be sent to your Nairafolio wallet
                                     </Text>
@@ -317,7 +373,12 @@ const Dollar = () => {
                                     />
                                 </View>
                                 <View className="mt-5">
-                                    <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-psans text-2xl text-center`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}>
                                         You have successfully converted {dollarToSell}.
                                     </Text>
                                 </View>

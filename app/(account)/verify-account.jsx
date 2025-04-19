@@ -7,7 +7,7 @@ import CustomNavigator from '../../components/CustomNavigator'
 import GeneralDrawer from '../../components/GeneralDrawer'
 import { generateRandomNumber } from '../../lib/appwrite'
 import { EmailVerify } from '../../lib/EmailSenders'
-import { handleVerificationEmailAndNIN } from '../../lib/performActions'
+import { handleVerificationEmailAndNIN, myClassConverter } from '../../lib/performActions'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
@@ -85,7 +85,13 @@ const VerifyAccount = () => {
                 <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
                     <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <View className="pt-2 px-5">
-                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                        <Text className={myClassConverter(
+                                darkTheme,
+                                `font-psans text-2xl`,
+                                "text-white",
+                                "text-black-100"
+                            )}
+                        >
                             Verify account
                         </Text>
                     </View>
@@ -99,9 +105,20 @@ const VerifyAccount = () => {
                             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                         }
                     >
-                        <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
+                        <View className={myClassConverter(
+                                darkTheme,
+                                `flex-1 h-full px-5 pb-10`,
+                                "bg-dark_mode",
+                                "bg-white"
+                            )}
+                        >
                             <View className="py-4">
-                                <Text className="text-muted-300 dark:text-white">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    ``,
+                                    "text-white",
+                                    "text-muted-300"
+                                )}>
                                     You are required to provide some information about your identity.
                                 </Text>
                             </View>
@@ -112,18 +129,17 @@ const VerifyAccount = () => {
                                     activeOpacity={0.9}
                                 >
                                     <View 
-                                        className="
-                                            flex-1 
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `flex-1 
                                             rounded-lg
                                             flex 
                                             py-4 flex-row
                                             mb-5
-                                            border
-                                            border-border dark:border-[#3B3C43]
-                                            bg-[#F8FAFA]
-                                            dark:bg-dark_mode-300
-                                        "
-                                    >
+                                            border`,
+                                            "border-[#3B3C43] bg-dark_mode-300",
+                                            "border-border bg-[#F8FAFA]"
+                                        )}>
                                         <View
                                             className="h-14 w-14 rounded-full items-center justify-center"
                                         >
@@ -140,13 +156,24 @@ const VerifyAccount = () => {
                                         >
                                             <View>
                                                 <Text
-                                                    className="text-lg text-header-200 dark:text-white  font-psans"
+                                                    className={myClassConverter(
+                                                        darkTheme,
+                                                        `text-lg font-psans`,
+                                                        "text-white ",
+                                                        "text-header-200"
+                                                    )}
                                                 >
                                                     Verify with NIN
                                                 </Text>
                                             </View>
                                             <View>
-                                                <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                                <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `text-sm`,
+                                                        "text-[#FFFFFFB2]",
+                                                        "text-muted"
+                                                    )}
+                                                >
                                                     Provide your NIN
                                                 </Text>
                                             </View>
@@ -198,17 +225,17 @@ const VerifyAccount = () => {
                                     onPress={()=> handleVerifyMail()}
                                 >
                                     <View 
-                                        className="
-                                            flex-1 
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `flex-1 
                                             rounded-lg
                                             flex 
                                             py-4 flex-row
                                             mb-5
-                                            border
-                                            border-border dark:border-[#3B3C43]
-                                            bg-[#F8FAFA]
-                                            dark:bg-dark_mode-300
-                                        "
+                                            border`,
+                                            "border-[#3B3C43] bg-dark_mode-300",
+                                            "border-border bg-[#F8FAFA]"
+                                        )}
                                     >
                                         <View
                                             className="h-14 w-14 rounded-full items-center justify-center"
@@ -227,7 +254,12 @@ const VerifyAccount = () => {
                                             <View className="my-auto">
                                             <View>
                                                     <Text
-                                                        className="text-lg text-header-200 dark:text-white  font-psans"
+                                                        className={myClassConverter(
+                                                            darkTheme,
+                                                            `text-lg font-psans`,
+                                                            "text-white",
+                                                            "text-header-200"
+                                                        )}
                                                     >
                                                         Verify Email
                                                     </Text>
@@ -273,7 +305,12 @@ const VerifyAccount = () => {
                         {!next ? (
                             <View className="px-5">
                                 <View className="pt-4">
-                                    <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-psans text-2xl`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}>
                                         Verify your mail
                                     </Text>
                                 </View>
@@ -324,7 +361,12 @@ const VerifyAccount = () => {
                                         />
                                     </View>
                                     <View className="mt-5">
-                                        <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                        <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-psans text-2xl text-center`,
+                                            "text-white",
+                                            "text-black-100"
+                                        )}>
                                             Your email have been verified successfully.
                                         </Text>
                                     </View>

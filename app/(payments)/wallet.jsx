@@ -18,6 +18,7 @@ import { TransactionDisplayText, classNameColorsForTransactions, transactionIcon
 import { KeyboardAvoidingView } from 'react-native'
 import { Platform } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native'
+import { myClassConverter } from '@/lib/performActions'
 
 const Wallet = () => {
     const navigation = useNavigation();
@@ -56,7 +57,12 @@ const Wallet = () => {
             className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}
         >
             {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-            <SafeAreaView className="bg-white dark:bg-dark_mode flex-1 h-full">
+            <SafeAreaView className={myClassConverter(
+                darkTheme,
+                `flex-1 h-full`,
+                "bg-dark_mode",
+                "bg-white"
+            )}>
                 <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                 <ScrollView
                     onTouchStart={() => setLastActive(Date.now())}
@@ -68,21 +74,36 @@ const Wallet = () => {
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                     }
                 >
-                    <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
+                    <View className={myClassConverter(
+                        darkTheme,
+                        `flex-1 h-full px-5 pb-10`,
+                        "bg-dark_mode",
+                        "bg-white"
+                    )}>
                         
                         <View className="pt-2">
-                            <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-psans text-2xl`,
+                                "text-white",
+                                "text-black-100"
+                            )}>
                                 Wallet
                             </Text>
                         </View>
-                        <View className="py-4 bg-[#F7F7F7] dark:bg-dark_mode-300 p-5 rounded-lg mt-5">
+                        <View className={myClassConverter(
+                            darkTheme,
+                            `py-4 p-5 rounded-lg mt-5`,
+                            "bg-dark_mode-300",
+                            "bg-[#F7F7F7]"
+                        )}>
                             <View>
                                 <Text className=" text-muted-100 font-psemibold ">
                                     Ballance
                                 </Text>
                             </View>
                             <View className="pt-5">
-                                <Text className={`text-black-100 dark:text-white ${user?.wallet_balance?.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
+                                <Text className={`${darkTheme === "dark" ? "text-white" : "text-black-100"} ${user?.wallet_balance?.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
                                     ₦{user?.wallet_balance?.toLocaleString() ?? 0}
                                 </Text>
                             </View>
@@ -91,9 +112,19 @@ const Wallet = () => {
                             <TouchableOpacity
                                 onPress={()=>setIsDrawerVisible(true)}
                                 activeOpacity={0.7}
-                                className={`bg-primary dark:bg-dark_mode-200 rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                    "bg-dark_mode-200",
+                                    "bg-primary"
+                                )}
                             >
-                                <Text className={`font-pinter font-semibold text-base text-white dark:text-[#171717]`}>
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-pinter font-semibold text-base`,
+                                    "text-[#171717]",
+                                    "text-white"
+                                )}>
                                     Deposit
                                 </Text>
                                 <View className="ml-2">
@@ -107,9 +138,19 @@ const Wallet = () => {
                             <TouchableOpacity
                                 onPress={()=>router.push("/withdrawal")}
                                 activeOpacity={0.7}
-                                className={`border border-border-100 dark:border-[#00000014] bg-[#F5F5F5] dark:bg-[#303540] rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`}
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `border rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                    "border-[#00000014] bg-[#303540]",
+                                    "border-border-100 bg-[#F5F5F5]"
+                                )}
                             >
-                                <Text className={`font-pinter font-semibold text-base text-muted dark:text-white`}>
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-pinter font-semibold text-base`,
+                                    "text-white",
+                                    "text-muted"
+                                )}>
                                     Withdraw
                                 </Text>
                                 <View className="ml-2">
@@ -124,7 +165,12 @@ const Wallet = () => {
                         {(loading && transactions.length===0) && (
                             <>
                                 <View className="mt-5">
-                                    <Text className="text-black-100 dark:text-white font-psans text-xl">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-psans text-xl`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}>
                                         Transactions
                                     </Text>
                                 </View>
@@ -136,7 +182,12 @@ const Wallet = () => {
                         {(transactions && transactions.length > 0) && (
                             <>
                                 <View className="mt-5">
-                                    <Text className="text-black-100 dark:text-white font-psans text-xl">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-psans text-xl`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}>
                                         Transactions
                                     </Text>
                                 </View>
@@ -150,12 +201,17 @@ const Wallet = () => {
                                                 flex-row
                                                 mb-5
                                                 py-4
-                                                ${transactions.length === index + 1 ? '' : 'border-border dark:border-[#3B3C43] border-b'}
+                                                ${transactions.length === index + 1 ? '' : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"} border-b`}
                                             `}
                                         >
                                             
                                             <View
-                                                className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
+                                                className={myClassConverter(
+                                                    darkTheme,
+                                                    `h-14 w-14 rounded-full items-center justify-center border`,
+                                                    "border-[#3B3C43]",
+                                                    "border-border"
+                                                )}
                                             >
                                                 <Image
                                                     source={icons.download}
@@ -171,7 +227,12 @@ const Wallet = () => {
                                                 className="flex-1 px-3 "
                                             >
                                                 <View>
-                                                    <Text className="text-base font-pmedium text-muted-300 dark:text-white" numberOfLines={1}>
+                                                    <Text className={myClassConverter(
+                                                        darkTheme,
+                                                        `text-base font-pmedium`,
+                                                        "text-white",
+                                                        "text-muted-300"
+                                                    )} numberOfLines={1}>
                                                         {TransactionDisplayText(transaction.action)}
                                                         <Text
                                                             className="text-lg font-[700] font-pmedium text-muted"
@@ -195,12 +256,17 @@ const Wallet = () => {
                                                 <View>
                                                     <Money 
                                                         value={transaction.amount}
-                                                        textStyle="font-psemibold text-muted dark:text-[#FFFFFFB2] text-right text-base"
+                                                        textStyle={myClassConverter(
+                                                            darkTheme,
+                                                            `font-psemibold text-right text-base`,
+                                                            "text-[#FFFFFFB2]",
+                                                            "text-muted"
+                                                        )}
                                                     />
                                                 </View>
                                                 <View className="mt-2">
                                                     <Text
-                                                        className={`font-pmedium ${classNameColorsForTransactions(transaction.action)} text-right text-sm`}
+                                                        className={`font-pmedium ${classNameColorsForTransactions(transaction.action,darkTheme)} text-right text-sm`}
                                                     >
                                                         {transaction.type}
                                                         

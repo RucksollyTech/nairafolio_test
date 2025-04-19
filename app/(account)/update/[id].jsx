@@ -9,6 +9,7 @@ import useAppwrite from '../../../lib/useAppwrite';
 import UTCDate from '../../../components/UTCDate';
 import CustomNavigator from '../../../components/CustomNavigator';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { myClassConverter } from '@/lib/performActions';
 
 const Update = () => {
     const { setLastActive, darkTheme } = useGlobalContext();
@@ -37,17 +38,24 @@ const Update = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View className="pt-2 px-5 border-b border-border dark:border-[#3B3C43] pb-6">
+                <View className={myClassConverter(
+                    darkTheme,
+                    `pt-2 px-5 border-b pb-6`,
+                    "border-[#3B3C43] ",
+                    "border-border"
+                )}>
                     <View className="flex-row flex-1 items-center">
                         <View
-                            className="
-                                h-16 w-16 
+                            className={myClassConverter(
+                                darkTheme,
+                                `h-16 w-16 
                                 rounded-full 
-                                bg-[#DFE7E8]
-                                dark:bg-[#CBF5B84D]
                                 items-center 
                                 justify-center
-                            "
+                                `,
+                                "bg-[#CBF5B84D]",
+                                "bg-[#DFE7E8]"
+                            )}
                         >
                             <Image
                                 source={icons.file}
@@ -61,12 +69,22 @@ const Update = () => {
                         </View>
                         <View className="pl-3 mr-5 flex-1">
                             <View>
-                                <Text className="text-base font-psans text-header-200 dark:text-white ">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `text-base font-psans`,
+                                    "text-white",
+                                    "text-header-200"
+                                )}>
                                     {update?.[0]?.title}
                                 </Text>
                             </View>
                             <View className="pt-1">
-                                <Text className="text-muted-200 dark:text-[#FFFFFF99] text-sm font-pmedium font-[700]">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `text-sm font-pmedium font-[700]`,
+                                    "text-[#FFFFFF99]",
+                                    "text-muted-200"
+                                )}>
                                     {UTCDate(update?.[0]?.$createdAt)?.myDateFormat}
                                 </Text>
                             </View>
@@ -81,7 +99,12 @@ const Update = () => {
                             </Text>
                         </View>
                         <View>
-                            <Text className="text-lg font-pmedium dark:text-white">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `text-lg font-pmedium`,
+                                "text-white",
+                                ""
+                            )}>
                                 {update?.[0]?.body}
                             </Text>
                         </View>

@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import InvestmentCard from '@/components/InvestmentCard';
 import { router } from 'expo-router';
 import { useMemo } from 'react';
+import { myClassConverter } from '@/lib/performActions';
 
 const Portfolio = () => {
     const { user,setUser,setLastActive,loading:loads,darkTheme } = useGlobalContext();
@@ -82,7 +83,12 @@ const Portfolio = () => {
                 >
                     <View className="px-5">
                         <View className="pt-10">
-                            <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-psans text-2xl`,
+                                "text-white",
+                                "text-black-100"
+                            )}>
                                 Portfolio
                             </Text>
                         </View>
@@ -96,6 +102,7 @@ const Portfolio = () => {
                             title1={"Investments"}
                             title2={"Up for sale"}
                             marginTop={"mt-7"}
+                            darkTheme={darkTheme}
                         />
                     )}
                 </View> */}

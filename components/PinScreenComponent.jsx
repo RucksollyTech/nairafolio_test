@@ -6,6 +6,7 @@ import { icons, images } from "@/constants";
 import { confirmPassword } from "@/lib/appwrite";
 import FormField from "./FormField";
 import CustomButton from "./CustomButton";
+import { myClassConverter } from "@/lib/performActions";
 
 const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnUrl,darkTheme }) => {
     const [pin, setPin] = useState("");
@@ -104,7 +105,12 @@ const PinScreenComponent = ({ setLocked, authenticateUser, user, loading,returnU
                     >
                         <View className='w-full'>
                             <View className='mt-5'>
-                                <Text className='text-center dark:text-white font-psans text-3xl'>Welcome back</Text>
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `text-center font-psans text-3xl`,
+                                    "text-white",
+                                    ""
+                                )}>Welcome back</Text>
                             </View>
                             <View className='mt-2'>
                                 <Text className='

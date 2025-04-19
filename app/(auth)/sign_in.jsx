@@ -8,6 +8,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { getCurrentUser, saveExpoPushToken, signIn, signOut } from '@/lib/appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { registerForPushNotificationsAsync } from '../_layout'
+import { myClassConverter } from '@/lib/performActions'
 
 const sign_in = () => {
     const { setUser, setIsLogged, setLastActive,setLocked, darkTheme } = useGlobalContext();
@@ -103,7 +104,12 @@ const sign_in = () => {
                     >
                         <View className='w-full'>
                             <View className='mt-5'>
-                                <Text className='text-center dark:text-white font-psans text-3xl'>Welcome back</Text>
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `text-center font-psans text-3xl`,
+                                    "text-white",
+                                    ""
+                                )}>Welcome back</Text>
                             </View>
                             <View className='mt-2'>
                                 <Text className='
@@ -139,13 +145,14 @@ const sign_in = () => {
                                         href={"/forgot-password"}
                                     >
                                         <Text 
-                                            className='
-                                                text-base 
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `text-base 
                                                 text-right
-                                                font-pregular 
-                                                text-primary
-                                                dark:text-[#00A651]
-                                            '
+                                                font-pregular `,
+                                                "text-[#00A651]",
+                                                "text-primary"
+                                            )}
                                         >
                                             Forgot password?
                                         </Text>

@@ -5,6 +5,7 @@ import { Image } from 'react-native'
 import { TransactionDisplayText, classNameColorsForTransactions, transactionIconChange } from '@/app/(account)/transactions'
 import UTCDate from './UTCDate'
 import Money from './Money'
+import { myClassConverter } from '@/lib/performActions'
 
 const TransactionCard = ({transactions,transaction,index,darkTheme}) => {
     return (
@@ -22,7 +23,12 @@ const TransactionCard = ({transactions,transaction,index,darkTheme}) => {
         >
             
             <View
-                className="h-14 w-14 rounded-full items-center justify-center border border-border dark:border-[#3B3C43]"
+                className={myClassConverter(
+                    darkTheme,
+                    `h-14 w-14 rounded-full items-center justify-center border`,
+                    "border-[#3B3C43]",
+                    "border-border"
+                )}
             >
                 <Image
                     source={icons.download}
@@ -38,7 +44,12 @@ const TransactionCard = ({transactions,transaction,index,darkTheme}) => {
                 className="flex-1 px-3 "
             >
                 <View>
-                    <Text className="text-base font-pmedium text-muted-300 dark:text-white" numberOfLines={1}>
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-base font-pmedium`,
+                        "text-white",
+                        "text-muted-300"
+                    )} numberOfLines={1}>
                         {TransactionDisplayText(transaction?.action)}
                         <Text
                             className="text-lg font-[700] font-pmedium text-muted"
@@ -62,12 +73,17 @@ const TransactionCard = ({transactions,transaction,index,darkTheme}) => {
                 <View>
                     <Money 
                         value={transaction?.amount}
-                        textStyle="font-psemibold text-muted dark:text-[#FFFFFFB2] text-right text-base"
+                        textStyle={myClassConverter(
+                            darkTheme,
+                            `font-psemibold text-right text-base`,
+                            "text-[#FFFFFFB2]",
+                            "text-muted"
+                        )}
                     />
                 </View>
                 <View className="mt-2">
                     <Text
-                        className={`font-pmedium ${classNameColorsForTransactions(transaction?.action)} text-right text-sm`}
+                        className={`font-pmedium ${classNameColorsForTransactions(transaction?.action,darkTheme)} text-right text-sm`}
                     >
                         {transaction?.type}
                         

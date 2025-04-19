@@ -8,7 +8,7 @@ import GeneralDrawer from '../../components/GeneralDrawer'
 import CustomButton from '../../components/CustomButton'
 import CustomNavigator from '../../components/CustomNavigator'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import { handleVerificationEmailAndNIN } from '../../lib/performActions'
+import { handleVerificationEmailAndNIN, myClassConverter } from '../../lib/performActions'
 
 const VerifyWithNin = () => {
     const { user, setUser,setLastActive,darkTheme } = useGlobalContext();
@@ -67,15 +67,29 @@ const VerifyWithNin = () => {
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
             >
-                <View className="bg-white dark:bg-dark_mode flex-1 h-full px-5 pb-10">
-                    
+                <View className={myClassConverter(
+                    darkTheme,
+                    `flex-1 h-full px-5 pb-10`,
+                    "bg-dark_mode",
+                    "bg-white"
+                )}>
                     <View className="pt-2">
-                        <Text className="text-black-100 dark:text-white font-psans text-2xl">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            `font-psans text-2xl`,
+                            "text-white",
+                            "text-black-100"
+                        )}>
                             Verify with NIN
                         </Text>
                     </View>
                     <View className="pt-4 pb-2">
-                        <Text className="text-muted-300 dark:text-white text-lg">
+                        <Text className={myClassConverter(
+                            darkTheme,
+                            `text-lg`,
+                            "text-white",
+                            "text-muted-300"
+                        )}>
                             Provide your NIN to verify your Identity.
                         </Text>
                     </View>
@@ -114,12 +128,22 @@ const VerifyWithNin = () => {
             </ScrollView>
             <GeneralDrawer darkTheme={darkTheme} dismissOnClickOutside={true} heights={"50px"} isVisible={isDrawerVisible} onClose={() => setIsDrawerVisible(false)}>
                 <View>
-                    <Text className="text-black-100 dark:text-white text-center font-psemibold text-2xl">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-center font-psemibold text-2xl`,
+                        "text-white",
+                        "text-black-100"
+                    )}>
                         Dial{" "}<Text className="text-secondary-100 font-psemibold text-2xl">*346#</Text>{" "}to retrieve your NIN
                     </Text>
                 </View>
                 <View className="py-5">
-                    <Text className="text-muted-300 dark:text-white text-center font-pmedium text-base">
+                    <Text className={myClassConverter(
+                        darkTheme,
+                        `text-center font-pmedium text-base`,
+                        "text-white",
+                        "text-muted-300"
+                    )}>
                         Dial with the number linked to your NIN.
                     </Text>
                 </View>
@@ -146,7 +170,12 @@ const VerifyWithNin = () => {
                                 />
                             </View>
                             <View className="mt-5">
-                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-psans text-2xl text-center`,
+                                    "text-white",
+                                    "text-black-100"
+                                )}>
                                     Your NIN have been submitted for review. This may take upto 5 working days.
                                 </Text>
                             </View>
@@ -168,7 +197,12 @@ const VerifyWithNin = () => {
                                 />
                             </View>
                             <View className="mt-5">
-                                <Text className="text-black-100 dark:text-white font-psans text-2xl text-center">
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-psans text-2xl text-center`,
+                                    "text-white",
+                                    "text-black-100"
+                                )}>
                                     Invalid NIN code
                                 </Text>
                             </View>

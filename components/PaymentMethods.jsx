@@ -8,6 +8,7 @@ import FormField from './FormField'
 import CustomButton from './CustomButton'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { useNavigation } from 'expo-router'
+import { myClassConverter } from '@/lib/performActions'
 
 
 const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMode,investment,user,darkTheme}) => {
@@ -71,8 +72,8 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                 flex 
                                 py-4 flex-row
                                 border
-                                ${(active && active === 2) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
-                                bg-[#F8FAFA] dark:bg-[#303540]
+                                ${(active && active === 2) ? "border-secondary-100" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`}
+                                ${darkTheme === "dark" ? "bg-[#303540]" : "bg-[#F8FAFA]"}
                             `}
                         >
                             <View
@@ -99,13 +100,23 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             >
                                 <View>
                                     <Text
-                                        className="text-lg text-header-200 dark:text-white font-psans"
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `text-lg font-psans`,
+                                            "text-white",
+                                            "text-header-200"
+                                        )}
                                     >
                                         Bank transfer
                                     </Text>
                                 </View>
                                 <View>
-                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `text-sm`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                    )}>
                                         Direct transfer from your bank account
                                     </Text>
                                 </View>
@@ -135,8 +146,8 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                 py-4 flex-row
                                 mb-5
                                 border
-                                ${(active && active === 3) ? "border-secondary-100" : "border-border dark:border-[#3B3C43]"}
-                                bg-[#F8FAFA] dark:bg-[#303540]
+                                ${(active && active === 3) ? "border-secondary-100" : `${darkTheme === "dark" ? "border-[#3B3C43]" : "border-border"}`}
+                                ${darkTheme === "dark" ? "bg-[#303540]" : "bg-[#F8FAFA]"}
                             `}
                         >
                             <View
@@ -163,13 +174,23 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                             >
                                 <View>
                                     <Text
-                                        className="text-lg text-header-200 dark:text-white  font-psans"
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `text-lg font-psans`,
+                                            "text-white",
+                                            "text-header-200"
+                                        )}
                                     >
                                         Debit card
                                     </Text>
                                 </View>
                                 <View>
-                                    <Text className="text-muted dark:text-[#FFFFFFB2] text-sm">
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `text-sm`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                    )}>
                                         Pay using Visa, Mastercard, or others 
                                     </Text>
                                 </View>

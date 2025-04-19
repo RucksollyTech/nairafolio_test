@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, TouchableOpacity,View, Text } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { myClassConverter } from '@/lib/performActions';
 
 export function Collapsible({ children, title ,darkTheme}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,11 +25,26 @@ export function Collapsible({ children, title ,darkTheme}) {
         </View>
 
         <View className='py-4 pr-4 flex-1'>
-          <Text className='text-black-100 dark:text-white text-lg font-pmedium'>{title}</Text>
+          <Text className={myClassConverter(
+              darkTheme,
+              `text-lg font-pmedium`,
+              "text-white",
+              "text-black-100"
+          )}>{title}</Text>
         </View>
       </TouchableOpacity>
-      {isOpen && <View className='border-t flex-1 border-border-100 dark:border-[#495161] p-4'>
-        <Text className='text-base font-pregular text-black-200 dark:text-[#808D9E]'>
+      {isOpen && <View className={myClassConverter(
+          darkTheme,
+          `border-t flex-1 p-4`,
+          "border-[#495161]",
+          "border-border-100"
+      )}>
+        <Text className={myClassConverter(
+            darkTheme,
+            `text-base font-pregular`,
+            "text-[#808D9E]",
+            "text-black-200"
+        )}>
           {children}
         </Text>
       </View>}
