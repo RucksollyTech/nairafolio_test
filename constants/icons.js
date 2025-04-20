@@ -68,10 +68,14 @@ import convert from "../assets/icons/convert.png";
 
 import dark_cancel from "../assets/icons/dark_canel.png";
 import inverted_logo from "../assets/icons/inverted_logo.png";
+import view_slash from "../assets/icons/view-slash.png";
+import view from "../assets/icons/view.png";
 
 
 export default {
     portfolio,
+    view_slash,
+    view,
     dark_cancel,
     inverted_logo,
     filter,

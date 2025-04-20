@@ -43,6 +43,7 @@ const GlobalProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [locked, setLocked] = useState(true);
+    const [showBalance, setShowBalance] = useState(true);
     const [showMessage, setShowMessage] = useState(false);
     const [lastActive, setLastActive] = useState(Date.now());
     const [darkTheme, setDarkTheme] = useState(null);
@@ -78,6 +79,15 @@ const GlobalProvider = ({ children }) => {
             const subscription = AppState.addEventListener("change", handleAppStateChange);
             return () => subscription.remove();
     }, []);
+    useEffect(()=>{
+        const checkBalanceState = async()=>{
+            const balanceStatus = await getData("showBalance")
+            if (balanceStatus === true || balanceStatus === false){
+                setShowBalance(balanceStatus)
+            }
+        }
+        checkBalanceState()
+    },[])
     const handleAppStateChange = async (nextAppState) => {
         if (nextAppState === "background") {
             setLastActive(Date.now());
@@ -146,6 +156,8 @@ const GlobalProvider = ({ children }) => {
                     darkTheme,
                     setDarkTheme,
                     toggleTheme,
+                    showBalance,
+                    setShowBalance,
                     // setToggleDarkTheme,
                     // toggleDarkTheme,
                     setIsLogged,

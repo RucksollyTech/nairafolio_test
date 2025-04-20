@@ -22,7 +22,7 @@ import { myClassConverter } from '@/lib/performActions';
 
 
 const Home = () => {
-    const { user,setUser,setLastActive,darkTheme } = useGlobalContext();
+    const { user,setUser,setLastActive,darkTheme,showBalance,setShowBalance } = useGlobalContext();
     const { data:userInvestments, loading, refetch } = useAppwrite(()=>getUserInvestments(user?.$id))
     const { data:{notForSellData,forSellData}, loading:load, refetch:refetchInfo } = useAppwrite(()=>getUserInvestmentsForHome(user?.$id))
 
@@ -166,6 +166,8 @@ const Home = () => {
                                 ]}
                                 setIsDrawerVisible={setIsDrawerVisible}
                                 darkTheme={darkTheme}
+                                showBalance={showBalance}
+                                setShowBalance={setShowBalance}
                             />
                         </View>
                         {/* {(hasoldx || hasSold) && (

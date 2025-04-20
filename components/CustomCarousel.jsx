@@ -1,17 +1,20 @@
 import React, { useRef, useEffect } from 'react';
-import { View, Text, FlatList, Dimensions, Animated } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, FlatList, Dimensions, Animated, TouchableOpacity } from 'react-native';
 import CustomButton from './CustomButton';
-import { images } from '@/constants';
+import { icons, images } from '@/constants';
 import { Image } from 'react-native';
+import { storeData } from '@/context/GlobalProvider';
 
 const { width } = Dimensions.get('window');
 
-export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000,setIsDrawerVisible,darkTheme }) => {
+export const CustomFlatListCarousel = ({ showBalance,setShowBalance,data, autoPlay = true, interval = 10000,setIsDrawerVisible,darkTheme }) => {
   const flatListRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const currentIndex = useRef(0);
-
+  const UpdateShowBalance = async()=>{
+    await storeData("showBalance",!showBalance)
+    setShowBalance(!showBalance)
+  }
   useEffect(() => {
     if (!autoPlay) return;
     const timer = setInterval(() => {
@@ -48,14 +51,26 @@ export const CustomFlatListCarousel = ({ data, autoPlay = true, interval = 10000
                     <View className="absolute inset-0 z-10 p-5">
                         <View className="flex flex-row justify-between">
                             <View>
-                                <View>
-                                    <Text className="text-muted text-base">
-                                        {title}
-                                    </Text>
-                                </View>
+                                <TouchableOpacity
+                                    onPress={UpdateShowBalance}
+                                    activeOpacity={0.9}
+                                    className='flex-row'
+                                >
+                                    <View className='my-auto'>
+                                        <Text className="text-muted text-base">
+                                            {title}
+                                        </Text>
+                                    </View>
+                                    <View className='px-3 my-auto'>
+                                        <Image 
+                                            source={showBalance ? icons.view : icons.view_slash}
+                                            resizeMode="contain"
+                                        />
+                                    </View>
+                                </TouchableOpacity>
                                 <View className="mt-2">
                                     <Text className={`text-black-100 ${amount.toLocaleString().length > 9 ? "text-xl" : "text-4xl"} font-psans`}>
-                                        ₦{amount.toLocaleString()}
+                                        ₦{showBalance ? `${amount.toLocaleString()}`: "*****"}
                                     </Text>
                                 </View>
                             </View>

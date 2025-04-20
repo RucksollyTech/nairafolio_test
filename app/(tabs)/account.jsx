@@ -177,12 +177,12 @@ const account = () => {
                             link={"/wallet"}
                             darkTheme={darkTheme}
                         />
-                        <AccountComponets 
+                        {/* <AccountComponets 
                             title={"Terms & conditions"}
                             icon={icons.docs}
                             link={"/"}
                             darkTheme={darkTheme}
-                        />
+                        /> */}
                         <AccountComponets 
                             title={"Themes"}
                             icon={icons.tag}
