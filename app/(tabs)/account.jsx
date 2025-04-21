@@ -32,6 +32,14 @@ const account = () => {
             setDarkTheme(null);
             await removeData("NairafolioColorScheme")
         }
+        const viewBalance= await getData("showBalance")
+        if(viewBalance){
+            await removeData("showBalance")
+        }
+        const isDefaultThemes= await getData("defaultColorScheme")
+        if(isDefaultThemes){
+            await removeData("defaultColorScheme")
+        }
 
         setIsLoggingOut(false)
         router.replace("/sign_in");

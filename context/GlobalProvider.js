@@ -7,6 +7,7 @@ import GlobalTouchListener from "./GlobalTouchListener";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { checkBiometricSupport } from "@/app/(account)/security";
 import { useNavigation } from "@react-navigation/native";
+import { usePathname } from "expo-router";
 
 // Save data
 export const storeData = async (key, value) => {
@@ -47,12 +48,12 @@ const GlobalProvider = ({ children }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [lastActive, setLastActive] = useState(Date.now());
     const [darkTheme, setDarkTheme] = useState(null);
-    const [toggleDarkTheme, setToggleDarkTheme] = useState(null);
+    const pathname = usePathname();
 
     const navigation = useNavigation();
     const currentState = navigation.getState();
-    const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
-    const otherScreen = currentState.routes[currentState.index]?.params?.screen;
+    // const currentRouteName = currentState?.routes[currentState.index]?.params?.returnUrl;
+    // const otherScreen = currentState?.routes[currentState.index]?.params?.screen;
     const toggleTheme = async() => {
         setDarkTheme((prev) => (prev === "dark" ? "light" : "dark"));
         await storeData("NairafolioColorScheme",darkTheme)
@@ -115,10 +116,15 @@ const GlobalProvider = ({ children }) => {
     const lockApp = async () => {
         const useBiometrics = await AsyncStorage.getItem("nairaFolioUseBiometrics");
         if (
-            currentRouteName !== "index"
-            && otherScreen !== "sign_in"
-            && otherScreen !== "sign_up"
-            && currentRouteName !== "/"
+            // currentRouteName !== "index"
+            // && otherScreen !== "sign_in"
+            // && otherScreen !== "sign_up"
+            // && currentRouteName !== "/"
+            !pathname.startsWith("/index")
+            && !pathname.startsWith("index")
+            && !pathname.startsWith("/sign_in")
+            && !pathname.startsWith("/sign_up")
+            && !pathname.startsWith("/")
         ){
             if (useBiometrics === "true") {
                 setLocked(true);

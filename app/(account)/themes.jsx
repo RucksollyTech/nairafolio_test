@@ -2,7 +2,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity, useColorScheme } from 
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomNavigator from '@/components/CustomNavigator'
-import { getData, storeData, useGlobalContext } from '@/context/GlobalProvider'
+import { getData, removeData, storeData, useGlobalContext } from '@/context/GlobalProvider'
 import { useNavigation } from 'expo-router'
 import { icons } from '@/constants'
 import { myClassConverter } from '@/lib/performActions'
@@ -13,21 +13,30 @@ const themes = () => {
     const { darkTheme, setLastActive, setDarkTheme } = useGlobalContext();
     const [active, setActive] = useState(3)
 
-
-
     const handleChangeTheme = (theme,defaults=false)=>{
         setActive(defaults ? 3 : theme === "dark" ? 2 : 1)
-        const defScreen = async()=>{
-            await storeData("NairafolioColorScheme",theme)
-            setDarkTheme(theme);
+        if(defaults){
+            const defScreen = async()=>{
+                await storeData("defaultColorScheme",true)
+                await removeData("NairafolioColorScheme")
+                setDarkTheme(colorScheme);
+            }
+            defScreen()
+        }else{
+            const defScreen = async()=>{
+                await storeData("NairafolioColorScheme",theme)
+                await storeData("defaultColorScheme",false)
+                setDarkTheme(theme);
+            }
+            defScreen()
         }
-        defScreen()
     }
 
     useEffect(() => {
         const defScreen = async()=>{
             const screenCol= await getData("NairafolioColorScheme")
-            if(!screenCol){
+            const isDefault= await getData("defaultColorScheme")
+            if(!screenCol || isDefault){
                 setActive(3)
                 setDarkTheme(colorScheme);
             }else{
@@ -152,16 +161,6 @@ const themes = () => {
                             onPress={()=>handleChangeTheme(colorScheme,true)}
                             activeOpacity={0.9}
                         >
-                        {/* 
-
-                        {myClassConverter(
-                                                darkTheme,
-                                                `data`,
-                                                "dark",
-                                                "light"
-                                            )}
-
-                        */}
                             <View 
                                 className={myClassConverter(
                                     darkTheme,

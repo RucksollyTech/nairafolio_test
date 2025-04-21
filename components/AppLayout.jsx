@@ -5,8 +5,6 @@ import { Stack, router, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { Platform, View } from 'react-native';
-import * as NavigationBar from "expo-navigation-bar"
-import { useFocusEffect } from 'expo-router';
 
 const AppLayout = () => {
     const pathname = usePathname();
@@ -15,12 +13,20 @@ const AppLayout = () => {
     
     const goToPageA = () => {
       
+        // if(
+        //     router && locked 
+        //     && currentRouteName !== "index"
+        //     && otherScreen !== "sign_in"
+        //     && otherScreen !== "sign_up"
+        //     && currentRouteName !== "/"
+        // ){
         if(
             router && locked 
-            && currentRouteName !== "index"
-            && otherScreen !== "sign_in"
-            && otherScreen !== "sign_up"
-            && currentRouteName !== "/"
+            && !pathname.startsWith("/index")
+            && !pathname.startsWith("index")
+            && !pathname.startsWith("/sign_in")
+            && !pathname.startsWith("/sign_up")
+            && !pathname.startsWith("/")
         ){
             router.replace({
                 pathname: '/', 
@@ -30,8 +36,8 @@ const AppLayout = () => {
     };
     const navigation = useNavigation();
     const currentState = navigation.getState();
-    const currentRouteName = currentState.routes[currentState.index]?.params?.returnUrl;
-    const otherScreen = currentState.routes[currentState.index]?.params?.screen;
+    // const currentRouteName = currentState?.routes[currentState.index]?.params?.returnUrl;
+    // const otherScreen = currentState?.routes[currentState.index]?.params?.screen;
     
     // useEffect(() => {
     //     if(Platform.OS === "android"){
@@ -55,10 +61,12 @@ const AppLayout = () => {
     //     };
     // })
 
+    
     useEffect(() => {
         const defScreen = async()=>{
             const screenCol= await getData("NairafolioColorScheme")
-            if(!screenCol){
+            const isDefault= await getData("defaultColorScheme")
+            if(!screenCol || isDefault){
                 setDarkTheme(colorScheme);
             }
         }
@@ -74,25 +82,33 @@ const AppLayout = () => {
     useEffect(()=>{
         if(
             router && locked 
-            && currentRouteName !== "index"
-            && otherScreen !== "sign_in"
-            && otherScreen !== "sign_up"
-            && currentRouteName !== "/"
+            // && currentRouteName !== "index"
+            // && otherScreen !== "sign_in"
+            // && otherScreen !== "sign_up"
+            // && currentRouteName !== "/"
+            && !pathname.startsWith("/index")
+            && !pathname.startsWith("index")
+            && !pathname.startsWith("/sign_in")
+            && !pathname.startsWith("/sign_up")
+            && !pathname.startsWith("/")
         ){
             router.replace("/")
         }
-    },[currentRouteName,otherScreen,locked, router])
+    },[pathname,locked, router])
+// },[currentRouteName,otherScreen,locked, router])
     useEffect(()=>{
         if(
             router && !loading && !isLogged 
             && pathname !== "index"
+            && pathname !== "/index"
             && pathname !== "/sign_in"
             && pathname !== "/sign_up"
             && pathname !== "/"
         ){
             router.replace("/sign_in")
         }
-    },[currentRouteName,otherScreen,loading,isLogged, router])
+    },[pathname,loading,isLogged, router])
+// },[currentRouteName,otherScreen,loading,isLogged, router])
     
     return (
         <ThemeProvider value={darkTheme === 'dark' ? DarkTheme : DefaultTheme}>

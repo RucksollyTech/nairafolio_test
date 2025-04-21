@@ -1,18 +1,15 @@
 import { useFonts } from 'expo-font';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
 import 'react-native-reanimated';
 import GlobalProvider from "../context/GlobalProvider";
 
 import "../global.css";
 import AppLayout from '@/components/AppLayout';
-import { saveExpoPushToken } from '@/lib/appwrite';
 import { router } from 'expo-router';
-import { View } from 'react-native';
 import Constants from 'expo-constants';
 
 SplashScreen.preventAutoHideAsync();
