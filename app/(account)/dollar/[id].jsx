@@ -67,6 +67,11 @@ const Dollar = () => {
         setLoad(true)
         setSuccess(false)
         setHasError("")
+        if(!dollarToSell || dollarToSell <= 0){
+            setHasError("Please enter a valid dollar amount")
+            setLoad(false)
+            return
+        }
         try {
             const {wallet,dollar_ballance, error} = await CheckBalance()
             if(dollar_ballance < dollarToSell){
@@ -392,6 +397,7 @@ const Dollar = () => {
                             handlePress={success ? handleCloseModal : moveToWallet}
                             isLoading={loading || load}
                             darkTheme={darkTheme}
+                            isDisabled={!dollarToSell || dollarToSell <= 0 || user?.dollar_ballance < dollarToSell}
                         />
                     </View>
                 </GeneralDrawer>

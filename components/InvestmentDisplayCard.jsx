@@ -7,6 +7,7 @@ import Money from './Money'
 import { router } from 'expo-router'
 import { convertDaysToReadableFormat } from './dayConverter'
 import { myClassConverter } from '@/lib/performActions'
+import { MaterialIcons } from '@expo/vector-icons'
 
 const InvestmentDisplayCard = (
     {
@@ -21,7 +22,9 @@ const InvestmentDisplayCard = (
         duration_days,
         company_name,
         company_owner,
-        darkTheme
+        category,
+        darkTheme,
+        short_info,
     }
 ) => {
     const iOSStyleSetter = ()=>{
@@ -38,10 +41,184 @@ const InvestmentDisplayCard = (
         >
             <View className={myClassConverter(
                 darkTheme,
-                `flex-1 rounded-lg shadow overflow-hidden border`,
+                `flex-1 h-[110px] rounded-lg overflow-hidden border`,
                 "border-[#3B3C43]",
                 "border-border"
             )}>
+                <View className="w-full h-full flex flex-row gap-2 p-2">
+                    
+                    <Image
+                        style={{
+                            width: "20%",
+                        }}
+                        source={{uri: cover_image}}
+                        resizeMode="cover"
+                        className="w-full h-full rounded-lg"
+                    />
+                    <View className='flex-1'>
+                        <View className="flex flex-row justify-between">
+                            <View className="flex">
+                                <View className={`
+                                    bg-[#DDF6E7]
+                                    flex-row ml-auto border-[#DDF6E7] border px-2 py-0.5 rounded-[30px]
+                                `}>
+                                    <Text className={`text-[#37733E] my-auto text-xs`}>
+                                        {category}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View className="flex">
+                                <View className={`
+                                    ${status === null ? "bg-[#8080801A]" : "bg-[#DDF6E7]"} 
+                                    flex-row ml-auto w-[80px] border-[#FFFFFF4D] border px-2 py-0.5 rounded-[30px]
+                                `}>
+                                    <Text className={`h-[5px] my-auto w-[5px] rounded-full ${status === null ? "bg-[#808080]" : "bg-secondary-100"}`}></Text>
+                                    <Text className={`${status === null ? "text-[#808080]" : "text-[#37733E]"} my-auto pl-2 text-xs`}>
+                                        {(status !== null) ? (status ? "Ongoing" : "Closed") : "Coming soon"}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View className='flex justify-between'>
+                            <View className="flex">
+                                <View className="flex pt-1 flex-row justify-between">
+                                    <Text 
+                                        style={{
+                                            width: "70%",
+                                        }}
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `text-sm font-bold`,
+                                        "text-white",
+                                        "text-black-100"
+                                    )}
+                                    numberOfLines={1}
+                                    >
+                                        {name}
+                                    </Text>
+                                    <View>
+                                        <MaterialIcons className='my-auto' name="chevron-right" size={20} color={darkTheme === "dark" ? "white" : "black"} />
+                                    </View>
+                                </View>
+                                <View className="flex">
+                                    <Text
+                                        style={{
+                                            width: "70%",
+                                        }}
+                                        className={myClassConverter(
+                                            darkTheme,
+                                            `text-xs font-[700] font-pmedium`,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                        )}
+                                        numberOfLines={1}
+                                    >
+                                        {short_info}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View className='flex flex-row gap-2 mt-2'>
+                            <View className='flex flex-row gap-2'>
+                                <MaterialIcons className='my-auto' name="signal-cellular-alt" size={20} color={darkTheme === "dark" ? "white" : "#604B31"} />
+                                <View>
+                                    <View>
+                                        <Text
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `text-xs font-bold`,
+                                                "text-white",
+                                                "text-[#604B31]"
+                                            )}
+                                        >
+                                            {rio}%
+                                        </Text>
+                                    </View>
+                                     <View>
+                                        <Text
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `text-xs font-[700] font-pmedium`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}
+                                        >
+                                            Est. ROI
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            
+                            <View className='flex flex-row gap-2'>
+                                <MaterialIcons className='my-auto' name="payments" size={20} color={darkTheme === "dark" ? "white" : "#604B31"} />
+                                <View>
+                                    <View>
+                                        
+                                        <Money 
+                                            values={min_investment}
+                                            containerStyle="flex"
+                                            textStyle={myClassConverter(
+                                                darkTheme,
+                                                `font-bold text-xs`,
+                                                "text-white",
+                                                "text-[#604B31]"
+                                            )}
+                                        />
+                                    </View>
+                                     <View>
+                                        <Text
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `text-xs font-[700] font-pmedium`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}
+                                        >
+                                            Min. Investment
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View className='flex flex-row gap-2'>
+                                <MaterialIcons className='my-auto' name="calendar-month" size={20} color={darkTheme === "dark" ? "white" : "#604B31"} />
+                                <View>
+                                    <View>
+                                        
+                                        <Text
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `text-xs font-bold max-w-[50px]`,
+                                                "text-white",
+                                                "text-[#604B31]"
+                                            )}
+                                            numberOfLines={1}
+                                        >
+                                            {convertDaysToReadableFormat(duration_days)}
+                                        </Text>
+                                    </View>
+                                     <View>
+                                        <Text
+                                            className={myClassConverter(
+                                                darkTheme,
+                                                `text-xs font-[700] font-pmedium`,
+                                                "text-[#FFFFFFB2]",
+                                                "text-muted"
+                                            )}
+                                        >
+                                            Returns
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+
+
+
+
+
+{/* 
                 <ImageBackground
                     source={{uri: cover_image}}
                     resizeMode="cover"
@@ -63,7 +240,7 @@ const InvestmentDisplayCard = (
                             </Text>
                             <View>
                                 <Text className="text-[#FDFDFD99] text-base">
-                                    Investment opportunity
+                                    {short_info}
                                 </Text>
                             </View>
                             <View className="flex">
@@ -241,7 +418,7 @@ const InvestmentDisplayCard = (
                             </View>
                         </View>
                     </View>
-                </View>
+                </View> */}
             </View>
         </TouchableOpacity>
     )

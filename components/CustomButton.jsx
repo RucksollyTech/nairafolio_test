@@ -9,6 +9,7 @@ const CustomButton = ({
     darkTheme,
     newText,
     loading,
+    isDisabled,
 }) => {
     return (
         <TouchableOpacity
@@ -17,7 +18,7 @@ const CustomButton = ({
             className={`${(darkTheme && darkTheme === "dark") ? "bg-dark_mode-200" : "bg-primary"} rounded-xl min-h-8 flex flex-row justify-center items-center ${containerStyles} ${
                 (isLoading || loading) ? "opacity-50" : ""
             }`}
-            disabled={isLoading || loading}
+            disabled={isLoading || loading || isDisabled}
         >
             <Text className={`font-pinter ${(darkTheme && darkTheme === "dark") ? `${newText ?? "text-[#171717]"}` : ""} font-semibold text-base ${textStyles}`}>
                 {title}

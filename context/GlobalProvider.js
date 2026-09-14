@@ -7,7 +7,7 @@ import GlobalTouchListener from "./GlobalTouchListener";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { checkBiometricSupport } from "@/app/(account)/security";
 import { useNavigation } from "@react-navigation/native";
-import { usePathname } from "expo-router";
+import {usePathname } from "expo-router";
 
 // Save data
 export const storeData = async (key, value) => {

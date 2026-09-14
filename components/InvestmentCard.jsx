@@ -60,7 +60,8 @@ const InvestmentCard = ({
     investType,user,
     investment,
     truncateValue,
-    darkTheme
+    darkTheme,
+    hideBallance
 }) => {
     const {daysGone} = UTCDate(date)
     const [daysGoner,matured,started,immediate_start,date_to_introduction] = checkMaturedInfo(investment)
@@ -165,6 +166,7 @@ const InvestmentCard = ({
                                         "text-[#FFFFFFB2]",
                                         "text-muted"
                                     )}
+                                    hideBallance={hideBallance}
                                 />
                             ) : (
                                 <Money 
@@ -176,6 +178,7 @@ const InvestmentCard = ({
                                         "text-[#FFFFFFB2]",
                                         "text-muted"
                                     )}
+                                    hideBallance={hideBallance}
                                 />
                             )}
                             
@@ -194,6 +197,7 @@ const InvestmentCard = ({
                                     addedText={investType && "/$"}
                                     add
                                     textStyle="font-pmedium text-secondary-100 text-right text-sm"
+                                    hideBallance={hideBallance}
                                 />
                             ) : (
                                 <Money 
@@ -208,6 +212,7 @@ const InvestmentCard = ({
                                     addedText={investType && "/$"}
                                     add
                                     textStyle="font-pmedium text-secondary-100 text-right text-sm"
+                                    hideBallance={hideBallance}
                                 />
                             )}
                             

@@ -72,7 +72,9 @@ const explore = () => {
                     min_investment,
                     duration_days,
                     company_name,
-                    company_owner
+                    company_owner,
+                    short_info,
+                    category
                     } }) => (
                         <View className="mb-6 px-5">
                             <InvestmentDisplayCard 
@@ -88,6 +90,8 @@ const explore = () => {
                                 company_name={company_name}
                                 company_owner={company_owner}
                                 darkTheme={darkTheme}
+                                short_info={short_info}
+                                category={category}
                             />
                         </View>
                 )}

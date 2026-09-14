@@ -3,7 +3,17 @@ import React from 'react'
 import { myClassConverter } from '@/lib/performActions'
 import { CompactNumber } from './CompactNumber'
 
-const Money = ({value,containerStyle,textStyle,add,minus,addedText,dollar,values}) => {
+const Money = ({
+    value,
+    containerStyle,
+    textStyle,
+    add,
+    minus,
+    addedText,
+    dollar,
+    values,
+    hideBallance
+}) => {
     return (
         <View className={containerStyle ?? ""}>
             <Text className={textStyle ?? myClassConverter(
@@ -14,8 +24,11 @@ const Money = ({value,containerStyle,textStyle,add,minus,addedText,dollar,values
             )}>
                 {add && "+"}{minus && "-"}
                 {dollar ? "$" : "₦"}
-                {value && value.toLocaleString()}
-                {values && (<CompactNumber value={values} /> )}
+                {(hideBallance || hideBallance === undefined) ? (<>
+                    {value && value.toLocaleString()}
+                    {values && (<CompactNumber value={values} /> )}
+                </>): "*****"}
+                
             </Text>
             {addedText && <Text className={textStyle ?? myClassConverter(
                 darkTheme,

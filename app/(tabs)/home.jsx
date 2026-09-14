@@ -204,6 +204,7 @@ const Home = () => {
                                                     date = {mapData.date_created}
                                                     _id={mapData.$id}
                                                     darkTheme={darkTheme}
+                                                    hideBallance={showBalance}
                                                 />
                                             </View>
                                         ))}
@@ -220,6 +221,7 @@ const Home = () => {
                                                     _id={mapData.$id}
                                                     onSale={true}
                                                     darkTheme={darkTheme}
+                                                    hideBallance={showBalance}
                                                 />
                                             </View>
                                         ))}
