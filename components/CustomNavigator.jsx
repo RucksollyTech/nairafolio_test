@@ -1,12 +1,23 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
 import { icons } from '../constants'
 import { Image } from 'react-native'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
+import { usePreventRemove } from '@react-navigation/native'
 
 
-const CustomNavigator = ({navigator,darkTheme}) => {
+const CustomNavigator = ({navigator,darkTheme,isDollar, investment}) => {
+    const [checkForDollarDisplayPage,setCheckForDollarDisplayPage] = useState((isDollar || investment?.category === 'Dollar') ? true : false)
+    usePreventRemove(checkForDollarDisplayPage,callGoBack)
+    const callGoBack = ()=>{
+        if (isDollar || investment?.category === 'Dollar'){
+            router.push('/home')
+        }
+        else{
+            navigator.goBack()
+        }
+    }
     return (
         <LinearGradient
             colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
@@ -16,7 +27,7 @@ const CustomNavigator = ({navigator,darkTheme}) => {
             <View className="px-5 py-3">
                 <View className="flex-row justify-between items-center">
                     <TouchableOpacity
-                        onPress={()=>navigator.goBack()}
+                        onPress={callGoBack}
                     >
                         <Image
                             source={icons.arrow_left}

@@ -191,7 +191,8 @@ const Home = () => {
                                         {/* {active && notForSellData.length > 0 && notForSellData.map((mapData,index)=>( */}
                                         {active && userInvestments?.length > 0 && (userInvestments.slice(0,3))?.map((mapData,index)=>(
                                             <View key={index} className="mb-2">
-                                                <InvestmentCard 
+                                                <InvestmentCard
+                                                    truncateValue={true} 
                                                     logo = {mapData.investment.logo}
                                                     name = {mapData.investment.name}
                                                     duration = {mapData.investment.duration_days}
@@ -209,6 +210,7 @@ const Home = () => {
                                         {!active && forSellData.length > 0 && forSellData.map((mapData,index)=>(
                                             <View key={index} className="mb-2">
                                                 <InvestmentCard 
+                                                    truncateValue={true}
                                                     logo = {mapData.investment.logo}
                                                     name = {mapData.investment.name}
                                                     duration = {mapData.investment.duration_days}
@@ -277,6 +279,7 @@ const Home = () => {
                                                 return(
                                                     <View key={index} className="mb-2">
                                                         <InvestmentCard 
+                                                            truncateValue={true}
                                                             logo = {mapData.investment.logo}
                                                             name = {mapData.investment.name}
                                                             duration = {mapData.investment.duration_days}
@@ -299,6 +302,7 @@ const Home = () => {
                                                             percentage = {mapData.rio}
                                                             date = {mapData.date_created}
                                                             _id={mapData.$id}
+                                                            truncateValue={true}
                                                             onSale={true}
                                                         />
                                                     </View>

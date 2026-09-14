@@ -122,6 +122,7 @@ const Portfolio = () => {
                 renderItem={({ item:mapData }) =>(
                     <View className="mb-2">
                         <InvestmentCard 
+                            truncateValue={true}
                             logo = {mapData.investment.logo}
                             name = {mapData.investment.name}
                             duration = {mapData.investment.duration_days}

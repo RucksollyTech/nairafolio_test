@@ -10,7 +10,7 @@ import * as NavigationBar from "expo-navigation-bar"
 import { useFocusEffect } from "expo-router";
 const TabIcon = ({ icon, color, name, focused, darkTheme }) => {
   return (
-    <View className="flex items-center justify-center gap-2 pt-10">
+    <View className="flex items-center justify-center gap-1 pt-10">
       <Image
         source={icon}
         resizeMode="contain"
@@ -94,6 +94,22 @@ const TabLayout = () => {
                 icon={focused ? icons.location : icons.location_thin}
                 color={color}
                 name="Explore"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+         <Tabs.Screen
+          name="dollars"
+          options={{
+            title: "Dollar",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                darkTheme={darkTheme}
+                icon={focused ? icons.dollar : icons.dollar}
+                color={color}
+                name="Dollar"
                 focused={focused}
               />
             ),

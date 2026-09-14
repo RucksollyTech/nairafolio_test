@@ -7,7 +7,6 @@
     "androidNavigationBar": {
       "backgroundColor": "#FFFFFF",
       "barStyle": "dark-content"
-      // "visible": "sticky-immersive"
     },
     "icon": "./assets/images/icon.png",
     "scheme": "nairafolio",
@@ -20,8 +19,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      
-      "bundleIdentifier": "com.company.myapp",
+      "bundleIdentifier": "com.nairafolio.nairafolio",
       "infoPlist": {
         "CFBundleURLTypes": [
           {
@@ -94,7 +92,8 @@
           "enableBackgroundRemoteNotifications": true
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

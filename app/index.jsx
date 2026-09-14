@@ -96,13 +96,13 @@ const index = () => {
             <View className='relative w-full flex h-full items-center justify-center'>
                 <Image 
                     source={images.onboarding}
-                    className="w-[100%] absolute -top-3"
+                    className="w-[100%] absolute -top-6"
                     resizeMode="contain"
                 />
                 <View className='absolute bottom-0 w-full '>
                     <LinearGradient
                         colors={['rgba(255, 255, 255, 0)', '#FFFFFF']} // Start and end colors
-                        locations={[0, 0.1626]} // Matching the 16.26% stop
+                        locations={[0, 0.1626]} 
                         start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }} // From the top center
                         end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }} 
                     >

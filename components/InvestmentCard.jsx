@@ -59,6 +59,7 @@ const InvestmentCard = ({
     invested,date,
     investType,user,
     investment,
+    truncateValue,
     darkTheme
 }) => {
     const {daysGone} = UTCDate(date)
@@ -154,31 +155,62 @@ const InvestmentCard = ({
                         }}
                     >
                         <View className='ml-auto'>
-                            <Money 
-                                dollar={investType}
-                                value={investType ? user.dollar_ballance : invested}
-                                textStyle={myClassConverter(
-                                    darkTheme,
-                                    `font-pmedium text-base text-right`,
-                                    "text-[#FFFFFFB2]",
-                                    "text-muted"
-                                )}
-                            />
+                            { truncateValue ? (
+                                <Money 
+                                    dollar={investType}
+                                    values={investType ? user.dollar_ballance : invested}
+                                    textStyle={myClassConverter(
+                                        darkTheme,
+                                        `font-pmedium text-base text-right`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                    )}
+                                />
+                            ) : (
+                                <Money 
+                                    dollar={investType}
+                                    value={investType ? user.dollar_ballance : invested}
+                                    textStyle={myClassConverter(
+                                        darkTheme,
+                                        `font-pmedium text-base text-right`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                    )}
+                                />
+                            )}
+                            
                         </View>
                         <View className="mt-1">
-                            <Money 
-                                value={investType ? investment.investment.price_per_unit : calculateProfit({
-                                    percentage,
-                                    daysGone,
-                                    invested,
-                                    duration,
-    
-                                })}
-                                containerStyle={investType && "flex-row ml-auto"}
-                                addedText={investType && "/$"}
-                                add
-                                textStyle="font-pmedium text-secondary-100 text-right text-sm"
-                            />
+                            { truncateValue ? (
+                                <Money 
+                                    values={investType ? investment.investment.price_per_unit : calculateProfit({
+                                        percentage,
+                                        daysGone,
+                                        invested,
+                                        duration,
+        
+                                    })}
+                                    containerStyle={investType && "flex-row ml-auto"}
+                                    addedText={investType && "/$"}
+                                    add
+                                    textStyle="font-pmedium text-secondary-100 text-right text-sm"
+                                />
+                            ) : (
+                                <Money 
+                                    value={investType ? investment.investment.price_per_unit : calculateProfit({
+                                        percentage,
+                                        daysGone,
+                                        invested,
+                                        duration,
+        
+                                    })}
+                                    containerStyle={investType && "flex-row ml-auto"}
+                                    addedText={investType && "/$"}
+                                    add
+                                    textStyle="font-pmedium text-secondary-100 text-right text-sm"
+                                />
+                            )}
+                            
                         </View>
                     </View>
                 </View>

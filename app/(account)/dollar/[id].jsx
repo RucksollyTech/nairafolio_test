@@ -119,7 +119,7 @@ const Dollar = () => {
         // >
             // {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
             <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
-                <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
+                <CustomNavigator navigator={navigation} darkTheme={darkTheme} isDollar={true} />
                 <View className="px-5">
                     {!loading && (
                         <View>
