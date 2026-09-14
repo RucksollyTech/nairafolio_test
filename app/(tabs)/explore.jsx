@@ -56,7 +56,7 @@ const explore = () => {
                 onTouchStart={() => setLastActive(Date.now())}
                 onScroll={() => setLastActive(Date.now())}
                 scrollEventThrottle={16}
-                data={investments}
+                data={investments.filter(investmentInView=>investmentInView?.category !== 'Dollar')}
                 keyExtractor={(item) => item.$id}
                 contentContainerStyle={{
                     paddingBottom: 24,

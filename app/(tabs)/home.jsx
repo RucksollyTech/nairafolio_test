@@ -189,7 +189,7 @@ const Home = () => {
                                     <View className="mt-6 min-h-[225px]">
                                     {/* userInvestments */}
                                         {/* {active && notForSellData.length > 0 && notForSellData.map((mapData,index)=>( */}
-                                        {active && userInvestments?.length > 0 && (userInvestments.slice(0,3))?.map((mapData,index)=>(
+                                        {active && userInvestments?.length > 0 && (userInvestments.filter(investmentInView=>investmentInView.investment.category !== 'Dollar').slice(0,3))?.map((mapData,index)=>(
                                             <View key={index} className="mb-2">
                                                 <InvestmentCard
                                                     truncateValue={true} 

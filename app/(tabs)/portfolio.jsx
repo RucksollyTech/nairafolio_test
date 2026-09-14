@@ -112,7 +112,7 @@ const Portfolio = () => {
                 onScroll={() => setLastActive(Date.now())}
                 scrollEventThrottle={16}
                 // data={active ? notForSellData : forSellData}
-                data={notForSellData}
+                data={notForSellData.filter(investmentInView=>investmentInView.investment.category !== 'Dollar')}
                 keyExtractor={(item) => item.$id}
                 contentContainerStyle={{
                     paddingBottom: 24,
