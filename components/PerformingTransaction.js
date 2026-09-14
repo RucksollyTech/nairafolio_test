@@ -27,7 +27,6 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
     }
 
     if(investment && value_spent && wallet !== null){
-        
         if(wallet >= (value_spent * investment?.price_per_unit)){
             try {
                 if (investment?.isDollar){
@@ -55,6 +54,7 @@ export const WalletCheckOut = async(investment,value_spent,user)=>{
                         wallet
                     }
                 }
+                // console.log('got here 6')
                 const [updatedUser, newUserInvestment,trans] = await Promise.all([
                     updateUser(user.$id,{wallet_balance: parseFloat(wallet - (value_spent * investment?.price_per_unit))}),
                     createUserInvestment(

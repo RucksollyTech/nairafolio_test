@@ -49,7 +49,6 @@ const PaymentDrawer = ({
         setLoading(true)
         setLoadError(false)
         setIsInsufficientFund(false)
-
         const {error,insufficient_fund} = await WalletCheckOut(investment,parseFloat(unit),user)
         if(error){
             setLoading(false)
