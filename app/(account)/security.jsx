@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, Switch, Alert } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { icons } from '../../constants'
 import { Link, useNavigation } from 'expo-router'
 import CustomNavigator from '../../components/CustomNavigator'
@@ -29,6 +29,7 @@ export const checkBiometricSupport = async () => {
 
 
 const Security = () => {
+    const insets = useSafeAreaInsets();
     const { setLastActive,darkTheme } = useGlobalContext();
     const navigation = useNavigation();
 
@@ -77,7 +78,13 @@ const Security = () => {
     }, []);
 
     return (
-        <View className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View 
+        style={{ 
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right
+        }}
+        className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}

@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, RefreshControl } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Link, useNavigation } from 'expo-router'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
@@ -14,7 +14,7 @@ const ChangePasscode = () => {
     const navigation = useNavigation();
     const { setLastActive,user,setUser,darkTheme } = useGlobalContext();
     const [refreshing, setRefreshing] = useState(false)
-    
+    const insets = useSafeAreaInsets();
     const [error, setError] = useState({
         message: "",
         color: "",
@@ -96,7 +96,13 @@ const ChangePasscode = () => {
         }
     }
     return (
-        <View className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View 
+            style={{ 
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right
+            }}
+            className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 showsVerticalScrollIndicator={false} 

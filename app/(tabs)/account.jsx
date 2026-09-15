@@ -14,7 +14,7 @@ const account = () => {
     const { setUser, setIsLogged,user,setLastActive,darkTheme,setDarkTheme } = useGlobalContext();
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [refreshing, setRefreshing] = useState(false);
-
+    const insets = useSafeAreaInsets();
     const onRefresh = async()=>{
         setRefreshing(true)
         await updateCurrentUser(setUser)
@@ -50,15 +50,18 @@ const account = () => {
         }
         gettingUser()
     }, [])
-    const insets = useSafeAreaInsets();
+    
     return (
-        <View className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View 
+            style={{ 
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right
+            }}
+            className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <LinearGradient
                 style={{ 
                     paddingTop: insets.top, 
-                    paddingBottom: insets.bottom,
-                    paddingLeft: insets.left,
-                    paddingRight: insets.right
                 }}
                 colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
                 start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}

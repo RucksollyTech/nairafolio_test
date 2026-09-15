@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Image, TouchableOpacity, Platform, TouchableWithoutFeedback, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { RefreshControl } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -22,6 +22,7 @@ import { Keyboard } from 'react-native';
 import { myClassConverter } from '@/lib/performActions';
 
 const Dollar = () => {
+    const insets = useSafeAreaInsets();
     const { setLastActive, user,setUser,setShowMessage,showMessage,darkTheme } = useGlobalContext();
 
     const {id} = useLocalSearchParams();
@@ -123,7 +124,13 @@ const Dollar = () => {
         //     style={{ flex: 1 }}
         // >
             // {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-            <View className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+            <View 
+            style={{ 
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right
+            }}
+            className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
                 <CustomNavigator navigator={navigation} darkTheme={darkTheme} isDollar={true} />
                 <View className="px-5">
                     {!loading && (

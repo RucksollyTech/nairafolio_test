@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Image, TouchableOpacity, RefreshControl, TouchableWithoutFeedback } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { icons, images } from '../../constants'
 import AccountCustomForm from '../../components/AccountCustomForm'
 import CustomButton from '../../components/CustomButton'
@@ -20,6 +20,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol'
 import { myClassConverter } from '@/lib/performActions'
 
 const EditAccount = () => {
+    const insets = useSafeAreaInsets();
     const { user, setUser, setLastActive,darkTheme } = useGlobalContext();
     const [uploading, setUploading] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -122,7 +123,13 @@ const EditAccount = () => {
             style={{ flex: 1 }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} className={darkTheme === "dark" ? "dark" : ""}>
-                <View className={myClassConverter(
+                <View 
+                style={{ 
+                    paddingBottom: insets.bottom,
+                    paddingLeft: insets.left,
+                    paddingRight: insets.right
+                }}
+                className={myClassConverter(
                     darkTheme,
                     "flex-1 h-full",
                     "bg-dark_mode",

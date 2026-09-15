@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { icons } from '../../../constants';
 import { RefreshControl } from 'react-native';
@@ -14,6 +14,7 @@ import { UTCDate } from '@/components';
 import { myClassConverter } from '@/lib/performActions';
 
 const Sales = () => {
+    const insets = useSafeAreaInsets();
     const { setLastActive, darkTheme } = useGlobalContext();
 
     const {id} = useLocalSearchParams();
@@ -28,7 +29,13 @@ const Sales = () => {
         setRefreshing(false)
     }
     return (
-        <View className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View 
+        style={{ 
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right
+        }}
+        className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}

@@ -1,6 +1,6 @@
 import { View, Text, Image, FlatList, RefreshControl } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { icons } from '../../constants'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getNotifications } from '@/lib/appwrite'
@@ -14,7 +14,7 @@ import { myClassConverter } from '@/lib/performActions';
 
 const notification = () => {
     const navigation = useNavigation();
-
+    const insets = useSafeAreaInsets();
     const { setLastActive,user,darkTheme } = useGlobalContext();
     const { data:notifications, loading, refetch } = useAppwrite(()=>getNotifications(user?.$id))
 
@@ -223,7 +223,13 @@ const notification = () => {
         </View>
     ), [showToday,hasToday,notifications]);
     return (
-        <View className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View 
+        style={{ 
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right
+        }}
+        className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <View className="pt-2 px-5 pb-3">
                 <Text className={myClassConverter(

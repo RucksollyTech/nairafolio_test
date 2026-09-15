@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { icons } from '../../constants'
 import { Link, router, useNavigation } from 'expo-router'
 import CustomNavigator from '../../components/CustomNavigator'
@@ -15,6 +15,7 @@ import { updateCurrentUser } from '../../lib/updateAccountTransaction'
 import { RefreshControl } from 'react-native'
 
 const VerifyAccount = () => {
+    const insets = useSafeAreaInsets();
     const { user, setUser, setLastActive,darkTheme } = useGlobalContext();
 
     const navigation = useNavigation();
@@ -82,7 +83,13 @@ const VerifyAccount = () => {
             style={{ flex: 1 }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+                <View 
+                style={{ 
+                    paddingBottom: insets.bottom,
+                    paddingLeft: insets.left,
+                    paddingRight: insets.right
+                }}
+                className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
                     <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <View className="pt-2 px-5">
                         <Text className={myClassConverter(

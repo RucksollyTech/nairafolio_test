@@ -92,7 +92,13 @@ const Home = () => {
             style={{ flex: 1 }}
             className={darkTheme === 'dark' ? "dark" : ""}
         >
-            <View className={myClassConverter(
+            <View 
+            style={{ 
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right
+            }}
+            className={myClassConverter(
                 darkTheme,
                 `flex-1 h-full`,
                 "bg-[#1D1E25]",
@@ -113,9 +119,6 @@ const Home = () => {
                         <LinearGradient
                             style={{ 
                                 paddingTop: insets.top, 
-                                paddingBottom: insets.bottom,
-                                paddingLeft: insets.left,
-                                paddingRight: insets.right
                             }}
                             colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
                             start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}

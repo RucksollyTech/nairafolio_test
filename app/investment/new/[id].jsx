@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Image, ImageBackground, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import { icons } from '../../../constants'
 import Money from '../../../components/Money'
@@ -25,6 +25,7 @@ import { myClassConverter } from '@/lib/performActions'
 
 
 const Investment = () => {
+    const insets = useSafeAreaInsets();
     const {id} = useLocalSearchParams();
     const { user, setLastActive,setUser, darkTheme } = useGlobalContext();
     const { data:listData, loading, refetch } = useAppwrite(()=>getInvestment(id))
@@ -158,7 +159,13 @@ const Investment = () => {
         } catch (error) {}
     }, [data])
     return (
-        <View className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
+        <View 
+        style={{ 
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right
+        }}
+        className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
             <CustomNavigator investment={data} navigator={navigation} darkTheme={darkTheme} />
             {loading ? (
                 <DetailSkeletonLoader darkTheme={darkTheme} />

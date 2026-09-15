@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Image, TouchableOpacity, useColorScheme } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import CustomNavigator from '@/components/CustomNavigator'
 import { getData, removeData, storeData, useGlobalContext } from '@/context/GlobalProvider'
 import { useNavigation } from 'expo-router'
@@ -8,6 +8,7 @@ import { icons } from '@/constants'
 import { myClassConverter } from '@/lib/performActions'
 
 const themes = () => {
+    const insets = useSafeAreaInsets();
     const colorScheme = useColorScheme();
     const navigation = useNavigation();
     const { darkTheme, setLastActive, setDarkTheme } = useGlobalContext();
@@ -48,7 +49,13 @@ const themes = () => {
     }, [colorScheme]);
 
     return (
-        <View className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View 
+            style={{ 
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right
+            }} 
+            className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}

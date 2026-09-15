@@ -8,7 +8,7 @@ import CustomButton from '../../components/CustomButton'
 import FormField from '../../components/FormField';
 import GeneralDrawer from '../../components/GeneralDrawer';
 import EmailerVerifyBank from '../../components/EmailerVerifyBank';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchBanks, validateAccount } from '../../lib/payStack';
 import useAppwrite from '../../lib/useAppwrite';
 import HomeSkeletonLoader from '../../components/HomeSkeletonLoader';
@@ -21,6 +21,7 @@ import PasswordConfirm from '@/components/PasswordConfirm';
 import { myClassConverter } from '@/lib/performActions';
 
 const withdrawal = () => {
+    const insets = useSafeAreaInsets();
     const navigation = useNavigation();
     const { user,setUser,setLastActive,darkTheme } = useGlobalContext();
     const { data:myBanks, loading:loadingBanks, refetch } = useAppwrite(()=>getMyBanks(user?.$id))
@@ -250,7 +251,13 @@ const withdrawal = () => {
             style={{ flex: 1 }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+                <View 
+                style={{ 
+                    paddingBottom: insets.bottom,
+                    paddingLeft: insets.left,
+                    paddingRight: insets.right
+                }}
+                className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
                     <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                     <ScrollView
                         onTouchStart={() => setLastActive(Date.now())}

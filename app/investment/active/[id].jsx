@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, ScrollView, Image, Alert, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import { icons, images } from '../../../constants'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
@@ -42,6 +42,7 @@ export const goToPayNow = ({email,amount,mode,investmentId,sale})=>{
 
 
 const Active = () => {
+    const insets = useSafeAreaInsets();
     const {id} = useLocalSearchParams();
     const { user, setUser, setLastActive, darkTheme } = useGlobalContext();
     const [investment, setInvestment] = useState({});
@@ -394,7 +395,13 @@ const Active = () => {
             behavior={Platform.OS === "ios" && "padding"} 
             style={{ flex: 1 }}
         >
-            <View className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+            <View 
+            style={{ 
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right
+            }}
+            className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
                 <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
                 <View className="px-5">
                     {!loading && (

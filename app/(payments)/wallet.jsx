@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, Keyboard } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { icons } from '../../constants'
 import { Link, router, useNavigation } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -21,6 +21,7 @@ import { TouchableWithoutFeedback } from 'react-native'
 import { myClassConverter } from '@/lib/performActions'
 
 const Wallet = () => {
+    const insets = useSafeAreaInsets();
     const navigation = useNavigation();
     const { user, setUser, setLastActive, darkTheme } = useGlobalContext();
     const { data:transactions, loading, refetch } = useAppwrite(()=>getUserTransactionsWithLimit(user.$id))
@@ -57,7 +58,13 @@ const Wallet = () => {
             className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}
         >
             {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-            <View className={myClassConverter(
+            <View 
+            style={{ 
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right
+            }}
+            className={myClassConverter(
                 darkTheme,
                 `flex-1 h-full`,
                 "bg-dark_mode",
