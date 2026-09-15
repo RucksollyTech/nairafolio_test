@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Dimensions, Image, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { icons } from "../../constants";
 import { CustomButton } from '@/components'
@@ -85,13 +85,14 @@ const Home = () => {
     useEffect(() => {
         checkActiveUser()
     }, [userInvestments])
+    const insets = useSafeAreaInsets();
     return (
         <KeyboardAvoidingView 
             behavior={Platform.OS === "ios" && "padding"} 
             style={{ flex: 1 }}
             className={darkTheme === 'dark' ? "dark" : ""}
         >
-            <SafeAreaView className={myClassConverter(
+            <View className={myClassConverter(
                 darkTheme,
                 `flex-1 h-full`,
                 "bg-[#1D1E25]",
@@ -110,6 +111,12 @@ const Home = () => {
 
                     <View className="flex-1 h-full">
                         <LinearGradient
+                            style={{ 
+                                paddingTop: insets.top, 
+                                paddingBottom: insets.bottom,
+                                paddingLeft: insets.left,
+                                paddingRight: insets.right
+                            }}
                             colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
                             start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
                             end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
@@ -347,7 +354,7 @@ const Home = () => {
                 >
                     <PaymentMethods user={user} darkTheme={darkTheme}/>
                 </GeneralDrawer>
-            </SafeAreaView>
+            </View>
         </KeyboardAvoidingView>
     );
 };

@@ -122,7 +122,7 @@ const EditAccount = () => {
             style={{ flex: 1 }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} className={darkTheme === "dark" ? "dark" : ""}>
-                <SafeAreaView className={myClassConverter(
+                <View className={myClassConverter(
                     darkTheme,
                     "flex-1 h-full",
                     "bg-dark_mode",
@@ -306,7 +306,7 @@ const EditAccount = () => {
                             </View>
                         </View>
                     </GeneralDrawer>
-                </SafeAreaView>
+                </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )

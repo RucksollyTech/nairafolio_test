@@ -26,7 +26,7 @@ const Update = () => {
         setRefreshing(false)
     }
     return (
-        <SafeAreaView className={`${darkTheme ==="dark" ? "bg-dark_mode dark" : "bg-white"} flex-1 h-full`}>
+        <View className={`${darkTheme ==="dark" ? "bg-dark_mode dark" : "bg-white"} flex-1 h-full`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <ScrollView
                 onTouchStart={() => setLastActive(Date.now())}
@@ -111,7 +111,7 @@ const Update = () => {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     )
 }
 

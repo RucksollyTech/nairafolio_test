@@ -1,6 +1,6 @@
 import { View, Text, FlatList, RefreshControl } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import SearchInput from '../../components/SearchInput'
 import InvestmentDisplayCard from '../../components/InvestmentDisplayCard'
@@ -14,6 +14,7 @@ import { myClassConverter } from '@/lib/performActions'
 
 
 const explore = () => {
+    
     const { setLastActive,darkTheme } = useGlobalContext();
 
     const { data:investments, loading, refetch } = useAppwrite(getAllInvestmentsDollarToArranged)
@@ -24,10 +25,18 @@ const explore = () => {
         await refetch();
         setRefreshing(false)
     }
+    const insets = useSafeAreaInsets();
     return (
-        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
+        <View 
+            className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
             <View>
                 <LinearGradient
+                    style={{ 
+                        paddingTop: insets.top, 
+                        paddingBottom: insets.bottom,
+                        paddingLeft: insets.left,
+                        paddingRight: insets.right
+                    }}
                     colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
                     start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
                     end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
@@ -108,7 +117,7 @@ const explore = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             />
-        </SafeAreaView>
+        </View>
     )
 }
 

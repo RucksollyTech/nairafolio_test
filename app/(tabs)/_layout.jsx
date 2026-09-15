@@ -107,7 +107,7 @@ const TabLayout = () => {
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 darkTheme={darkTheme}
-                icon={focused ? icons.dollar : icons.dollar}
+                icon={focused ? icons.dollar_active : icons.dollar}
                 color={color}
                 name="Dollar"
                 focused={focused}

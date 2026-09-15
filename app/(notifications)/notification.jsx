@@ -223,7 +223,7 @@ const notification = () => {
         </View>
     ), [showToday,hasToday,notifications]);
     return (
-        <SafeAreaView className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <CustomNavigator navigator={navigation} darkTheme={darkTheme} />
             <View className="pt-2 px-5 pb-3">
                 <Text className={myClassConverter(
@@ -424,7 +424,7 @@ const notification = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             />
-        </SafeAreaView>
+        </View>
     )
 }
 

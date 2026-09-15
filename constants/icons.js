@@ -71,10 +71,12 @@ import inverted_logo from "../assets/icons/inverted_logo.png";
 import view_slash from "../assets/icons/view-slash.png";
 import view from "../assets/icons/view.png";
 import dollar from "../assets/icons/dollar.png";
+import dollar_active from "../assets/icons/dollar_active.png";
 
 
 export default {
     dollar,
+    dollar_active,
     portfolio,
     view_slash,
     view,

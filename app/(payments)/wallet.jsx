@@ -57,7 +57,7 @@ const Wallet = () => {
             className={` flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}
         >
             {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-            <SafeAreaView className={myClassConverter(
+            <View className={myClassConverter(
                 darkTheme,
                 `flex-1 h-full`,
                 "bg-dark_mode",
@@ -302,7 +302,7 @@ const Wallet = () => {
                 >
                     <PaymentMethods user={user} darkTheme={darkTheme} />
                 </GeneralDrawer>
-            </SafeAreaView>
+            </View>
             {/* </TouchableWithoutFeedback> */}
         </KeyboardAvoidingView>
     )

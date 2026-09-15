@@ -89,14 +89,13 @@ const index = () => {
             </SafeAreaView>
         )
     }
-    
     return (
         <SafeAreaView 
             className={`bg-white flex-1 font-bold h-[100vh] relative z-10`}>
             <View className='relative w-full flex h-full items-center justify-center'>
                 <Image 
                     source={images.onboarding}
-                    className="w-[100%] absolute -top-6"
+                    className="w-[100%] absolute -top-3"
                     resizeMode="contain"
                 />
                 <View className='absolute bottom-0 w-full '>

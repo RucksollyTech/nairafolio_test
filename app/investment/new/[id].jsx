@@ -158,7 +158,7 @@ const Investment = () => {
         } catch (error) {}
     }, [data])
     return (
-        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
+        <View className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white "}`}>
             <CustomNavigator investment={data} navigator={navigation} darkTheme={darkTheme} />
             {loading ? (
                 <DetailSkeletonLoader darkTheme={darkTheme} />
@@ -780,7 +780,7 @@ const Investment = () => {
                 defaultText={"Ok"}
                 showDefault={true}
             ><></></CustomModalAlert>
-        </SafeAreaView>
+        </View>
     )
 }
 

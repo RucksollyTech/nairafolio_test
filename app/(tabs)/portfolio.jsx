@@ -7,7 +7,7 @@ import { getCurrentUser, getUserInvestments, getUserInvestmentsForHome } from '@
 import HomeSkeletonLoader from '@/components/HomeSkeletonLoader';
 import { CustomButton, EmptyState } from '@/components';
 import useAppwrite from '@/lib/useAppwrite';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import InvestmentCard from '@/components/InvestmentCard';
 import { router } from 'expo-router';
 import { useMemo } from 'react';
@@ -72,11 +72,17 @@ const Portfolio = () => {
             )}
         </View>
     ), [loading]);
-
+    const insets = useSafeAreaInsets();
     return (
-        <SafeAreaView className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
+        <View className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
             <View className='pb-5'>
                 <LinearGradient
+                    style={{ 
+                        paddingTop: insets.top, 
+                        paddingBottom: insets.bottom,
+                        paddingLeft: insets.left,
+                        paddingRight: insets.right
+                    }}
                     colors={darkTheme === 'dark' ? ['#1D1E25', '#1D1E25'] : ['#EAF6E4', 'rgba(234, 246, 228, 0)']}
                     start={darkTheme === 'dark' ? null : { x: 0.5, y: 0 }}
                     end={darkTheme === 'dark' ? null : { x: 0.5, y: 1 }}
@@ -145,7 +151,7 @@ const Portfolio = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             />
-        </SafeAreaView>
+        </View>
     )
 }
 
