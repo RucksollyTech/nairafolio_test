@@ -54,7 +54,6 @@ const account = () => {
     return (
         <View 
             style={{ 
-                paddingBottom: insets.bottom,
                 paddingLeft: insets.left,
                 paddingRight: insets.right
             }}

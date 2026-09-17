@@ -57,11 +57,13 @@ const FormField = ({
                                 source={icons.bank}
                                 resizeMode="contain"
                                 tintColor={"#CBF5B8"}
+                                className="w-7 h-7"
                             />
                         ):(
                             <Image
                                 source={icons.bank}
                                 resizeMode="contain"
+                                className="w-7 h-7"
                             />
                         )}
                         <View

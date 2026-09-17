@@ -14,6 +14,7 @@ const TabIcon = ({ icon, color, name, focused, darkTheme }) => {
       <Image
         source={icon}
         resizeMode="contain"
+        className="w-7 h-7"
       />
       <Text
         className={`${focused ? "font-psans" : "font-pregular"} text-xs text-center w-16`}
@@ -60,10 +61,12 @@ const TabLayout = () => {
           tabBarHideOnKeyboard:true,
           tabBarStyle: {
             backgroundColor: darkTheme === "dark" ? "#1D1E25" : "#FFFFFF",
-            // borderTopWidth: 1,
+            borderTopWidth: 1,
             borderTopColor: darkTheme === "dark" ? "#1D1E25" : "#FFFFFF",
-            // boxShadow: "0px 4px 14px 0px #000000",
+            boxShadow: "0px 4px 5px 0px #000000",
             height: 80,
+            paddingLeft: 13,
+            paddingRight: 13,
           },
         }}
       >

@@ -84,11 +84,13 @@ const PaymentMethods = ({amount,active,setActive,modeSet,setModeSet,setActiveMod
                                         source={icons.bank}
                                         resizeMode="cover"
                                         tintColor={"#CBF5B8"}
+                                        className="w-7 h-7"
                                     />
                                 ):(
                                     <Image
                                         source={icons.bank}
                                         resizeMode="cover"
+                                        className="w-7 h-7"
                                     />
                                 )}
                             </View>

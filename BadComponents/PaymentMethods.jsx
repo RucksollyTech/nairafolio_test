@@ -153,6 +153,7 @@ const PaymentMethods = (destination) => {
                                         <Image
                                             source={icons.bank}
                                             resizeMode="cover"
+                                            className="w-7 h-7"
                                         />
                                     </View>
                                     <View

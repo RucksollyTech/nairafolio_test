@@ -174,6 +174,7 @@ const VerifyWithNin = () => {
                             <View className="flex-1 justify-center items-center">
                                 <Image 
                                     source={icons.good}
+                                    className='w-40 h-40'
                                 />
                             </View>
                             <View className="mt-5">

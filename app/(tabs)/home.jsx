@@ -94,7 +94,6 @@ const Home = () => {
         >
             <View 
             style={{ 
-                paddingBottom: insets.bottom,
                 paddingLeft: insets.left,
                 paddingRight: insets.right
             }}
@@ -154,6 +153,7 @@ const Home = () => {
                                         <Image 
                                             source={icons.bell_thin}
                                             resizeMode='cover'
+                                            className='w-7 h-7'
                                             // style={{ marginBottom: 10 }}
                                         />
                                     </Link>

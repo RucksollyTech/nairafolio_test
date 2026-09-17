@@ -47,6 +47,7 @@ const PaymentLoader = ({title1,title2,title3,style1,style2,style3,loading,setLoa
                             source={icons.good}
                             resizeMode="contain"
                             // className="w-36 h-36"
+                            className='w-40 h-40'
                         />
                     </View>
                     <View className="mt-14">

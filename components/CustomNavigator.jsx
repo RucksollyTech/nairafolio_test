@@ -37,6 +37,7 @@ const CustomNavigator = ({navigator,darkTheme,isDollar, investment}) => {
                         <Image
                             source={icons.arrow_left}
                             resizeMode="contain"
+                            className='my-auto'
                             tintColor={darkTheme === "dark" ? "#FFFFFF" : "#000000"}
                         />
                     </TouchableOpacity>
@@ -45,6 +46,7 @@ const CustomNavigator = ({navigator,darkTheme,isDollar, investment}) => {
                             <Image
                                 source={icons.home}
                                 resizeMode="contain"
+                                className='w-7 h-7 my-auto'
                             />
                         </Link>
                     </View>

@@ -77,6 +77,7 @@ const PaymentSuccess = () => {
                 <Image 
                     source={icons.good}
                     resizeMode="contain"
+                    className='w-40 h-40'
                 />
                 <View className="mt-5">
                     <Text 
