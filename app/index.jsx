@@ -93,11 +93,13 @@ const index = () => {
         <SafeAreaView 
             className={`bg-white flex-1 font-bold h-[100vh] relative z-10`}>
             <View className='relative w-full flex h-full items-center justify-center'>
-                <Image 
-                    source={images.onboarding}
-                    className="w-[100%] absolute -top-3"
-                    resizeMode="contain"
-                />
+                
+                    <Image 
+                        source={images.onboarding}
+                        className="w-[100%] left-0 absolute -top-[300px]"
+                        resizeMode="contain"
+                        contentPosition="top"
+                    />
                 <View className='absolute bottom-0 w-full '>
                     <LinearGradient
                         colors={['rgba(255, 255, 255, 0)', '#FFFFFF']} // Start and end colors
@@ -122,7 +124,7 @@ const index = () => {
                                     w-full text-center
                                     leading-[42px]
                                 '>
-                                    Grow financially with our investments
+                                    Clarity for every investment decision.
                                 </Text>
                             </View>
                             <View className='my-8'>

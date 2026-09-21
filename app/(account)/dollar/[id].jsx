@@ -1,14 +1,13 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, Platform, TouchableWithoutFeedback, FlatList } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { RefreshControl } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { OngoingDetailSkeletonLoader } from '@/components/DetailLoader';
 import useAppwrite from '@/lib/useAppwrite';
 import CustomNavigator from '@/components/CustomNavigator';
 import { icons } from '@/constants';
-import { createTransactions, getUserDataDollarCaller, getUserInvestment, updateUser } from '@/lib/appwrite';
+import { createTransactions, getUserDataDollarCaller, updateUser } from '@/lib/appwrite';
 import Money from '@/components/Money';
 import TransactionCard from '@/components/TransactionCard';
 import GeneralDrawer from '@/components/GeneralDrawer';
@@ -17,9 +16,8 @@ import { updateCurrentUser } from '@/lib/updateAccountTransaction';
 import CustomModalAlert from '@/components/CustomModalAlert';
 import { CustomButton, FormField } from '@/components';
 import { CheckBalance } from '@/components/PerformingTransaction';
-import { KeyboardAvoidingView } from 'react-native';
-import { Keyboard } from 'react-native';
 import { myClassConverter } from '@/lib/performActions';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Dollar = () => {
     const insets = useSafeAreaInsets();
@@ -63,6 +61,7 @@ const Dollar = () => {
         setHasError("")
         setIsDrawerVisible2(false)
         await updateCurrentUser(setUser)
+        await refetch()
     }
     const moveToWallet = async()=>{
         setLoad(true)
@@ -106,12 +105,6 @@ const Dollar = () => {
             setLoad(false)
         }
     }
-    const getLastTransaction = (data)=>{
-        const response =data.find(x => x.action === "Deposit")
-        if (response)return response.amount
-        // console.log({response})
-        return 0
-    }
     useEffect(()=>{
         const handles=async()=>{
             await updateCurrentUser(setUser)
@@ -119,11 +112,6 @@ const Dollar = () => {
         handles()
     },[])
     return (
-        // <KeyboardAvoidingView 
-        //     behavior={Platform.OS === "ios" && "padding"} 
-        //     style={{ flex: 1 }}
-        // >
-            // {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
             <View 
             style={{ 
                 paddingBottom: insets.bottom,
@@ -133,29 +121,51 @@ const Dollar = () => {
             className={`flex-1 h-full ${darkTheme === "dark" ? "dark bg-dark_mode" : "bg-white"}`}>
                 <CustomNavigator navigator={navigation} darkTheme={darkTheme} isDollar={true} />
                 <View className="px-5">
-                    {!loading && (
-                        <View>
-                            <Text 
-                                className={myClassConverter(
-                                    darkTheme,
-                                    `text-xl font-pregular font-[700]`,
-                                    "text-white",
-                                    "text-black-100"
-                                )}
-                            >
-                                Dollar saving
-                            </Text>
-                        </View>
-                    )}
-                </View>
-                {loading ? (
-                    <View className='flex-1 h-full pt-10'>
-                        <OngoingDetailSkeletonLoader darkTheme={darkTheme} />
+                    <View>
+                        <Text 
+                            className={myClassConverter(
+                                darkTheme,
+                                `text-xl font-[700]`,
+                                "text-white",
+                                "text-black-100"
+                            )}
+                        >
+                            USD Wallet
+                        </Text>
                     </View>
-                ):(
-                    <View className='flex-1 h-full'>
-                        <View className="px-5">
-                            <View className="pt-7">
+                    <View>
+                        <Text 
+                            className={myClassConverter(
+                                darkTheme,
+                                `text-sm mt-1`,
+                                "text-white",
+                                "text-muted"
+                            )}
+                        >
+                            Save convert and manage your USD
+                        </Text>
+                    </View>
+                </View>
+                <View className='flex-1 h-full'>
+                    <View className="px-5">
+
+                        <View 
+                            className={myClassConverter(
+                                darkTheme,
+                                `rounded-lg p-5 mt-3 relative`,
+                                "bg-[#161A25]",
+                                "bg-[#EFF7F3]"
+                            )}
+                        >
+                            <View className="">
+                                <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pregular font-[700] text-base pb-2`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                )}>
+                                    USD Balance
+                                </Text>
                                 <Money
                                     dollar
                                     value={user?.dollar_ballance}
@@ -173,130 +183,260 @@ const Dollar = () => {
                                         darkTheme,
                                         `font-pregular font-[700] text-base`,
                                         "text-[#FFFFFFB2]",
-                                        "text-muted"
+                                        "text-[#2E3B3B]"
                                     )}>
-                                        Invested 
+                                        ≈ 
                                     </Text>
                                     <Money
-                                        value={(transactions && transactions.length > 0) ? getLastTransaction(transactions) : 0}
+                                        value={dollarInvestment?.investment?.price_per_unit * user?.dollar_ballance}
                                         textStyle={myClassConverter(
                                             darkTheme,
                                             `font-pregular font-[700] text-base`,
                                             "text-[#FFFFFFB2]",
-                                            "text-muted"
+                                            "text-[#2E3B3B]"
                                         )}
                                         containerStyle="pl-2"
                                     />
                                 </View>
-                                <View className="mt-1">
+                                <View>
+                                    <Text className={myClassConverter(
+                                            darkTheme,
+                                            `font-pregular font-[700] text-sm`,
+                                            "text-[#FFFFFFB2]",
+                                            "text-muted"
+                                    )}>
+                                        Total value in naira
+                                    </Text>
+                                </View>
+                            </View>
+                            <View className={myClassConverter(
+                                darkTheme,
+                                `absolute right-5 top-5 h-[50px] w-[50px] rounded-full`,
+                                "bg-[#182A2C]",
+                                "bg-[#DCE9E3]"
+                            )}
+                            >
+                                <MaterialIcons className='m-auto font-bold' name="attach-money" size={25} color={darkTheme === "dark" ? "#63E59B" : "#00312E"} />
+                            </View>
+                        </View>
+                        <View className={myClassConverter(
+                                darkTheme,
+                                `flex-row justify-between gap-4 rounded-lg p-5 mt-3 relative`,
+                                "bg-[#161A24]",
+                                "bg-[#F4F7F8]"
+                            )}
+                        >
+                            <View className='flex-row gap-4'>
+                                <View
+                                    className={myClassConverter(
+                                        darkTheme,
+                                        `w-[40px] h-[40px]  rounded-full my-auto`,
+                                        "bg-[#182A2C]",
+                                        "bg-[#DFE9E7]"
+                                    )}
+                                >
+                                    <MaterialIcons 
+                                        className='m-auto' 
+                                        name="trending-up" 
+                                        size={20} 
+                                        color={darkTheme === "dark" ? "#63E59B" : "#00312E"} 
+                                    />
+                                </View>
+                                <View>
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pregular font-[700] text-sm`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                    )}>
+                                        Current rate
+                                    </Text>
                                     <Money
-                                        add
                                         containerStyle={"flex-row"}
-                                        addedText={"/$"}
+                                        addedText={"/$1"}
                                         value={dollarInvestment?.investment?.price_per_unit}
-                                        textStyle="text-secondary-100 font-pregular text-base font-[700]"
+                                        textStyle={myClassConverter(
+                                            darkTheme,
+                                            `text-base font-bold`,
+                                            "text-white",
+                                            "text-black"
+                                        )}
                                     />
                                 </View>
                             </View>
-                            <View className=" mt-5 flex flex-row gap-4">
-                                <TouchableOpacity
-                                    onPress={handleAdd}
-                                    activeOpacity={0.7}
-                                    className={myClassConverter(
-                                        darkTheme,
-                                        `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
-                                        "bg-dark_mode-200",
-                                        "bg-primary"
-                                    )}
-                                >
+                            <View className='flex-row gap-3'>
+                                <MaterialIcons className='m-auto' name="info" size={23} color={darkTheme === "dark" ? "white" : "#00312E"} />
+                                <View>
                                     <Text className={myClassConverter(
                                         darkTheme,
-                                        `font-pinter font-semibold text-base`,
-                                        "text-[#171717]",
-                                        "text-white"
-                                    )}>
-                                        Add
-                                    </Text>
-                                    <View className="ml-2">
-                                        <Image
-                                            source={icons.download}
-                                            resizeMode="contain"
-                                            tintColor={darkTheme === "dark" ? "#171717" : "#FFFFFF"}
-                                        />
-                                    </View>
-                                </TouchableOpacity>
-                                
-                                <TouchableOpacity
-                                    onPress={handleConvert}
-                                    activeOpacity={0.7}
-                                    className={myClassConverter(
-                                        darkTheme,
-                                        `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
-                                        "border-[#00000014] bg-[#303540]",
-                                        "border-border-100 bg-[#F5F5F5]"
-                                    )}
-                                >
-                                    <Text className={myClassConverter(
-                                        darkTheme,
-                                        `font-pinter font-semibold text-base`,
-                                        "text-white",
+                                        `font-pregular font-[700] text-sm`,
+                                        "text-[#FFFFFFB2]",
                                         "text-muted"
                                     )}>
-                                        Convert
+                                        Rates are indicative
                                     </Text>
-                                    <View className="ml-2">
-                                        <Image
-                                            source={icons.convert}
-                                            resizeMode="contain"
-                                            tintColor={darkTheme === 'dark' ? "#FFFFFF" : "#747474"}
-                                        />
-                                    </View>
-                                    
-                                </TouchableOpacity>
-                            </View>
-                            {transactions && transactions.length > 0 && (
-                                <View className='mt-5'>
-                                    <View className='mb-3'>
-                                        <Text className={myClassConverter(
-                                            darkTheme,
-                                            `font-psans text-lg`,
-                                            "text-black-100",
-                                            "text-white"
-                                        )}>
-                                            Activities
-                                        </Text>
-                                    </View>
+                                    <Text className={myClassConverter(
+                                        darkTheme,
+                                        `font-pregular font-[700] text-sm`,
+                                        "text-[#FFFFFFB2]",
+                                        "text-muted"
+                                    )}>
+                                        and may change
+                                    </Text>
                                 </View>
-                            )}
+                            </View>
                         </View>
-                        <FlatList
-                            onTouchStart={() => setLastActive(Date.now())}
-                            onScroll={() => setLastActive(Date.now())}
-                            data={transactions}
-                            scrollEventThrottle={16}
-                            showsVerticalScrollIndicator={false} 
-                            showsHorizontalScrollIndicator={false}
-                            keyExtractor={(item) => item.$id}
-                            contentContainerStyle={{
-                                paddingRight: 20,
-                                paddingLeft: 20,
-                            }}
-                            renderItem={({ item, index }) =>(
-                                <TransactionCard 
-                                    darkTheme={darkTheme}
-                                    index={index}
-                                    transaction={item} 
-                                    transactions={transactions} 
-                                />
-                            )}
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                            }
-                        />
+
+                        <View className=" mt-5 flex flex-row gap-4">
+                            <TouchableOpacity
+                                onPress={handleAdd}
+                                activeOpacity={0.7}
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                    "bg-dark_mode-200",
+                                    "bg-primary"
+                                )}
+                            >
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-pinter font-semibold text-base`,
+                                    "text-[#171717]",
+                                    "text-white"
+                                )}>
+                                    Add
+                                </Text>
+                                <View className="ml-2">
+                                    <Image
+                                        source={icons.download}
+                                        resizeMode="contain"
+                                        tintColor={darkTheme === "dark" ? "#171717" : "#FFFFFF"}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                            
+                            <TouchableOpacity
+                                onPress={handleConvert}
+                                activeOpacity={0.7}
+                                className={myClassConverter(
+                                    darkTheme,
+                                    `rounded-xl h-12 flex w-[48%] flex-row justify-center items-center`,
+                                    "border-[#00000014] bg-[#303540]",
+                                    "border-border-100 bg-[#F5F5F5]"
+                                )}
+                            >
+                                <Text className={myClassConverter(
+                                    darkTheme,
+                                    `font-pinter font-semibold text-base`,
+                                    "text-white",
+                                    "text-muted"
+                                )}>
+                                    Convert
+                                </Text>
+                                <View className="ml-2">
+                                    <Image
+                                        source={icons.convert}
+                                        resizeMode="contain"
+                                        tintColor={darkTheme === 'dark' ? "#FFFFFF" : "#747474"}
+                                    />
+                                </View>
+                                
+                            </TouchableOpacity>
+                        </View>
                         
                     </View>
-                )}
-
+               
+                    {loading ? (
+                        <View className='flex-1 h-full pt-10 relative px-5'>
+                            <View className='flex-row gap-4 animate-pulse '>
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `h-14 w-14 rounded-full`,
+                                    "bg-[#303540]",
+                                    "bg-gray-200"
+                                )}></View>
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `h-14 w-[200px] rounded-lg`,
+                                    "bg-[#303540]",
+                                    "bg-gray-200"
+                                )}></View>
+                            </View>
+                            <View className='flex-row gap-4 animate-pulse mt-5'>
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `h-14 w-14 rounded-full`,
+                                    "bg-[#303540]",
+                                    "bg-gray-200"
+                                )}></View>
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `h-14 w-[200px] rounded-lg`,
+                                    "bg-[#303540]",
+                                    "bg-gray-200"
+                                )}></View>
+                            </View>
+                            <View className='flex-row gap-4 animate-pulse mt-5'>
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `h-14 w-14 rounded-full`,
+                                    "bg-[#303540]",
+                                    "bg-gray-200"
+                                )}></View>
+                                <View className={myClassConverter(
+                                    darkTheme,
+                                    `h-14 w-[200px] rounded-lg`,
+                                    "bg-[#303540]",
+                                    "bg-gray-200"
+                                )}></View>
+                            </View>
+                        </View>
+                    ):(
+                        <View className='flex-1 h-full'>
+                            <View className='px-5'>
+                                {transactions && transactions.length > 0 && (
+                                    <View className='mt-5'>
+                                        <View className='mb-3'>
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-psans text-lg`,
+                                                "text-white",
+                                                "text-black-100"
+                                            )}>
+                                                Transactions
+                                            </Text>
+                                        </View>
+                                    </View>
+                                )}
+                            </View>
+                            <FlatList
+                                onTouchStart={() => setLastActive(Date.now())}
+                                onScroll={() => setLastActive(Date.now())}
+                                data={transactions}
+                                scrollEventThrottle={16}
+                                showsVerticalScrollIndicator={false} 
+                                showsHorizontalScrollIndicator={false}
+                                keyExtractor={(item) => item.$id}
+                                contentContainerStyle={{
+                                    paddingRight: 20,
+                                    paddingLeft: 20,
+                                }}
+                                renderItem={({ item, index }) =>(
+                                    <TransactionCard 
+                                        darkTheme={darkTheme}
+                                        index={index}
+                                        transaction={item} 
+                                        transactions={transactions} 
+                                    />
+                                )}
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                                }
+                            />
+                        </View>
+                    )}
+                </View>
+                        
                 {dollarInvestment && (
                     <PaymentDrawer 
                         isVisible={isDrawerVisible} 
@@ -410,8 +550,6 @@ const Dollar = () => {
                     </View>
                 </GeneralDrawer>
             </View>
-            // {/* </TouchableWithoutFeedback> */}
-        // </KeyboardAvoidingView>
     )
 }
 

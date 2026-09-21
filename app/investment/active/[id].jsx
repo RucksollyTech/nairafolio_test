@@ -1369,7 +1369,7 @@ const Active = () => {
                                                 "text-header-200"
                                             )}
                                             >
-                                                Put up your shares for sale
+                                                List for sale
                                             </Text>
                                         </View>
                                         <View className="mt-1">
@@ -1379,7 +1379,7 @@ const Active = () => {
                                                 "text-[#FFFFFFB2]",
                                                 "text-muted"
                                             )}>
-                                                Set your price and wait for a buyer
+                                                Set your asking price and wait for a buyer.
                                             </Text>
                                         </View>
                                     </View>
@@ -1440,7 +1440,7 @@ const Active = () => {
                                                 "text-[#FFFFFFB2]",
                                                 "text-muted"
                                             )}>
-                                                Instantly sell your shares at our price.
+                                                Sell your units instantly at the current Nairafolio price.
                                             </Text>
                                         </View>
                                     </View>
@@ -1484,14 +1484,24 @@ const Active = () => {
                                             You have just sold {unitToSell} units of your shares to NairaFolio.
                                         </Text>
                                     ) : (
-                                        <Text className={myClassConverter(
-                                            darkTheme,
-                                            `font-psans text-2xl text-center`,
-                                            "text-white",
-                                            "text-black-100"
-                                        )}>
-                                            You have just put up {unitToSell} units of your shares up for sale.
-                                        </Text>
+                                        <View>
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-psans text-2xl text-center`,
+                                                "text-white",
+                                                "text-black-100"
+                                            )}>
+                                                Offer Created
+                                            </Text>
+                                            <Text className={myClassConverter(
+                                                darkTheme,
+                                                `font-psans text-2xl text-center`,
+                                                "text-white",
+                                                "text-black-100"
+                                            )}>
+                                                {unitToSell} units have been listed for sale.
+                                            </Text>
+                                        </View>
                                     )}
                                 </View>
                                 {activeMethod !== 2 && (
@@ -1502,7 +1512,7 @@ const Active = () => {
                                             "text-white",
                                             "text-black-100"
                                         )}>
-                                            Your wallet will be credited once someone else buys your shares
+                                            Your wallet will be credited once the units are sold.
                                         </Text>
                                     </View>
                                 )}
@@ -1664,7 +1674,7 @@ const Active = () => {
                                 "text-white",
                                 "text-black-100"
                             )}>
-                                Congratulations! 
+                                Investment Completed
                             </Text>
                         </View>
                         <View className="mt-2">
@@ -1674,7 +1684,17 @@ const Active = () => {
                                 "text-white",
                                 "text-black-100"
                             )}>
-                                Your investment funds have been successfully transferred to your wallet. 
+                                Your investment has reached maturity.
+                            </Text>
+                        </View>
+                        <View className="mt-1">
+                            <Text className={myClassConverter(
+                                darkTheme,
+                                `font-pmedium text-base text-center`,
+                                "text-white",
+                                "text-black-100"
+                            )}>
+                                Your principal and applicable returns have been successfully credited to your Nairafolio wallet and are now available for use.
                             </Text>
                         </View>
                         
@@ -2168,7 +2188,7 @@ const Active = () => {
                 <CustomModalAlert
                     isVisible={modalVisible}
                     onClose={() => setModalVisible(false)}
-                    body={investment?.immediate_start ? "This investment follows a one time feature, you can buy again from the explore page or other investors willing to sell." :"This investment is sold out, but you can buy from other investors that are willing to sell. Please proceed to view offers if you are still interested"}
+                    body={investment?.immediate_start ? "Additional units are subject to the current offer terms. To make a new purchase, please visit Explore or See Offers" :"This investment is sold out, but you can buy from other investors that are willing to sell. Please proceed to view offers if you are still interested"}
                     title={"Please note"}
                 >  
                     {investment?.immediate_start && 

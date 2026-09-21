@@ -151,7 +151,7 @@ const UserOffer = () => {
                                     "text-white",
                                     "text-muted-300"
                                 )}>
-                                    Here are offers available from investors who want to sell to you.
+                                    Review investment units available for purchase from existing investors.
                                 </Text>
                             </View>
                         </View>
